@@ -25,7 +25,7 @@
     "ember-cli-shims": "^1.2.0",
     "ember-sortable": "^1.12.9",
     "ember-truth-helpers": "^2.1.0",
-    "upfluence-oss-components": "^1.2.6"
+    "upfluence-oss-components": "^1.x"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",

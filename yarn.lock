@@ -7887,9 +7887,9 @@ regexpu-core@^2.0.0:
     regjsparser "^0.1.4"
 
 regexpu-core@^4.5.4:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/regexpu-core/-/regexpu-core-4.5.5.tgz#aaffe61c2af58269b3e516b61a73790376326411"
-  integrity sha512-FpI67+ky9J+cDizQUJlIlNZFKual/lUkFr1AG6zOCpwZ9cLrg8UUVakyUQJD7fCDIe9Z2nwTQJNPyonatNmDFQ==
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/regexpu-core/-/regexpu-core-4.6.0.tgz#2037c18b327cfce8a6fea2a4ec441f2432afb8b6"
+  integrity sha512-YlVaefl8P5BnFYOITTNzDvan1ulLOiXJzCNZxduTIosN17b87h3bvG9yHMoHaRuo88H4mQ06Aodj5VtYGGGiTg==
   dependencies:
     regenerate "^1.4.0"
     regenerate-unicode-properties "^8.1.0"
@@ -9205,10 +9205,10 @@ unzip-response@^2.0.1:
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
   integrity sha1-0vD3N9FrBhXnKmk17QQhRXLVb5c=
 
-upfluence-oss-components@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/upfluence-oss-components/-/upfluence-oss-components-1.2.6.tgz#ee967f22b3ad127ce9c142e8e775e3a713f39b51"
-  integrity sha512-oFyjWiRVz748ztZG4zF5mPmXMfeoGtgFSiiKNI4pnXhRBx/pcPIfvet84Ta9e43WXDifB1KLvI8gtzJWi4u9+w==
+upfluence-oss-components@^1.x:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/upfluence-oss-components/-/upfluence-oss-components-1.2.7.tgz#db61105b6a6c44dbb09a57898ec7f114f51dd8e6"
+  integrity sha512-AVm4gQLvsMrJLG7gkMubtKruq5/7k/2djIKHZwdzwslpsNenzgHg/0GnpfUWUCZoDP/PCGVvbadWNscJwvOBbg==
   dependencies:
     babel-plugin-debug-macros "^0.3.1"
     ember-cli-babel "^7.1.2"
@@ -9222,9 +9222,9 @@ upfluence-oss-components@^1.2.6:
     upfluence-oss "^1.x"
 
 upfluence-oss@^1.x:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-1.1.2.tgz#52dfbccb3e25bd55ace3dcea6da558953dd52dc2"
-  integrity sha512-T1RWD1QY4A0xwAgWscKXcU4+xO5kZ3JLCkkUpkt2pE79TgdO+4LS+iCQBqwcr6p/KePh9NDjjLENm8x1BCcl8g==
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-1.1.3.tgz#8ee476fa76a295ecd470477920ca703443915ddc"
+  integrity sha512-oz+zxx62JqFMZRwz86tsJH/sQaRZ62as/fXkQaIOgiMD5cU62mtpB5osNVXI5LXeWAGxU03KPKhnH3G1XuaDDQ==
   dependencies:
     bootstrap "^3.3.7"
     countdown.js "git+ssh://git@github.com/gumroad/countdown.js.git"
