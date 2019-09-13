@@ -1,7 +1,8 @@
 hypertable
 ==============================================================================
 
-[Short description of the addon.]
+To follow the early life of this project, see
+[oss-components#pn-flexbox-tables](https://github.com/upfluence/oss-components/pull/54/files)
 
 Installation
 ------------------------------------------------------------------------------
