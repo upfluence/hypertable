@@ -1,0 +1,116 @@
+<div class="upf-hypertable__upper-header">
+  <div class="left-side">
+    {{#if options.features.search}}
+      {{input
+        type="text" placeholder="Search..." value=_searchQuery
+        class="form-control upf-input upf-input--small"}}
+    {{/if}}
+
+    {{#if contextualActions}}
+      <div class="contextual-actions contextual-actions--no-animation
+                  {{unless options.features.search 'contextual-actions--no-search-sibling'}}">
+        {{component contextualActions selectedItems=_selectedItems}}
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="right-side">
+    <button class="upf-btn upf-btn--default upf-btn--small" {{action "openAvailableColumns"}}>
+      <i class="fa fa-plus"></i> &nbsp; Field
+    </button>
+
+    {{#if _availableColumnsPanel}}
+      <div class="available-columns">
+        <div class="available-columns__categories">
+          <div class="field-category">
+            <div>All Fields</div>
+            <div><i class="fa fa-caret-right"></i></div>
+          </div>
+        </div>
+
+        <div class="available-columns__fields">
+          <div class="search">
+            {{input
+              type="text" value=_availableColumnsKeyword
+              class="upf-input upf-input--small"}}
+          </div>
+
+          <div class="fields-list">
+            {{#each _orderedFilteredColumns as |column|}}
+              <div class="field">
+                {{upf-checkbox value=column.visible size="sm"}}
+                <div class="margin-left-xxx-sm">{{column.title}}</div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+<div class="upf-hypertable__table">
+  {{#sortable-group
+    direction="x" model=_columns onChange=(action "reorderColumns")
+    tagName=null classNames="upf-hypertable" as |group|}}
+    {{#each _columns as |column index|}}
+      {{#if (eq index 0)}}
+        <div class="upf-hypertable__sticky-columns">
+          {{#if options.features.selection}}
+            <div class="upf-hypertable__column upf-hypertable__column--selection">
+              {{#hyper-table/cell header=true selection=true}}
+                {{upf-checkbox value=_allRowsSelected size="sm"}}
+              {{/hyper-table/cell}}
+
+              {{#each collection as |item|}}
+                <div class="upf-hypertable__cell">
+                  {{upf-checkbox value=item.selected size="sm"}}
+                </div>
+              {{/each}}
+
+              {{#if _loadingMore}}
+                {{hyper-table/cell loading=true}}
+                {{hyper-table/cell loading=true}}
+                {{hyper-table/cell loading=true}}
+              {{/if}}
+            </div>
+          {{/if}}
+
+          <div class="upf-hypertable__column">
+            {{hyper-table/cell column=column header=true manager=manager}}
+
+            {{#each collection as |item|}}
+              {{hyper-table/cell item=item column=column}}
+            {{/each}}
+
+            {{#if _loadingMore}}
+              {{hyper-table/cell loading=true}}
+              {{hyper-table/cell loading=true}}
+              {{hyper-table/cell loading=true}}
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
+
+    {{#each _columns as |column index|}}
+      {{#if (and column.visible (gt index 0))}}
+        {{#sortable-item
+          classNames="upf-hypertable__column" model=column group=group
+          handle=".upf-hypertable__cell--header"}}
+          {{hyper-table/cell column=column header=true manager=manager}}
+
+          {{#each collection as |item|}}
+            {{hyper-table/cell item=item column=column}}
+          {{/each}}
+
+          {{#if _loadingMore}}
+            {{hyper-table/cell loading=true}}
+            {{hyper-table/cell loading=true}}
+            {{hyper-table/cell loading=true}}
+          {{/if}}
+        {{/sortable-item}}
+      {{/if}}
+    {{/each}}
+  {{/sortable-group}}
+</div>

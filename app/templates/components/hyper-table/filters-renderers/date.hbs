@@ -1,0 +1,41 @@
+{{#input-wrapper}}
+  <label>Sort</label>
+  <div class="btn-group upf-radio-group">
+    {{#each-in sortingOptions as |label value|}}
+      {{radio-button
+        value=value currentValue=column.sortBy label=label
+        options=sortingOptions onCheck="sortingOptionChanged"}}
+    {{/each-in}}
+  </div>
+{{/input-wrapper}}
+
+<div class="margin-top-xx-sm">
+  <label>Filter</label>
+
+  <div class="btn-group upf-radio-group">
+    {{#each-in filteringOptions as |label value|}}
+      {{radio-button
+        value=value currentValue=filterOption label=label
+        options=filteringOptions onCheck="filterOptionChanged"}}
+    {{/each-in}}
+  </div>
+
+  <div class="filters">
+    {{#if (eq filterOption "fixed")}}
+      Date Range
+    {{else}}
+      {{#each-in movingDateOptions as |label value|}}
+        <div class="filters__option {{if (eq currentMovingDateOption value) 'filters__option--active'}}"
+             {{action "selectMovingDate" value}}>
+          {{label}}
+        </div>
+      {{/each-in}}
+    {{/if}}
+  </div>
+</div>
+
+<div class="margin-top-xx-sm upf-align--right">
+  <button class="upf-btn upf-btn--default upf-btn--small" {{action "clearFilters"}}>
+    Clear Filters
+  </button>
+</div>
