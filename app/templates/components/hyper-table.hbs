@@ -1,4 +1,4 @@
-<div class="upf-hypertable__upper-header">
+<div class="hypertable__upper-header">
   <div class="left-side">
     {{#if options.features.search}}
       {{input
@@ -49,21 +49,21 @@
   </div>
 </div>
 
-<div class="upf-hypertable__table">
+<div class="hypertable__table">
   {{#sortable-group
     direction="x" model=_columns onChange=(action "reorderColumns")
-    tagName=null classNames="upf-hypertable" as |group|}}
+    classNames="hypertable" as |group|}}
     {{#each _columns as |column index|}}
       {{#if (eq index 0)}}
-        <div class="upf-hypertable__sticky-columns">
+        <div class="hypertable__sticky-columns">
           {{#if options.features.selection}}
-            <div class="upf-hypertable__column upf-hypertable__column--selection">
+            <div class="hypertable__column hypertable__column--selection">
               {{#hyper-table/cell header=true selection=true}}
                 {{upf-checkbox value=_allRowsSelected size="sm"}}
               {{/hyper-table/cell}}
 
               {{#each collection as |item|}}
-                <div class="upf-hypertable__cell">
+                <div class="hypertable__cell">
                   {{upf-checkbox value=item.selected size="sm"}}
                 </div>
               {{/each}}
@@ -76,7 +76,7 @@
             </div>
           {{/if}}
 
-          <div class="upf-hypertable__column">
+          <div class="hypertable__column">
             {{hyper-table/cell column=column header=true manager=manager}}
 
             {{#each collection as |item|}}
@@ -96,8 +96,8 @@
     {{#each _columns as |column index|}}
       {{#if (and column.visible (gt index 0))}}
         {{#sortable-item
-          classNames="upf-hypertable__column" model=column group=group
-          handle=".upf-hypertable__cell--header"}}
+          classNames="hypertable__column" model=column group=group
+          handle=".hypertable__cell--header"}}
           {{hyper-table/cell column=column header=true manager=manager}}
 
           {{#each collection as |item|}}

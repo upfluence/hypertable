@@ -9,15 +9,15 @@ const AVAILABLE_RENDERERS = [
 ];
 
 export default Component.extend({
-  classNames: ['upf-hypertable__cell'],
+  classNames: ['hypertable__cell'],
   classNameBindings: [
-    'header:upf-hypertable__cell--header',
-    'item.selected:upf-hypertable__cell--selected',
-    'loading:upf-hypertable__cell--loading',
-    '_sorted:upf-hypertable__cell--sorted',
-    '_filtered:upf-hypertable__cell--filtered',
-    'isNumeric:upf-hypertable__cell--numeric',
-    'isMoney:upf-hypertable__cell--numeric'
+    'header:hypertable__cell--header',
+    'item.selected:hypertable__cell--selected',
+    'loading:hypertable__cell--loading',
+    '_sorted:hypertable__cell--sorted',
+    '_filtered:hypertable__cell--filtered',
+    'isNumeric:hypertable__cell--numeric',
+    'isMoney:hypertable__cell--numeric'
   ],
 
   header: false,

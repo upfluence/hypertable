@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS = {
 };
 
 export default Component.extend({
-  classNames: ['upf-hypertable-container'],
+  classNames: ['hypertable-container'],
 
   contextualActions: null,
   loadingMore: false,
@@ -112,9 +112,9 @@ export default Component.extend({
   didInsertElement() {
     let self = this;
 
-    this.$('.upf-hypertable__table').on('scroll', function() {
+    this.$('.hypertable__table').on('scroll', function() {
       let tableHeight = $(this).innerHeight();
-      let contentHeight = $('.upf-hypertable')[0].scrollHeight;
+      let contentHeight = $('.hypertable')[0].scrollHeight;
       let heightScrolled = $(this).scrollTop();
 
       self.set('_hasScrollbar', (tableHeight <= contentHeight));
