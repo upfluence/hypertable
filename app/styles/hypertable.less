@@ -189,11 +189,12 @@
 }
 
 .hypertable__sticky-columns {
-  position: sticky;
-  left: 0;
-  z-index: 9999;
   background-color: white;
   display: flex;
+
+  left: 0;
+  position: sticky;
+  z-index: 5;
 }
 
 .hypertable__column {
@@ -278,7 +279,7 @@
   justify-content: space-between;
   position: sticky;
   top: 0;
-  z-index: 9999;
+  z-index: 5;
 
   &.hypertable__cell--sorted {
     .fa.fa-long-arrow-up, .fa.fa-long-arrow-down {
