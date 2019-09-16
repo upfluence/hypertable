@@ -5,13 +5,6 @@ import { alias, filterBy } from '@ember/object/computed';
 import { run } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 
-const DEFAULT_OPTIONS = {
-  features: {
-    selection: false,
-    search: false
-  }
-};
-
 export default Component.extend({
   classNames: ['hypertable-container'],
 
@@ -26,7 +19,12 @@ export default Component.extend({
    * Define which features of the datatable should be activated.
    *
    */
-  options: DEFAULT_OPTIONS,
+  options: {
+    features: {
+      selection: false,
+      search: false
+    }
+  },
 
   /*
    * Event Hooks
@@ -35,9 +33,11 @@ export default Component.extend({
    * Actions to be called to react to various events happening on the datatable
    *
    */
-  onColumnsChange: null,
-  onBottomReached: null,
-  onSearchQueryChange: null,
+  hooks: {
+    onColumnsChange: null,
+    onBottomReached: null,
+    onSearchQueryChange: null,
+  },
 
   _allRowsSelected: false,
   _hasScrollbar: false,
@@ -82,8 +82,8 @@ export default Component.extend({
   _columnsChanged: observer(
     '_columns', '_columns.@each.{visible,sortBy,filters}',
     function() {
-      if (this.onColumnsChange) {
-        this.onColumnsChange(this._columns);
+      if (this.hooks.onColumnsChange) {
+        this.hooks.onColumnsChange(this._columns);
       }
     }
   ),
@@ -104,8 +104,8 @@ export default Component.extend({
 
   _searchQueryObserver: observer('_searchQuery', function() {
     run.debounce(this, () => {
-      if (this.onSearchQueryChange) {
-        this.onSearchQueryChange(this.get('_searchQuery'));
+      if (this.hooks.onSearchQueryChange) {
+        this.hooks.onSearchQueryChange(this.get('_searchQuery'));
       }
     }, 1000);
   }),
@@ -121,8 +121,8 @@ export default Component.extend({
       self.set('_hasScrollbar', (tableHeight <= contentHeight));
 
       if ((heightScrolled + tableHeight) >= contentHeight) {
-        if (self.onBottomReached) {
-          self.onBottomReached();
+        if (self.hooks.onBottomReached) {
+          self.hooks.onBottomReached();
         }
       }
     });

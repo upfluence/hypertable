@@ -1,7 +1,8 @@
 <div class="padding-lg">
   {{hyper-table
     manager=tableManager collection=collection options=tableOptions
-    onColumnsChange=(action "columnsChanged")
-    onSearchQueryChange=(action "performSearch")
-    contextualActions="contextual-actions"}}
+    contextualActions="contextual-actions"
+    hooks=(hash
+           onColumnsChange=(action "columnsChanged")
+           onSearchQueryChange=(action "performSearch"))}}
 </div>
