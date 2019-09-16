@@ -1,6 +1,8 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 
+import moment from 'moment';
+
 export default Component.extend({
   classNames: ['available-filters'],
 
@@ -56,14 +58,14 @@ export default Component.extend({
     },
 
     selectMovingDate(value) {
-      this.manager.addFilters(
-        this.column, 'range', this._buildDateRange(value)
+      this.column.addFilters(
+        'range', this._buildDateRange(value)
       );
     },
 
     // Mixin Candidate
     clearFilters() {
-      this.manager.clearFilters(this.column);
+      this.column.clearFilters();
     }
   }
 });
