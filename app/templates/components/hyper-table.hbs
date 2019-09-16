@@ -81,7 +81,8 @@
             {{hyper-table/cell column=column header=true manager=manager}}
 
             {{#each collection as |item|}}
-              {{hyper-table/cell item=item column=column}}
+              {{hyper-table/cell
+                item=item column=column onRowClicked=hooks.onRowClicked}}
             {{/each}}
 
             {{#if _loadingMore}}
@@ -102,7 +103,8 @@
           {{hyper-table/cell column=column header=true manager=manager}}
 
           {{#each collection as |item|}}
-            {{hyper-table/cell item=item column=column}}
+            {{hyper-table/cell
+              item=item column=column onRowClicked=hooks.onRowClicked}}
           {{/each}}
 
           {{#if _loadingMore}}

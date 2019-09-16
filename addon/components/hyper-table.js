@@ -37,6 +37,7 @@ export default Component.extend({
     onColumnsChange: null,
     onBottomReached: null,
     onSearchQueryChange: null,
+    onRowClicked: null
   },
 
   _allRowsSelected: false,

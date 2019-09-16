@@ -17,7 +17,8 @@ export default Component.extend({
     '_sorted:hypertable__cell--sorted',
     '_filtered:hypertable__cell--filtered',
     'isNumeric:hypertable__cell--numeric',
-    'isMoney:hypertable__cell--numeric'
+    'isMoney:hypertable__cell--numeric',
+    'onRowClicked:hypertable__cell--clickable'
   ],
 
   header: false,
@@ -95,6 +96,12 @@ export default Component.extend({
 
       this.set('_sorted', !isEmpty(this.column.sortBy));
       this.set('_filtered', !isEmpty(this.column.filters));
+    }
+  },
+
+  click(e) {
+    if (this.onRowClicked) {
+      this.onRowClicked(this.item);
     }
   },
 
