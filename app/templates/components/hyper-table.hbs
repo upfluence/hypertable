@@ -6,10 +6,11 @@
         class="form-control upf-input upf-input--small"}}
     {{/if}}
 
-    {{#if contextualActions}}
+    {{#if (and contextualActions (gt collection.length 0))}}
       <div class="contextual-actions contextual-actions--no-animation
                   {{unless options.features.search 'contextual-actions--no-search-sibling'}}">
-        {{component contextualActions selectedItems=_selectedItems}}
+        {{component
+          contextualActions selectedItems=_selectedItems collection=collection}}
       </div>
     {{/if}}
   </div>

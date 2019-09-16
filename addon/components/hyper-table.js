@@ -15,6 +15,7 @@ const DEFAULT_OPTIONS = {
 export default Component.extend({
   classNames: ['hypertable-container'],
 
+  collection: [],
   contextualActions: null,
   loadingMore: false,
 
