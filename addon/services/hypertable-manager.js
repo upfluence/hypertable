@@ -13,6 +13,7 @@ const Table = EmberObject.extend({
       }
 
       column.set('visible', column.visible !== false);
+      column.set('sortKey', column.sortKey || column.property);
       column.set('sortBy', column.sortBy || null);
       column.set(
         'filters',
