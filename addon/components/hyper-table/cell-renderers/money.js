@@ -19,5 +19,6 @@ export default Component.extend({
     return this.item.get(this.column.property);
   }),
 
-  emptyAmount: empty('amount')
+  emptyAmount: empty('amount'),
+  emptyCurrency: empty('currency')
 });
