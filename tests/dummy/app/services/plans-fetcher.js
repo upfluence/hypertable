@@ -114,13 +114,12 @@ export default Service.extend({
         columns = JSON.parse(window.sessionStorage.getItem('columns'));
       }
 
-      let sortedColumn = columns.find((x) => !isEmpty(x.sortBy));
+      let orderedColumn = columns.find((x) => !isEmpty(x.orderBy));
 
-      if (sortedColumn) {
-        let [sortType, sortDirection] = sortedColumn.sortBy.split(':');
-        data = data.sortBy(sortedColumn.property);
+      if (orderedColumn) {
+        data = data.sortBy(orderedColumn.property);
 
-        if (sortDirection === 'desc') {
+        if (orderedColumn.orderDirection === 'desc') {
           data.reverse();
         }
       }
