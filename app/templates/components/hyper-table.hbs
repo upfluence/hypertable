@@ -6,11 +6,11 @@
         class="form-control upf-input upf-input--small"}}
     {{/if}}
 
-    {{#if (and contextualActions (gt collection.length 0))}}
+    {{#if (and contextualActions (gt _collection.length 0))}}
       <div class="contextual-actions contextual-actions--no-animation
                   {{unless options.features.search 'contextual-actions--no-search-sibling'}}">
         {{component
-          contextualActions selectedItems=_selectedItems collection=collection}}
+          contextualActions selectedItems=_selectedItems collection=_collection}}
       </div>
     {{/if}}
   </div>
@@ -63,7 +63,7 @@
                 {{upf-checkbox value=_allRowsSelected size="sm"}}
               {{/hyper-table/cell}}
 
-              {{#each collection as |item|}}
+              {{#each _collection as |item|}}
                 <div class="hypertable__cell">
                   {{upf-checkbox value=item.selected size="sm"}}
                 </div>
@@ -80,7 +80,7 @@
           <div class="hypertable__column">
             {{hyper-table/cell column=column header=true manager=manager}}
 
-            {{#each collection as |item|}}
+            {{#each _collection as |item|}}
               {{hyper-table/cell
                 item=item column=column onRowClicked=hooks.onRowClicked}}
             {{/each}}
@@ -102,7 +102,7 @@
           handle=".hypertable__cell--header"}}
           {{hyper-table/cell column=column header=true manager=manager}}
 
-          {{#each collection as |item|}}
+          {{#each _collection as |item|}}
             {{hyper-table/cell
               item=item column=column onRowClicked=hooks.onRowClicked}}
           {{/each}}

@@ -5,6 +5,7 @@ import Column from '@upfluence/hypertable/types/column';
 
 export default EmberObject.extend({
   columns: [],
+  data: [],
   applyingFiltersOn: null,
 
   updateColumns(columns) {
@@ -24,6 +25,22 @@ export default EmberObject.extend({
 
       return column;
     }));
+  },
+
+  updateData(data) {
+    let _d = data;
+
+    let sortedColumn = this.columns.find((c) => c.sortBy);
+
+    if (sortedColumn) {
+      _d = _d.sortBy(sortedColumn.property);
+
+      if (sortedColumn.sortBy.includes(':desc')) {
+        _d = _d.reverse();
+      }
+    }
+
+    this.set('data', _d);
   },
 
   updateSortBy(column, sortBy) {

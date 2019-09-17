@@ -48,6 +48,7 @@ export default Component.extend({
 
   _searchQuery: null,
 
+  _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
   _selectedItems: filterBy('collection', 'selected', true),
 
