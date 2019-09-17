@@ -14,7 +14,7 @@ export default Component.extend({
     'header:hypertable__cell--header',
     'item.selected:hypertable__cell--selected',
     'loading:hypertable__cell--loading',
-    '_sorted:hypertable__cell--sorted',
+    '_ordered:hypertable__cell--ordered',
     '_filtered:hypertable__cell--filtered',
     'isNumeric:hypertable__cell--numeric',
     'isMoney:hypertable__cell--numeric',
@@ -25,15 +25,17 @@ export default Component.extend({
   selection: false,
   loading: false,
 
-  _sorted: false,
+  _ordered: false,
   _filtered: false,
   _showFiltersPanel: false,
 
-  _sortingIconClass: computed('_sorted', function() {
-    if (this._sorted) {
-      let [_, direction] = this.column.sortBy.split(':');
-
-      return (direction === 'asc') ? 'fa-long-arrow-up' : 'fa-long-arrow-down';
+  _orderingIconClass: computed('_ordered', function() {
+    if (this._ordered) {
+      if (this.column.orderDirection === 'asc') {
+        return 'fa-long-arrow-up'
+      } else {
+        return 'fa-long-arrow-down';
+      }
     }
   }),
 
@@ -58,7 +60,7 @@ export default Component.extend({
   }),
 
   _tableStateListener() {
-    this.set('_sorted', !isEmpty(this.column.sortBy));
+    this.set('_ordered', !isEmpty(this.column.orderBy));
     this.set('_filtered', !isEmpty(this.column.filters));
   },
 
@@ -82,7 +84,7 @@ export default Component.extend({
 
       if (this.header) {
         this.addObserver(
-          'manager.columns.@each.sortBy',
+          'manager.columns.@each.orderBy',
           this,
           this._tableStateListener
         );
@@ -94,7 +96,7 @@ export default Component.extend({
         );
       }
 
-      this.set('_sorted', !isEmpty(this.column.sortBy));
+      this.set('_ordered', !isEmpty(this.column.orderBy));
       this.set('_filtered', !isEmpty(this.column.filters));
     }
   },

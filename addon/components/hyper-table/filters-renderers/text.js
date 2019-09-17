@@ -3,14 +3,14 @@ import Component from '@ember/component';
 export default Component.extend({
   classNames: ['available-filters'],
 
-  sortingOptions: {
+  orderingOptions: {
     'A — Z': 'alphanumerical:asc',
     'Z — A': 'alphanumerical:desc'
   },
 
   actions: {
-    sortingOptionChanged(value) {
-      this.manager.updateSortBy(this.column, value);
+    orderingOptionChanged(value) {
+      this.manager.updateOrdering(this.column, value);
     }
   }
 });

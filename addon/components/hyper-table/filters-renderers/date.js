@@ -6,7 +6,7 @@ import moment from 'moment';
 export default Component.extend({
   classNames: ['available-filters'],
 
-  sortingOptions: {
+  orderingOptions: {
     'Oldest — Newest': 'alphanumerical:asc',
     'Newest — Oldest': 'alphanumerical:desc'
   },
@@ -49,8 +49,8 @@ export default Component.extend({
   },
 
   actions: {
-    sortingOptionChanged(value) {
-      this.manager.updateSortBy(this.column, value);
+    orderingOptionChanged(value) {
+      this.manager.updateOrdering(this.column, value);
     },
 
     filterOptionChanged(value) {

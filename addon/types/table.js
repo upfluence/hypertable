@@ -15,8 +15,8 @@ export default EmberObject.extend({
       }
 
       column.set('visible', column.visible !== false);
-      column.set('sortKey', column.sortKey || column.property);
-      column.set('sortBy', column.sortBy || null);
+      column.set('orderKey', column.orderKey || column.property);
+      column.set('orderBy', column.orderBy || null);
       column.set(
         'filters',
         (column.filters || []).map((x) => EmberObject.create(x))
@@ -30,12 +30,12 @@ export default EmberObject.extend({
   updateData(data) {
     let _d = data;
 
-    let sortedColumn = this.columns.find((c) => c.sortBy);
+    let orderedColumn = this.columns.find((c) => c.orderBy);
 
-    if (sortedColumn) {
-      _d = _d.sortBy(sortedColumn.property);
+    if (orderedColumn) {
+      _d = _d.sortBy(orderedColumn.property);
 
-      if (sortedColumn.sortBy.includes(':desc')) {
+      if (orderedColumn.orderDirection === 'desc') {
         _d = _d.reverse();
       }
     }
@@ -43,8 +43,8 @@ export default EmberObject.extend({
     this.set('data', _d);
   },
 
-  updateSortBy(column, sortBy) {
-    this.columns.forEach((c) => c.set('sortBy', null));
-    column.set('sortBy', sortBy);
+  updateOrdering(column, orderBy) {
+    this.columns.forEach((c) => c.set('orderBy', null));
+    column.set('orderBy', orderBy);
   }
 });

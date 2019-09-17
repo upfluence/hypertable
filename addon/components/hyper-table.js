@@ -82,7 +82,7 @@ export default Component.extend({
   }),
 
   _columnsChanged: observer(
-    '_columns', '_columns.@each.{visible,sortBy,filters}',
+    '_columns', '_columns.@each.{visible,orderBy,filters}',
     function() {
       if (this.hooks.onColumnsChange) {
         this.hooks.onColumnsChange(this._columns);
