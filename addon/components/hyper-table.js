@@ -119,6 +119,15 @@ export default Component.extend({
   didInsertElement() {
     let self = this;
 
+    let _innerTable = this.$('.hypertable__table')[0];
+    let _innerTableHeight = $('body').innerHeight() - _innerTable.offsetTop;
+
+    ['height', 'max-height'].forEach((rule) => {
+      _innerTable.setAttribute(
+        'style', `${rule}: ${_innerTableHeight}px !important;`
+      );
+    });
+
     this.$('.hypertable__table').on('scroll', function() {
       let tableHeight = $(this).innerHeight();
       let contentHeight = $('.hypertable')[0].scrollHeight;
