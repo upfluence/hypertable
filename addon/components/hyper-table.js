@@ -8,7 +8,6 @@ import { isEmpty } from '@ember/utils';
 export default Component.extend({
   classNames: ['hypertable-container'],
 
-  collection: [],
   contextualActions: null,
   loadingMore: false,
 
@@ -50,7 +49,7 @@ export default Component.extend({
 
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
-  _selectedItems: filterBy('collection', 'selected', true),
+  _selectedItems: filterBy('_collection', 'selected', true),
 
   _orderedFilteredColumns: computed(
     '_columns',
@@ -72,7 +71,7 @@ export default Component.extend({
   }),
 
   _selectAllObserver: observer('_allRowsSelected', function() {
-    this.get('collection').forEach((item) => {
+    this.get('_collection').forEach((item) => {
       if (this.get('_allRowsSelected')) {
         item.set('selected', true);
       } else {
