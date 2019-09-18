@@ -2,7 +2,7 @@
   {{#if selection}}
     {{yield}}
   {{else}}
-    <div>
+    <div class="cell-header" {{action "filterColumn"}}>
       {{column.title}}
       {{#if _ordered }}
         &nbsp;<i class={{concat "fa " _orderingIconClass}}></i>

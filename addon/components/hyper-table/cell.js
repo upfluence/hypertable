@@ -8,6 +8,11 @@ const AVAILABLE_RENDERERS = [
   'text', 'numeric', 'money', 'date'
 ];
 
+const orderingOptions = {
+  'asc' : 'alphanumerical:asc',
+  'desc': 'alphanumerical:desc'
+};
+
 export default Component.extend({
   classNames: ['hypertable__cell'],
   classNameBindings: [
@@ -111,6 +116,13 @@ export default Component.extend({
     toggleFiltersPanel() {
       this.toggleProperty('showFiltersPanel');
       this.set('manager.applyingFiltersOn', this.column.property);
+    },
+    filterColumn() {
+      this.manager.updateOrdering(this.column, this.column.orderBy ? 
+        this.column.orderBy == orderingOptions.asc ? 
+        null
+        : orderingOptions.asc 
+        : orderingOptions.desc);
     }
   }
 });
