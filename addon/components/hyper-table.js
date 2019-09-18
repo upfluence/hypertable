@@ -66,9 +66,14 @@ export default Component.extend({
     }
   ),
 
-  _loadingMore: computed('_hasScrollbar', 'loadingMore', function() {
-    return this.onBottomReached && this._hasScrollbar && this.loadingMore;
-  }),
+  _loadingMore: computed(
+    'onBottomReached',
+    '_hasScrollbar',
+    'loadingMore',
+    function() {
+      return this.hooks.onBottomReached && this._hasScrollbar && this.loadingMore;
+    }
+  ),
 
   _selectAllObserver: observer('_allRowsSelected', function() {
     this.get('_collection').forEach((item) => {
