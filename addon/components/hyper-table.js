@@ -3,12 +3,13 @@ import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import { alias, filterBy } from '@ember/object/computed';
 import { run } from '@ember/runloop';
-import { isEmpty } from '@ember/utils';
+import { isEmpty, typeOf } from '@ember/utils';
 
 export default Component.extend({
   classNames: ['hypertable-container'],
 
   contextualActions: null,
+  footer: null,
   loadingMore: false,
 
   /*
@@ -50,6 +51,10 @@ export default Component.extend({
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
   _selectedItems: filterBy('_collection', 'selected', true),
+
+  _footerType: computed('footer', function() {
+    return typeOf(this.footer);
+  }),
 
   _orderedFilteredColumns: computed(
     '_columns',
@@ -120,13 +125,15 @@ export default Component.extend({
     let self = this;
 
     let _innerTable = this.$('.hypertable__table')[0];
-    let _innerTableHeight = $('body').innerHeight() - _innerTable.offsetTop;
+    let _innerTableHeight = $('html').innerHeight() - _innerTable.offsetTop;
 
-    ['height', 'max-height'].forEach((rule) => {
-      _innerTable.setAttribute(
-        'style', `${rule}: ${_innerTableHeight}px !important;`
-      );
-    });
+    if (this.footer) {
+      _innerTableHeight -= 90;
+    }
+
+    _innerTable.setAttribute(
+      'style', `height: ${_innerTableHeight}px !important;`
+    );
 
     this.$('.hypertable__table').on('scroll', function() {
       let tableHeight = $(this).innerHeight();

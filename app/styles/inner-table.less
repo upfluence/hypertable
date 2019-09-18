@@ -3,7 +3,7 @@
 @cell-height: 45px;
 
 .hypertable__table {
-  max-height: 700px;
+  height: 700px;
   overflow: auto;
 }
 
@@ -54,36 +54,6 @@
   max-height: @cell-height;
   padding: @spacing-xx-sm;
   width: 100%;
-
-  .available-filters {
-    background-color: #fff;
-    border: 2px solid lighten(@upf-gray, 15%);
-    border-radius: @default-radius;
-
-    min-width: 300px;
-    width: 300px;
-
-    position: absolute;
-    padding: @spacing-xx-sm;
-    top: 50px;
-
-    .filters {
-      padding-top: @spacing-xx-sm;
-
-      .filters__option {
-        padding: @spacing-xxx-sm;
-
-        &:hover {
-          background-color: @upf-gray-light;
-          cursor: pointer;
-        }
-      }
-
-      .filters__option--active {
-        background-color: @upf-gray-light;
-      }
-    }
-  }
 
   &.hypertable__cell--numeric:not(.hypertable__cell--header) {
     justify-content: flex-end;
@@ -140,6 +110,36 @@
     }
 
     i.fa-bars { cursor: move; }
+  }
+
+  & > .available-filters {
+    background-color: #fff;
+    border: 2px solid lighten(@upf-gray, 15%);
+    border-radius: @default-radius;
+
+    min-width: 300px;
+    width: 300px;
+
+    position: absolute;
+    padding: @spacing-xx-sm;
+    top: 50px;
+
+    .filters {
+      padding-top: @spacing-xx-sm;
+
+      .filters__option {
+        padding: @spacing-xxx-sm;
+
+        &:hover {
+          background-color: @upf-gray-light;
+          cursor: pointer;
+        }
+      }
+
+      .filters__option--active {
+        background-color: @upf-gray-light;
+      }
+    }
   }
 
   &:hover {

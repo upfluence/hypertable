@@ -117,3 +117,13 @@
     {{/each}}
   {{/sortable-group}}
 </div>
+
+{{#if footer}}
+  <div class="hypertable__footer">
+    {{#if (eq _footerType "string")}}
+      {{component footer collection=_collection}}
+    {{else}}
+      {{footer}}
+    {{/if}}
+  </div>
+{{/if}}
