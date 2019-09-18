@@ -128,7 +128,7 @@ export default Component.extend({
     let _innerTableHeight = $('html').innerHeight() - _innerTable.offsetTop;
 
     if (this.footer) {
-      _innerTableHeight -= 90;
+      _innerTableHeight -= 90; // Footer Height + Margin
     }
 
     _innerTable.setAttribute(

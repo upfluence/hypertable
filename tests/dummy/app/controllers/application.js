@@ -24,9 +24,9 @@ export default Controller.extend({
     this.set('refreshing', true);
 
     this.plansFetcher.fetch().then((data) => {
-      this.set('collection', data.items);
       this.set('tableManager', this.hypertableManager.createTable());
       this.tableManager.updateColumns(data.meta.columns);
+      this.tableManager.updateData(data.items);
     }).finally(() => {
       this.set('refreshing', false);
     });
