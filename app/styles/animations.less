@@ -1,0 +1,40 @@
+/*
+ * Animations used throughout the datatable
+ * =======================================
+ *
+ */
+@keyframes show-contextual-actions {
+  0% {
+    display: block;
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+@keyframes hide-contextual-actions {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+}
+
+@keyframes skeleton-content {
+  0% {
+    background-position: -200px 0;
+  }
+
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
