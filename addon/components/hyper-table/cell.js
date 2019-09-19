@@ -111,6 +111,10 @@ export default Component.extend({
     toggleFiltersPanel() {
       this.toggleProperty('showFiltersPanel');
       this.set('manager.applyingFiltersOn', this.column.property);
+    },
+    orderColumn() {
+      let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
+      this.manager.updateOrdering(this.column, `${this.column.orderType}:${nextDirection}`);
     }
   }
 });
