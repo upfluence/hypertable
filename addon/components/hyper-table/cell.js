@@ -117,12 +117,9 @@ export default Component.extend({
       this.toggleProperty('showFiltersPanel');
       this.set('manager.applyingFiltersOn', this.column.property);
     },
-    filterColumn() {
-      this.manager.updateOrdering(this.column, this.column.orderBy ? 
-        this.column.orderBy == orderingOptions.asc ? 
-        null
-        : orderingOptions.asc 
-        : orderingOptions.desc);
+    orderColumn() {
+      let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
+      this.manager.updateOrdering(this.column, `${this.column.orderType}:${nextDirection}`);
     }
   }
 });
