@@ -89,9 +89,6 @@ export default Component.extend({
       this.column.addFilters(
         'range', this._buildDateRange(value)
       );
-      console.log(this._buildDateRange(value).from);
-      console.log(this._buildDateRange(value).to);
-      
     },
 
     // Mixin Candidate
