@@ -26,7 +26,11 @@ export default Component.extend({
 
   movingDateOptions: {
     'Today': 'today',
-    'Yesterday': 'yesterday'
+    'Yesterday': 'yesterday',
+    'This Week': 'This Week',
+    'Last Week': 'Last Week',
+    'This Month': 'This Month',
+    'This Year': 'This Year',
   },
 
   _buildDateRange(from) {
@@ -42,6 +46,30 @@ export default Component.extend({
           alias: 'yesterday',
           from: moment().subtract(1, 'day').startOf('day').format('X'),
           to: moment().subtract(1, 'day').endOf('day').format('X')
+        }
+      case 'This Week':
+        return {
+          alias: 'This Week',
+          from: moment().startOf('week').format('X'),
+          to: moment().endOf('week').format('X')
+        }
+      case 'Last Week':
+        return {
+          alias: 'Last Week',
+          from: moment().subtract(1, 'week').startOf('week').format('X'),
+          to: moment().subtract(1, 'week').endOf('week').format('X')
+        }
+      case 'This Month':
+        return {
+          alias: 'This Month',
+          from: moment().startOf('month').format('X'),
+          to: moment().endOf('month').format('X')
+        }
+      case 'This Year':
+        return {
+          alias: 'This Year',
+          from: moment().startOf('year').format('X'),
+          to: moment().endOf('year').format('X')
         }
       default:
         break;
@@ -61,6 +89,9 @@ export default Component.extend({
       this.column.addFilters(
         'range', this._buildDateRange(value)
       );
+      console.log(this._buildDateRange(value).from);
+      console.log(this._buildDateRange(value).to);
+      
     },
 
     // Mixin Candidate
