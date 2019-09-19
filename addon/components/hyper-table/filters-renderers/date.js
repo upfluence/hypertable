@@ -26,7 +26,11 @@ export default Component.extend({
 
   movingDateOptions: {
     'Today': 'today',
-    'Yesterday': 'yesterday'
+    'Yesterday': 'yesterday',
+    'This Week': 'this_week',
+    'Last Week': 'last_week',
+    'This Month': 'this_month',
+    'This Year': 'this_year',
   },
 
   _buildDateRange(from) {
@@ -42,6 +46,30 @@ export default Component.extend({
           alias: 'yesterday',
           from: moment().subtract(1, 'day').startOf('day').format('X'),
           to: moment().subtract(1, 'day').endOf('day').format('X')
+        }
+      case 'this_week':
+        return {
+          alias: 'this_week',
+          from: moment().startOf('week').format('X'),
+          to: moment().endOf('week').format('X')
+        }
+      case 'last_week':
+        return {
+          alias: 'last_week',
+          from: moment().subtract(1, 'week').startOf('week').format('X'),
+          to: moment().subtract(1, 'week').endOf('week').format('X')
+        }
+      case 'this_month':
+        return {
+          alias: 'this_month',
+          from: moment().startOf('month').format('X'),
+          to: moment().endOf('month').format('X')
+        }
+      case 'this_year':
+        return {
+          alias: 'this_year',
+          from: moment().startOf('year').format('X'),
+          to: moment().endOf('year').format('X')
         }
       default:
         break;
