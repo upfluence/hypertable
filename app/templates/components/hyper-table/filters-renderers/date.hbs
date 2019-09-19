@@ -22,9 +22,8 @@
 
   <div class="filters">
     {{#if (eq filterOption "fixed")}}
-      <label>
-        Date Range
-      </label>
+      <label>Date Range</label>
+      
       {{ember-flatpickr
         onChange=(action 'selectFixedDate') dateFormat="M/D/Y"
         placeholder="Date range" altInput=true
