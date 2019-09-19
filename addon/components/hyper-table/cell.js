@@ -8,11 +8,6 @@ const AVAILABLE_RENDERERS = [
   'text', 'numeric', 'money', 'date'
 ];
 
-const orderingOptions = {
-  'asc' : 'alphanumerical:asc',
-  'desc': 'alphanumerical:desc'
-};
-
 export default Component.extend({
   classNames: ['hypertable__cell'],
   classNameBindings: [
