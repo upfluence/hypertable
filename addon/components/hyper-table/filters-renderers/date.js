@@ -27,10 +27,10 @@ export default Component.extend({
   movingDateOptions: {
     'Today': 'today',
     'Yesterday': 'yesterday',
-    'This Week': 'This Week',
-    'Last Week': 'Last Week',
-    'This Month': 'This Month',
-    'This Year': 'This Year',
+    'This Week': 'this_week',
+    'Last Week': 'last_week',
+    'This Month': 'this_month',
+    'This Year': 'this_year',
   },
 
   _buildDateRange(from) {
@@ -47,27 +47,27 @@ export default Component.extend({
           from: moment().subtract(1, 'day').startOf('day').format('X'),
           to: moment().subtract(1, 'day').endOf('day').format('X')
         }
-      case 'This Week':
+      case 'this_week':
         return {
-          alias: 'This Week',
+          alias: 'this_week',
           from: moment().startOf('week').format('X'),
           to: moment().endOf('week').format('X')
         }
-      case 'Last Week':
+      case 'last_week':
         return {
-          alias: 'Last Week',
+          alias: 'last_week',
           from: moment().subtract(1, 'week').startOf('week').format('X'),
           to: moment().subtract(1, 'week').endOf('week').format('X')
         }
-      case 'This Month':
+      case 'this_month':
         return {
-          alias: 'This Month',
+          alias: 'this_month',
           from: moment().startOf('month').format('X'),
           to: moment().endOf('month').format('X')
         }
-      case 'This Year':
+      case 'this_year':
         return {
-          alias: 'This Year',
+          alias: 'this_year',
           from: moment().startOf('year').format('X'),
           to: moment().endOf('year').format('X')
         }
