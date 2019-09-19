@@ -50,7 +50,7 @@
   </div>
 </div>
 
-<div class="hypertable__table">
+<div class="hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}">
   {{#sortable-group
     direction="x" model=_columns onChange=(action "reorderColumns")
     classNames="hypertable" as |group|}}

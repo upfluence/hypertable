@@ -1,0 +1,11 @@
+<div>
+  {{upf-image src=imageURL classNames="upf-image--round-36"}}
+</div>
+
+{{#if (gt column.labels.length 0)}}
+  <div>
+    {{#each column.labels as |label|}}
+      <span>{{get item label}}</span>
+    {{/each}}
+  </div>
+{{/if}}

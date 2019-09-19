@@ -7,13 +7,17 @@
   overflow: auto;
 }
 
+.hypertable__table--empty {
+  overflow: hidden;
+}
+
 .hypertable__sticky-columns {
   background-color: white;
   display: flex;
 
   left: 0;
   position: sticky;
-  z-index: 5;
+  z-index: 6;
 }
 
 .hypertable__column {
@@ -57,6 +61,28 @@
 
   &.hypertable__cell--numeric:not(.hypertable__cell--header) {
     justify-content: flex-end;
+  }
+
+  &.hypertable__cell--image:not(.hypertable__cell--header) {
+    display: flex;
+    align-items: center;
+
+    & > div:nth-child(2) {
+      margin-left: @spacing-xx-sm;
+
+      span {
+        color: @color-text;
+        display: block;
+        width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      span:not(:first-child) {
+        color: @upf-primary-rock-blue;
+      }
+    }
   }
 }
 
