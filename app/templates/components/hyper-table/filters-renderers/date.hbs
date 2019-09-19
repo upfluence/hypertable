@@ -22,7 +22,17 @@
 
   <div class="filters">
     {{#if (eq filterOption "fixed")}}
-      Date Range
+      <label>
+        Date Range
+      </label>
+      <br>
+      {{ember-flatpickr
+        onChange=(action 'selectFixedDate') dateFormat="M/D/Y"
+        placeholder="Date range" altInput=true
+        mode="range"
+        altInputClass="upf-input upf-input--textarea"
+        getFlatpickrRef=(action (mut flatpickrRef))
+        }}
     {{else}}
       {{#each-in movingDateOptions as |label value|}}
         <div class="filters__option {{if (eq currentMovingDateOption value) 'filters__option--active'}}"

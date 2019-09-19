@@ -6,6 +6,9 @@ import moment from 'moment';
 export default Component.extend({
   classNames: ['available-filters'],
 
+  fromDate: null,
+  toDate: null,
+
   orderingOptions: {
     'Oldest — Newest': 'alphanumerical:asc',
     'Newest — Oldest': 'alphanumerical:desc'
@@ -71,6 +74,13 @@ export default Component.extend({
           from: moment().startOf('year').format('X'),
           to: moment().endOf('year').format('X')
         }
+      case 'custom_range':
+        //+ is a shortcut to get the timestamp directly from a date object
+        return {
+          alias: 'custom_range',
+          from: +this.fromDate,
+          to: +this.toDate
+        }
       default:
         break;
     }
@@ -91,9 +101,18 @@ export default Component.extend({
       );
     },
 
+    selectFixedDate(value) {
+      this.setProperties({fromDate: value[0], toDate: value[1]});
+
+      this.column.addFilters(
+        'range', this._buildDateRange('custom_range')
+      );
+    },
+
     // Mixin Candidate
     clearFilters() {
       this.column.clearFilters();
+      this.flatpickrRef.clear();
     }
   }
 });
