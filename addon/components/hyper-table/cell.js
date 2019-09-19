@@ -5,7 +5,7 @@ import { capitalize } from '@ember/string';
 import { isEmpty } from '@ember/utils';
 
 const AVAILABLE_RENDERERS = [
-  'text', 'numeric', 'money', 'date'
+  'text', 'numeric', 'money', 'date', 'image'
 ];
 
 export default Component.extend({
@@ -13,11 +13,14 @@ export default Component.extend({
   classNameBindings: [
     'header:hypertable__cell--header',
     'item.selected:hypertable__cell--selected',
+
     'loading:hypertable__cell--loading',
     '_ordered:hypertable__cell--ordered',
     '_filtered:hypertable__cell--filtered',
+
     'isNumeric:hypertable__cell--numeric',
     'isMoney:hypertable__cell--numeric',
+    'isImage:hypertable__cell--image',
     'onRowClicked:hypertable__cell--clickable'
   ],
 

@@ -58,6 +58,28 @@
   &.hypertable__cell--numeric:not(.hypertable__cell--header) {
     justify-content: flex-end;
   }
+
+  &.hypertable__cell--image:not(.hypertable__cell--header) {
+    display: flex;
+    align-items: center;
+
+    & > div:nth-child(2) {
+      margin-left: @spacing-xx-sm;
+
+      span {
+        color: @color-text;
+        display: block;
+        width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      span:not(:first-child) {
+        color: @upf-primary-rock-blue;
+      }
+    }
+  }
 }
 
 .hypertable__cell--header {
