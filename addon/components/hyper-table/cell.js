@@ -105,7 +105,7 @@ export default Component.extend({
   },
 
   click(e) {
-    if (this.onRowClicked) {
+    if (!this.header && this.onRowClicked) {
       this.onRowClicked(this.item);
     }
   },
