@@ -116,6 +116,16 @@
       {{/if}}
     {{/each}}
   {{/sortable-group}}
+
+  {{#if (eq _collection.length 0)}}
+    <div class="hypertable__state hypertable__state--empty">
+      {{#if (has-block "inverse")}}
+        {{yield to="inverse"}}
+      {{else}}
+        No Data
+      {{/if}}
+    </div>
+  {{/if}}
 </div>
 
 {{#if footer}}
