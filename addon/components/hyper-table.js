@@ -103,12 +103,14 @@ export default Component.extend({
     if (this.contextualActions) {
       let ca = document.querySelector('.contextual-actions');
 
-      if (this._selectedItems.length > 0) {
-        ca.classList.remove('contextual-actions--no-animation');
-        ca.classList.add('contextual-actions--visible');
-      } else {
-        ca.classList.remove('contextual-actions--visible');
-        ca.classList.add('contextual-actions--hidden');
+      if (ca) {
+        if (this._selectedItems.length > 0) {
+          ca.classList.remove('contextual-actions--no-animation');
+          ca.classList.add('contextual-actions--visible');
+        } else {
+          ca.classList.remove('contextual-actions--visible');
+          ca.classList.add('contextual-actions--hidden');
+        }
       }
     }
   }),
