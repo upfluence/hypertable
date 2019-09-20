@@ -26,6 +26,7 @@ export default Component.extend({
 
   header: false,
   selection: false,
+  sticky: false,
   loading: false,
 
   _ordered: false,
@@ -115,9 +116,12 @@ export default Component.extend({
       this.toggleProperty('showFiltersPanel');
       this.set('manager.applyingFiltersOn', this.column.property);
     },
+
     orderColumn() {
       let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
-      this.manager.updateOrdering(this.column, `${this.column.orderType}:${nextDirection}`);
+      this.manager.updateOrdering(
+        this.column, `${this.column.orderType}:${nextDirection}`
+      );
     }
   }
 });

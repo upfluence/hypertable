@@ -78,7 +78,8 @@
           {{/if}}
 
           <div class="hypertable__column">
-            {{hyper-table/cell column=column header=true manager=manager}}
+            {{hyper-table/cell
+              column=column header=true manager=manager sticky=true}}
 
             {{#each _collection as |item|}}
               {{hyper-table/cell
