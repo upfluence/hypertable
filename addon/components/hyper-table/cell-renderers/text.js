@@ -3,6 +3,8 @@ import { computed } from '@ember/object';
 import { empty } from '@ember/object/computed';
 
 export default Component.extend({
+  tagName: '',
+
   value: computed('item', 'column.property', function() {
     return this.item.get(this.column.property);
   }),

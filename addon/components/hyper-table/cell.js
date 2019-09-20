@@ -18,6 +18,7 @@ export default Component.extend({
     '_ordered:hypertable__cell--ordered',
     '_filtered:hypertable__cell--filtered',
 
+    'isText:hypertable__cell--text',
     'isNumeric:hypertable__cell--numeric',
     'isMoney:hypertable__cell--numeric',
     'isImage:hypertable__cell--image',
@@ -75,7 +76,7 @@ export default Component.extend({
   },
 
   didReceiveAttrs() {
-    if (this.column) {
+    if (this.column && !this.column.renderingComponent) {
       AVAILABLE_RENDERERS.forEach((rendererType) => {
         defineProperty(
           this,

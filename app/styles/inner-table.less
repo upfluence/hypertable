@@ -63,6 +63,13 @@
     justify-content: flex-end;
   }
 
+  &.hypertable__cell--text:not(.hypertable__cell--header) {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   &.hypertable__cell--image:not(.hypertable__cell--header) {
     display: flex;
     align-items: center;
