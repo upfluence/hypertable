@@ -1,4 +1,5 @@
 import EmberObject from '@ember/object';
+import { or } from '@ember/object/computed';
 import { typeOf } from '@ember/utils';
 
 import Column from '@upfluence/hypertable/types/column';
@@ -7,6 +8,21 @@ export default EmberObject.extend({
   columns: [],
   data: [],
   applyingFiltersOn: null,
+
+  /*
+   * Configuration
+   * =============
+   *
+   * Define which features of the datatable should be activated.
+   *
+   */
+  _defaultOptions: {
+    features: {
+      selection: false,
+      search: false
+    }
+  },
+  options: or('_options', '_defaultOptions'),
 
   updateColumns(columns) {
     this.set('columns', columns.map((column) => {
