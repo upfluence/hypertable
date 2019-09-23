@@ -7,4 +7,13 @@
         options=orderingOptions onCheck="orderingOptionChanged"}}
     {{/each-in}}
   </div>
+
+  <div class="margin-top-xx-sm">
+    <label>Search</label>
+    <div>
+      {{input
+        type="text" placeholder="Search..." value=_searchQuery
+        class="form-control upf-input upf-input--textarea"}}
+    </div>
+  </div>
 {{/input-wrapper}}
