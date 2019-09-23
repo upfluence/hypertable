@@ -27,7 +27,7 @@ export default Component.extend({
 
   header: false,
   selection: false,
-  sticky: false,
+  allowFiltering: true,
   loading: false,
 
   _ordered: false,
