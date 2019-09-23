@@ -104,9 +104,10 @@ export default Component.extend({
     selectFixedDate(value) {
       this.setProperties({fromDate: value[0], toDate: value[1]});
 
-      this.column.addFilters(
-        'range', this._buildDateRange('custom_range')
-      );
+      if(this.fromDate && this.toDate)
+        this.column.addFilters(
+          'range', this._buildDateRange('custom_range')
+        );
     },
 
     // Mixin Candidate
