@@ -8,7 +8,7 @@ export default Component.extend({
   _searchQuery: computed('column', 'column.filters', function() {
     let searchTerm = this.column.filters.find((x)=> x.value.term);
 
-    return searchTerm.value.term;
+    return searchTerm ? searchTerm.value.term : null;
   }),
 
   orderingOptions: {
@@ -16,15 +16,17 @@ export default Component.extend({
     'Z — A': 'alphanumerical:desc'
   },
 
+  _addSearchFilter() {
+    this.column.addFilters(
+      'search', {
+        alias: 'search',
+        term: this._searchQuery,
+      }
+    );
+  },
+
   _searchQueryObserver: observer('_searchQuery', function() {
-    run.debounce(this, () => {
-      this.column.addFilters(
-        'search', {
-          alias: 'search',
-          term: this._searchQuery,
-        }
-      );
-    }, 1000);
+    run.debounce(this, this._addSearchFilter, 1000);
   }),
 
   actions: {

@@ -129,7 +129,7 @@ export default Service.extend({
       if (filteredColumn) {
         let searchFilter = filteredColumn.filters.find(x => !isEmpty(x.value));
         if(searchFilter){
-          let searchRegex = new RegExp(searchFilter.value.term, 'i');
+          let searchRegex = RegExp(searchFilter.value.term, 'i');
 
           data = data.filter(
             column => column[filteredColumn.property].match(searchRegex)
