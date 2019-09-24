@@ -18,6 +18,7 @@ export default Component.extend({
     '_ordered:hypertable__cell--ordered',
     '_filtered:hypertable__cell--filtered',
 
+    'isText:hypertable__cell--text',
     'isNumeric:hypertable__cell--numeric',
     'isMoney:hypertable__cell--numeric',
     'isImage:hypertable__cell--image',
@@ -26,6 +27,7 @@ export default Component.extend({
 
   header: false,
   selection: false,
+  allowFiltering: true,
   loading: false,
 
   _ordered: false,
@@ -74,7 +76,7 @@ export default Component.extend({
   },
 
   didReceiveAttrs() {
-    if (this.column) {
+    if (this.column && !this.column.renderingComponent) {
       AVAILABLE_RENDERERS.forEach((rendererType) => {
         defineProperty(
           this,
@@ -115,9 +117,12 @@ export default Component.extend({
       this.toggleProperty('showFiltersPanel');
       this.set('manager.applyingFiltersOn', this.column.property);
     },
+
     orderColumn() {
       let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
-      this.manager.updateOrdering(this.column, `${this.column.orderType}:${nextDirection}`);
+      this.manager.updateOrdering(
+        this.column, `${this.column.orderType}:${nextDirection}`
+      );
     }
   }
 });

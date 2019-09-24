@@ -152,6 +152,11 @@ export default Component.extend({
     });
   },
 
+  didRender() {
+    this._super();
+    this.$('[data-toggle="tooltip"]').tooltip();
+  },
+
   actions: {
     reorderColumns(x, itemModels, _) {
       let _cs = [x[0]].concat(itemModels.concat(x.filter(x => !x.visible)))

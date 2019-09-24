@@ -1,5 +1,7 @@
 {{#if emptyValue}}
   —
 {{else}}
-  {{get item column.property}}
+  <span data-toggle="tooltip" data-title={{get item column.property}}>
+    {{get item column.property}}
+  </span>
 {{/if}}
