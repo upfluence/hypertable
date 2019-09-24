@@ -189,8 +189,10 @@
   }
 }
 
-.hypertable__cell--selected {
-  background-color: @upf-gray-light;
+.hypertable__cell {
+  &--selected, &--hovered {
+    background-color: @upf-gray-light;
+  }
 }
 
 .hypertable__cell--clickable {

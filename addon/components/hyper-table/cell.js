@@ -13,7 +13,7 @@ export default Component.extend({
   classNameBindings: [
     'header:hypertable__cell--header',
     'item.selected:hypertable__cell--selected',
-
+    'item.hovered:hypertable__cell--hovered',
     'loading:hypertable__cell--loading',
     '_ordered:hypertable__cell--ordered',
     '_filtered:hypertable__cell--filtered',

@@ -37,6 +37,7 @@ export default Component.extend({
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
   _selectedItems: filterBy('_collection', 'selected', true),
+  _hoveredItems: filterBy('_collection', 'hovered', true),
 
   _footerType: computed('footer', function() {
     return typeOf(this.footer);
@@ -152,6 +153,10 @@ export default Component.extend({
 
     openAvailableColumns() {
       this.toggleProperty('_availableColumnsPanel');
-    }
+    },
+
+    toggleHover(item) {
+      item.toggleProperty('hovered')
+    },
   }
 });
