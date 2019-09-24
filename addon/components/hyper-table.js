@@ -13,20 +13,6 @@ export default Component.extend({
   loadingMore: false,
 
   /*
-   * Configuration
-   * =============
-   *
-   * Define which features of the datatable should be activated.
-   *
-   */
-  options: {
-    features: {
-      selection: false,
-      search: false
-    }
-  },
-
-  /*
    * Event Hooks
    * ===========
    *

@@ -1,6 +1,6 @@
 <div class="hypertable__upper-header">
   <div class="left-side">
-    {{#if options.features.search}}
+    {{#if manager.options.features.search}}
       {{input
         type="text" placeholder="Search..." value=_searchQuery
         class="form-control upf-input upf-input--small"}}
@@ -8,7 +8,7 @@
 
     {{#if (and contextualActions (gt _collection.length 0))}}
       <div class="contextual-actions contextual-actions--no-animation
-                  {{unless options.features.search 'contextual-actions--no-search-sibling'}}">
+                  {{unless manager.options.features.search 'contextual-actions--no-search-sibling'}}">
         {{component
           contextualActions selectedItems=_selectedItems collection=_collection}}
       </div>
@@ -57,7 +57,7 @@
     {{#each _columns as |column index|}}
       {{#if (eq index 0)}}
         <div class="hypertable__sticky-columns">
-          {{#if options.features.selection}}
+          {{#if manager.options.features.selection}}
             <div class="hypertable__column hypertable__column--selection">
               {{#hyper-table/cell header=true selection=true}}
                 {{upf-checkbox value=_allRowsSelected size="sm"}}
