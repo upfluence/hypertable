@@ -3,8 +3,6 @@ import Component from '@ember/component';
 export default Component.extend({
   classNames: ['available-filters'],
 
-  hasOrdering: true,
-
   orderingOptions: {
     '0 — 9': 'alphanumerical:asc',
     '9 — 0': 'alphanumerical:desc'
