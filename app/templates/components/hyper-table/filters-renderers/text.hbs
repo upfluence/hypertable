@@ -1,19 +1,25 @@
-{{#input-wrapper}}
-  <label>Sort</label>
-  <div class="btn-group upf-radio-group">
-    {{#each-in orderingOptions as |label value|}}
-      {{radio-button
-        value=value currentValue=column.orderBy label=label
-        options=orderingOptions onCheck="orderingOptionChanged"}}
-    {{/each-in}}
-  </div>
-
-  <div class="margin-top-xx-sm">
-    <label>Search</label>
-    <div>
-      {{input
-        type="text" placeholder="Search..." value=_searchQuery
-        class="form-control upf-input upf-input--textarea"}}
+{{#if hasOrdering}}
+  {{#input-wrapper}}
+    <label>Sort</label>
+    <div class="btn-group upf-radio-group">
+      {{#each-in orderingOptions as |label value|}}
+        {{radio-button
+          value=value currentValue=column.orderBy label=label
+          options=orderingOptions onCheck="orderingOptionChanged"}}
+      {{/each-in}}
     </div>
-  </div>
-{{/input-wrapper}}
+  {{/input-wrapper}}
+{{/if}}
+
+{{#if column.hasFiltering}}
+  {{#input-wrapper}}
+    <div class="margin-top-xx-sm">
+      <label>Search</label>
+      <div>
+        {{input
+          type="text" placeholder="Search..." value=_searchQuery
+          class="form-control upf-input upf-input--textarea"}}
+      </div>
+    </div>
+  {{/input-wrapper}}
+{{/if}}

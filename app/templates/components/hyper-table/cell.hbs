@@ -4,21 +4,23 @@
   {{else}}
     <div class="cell-header" {{action "orderColumn"}}>
       {{column.title}}
+
       {{#if _ordered }}
         &nbsp;<i class={{concat "fa " _orderingIconClass}}></i>
       {{/if}}
     </div>
 
-    {{#if allowFiltering}}
-      <div class="icon-commands">
+    <div class="icon-commands">
+      {{#if _supportsOrderingOrFiltering}}
         <i class="fa fa-filter" {{action "toggleFiltersPanel"}}></i>
-        <i class="fa fa-bars fa-rotate-90"></i>
-      </div>
-
-      {{#if showFiltersPanel}}
-        {{component
-          _filtersRenderingComponent item=item column=column manager=manager}}
       {{/if}}
+
+      <i class="fa fa-bars fa-rotate-90"></i>
+    </div>
+
+    {{#if (and _supportsOrderingOrFiltering showFiltersPanel)}}
+      {{component
+        _filtersRenderingComponent item=item column=column manager=manager}}
     {{/if}}
   {{/if}}
 {{else}}

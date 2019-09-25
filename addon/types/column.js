@@ -7,6 +7,8 @@ export default EmberObject.extend({
   orderBy: null,
   filters: [],
   type: 'text',
+  hasFiltering: false,
+  hasOrdering: false,
 
   orderDirection: computed('orderBy', function() {
     if (!this.orderBy) return;

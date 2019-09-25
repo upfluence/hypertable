@@ -1,10 +1,14 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 
 import moment from 'moment';
 
 export default Component.extend({
   classNames: ['available-filters'],
+
+  hasOrdering: alias('column.hasOrdering'),
+  hasFiltering: alias('column.hasFiltering'),
 
   fromDate: null,
   toDate: null,
@@ -78,8 +82,8 @@ export default Component.extend({
         //+ is a shortcut to get the timestamp directly from a date object
         return {
           alias: 'custom_range',
-          from: +this.fromDate,
-          to: +this.toDate
+          from: +this.fromDate/1000,
+          to: +this.toDate/1000
         }
       default:
         break;
