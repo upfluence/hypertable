@@ -11,7 +11,9 @@ export default Controller.extend({
   tableOptions: {
     features: {
       search: true,
-      selection: true
+      selection: true,
+      ordering: true,
+      filtering: true
     }
   },
 
@@ -24,7 +26,9 @@ export default Controller.extend({
     this.set('refreshing', true);
 
     this.plansFetcher.fetch().then((data) => {
-      this.set('tableManager', this.hypertableManager.createTable());
+      this.set(
+        'tableManager', this.hypertableManager.createTable(this.tableOptions)
+      );
       this.tableManager.updateColumns(data.meta.columns);
       this.tableManager.updateData(data.items);
       this.tableManager.updateColumnCategories(data.meta.columnCategories);
