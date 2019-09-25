@@ -82,8 +82,10 @@
               column=column header=true manager=manager allowFiltering=false}}
 
             {{#each _collection as |item|}}
-              {{hyper-table/cell
-                item=item column=column onRowClicked=hooks.onRowClicked}}
+              <div onmouseover={{action "toggleHover" item}} onmouseout={{action "toggleHover" item}}>
+                {{hyper-table/cell
+                  item=item column=column onRowClicked=hooks.onRowClicked}}
+              </div>
             {{/each}}
 
             {{#if _loadingMore}}
@@ -104,8 +106,10 @@
           {{hyper-table/cell column=column header=true manager=manager}}
 
           {{#each _collection as |item|}}
-            {{hyper-table/cell
-              item=item column=column onRowClicked=hooks.onRowClicked}}
+            <div onmouseover={{action "toggleHover" item}} onmouseout={{action "toggleHover" item}}>
+              {{hyper-table/cell
+                item=item column=column onRowClicked=hooks.onRowClicked}}
+            </div>
           {{/each}}
 
           {{#if _loadingMore}}
