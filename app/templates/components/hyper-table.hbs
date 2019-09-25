@@ -23,10 +23,16 @@
     {{#if _availableColumnsPanel}}
       <div class="available-columns">
         <div class="available-columns__categories">
-          <div class="field-category">
+          <div class="field-category" {{action "activateGroup"}}>
             <div>All Fields</div>
             <div><i class="fa fa-caret-right"></i></div>
           </div>
+          {{#each _groups as |group|}}
+            <div class="field-category" {{action "activateGroup" group.type}}>
+              <div>{{group.label}}</div>
+              <div><i class="fa fa-caret-right"></i></div>
+            </div>
+          {{/each}}
         </div>
 
         <div class="available-columns__fields">

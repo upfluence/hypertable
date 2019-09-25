@@ -31,11 +31,13 @@ export default Component.extend({
 
   _availableColumnsPanel: false,
   _availableColumnsKeyword: '',
+  _activeGroup: null,
 
   _searchQuery: null,
 
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
+  _groups: alias('manager.groups'),
   _selectedItems: filterBy('_collection', 'selected', true),
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -46,13 +48,16 @@ export default Component.extend({
   _orderedFilteredColumns: computed(
     '_columns',
     '_availableColumnsKeyword',
+    '_activeGroup',
     function() {
       let columns = A(this._columns);
 
-      if (!isEmpty(this._availableColumnsKeyword)) {
-        let reg = RegExp(this._availableColumnsKeyword, 'i');
-        columns = A(columns.filter((x) => reg.test(x.title)));
-      }
+      columns = A(columns.filter((x) => {
+        const hasKeyword = x.title.toLowerCase().indexOf(this._availableColumnsKeyword.toLowerCase()) == 0;
+        const hasActiveGroup = x.group == this._activeGroup || !this._activeGroup
+
+        return hasKeyword && hasActiveGroup;
+      }));
 
       return columns.sortBy('title');
     }
@@ -158,5 +163,9 @@ export default Component.extend({
     toggleHover(item) {
       item.toggleProperty('hovered')
     },
+    
+    activateGroup(group) {
+      this.set('_activeGroup', group);  
+    }
   }
 });

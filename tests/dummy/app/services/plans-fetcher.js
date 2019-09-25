@@ -48,57 +48,78 @@ const MOCK_DATA = A([
   })
 ]);
 
+const DEFAULT_GROUPS = [
+  {
+    type: 'group_1',
+    label: 'Group 1'
+  },
+  {
+    type: 'group_2',
+    label: 'Group 2'
+  }
+]
+
 const DEFAULT_COLUMNS = [
   {
     title: 'Plan Name',
     property: 'name',
-    type: 'text'
+    type: 'text',
+    group: 'group_1'
   },
   {
     title: 'Plan Price',
     property: 'price',
     type: 'money',
-    currency_key: 'currency'
+    currency_key: 'currency',
+    group: 'group_2'
   },
   {
     title: 'Users Count',
     property: 'usersCount',
-    type: 'numeric'
+    type: 'numeric',
+    group: 'group_1'
   },
   {
     title: 'Bulk Emails',
     property: 'bulkEmailsCount',
-    type: 'numeric'
+    type: 'numeric',
+    group: 'group_2'
   },
   {
     title: 'Data 1',
     property: 'data1',
-    type: 'text'
+    type: 'text',
+    group: 'group_1'
   },
   {
     title: 'Data 2',
     property: 'data2',
-    type: 'date'
+    type: 'date',
+    group: 'group_2'
   },
   {
     title: 'Data 3',
     property: 'data3',
-    type: 'numeric'
+    type: 'numeric',
+    group: 'group_2'
   },
   {
     title: 'Data 4',
     property: 'data4',
-    type: 'numeric'
+    type: 'numeric',
+    group: 'group_1'
   },
   {
     title: 'Data 5',
     property: 'data5',
-    type: 'numeric'
+    type: 'numeric',
+    group: 'group_2'
   },
   {
     title: 'Data 6',
     property: 'data6',
-    type: 'numeric'
+    type: 'numeric',
+    group: 'group_1'
   },
 ];
 
@@ -106,6 +127,8 @@ export default Service.extend({
   fetch(columnsLayout) {
     return new Promise((resolve, reject) => {
       let columns = DEFAULT_COLUMNS;
+      let groups = DEFAULT_GROUPS;
+
       let data = A(
         MOCK_DATA.concat(MOCK_DATA).concat(MOCK_DATA).concat(MOCK_DATA)
       );
@@ -144,7 +167,8 @@ export default Service.extend({
         resolve({
           items: data,
           meta: {
-            columns: columns
+            columns: columns,
+            groups: groups
           }
         });
       }, 1500)

@@ -27,6 +27,7 @@ export default Controller.extend({
       this.set('tableManager', this.hypertableManager.createTable());
       this.tableManager.updateColumns(data.meta.columns);
       this.tableManager.updateData(data.items);
+      this.tableManager.updateGroups(data.meta.groups);
     }).finally(() => {
       this.set('refreshing', false);
     });
