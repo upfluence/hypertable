@@ -12,14 +12,12 @@
 {{/if}}
 
 {{#if column.hasFiltering}}
-  {{#input-wrapper}}
-    <div class="margin-top-xx-sm">
-      <label>Search</label>
-      <div>
-        {{input
-          type="text" placeholder="Search..." value=_searchQuery
-          class="form-control upf-input upf-input--textarea"}}
-      </div>
+  {{#input-wrapper classNames=(if column.hasOrdering "margin-top-xx-sm")}}
+    <label>Search</label>
+    <div>
+      {{input
+        type="text" placeholder="Search..." value=_searchQuery
+        class="form-control upf-input upf-input--textarea"}}
     </div>
   {{/input-wrapper}}
 {{/if}}

@@ -12,7 +12,7 @@
 {{/if}}
 
 {{#if column.hasFiltering}}
-  <div class="margin-top-xx-sm">
+  {{#input-wrapper classNames=(if column.hasOrdering "margin-top-xx-sm")}}
     <label>Filter</label>
 
     <div class="btn-group upf-radio-group">
@@ -42,7 +42,7 @@
         {{/each-in}}
       {{/if}}
     </div>
-  </div>
+  {{/input-wrapper}}
 
   <div class="margin-top-xx-sm upf-align--right">
     <button class="upf-btn upf-btn--default upf-btn--small" {{action "clearFilters"}}>
