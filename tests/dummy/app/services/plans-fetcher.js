@@ -116,11 +116,24 @@ export default Service.extend({
 
       let orderedColumn = columns.find((x) => !isEmpty(x.orderBy));
 
+      let filteredColumn = columns.find((x) => x.filters && x.filters.find((y)=> y.type == 'search'));
+
       if (orderedColumn) {
         data = data.sortBy(orderedColumn.property);
 
         if (orderedColumn.orderDirection === 'desc') {
           data.reverse();
+        }
+      }
+
+      if (filteredColumn) {
+        let searchFilter = filteredColumn.filters.find(x => !isEmpty(x.value));
+        if(searchFilter){
+          let searchRegex = RegExp(searchFilter.value.term, 'i');
+
+          data = data.filter(
+            column => column[filteredColumn.property].match(searchRegex)
+          );
         }
       }
 
