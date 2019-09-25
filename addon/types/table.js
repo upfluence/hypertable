@@ -41,8 +41,10 @@ export default EmberObject.extend({
         (column.filters || []).map((x) => EmberObject.create(x))
       );
       column.set('type', column.type || 'text');
-      column.set('hasOrdering', column.hasOrdering || false);
 
+      column.set(
+        'hasOrdering', (index === 0) ? false : (column.hasOrdering || false)
+      );
       column.set(
         'hasFiltering', (index === 0) ? false : (column.hasFiltering || false)
       );
