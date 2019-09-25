@@ -43,18 +43,16 @@
           </div>
 
           <div class="fields-list">
-            {{#if _orderedFilteredColumns}}
               {{#each _orderedFilteredColumns as |column|}}
                 <div class="field">
                   {{upf-checkbox value=column.visible size="sm"}}
                   <div class="margin-left-xxx-sm">{{column.title}}</div>
                 </div>
+              {{else}}
+                <div class="field margin-top-md">
+                  No columns found
+                </div>
               {{/each}}
-            {{else}}
-              <div class="field margin-top-md">
-                No columns found
-              </div>
-            {{/if}}
 
           </div>
         </div>

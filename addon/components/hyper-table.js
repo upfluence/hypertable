@@ -53,8 +53,8 @@ export default Component.extend({
       let columns = A(this._columns);
 
       columns = A(columns.filter((x) => {
-        const hasKeyword = x.title.toLowerCase().indexOf(this._availableColumnsKeyword.toLowerCase()) >= 0;
-        const hasActiveGroup = x.categories.indexOf(this._activeColumnCategory) >= 0 || !this._activeColumnCategory;
+        const hasKeyword = !this._availableColumnsKeyword || x.title.toLowerCase().indexOf(this._availableColumnsKeyword.toLowerCase()) >= 0;
+        const hasActiveGroup = !this._activeColumnCategory || x.categories.indexOf(this._activeColumnCategory) >= 0;
 
         return hasKeyword && hasActiveGroup;
       }));
