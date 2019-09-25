@@ -7,7 +7,7 @@ import Column from '@upfluence/hypertable/types/column';
 export default EmberObject.extend({
   columns: [],
   data: [],
-  groups: [],
+  columnCategories: [],
   applyingFiltersOn: null,
 
   /*
@@ -65,7 +65,7 @@ export default EmberObject.extend({
     column.set('orderBy', orderBy);
   },
 
-  updateGroups(groups){
-    this.set('groups', groups);
+  updateColumnCategories(columnCategories){
+    this.set('columnCategories', columnCategories);
   }
 });
