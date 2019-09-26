@@ -23,10 +23,16 @@
     {{#if _availableColumnsPanel}}
       <div class="available-columns">
         <div class="available-columns__categories">
-          <div class="field-category">
+          <div class="field-category {{if (not _activeColumnCategory) 'field-category--active'}}" {{action "setColumnCategory"}}>
             <div>All Fields</div>
             <div><i class="fa fa-caret-right"></i></div>
           </div>
+          {{#each _columnCategories as |columnCategory|}}
+            <div class="field-category {{if (eq _activeColumnCategory columnCategory.key) 'field-category--active'}}" {{action "setColumnCategory" columnCategory.key}}>
+              <div>{{columnCategory.label}}</div>
+              <div><i class="fa fa-caret-right"></i></div>
+            </div>
+          {{/each}}
         </div>
 
         <div class="available-columns__fields">
@@ -37,12 +43,17 @@
           </div>
 
           <div class="fields-list">
-            {{#each _orderedFilteredColumns as |column|}}
-              <div class="field">
-                {{upf-checkbox value=column.visible size="sm"}}
-                <div class="margin-left-xxx-sm">{{column.title}}</div>
-              </div>
-            {{/each}}
+              {{#each _orderedFilteredColumns as |column|}}
+                <div class="field">
+                  {{upf-checkbox value=column.visible size="sm"}}
+                  <div class="margin-left-xxx-sm">{{column.title}}</div>
+                </div>
+              {{else}}
+                <div class="field margin-top-md">
+                  No columns found
+                </div>
+              {{/each}}
+
           </div>
         </div>
       </div>

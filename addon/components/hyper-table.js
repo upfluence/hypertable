@@ -3,7 +3,7 @@ import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import { alias, filterBy } from '@ember/object/computed';
 import { run } from '@ember/runloop';
-import { isEmpty, typeOf } from '@ember/utils';
+import { typeOf } from '@ember/utils';
 
 export default Component.extend({
   classNames: ['hypertable-container'],
@@ -31,11 +31,13 @@ export default Component.extend({
 
   _availableColumnsPanel: false,
   _availableColumnsKeyword: '',
+  _activeColumnCategory: null,
 
   _searchQuery: null,
 
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
+  _columnCategories: alias('manager.columnCategories'),
   _selectedItems: filterBy('_collection', 'selected', true),
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -46,13 +48,16 @@ export default Component.extend({
   _orderedFilteredColumns: computed(
     '_columns',
     '_availableColumnsKeyword',
+    '_activeColumnCategory',
     function() {
       let columns = A(this._columns);
 
-      if (!isEmpty(this._availableColumnsKeyword)) {
-        let reg = RegExp(this._availableColumnsKeyword, 'i');
-        columns = A(columns.filter((x) => reg.test(x.title)));
-      }
+      columns = A(columns.filter((x) => {
+        const hasKeyword = !this._availableColumnsKeyword || x.title.toLowerCase().indexOf(this._availableColumnsKeyword.toLowerCase()) >= 0;
+        const hasActiveGroup = !this._activeColumnCategory || x.categories.indexOf(this._activeColumnCategory) >= 0;
+
+        return hasKeyword && hasActiveGroup;
+      }));
 
       return columns.sortBy('title');
     }
@@ -158,5 +163,9 @@ export default Component.extend({
     toggleHover(item) {
       item.toggleProperty('hovered')
     },
+    
+    setColumnCategory(category) {
+      this.set('_activeColumnCategory', category);
+    }
   }
 });
