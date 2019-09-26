@@ -6,9 +6,6 @@ import moment from 'moment';
 export default Component.extend({
   classNames: ['available-filters'],
 
-  fromDate: null,
-  toDate: null,
-
   orderingOptions: {
     'Oldest — Newest': 'alphanumerical:asc',
     'Newest — Oldest': 'alphanumerical:desc'
@@ -19,12 +16,31 @@ export default Component.extend({
     'Moving': 'moving'
   },
 
-  filterOption: 'moving', // or 'moving'
-
-  currentMovingDateOption: computed('column.filters.@each.value.alias', function() {
+  filterOption: computed('column.filters.@each.value.alias', function() {
     let filter = this.column.filters.find((f) => f.type === 'range');
 
-    return (filter) ? filter.value.alias : null;
+    if (filter && filter.value.alias === 'custom_range') {
+      return 'fixed';
+    }
+
+    return 'moving';
+  }),
+
+  _currentDateValue: computed(
+    'column.filters.@each.value.alias',
+    function() {
+    let filter = this.column.filters.find((f) => f.type === 'range');
+
+    if (!filter) return null;
+
+    if (filter.value.alias === 'custom_range') {
+      return [
+        moment.unix(filter.value.from).toDate(),
+        moment.unix(filter.value.to).toDate()
+      ];
+    } else {
+      return filter.value.alias;
+    }
   }),
 
   movingDateOptions: {
@@ -36,8 +52,8 @@ export default Component.extend({
     'This Year': 'this_year',
   },
 
-  _buildDateRange(from) {
-    switch(from) {
+  _buildDateRange(from_key, from_date = null, to_date = null) {
+    switch(from_key) {
       case 'today':
         return {
           alias: 'today',
@@ -78,8 +94,8 @@ export default Component.extend({
         //+ is a shortcut to get the timestamp directly from a date object
         return {
           alias: 'custom_range',
-          from: +this.fromDate/1000,
-          to: +this.toDate/1000
+          from: +from_date/1000,
+          to: +to_date/1000
         }
       default:
         break;
@@ -102,11 +118,10 @@ export default Component.extend({
     },
 
     selectFixedDate(value) {
-      this.setProperties({fromDate: value[0], toDate: value[1]});
-
-      if(this.fromDate && this.toDate)
+      let [fromDate, toDate] = value;
+      if(fromDate && toDate)
         this.column.addFilters(
-          'range', this._buildDateRange('custom_range')
+          'range', this._buildDateRange('custom_range', fromDate, toDate)
         );
     },
 

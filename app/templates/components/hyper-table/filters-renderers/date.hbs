@@ -27,11 +27,11 @@
       {{#if (eq filterOption "fixed")}}
         <label>Date Range</label>
 
+        {{log _currentDateValue}}
         {{ember-flatpickr
           onChange=(action "selectFixedDate") dateFormat="M/D/Y"
-          placeholder="Date range" altInput=true
-          mode="range"
-          altInputClass="upf-input upf-input--textarea"
+          placeholder="Date Range" mode="range" date=(readonly _currentDateValue)
+          altInput=true altInputClass="upf-input upf-input--textarea"
           getFlatpickrRef=(action (mut flatpickrRef))}}
       {{else}}
         {{#each-in movingDateOptions as |label value|}}
