@@ -20,13 +20,15 @@ export default EmberObject.extend({
   _defaultOptions: {
     features: {
       selection: false,
-      search: false
+      search: false,
+      ordering: false,
+      filtering: false
     }
   },
   options: or('_options', '_defaultOptions'),
 
   updateColumns(columns) {
-    this.set('columns', columns.map((column) => {
+    this.set('columns', columns.map((column, index) => {
       if (typeOf(column) !== 'instance') {
         column = Column.create(column);
       }
@@ -39,6 +41,13 @@ export default EmberObject.extend({
         (column.filters || []).map((x) => EmberObject.create(x))
       );
       column.set('type', column.type || 'text');
+
+      column.set(
+        'hasOrdering', (index === 0) ? false : (column.hasOrdering || false)
+      );
+      column.set(
+        'hasFiltering', (index === 0) ? false : (column.hasFiltering || false)
+      );
 
       return column;
     }));

@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { computed, defineProperty, observer } from '@ember/object';
-import { or } from '@ember/object/computed';
+import { and, or } from '@ember/object/computed';
 import { capitalize } from '@ember/string';
 import { isEmpty } from '@ember/utils';
 
@@ -27,7 +27,6 @@ export default Component.extend({
 
   header: false,
   selection: false,
-  allowFiltering: true,
   loading: false,
 
   _ordered: false,
@@ -53,6 +52,10 @@ export default Component.extend({
   _renderingComponent: or(
     'column.renderingComponent', '_typeInferredRenderingComponent'
   ),
+
+  _hasOrdering: and('manager.options.features.ordering', 'column.hasOrdering'),
+  _hasFiltering: and('manager.options.features.filtering', 'column.hasFiltering'),
+  _supportsOrderingOrFiltering: or('_hasOrdering', '_hasFiltering'),
 
   _filtersRenderingComponent: computed('column.type', function() {
     if (AVAILABLE_RENDERERS.includes(this.column.type)) {
@@ -119,10 +122,12 @@ export default Component.extend({
     },
 
     orderColumn() {
-      let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
-      this.manager.updateOrdering(
-        this.column, `${this.column.orderType}:${nextDirection}`
-      );
+      if (this.header && this.manager.options.features.ordering) {
+        let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
+        this.manager.updateOrdering(
+          this.column, `${this.column.orderType}:${nextDirection}`
+        );
+      }
     }
   }
 });

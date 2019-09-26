@@ -64,68 +64,88 @@ const DEFAULT_COLUMNS = [
     title: 'Plan Name',
     property: 'name',
     type: 'text',
-    categories: ['category_1', 'category_2']
+    categories: ['category_1', 'category_2'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Plan Price',
     property: 'price',
     type: 'money',
     currency_key: 'currency',
-    categories: ['category_2']
+    categories: ['category_2'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Users Count',
     property: 'usersCount',
     type: 'numeric',
-    categories: ['category_1']
+    categories: ['category_1'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Bulk Emails',
     property: 'bulkEmailsCount',
     type: 'numeric',
-    categories: ['category_2']
+    categories: ['category_2'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Data 1',
     property: 'data1',
     type: 'text',
-    categories: ['category_1']
+    categories: ['category_1'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Data 2',
     property: 'data2',
     type: 'date',
-    categories: ['category_2']
+    categories: ['category_2'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Data 3',
     property: 'data3',
     type: 'numeric',
-    categories: ['category_2']
+    categories: ['category_2'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Data 4',
     property: 'data4',
     type: 'numeric',
-    categories: ['category_1']
+    categories: ['category_1'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Data 5',
     property: 'data5',
     type: 'numeric',
-    categories: ['category_2']
+    categories: ['category_2'],
+    hasOrdering: true,
+    hasFiltering: true
   },
   {
     title: 'Data 6',
     property: 'data6',
     type: 'numeric',
-    categories: ['category_1']
+    categories: ['category_1'],
+    hasOrdering: true,
+    hasFiltering: true
   },
 ];
 
 export default Service.extend({
   fetch(columnsLayout) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       let columns = DEFAULT_COLUMNS;
       let columnCategories = DEFAULT_COLUMN_CATEGORIES;
 

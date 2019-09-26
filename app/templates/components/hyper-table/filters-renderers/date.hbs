@@ -1,48 +1,52 @@
-{{#input-wrapper}}
-  <label>Order By</label>
-  <div class="btn-group upf-radio-group">
-    {{#each-in orderingOptions as |label value|}}
-      {{radio-button
-        value=value currentValue=column.orderBy label=label
-        options=orderingOptions onCheck="orderingOptionChanged"}}
-    {{/each-in}}
-  </div>
-{{/input-wrapper}}
-
-<div class="margin-top-xx-sm">
-  <label>Filter</label>
-
-  <div class="btn-group upf-radio-group">
-    {{#each-in filteringOptions as |label value|}}
-      {{radio-button
-        value=value currentValue=filterOption label=label
-        options=filteringOptions onCheck="filterOptionChanged"}}
-    {{/each-in}}
-  </div>
-
-  <div class="filters">
-    {{#if (eq filterOption "fixed")}}
-      <label>Date Range</label>
-
-      {{ember-flatpickr
-        onChange=(action "selectFixedDate") dateFormat="M/D/Y"
-        placeholder="Date range" altInput=true
-        mode="range"
-        altInputClass="upf-input upf-input--textarea"
-        getFlatpickrRef=(action (mut flatpickrRef))}}
-    {{else}}
-      {{#each-in movingDateOptions as |label value|}}
-        <div class="filters__option {{if (eq currentMovingDateOption value) 'filters__option--active'}}"
-             {{action "selectMovingDate" value}}>
-          {{label}}
-        </div>
+{{#if column.hasOrdering}}
+  {{#input-wrapper}}
+    <label>Order By</label>
+    <div class="btn-group upf-radio-group">
+      {{#each-in orderingOptions as |label value|}}
+        {{radio-button
+          value=value currentValue=column.orderBy label=label
+          options=orderingOptions onCheck="orderingOptionChanged"}}
       {{/each-in}}
-    {{/if}}
-  </div>
-</div>
+    </div>
+  {{/input-wrapper}}
+{{/if}}
 
-<div class="margin-top-xx-sm upf-align--right">
-  <button class="upf-btn upf-btn--default upf-btn--small" {{action "clearFilters"}}>
-    Clear Filters
-  </button>
-</div>
+{{#if column.hasFiltering}}
+  {{#input-wrapper classNames=(if column.hasOrdering "margin-top-xx-sm")}}
+    <label>Filter</label>
+
+    <div class="btn-group upf-radio-group">
+      {{#each-in filteringOptions as |label value|}}
+        {{radio-button
+          value=value currentValue=filterOption label=label
+          options=filteringOptions onCheck="filterOptionChanged"}}
+      {{/each-in}}
+    </div>
+
+    <div class="filters">
+      {{#if (eq filterOption "fixed")}}
+        <label>Date Range</label>
+
+        {{log _currentDateValue}}
+        {{ember-flatpickr
+          onChange=(action "selectFixedDate") dateFormat="M/D/Y"
+          placeholder="Date Range" mode="range" date=(readonly _currentDateValue)
+          altInput=true altInputClass="upf-input upf-input--textarea"
+          getFlatpickrRef=(action (mut flatpickrRef))}}
+      {{else}}
+        {{#each-in movingDateOptions as |label value|}}
+          <div class="filters__option {{if (eq currentMovingDateOption value) 'filters__option--active'}}"
+               {{action "selectMovingDate" value}}>
+            {{label}}
+          </div>
+        {{/each-in}}
+      {{/if}}
+    </div>
+  {{/input-wrapper}}
+
+  <div class="margin-top-xx-sm upf-align--right">
+    <button class="upf-btn upf-btn--default upf-btn--small" {{action "clearFilters"}}>
+      Clear Filters
+    </button>
+  </div>
+{{/if}}

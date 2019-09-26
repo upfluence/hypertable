@@ -1,10 +1,12 @@
-{{#input-wrapper}}
-  <label>Order By</label>
-  <div class="btn-group upf-radio-group">
-    {{#each-in orderingOptions as |label value|}}
-      {{radio-button
-        value=value currentValue=column.orderBy label=label
-        options=orderingOptions onCheck="orderingOptionChanged"}}
-    {{/each-in}}
-  </div>
-{{/input-wrapper}}
+{{#if column.hasOrdering}}
+  {{#input-wrapper}}
+    <label>Order By</label>
+    <div class="btn-group upf-radio-group">
+      {{#each-in orderingOptions as |label value|}}
+        {{radio-button
+          value=value currentValue=column.orderBy label=label
+          options=orderingOptions onCheck="orderingOptionChanged"}}
+      {{/each-in}}
+    </div>
+  {{/input-wrapper}}
+{{/if}}
