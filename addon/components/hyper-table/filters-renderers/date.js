@@ -12,8 +12,8 @@ export default Component.extend({
   },
 
   filteringOptions: {
-    'Fixed': 'fixed',
-    'Moving': 'moving'
+    'Moving': 'moving',
+    'Fixed': 'fixed'
   },
 
   filterOption: computed('column.filters.@each.value.alias', function() {
