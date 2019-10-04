@@ -68,6 +68,32 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0;
+
+    .editing-input {
+      margin-left: -3px;
+      padding: 2px;
+      display: inline;
+      font-size: inherit;
+      width: 75%;
+      height: auto;
+      margin-top: -3px;
+    }
+
+    .fa {
+      font-size: 1.4rem;
+    }
+
+    .fa-pencil {
+      display: none;
+      
+    }
+
+    &:hover {
+      .fa-pencil {
+        display: inline;
+      }
+    }
   }
 
   &.hypertable__cell--image:not(.hypertable__cell--header) {

@@ -21,7 +21,6 @@ const MOCK_DATA = A([
     usersCount: 1,
     bulkEmailsCount: 100,
     selected: false,
-    hovered: false,
     data1: 'B',
     data2: 1554800754
   }),
@@ -32,7 +31,6 @@ const MOCK_DATA = A([
     usersCount: 1,
     bulkEmailsCount: 300,
     selected: false,
-    hovered: false,
     data1: 'C',
     data2: 1365498354
   }),
@@ -42,7 +40,6 @@ const MOCK_DATA = A([
     usersCount: 'Custom',
     bulkEmailsCount: 'Custom',
     selected: false,
-    hovered: false,
     data1: 'D',
     data2: 1383987954
   })
