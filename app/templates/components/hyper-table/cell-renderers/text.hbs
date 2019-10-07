@@ -3,8 +3,7 @@
 {{else}}
   <div class="padding-xx-sm">
     {{#if isEditing}}
-      {{input
-        enter=(action "toggleEditing") focus-out=(action "toggleEditing" "focus-out") type="text" value=(get item column.property) class="editing-input form-control"}}
+      {{input focus-out=(action "toggleEditing") type="text" value=(get item column.property) class="editing-input form-control"}}
     {{else}}
       <span data-toggle="tooltip" data-title={{get item column.property}}>
         {{get item column.property}}

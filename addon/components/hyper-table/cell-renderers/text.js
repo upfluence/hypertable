@@ -5,8 +5,6 @@ import { empty } from '@ember/object/computed';
 import { run } from '@ember/runloop';
 
 export default Component.extend({
-  tagName: '',
-
   value: computed('item', 'column.property', function() {
     return this.item.get(this.column.property);
   }),
@@ -16,14 +14,15 @@ export default Component.extend({
 
   actions: {
     toggleEditing() {
+      let self = this;
+
       this.toggleProperty("isEditing");
       
       if(this.get('isEditing')) {
         run.scheduleOnce('afterRender', this, function() {
-          document.querySelector(".editing-input").focus();
+          self.$('.editing-input').focus();
         });
       }
-      
     }
   }
 });
