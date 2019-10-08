@@ -65,23 +65,29 @@
 
   &.hypertable__cell--text:not(.hypertable__cell--header) {
     display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     padding: 0;
 
     .editing-input {
-      margin-left: -3px;
-      padding: 2px;
-      display: inline;
-      font-size: inherit;
-      width: 75%;
-      height: auto;
-      margin-top: -3px;
+      display:flex;
+      align-items:center;
+      &__field {
+        margin-left: -3px;
+        margin-top: -2px;
+        padding: 2px;
+        display: inline;
+        font-size: inherit;
+        width: 75%;
+        height: auto;
+      }
+    }
+
+    .form-control:focus {
+      box-shadow: none;
+      border-color: @upf-primary-bright-purple;
     }
 
     .fa {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
 
     .fa-pencil {
@@ -90,6 +96,13 @@
     }
 
     &:hover {
+      span {
+        max-width: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
       .fa-pencil {
         display: inline;
       }

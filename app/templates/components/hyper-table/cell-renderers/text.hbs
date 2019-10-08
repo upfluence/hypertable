@@ -1,18 +1,18 @@
 {{#if emptyValue}}
   —
 {{else}}
-  <div class="padding-xx-sm">
+  <div class="editing-input padding-xx-sm" style="">
     {{#if isEditing}}
-      {{input focus-out=(action "toggleEditing") type="text" value=(get item column.property) class="editing-input form-control"}}
+      {{input focus-out=(action "toggleEditing") type="text" value=value class="editing-input__field form-control"}}
     {{else}}
-      <span data-toggle="tooltip" data-title={{get item column.property}}>
-        {{get item column.property}}
+      <span data-toggle="tooltip" data-title={{value}}>
+        {{value}}
       </span>
     {{/if}}
     {{#if isEditing}}
-      <i class="fa fa-save margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
+      <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
     {{else}}
-      <i class="fa fa-pencil margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
+      <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
     {{/if}}
   </div>
 {{/if}}

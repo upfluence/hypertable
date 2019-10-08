@@ -119,7 +119,7 @@
           {{#each _collection as |item|}}
             <div onmouseover={{action "toggleHover" item}} onmouseout={{action "toggleHover" item}}>
               {{hyper-table/cell
-                item=item column=column onRowClicked=hooks.onRowClicked}}
+                item=item column=column onRowClicked=hooks.onRowClicked manager=manager}}
             </div>
           {{/each}}
 
