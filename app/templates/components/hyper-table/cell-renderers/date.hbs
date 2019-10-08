@@ -1,5 +1,16 @@
 {{#if emptyValue}}
   —
 {{else}}
-  {{_formattedDate}}
+  <div class="editing-input padding-xx-sm" style="">
+    {{ember-flatpickr
+        onChange=(action "updateDate")
+        onOpen=(action "toggleEditing")
+        onClose=(action "onCalendarClose")
+        date=(readonly _formattedDate)
+        altInput=true
+        getFlatpickrRef=(action (mut flatpickrRef))}}
+    {{#unless isEditing}}
+      <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
+    {{/unless}}
+  </div>
 {{/if}}

@@ -59,14 +59,22 @@
   padding: @spacing-xx-sm;
   width: 100%;
 
-  &.hypertable__cell--numeric:not(.hypertable__cell--header) {
-    justify-content: flex-end;
+
+  .ember-flatpickr-input {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    width: 90%;
+    &.active {
+      padding: 4px;
+      margin-left: -5px;
+      margin-top: 0px;
+      border: 1px solid @upf-gray-light;
+    }
   }
 
-  &.hypertable__cell--text:not(.hypertable__cell--header) {
-    display: block;
-    padding: 0;
-
+  &:not(.hypertable__cell--header) {
     .editing-input {
       display:flex;
       align-items:center;
@@ -107,6 +115,15 @@
         display: inline;
       }
     }
+  }
+
+  &.hypertable__cell--numeric:not(.hypertable__cell--header) {
+    justify-content: flex-end;
+  }
+
+  &.hypertable__cell--text:not(.hypertable__cell--header) {
+    display: block;
+    padding: 0;
   }
 
   &.hypertable__cell--image:not(.hypertable__cell--header) {
