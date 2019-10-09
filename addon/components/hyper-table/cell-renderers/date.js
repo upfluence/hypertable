@@ -32,7 +32,7 @@ export default Component.extend({
 
   actions: {
     toggleEditing() {
-      this.toggleProperty("isEditing");
+      this.set("isEditing", true);
       this.flatpickrRef.open();
     },
     onCalendarClose() {

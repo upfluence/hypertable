@@ -1,7 +1,7 @@
 {{#if emptyValue}}
   —
 {{else}}
-  <div class="editing-input padding-xx-sm" style="">
+  <div class="editing-input" style="">
     {{ember-flatpickr
         onChange=(action "updateDate")
         onOpen=(action "toggleEditing")
