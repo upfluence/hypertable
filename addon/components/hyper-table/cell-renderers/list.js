@@ -5,27 +5,18 @@ import { run } from '@ember/runloop';
 
 export default Component.extend({
   value: computed('item', 'column.property', function() {
-    return this.item.get(this.column.property);
+    let list = this.item.get(this.column.property);
+    if(list){
+      return list;
+    }
+  }),
+
+  length: computed('value', function() {
+    return this.value.length - 1;
   }),
 
   emptyValue: empty('value'),
   isEditing: false,
-
-  truncatedText: computed('value', function() {
-    let text = this.value;
-    let limit = 70;
-    let truncatedText = '';
-
-    if (text != null && text.length > 0) {
-      truncatedText = text.substr(0, limit);
-
-      if (text.length > limit) {
-        truncatedText += ' (...)';
-      }
-    }
-
-    return truncatedText;
-  }),
 
   actions: {
     toggleEditing() {

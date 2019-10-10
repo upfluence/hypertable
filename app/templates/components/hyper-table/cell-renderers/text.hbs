@@ -6,8 +6,8 @@
       {{input focus-out=(action "toggleEditing") type="text" value=value class="editing-input__field form-control"}}
       <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
     {{else}}
-      <span data-toggle="tooltip" data-title={{value}}>
-        {{value}}
+      <span data-toggle="tooltip" data-title={{value}} data-placement="bottom">
+        {{truncatedText}}
       </span>
       <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
     {{/if}}

@@ -12,7 +12,8 @@ const MOCK_DATA = A([
     bulkEmailsCount: 0,
     selected: false,
     data1: 'A',
-    data2: 1620563995
+    data2: 1620563995,
+    data3: ['test1', 'test2', 'test3', 'test4']
   }),
   EmberObject.create({
     name: 'Silver',
@@ -22,7 +23,8 @@ const MOCK_DATA = A([
     bulkEmailsCount: 100,
     selected: false,
     data1: 'B',
-    data2: 1554800754
+    data2: 1554800754,
+    data3: ['test1', 'test2', 'test3', 'test4', 'test5'],
   }),
   EmberObject.create({
     name: 'Gold',
@@ -32,7 +34,8 @@ const MOCK_DATA = A([
     bulkEmailsCount: 300,
     selected: false,
     data1: 'C',
-    data2: 1365498354
+    data2: 1365498354,
+    data3: ['test1', 'test2', 'test3'],
   }),
   EmberObject.create({
     name: 'Enterprise',
@@ -41,7 +44,8 @@ const MOCK_DATA = A([
     bulkEmailsCount: 'Custom',
     selected: false,
     data1: 'D',
-    data2: 1383987954
+    data2: 1383987954,
+    data3: ['test1'],
   })
 ]);
 
@@ -109,7 +113,7 @@ const DEFAULT_COLUMNS = [
   {
     title: 'Data 3',
     property: 'data3',
-    type: 'numeric',
+    type: 'list',
     categories: ['category_2'],
     hasOrdering: true,
     hasFiltering: true
