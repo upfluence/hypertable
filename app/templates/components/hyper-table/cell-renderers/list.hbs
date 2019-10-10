@@ -2,19 +2,13 @@
   —
 {{else}}
   <div class="editing-input padding-xx-sm">
-    {{#if isEditing}}
-      {{input focus-out=(action "toggleEditing") type="text" value=value class="editing-input__field form-control"}}
-      <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
-    {{else}}
-      <span>
-        {{get value '0'}}
+    <span>
+      {{get value '0'}}
+    </span>
+    {{#if length}}
+      <span class="text-color-default-light" data-toggle="tooltip" data-title={{value}} data-placement="bottom">
+        +{{length}} more
       </span>
-      {{#if length}}
-        <span class="text-color-default-light" data-toggle="tooltip" data-title={{value}} data-placement="bottom">
-          +{{length}} more
-        </span>
-      {{/if}}
-      {{!-- <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/> --}}
     {{/if}}
   </div>
 {{/if}}

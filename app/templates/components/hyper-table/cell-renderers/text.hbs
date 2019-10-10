@@ -3,7 +3,7 @@
 {{else}}
   <div class="editing-input padding-xx-sm" style="">
     {{#if isEditing}}
-      {{input focus-out=(action "toggleEditing") type="text" value=value class="editing-input__field form-control"}}
+      {{input type="text" value=value class="editing-input__field form-control"}}
       <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
     {{else}}
       <span data-toggle="tooltip" data-title={{value}} data-placement="bottom">

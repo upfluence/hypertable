@@ -1,9 +1,9 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { empty } from '@ember/object/computed';
-import { run } from '@ember/runloop';
+import EditableMixin from '../../../mixins/editable';
 
-export default Component.extend({
+export default Component.extend(EditableMixin, {
   currency: computed('column', 'column.currency_key', function() {
     if (this.column && !this.column.currency_key) {
       throw new Error(
@@ -20,21 +20,4 @@ export default Component.extend({
 
   emptyAmount: empty('amount'),
   emptyCurrency: empty('currency'),
-
-  isEditing: false,
-
-  actions: {
-    toggleEditing() {
-      let self = this;
-      this.toggleProperty("isEditing");
-
-      if(this.get('isEditing')) {
-        run.scheduleOnce('afterRender', this, function() {
-          self.$('.editing-input__field').focus();
-        });
-      } else {
-        this.manager.updateColumnValue(this.column.property, this.item, this.value);
-      }
-    }
-  }
 });

@@ -1,15 +1,14 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { empty } from '@ember/object/computed';
-import { run } from '@ember/runloop';
+import EditableMixin from '../../../mixins/editable';
 
-export default Component.extend({
+export default Component.extend(EditableMixin, {
   value: computed('item', 'column.property', function() {
     return this.item.get(this.column.property);
   }),
 
   emptyValue: empty('value'),
-  isEditing: false,
 
   truncatedText: computed('value', function() {
     let text = this.value;
@@ -26,19 +25,4 @@ export default Component.extend({
 
     return truncatedText;
   }),
-
-  actions: {
-    toggleEditing() {
-      let self = this;
-      this.toggleProperty("isEditing");
-      
-      if(this.get('isEditing')) {
-        run.scheduleOnce('afterRender', this, function() {
-          self.$('.editing-input__field').focus();
-        });
-      } else {
-        this.manager.updateColumnValue(this.column.property, this.item, this.value);
-      }
-    }
-  }
 });
