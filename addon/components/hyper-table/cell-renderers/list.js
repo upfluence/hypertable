@@ -16,4 +16,14 @@ export default Component.extend({
 
   emptyValue: empty('value'),
   isEditing: false,
+
+  formattedList: computed('value', function() {
+    let htmlValue = ''
+    this.value.forEach(function(item, index) {
+      if(index != 0){
+        htmlValue+= item + '<br>'
+      }
+    });
+    return htmlValue
+  })
 });
