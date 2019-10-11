@@ -4,10 +4,7 @@ import { empty } from '@ember/object/computed';
 
 export default Component.extend({
   value: computed('item', 'column.property', function() {
-    let list = this.item.get(this.column.property);
-    if(list) {
-      return list;
-    }
+    return this.item.get(this.column.property);
   }),
 
   length: computed('value', function() {

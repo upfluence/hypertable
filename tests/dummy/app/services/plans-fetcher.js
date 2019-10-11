@@ -35,7 +35,6 @@ const MOCK_DATA = A([
     selected: false,
     data1: 'C',
     data2: 1365498354,
-    data3: ['test1', 'test2', 'test3'],
   }),
   EmberObject.create({
     name: 'Enterprise',
@@ -44,7 +43,6 @@ const MOCK_DATA = A([
     bulkEmailsCount: 'Custom',
     selected: false,
     data1: 'D',
-    data2: 1383987954,
     data3: ['test1'],
   })
 ]);
