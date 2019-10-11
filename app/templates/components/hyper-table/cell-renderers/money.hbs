@@ -1,10 +1,10 @@
-<div class="editing-input" style="">
+<div class="editing-input">
   {{#if isEditing}}
     {{input focus-out=(action "toggleEditing") type="text" value=amount class="editing-input__field form-control"}}
     <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
   {{else}}
     <span data-toggle="tooltip" data-title={{format-money amount currency}}>
-      {{if (and emptyAmount emptyCurrency) '—' (format-money amount currency)}}
+      {{if emptyAmount '—' (format-money amount currency)}}
     </span>
     <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
   {{/if}}

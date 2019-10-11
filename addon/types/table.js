@@ -79,9 +79,6 @@ export default EmberObject.extend({
   },
 
   updateColumnValue(key, item, value) {
-    let dataItem = this.data.find((x)=> {
-      return x === item;
-    });
-    dataItem.set(key, value);
+    item.set(key, value);
   }
 });

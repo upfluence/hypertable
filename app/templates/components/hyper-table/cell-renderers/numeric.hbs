@@ -1,4 +1,4 @@
-<div class="editing-input" style="">
+<div class="editing-input">
   {{#if isEditing}}
     {{input type="number" focus-out=(action "toggleEditing") type="text" value=value class="editing-input__field form-control"}}
     <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
