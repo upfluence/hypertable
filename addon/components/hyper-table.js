@@ -160,8 +160,8 @@ export default Component.extend({
       this.toggleProperty('_availableColumnsPanel');
     },
 
-    toggleHover(item) {
-      item.toggleProperty('hovered');
+    toggleHover(item, value) {
+      item.set('hovered', value);
     },
     
     setColumnCategory(category) {
