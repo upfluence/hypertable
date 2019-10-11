@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { empty } from '@ember/object/computed';
-import EditableMixin from '../../../mixins/editable';
+import EditableMixin from '@upfluence/hypertable/mixins/editable';
 
 export default Component.extend(EditableMixin, {
   currency: computed('column', 'column.currency_key', function() {
