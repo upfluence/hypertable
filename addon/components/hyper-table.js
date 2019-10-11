@@ -161,7 +161,7 @@ export default Component.extend({
     },
 
     toggleHover(item) {
-      item.toggleProperty('hovered')
+      item.toggleProperty('hovered');
     },
     
     setColumnCategory(category) {
