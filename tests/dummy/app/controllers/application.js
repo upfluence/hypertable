@@ -14,7 +14,11 @@ export default Controller.extend({
       selection: true,
       ordering: true,
       filtering: true
-    }
+    },
+    currencies: [
+      'EUR',
+      'USD'
+    ]
   },
 
   init() {

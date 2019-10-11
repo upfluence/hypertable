@@ -5,16 +5,17 @@ export default Mixin.create({
   isEditing: false,
 
   actions: {
-    toggleEditing() {
+    toggleEditing(value, property) {
       this.toggleProperty("isEditing");
+      console.log({value, property});
       
       if(this.get('isEditing')) {
         run.scheduleOnce('afterRender', this, () => {
           this.$('.editing-input__field').focus();
         });
       } else {
-        this.manager.updateColumnValue(this.column.property, this.item, this.value);
+        this.manager.updateColumnValue(property || this.column.property, this.item, value);
       }
-    }
+    },
   }
 });

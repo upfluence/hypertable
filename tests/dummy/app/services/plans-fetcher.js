@@ -18,7 +18,7 @@ const MOCK_DATA = A([
   EmberObject.create({
     name: 'Silver',
     price: 195,
-    currency: 'EUR',
+    currency: 'USD',
     usersCount: 1,
     bulkEmailsCount: 100,
     selected: false,
@@ -48,30 +48,6 @@ const MOCK_DATA = A([
     data3: ['test1'],
   })
 ]);
-
-const CURRENCIES = [
-  'USD',
-  'EUR',
-  'JPY',
-  'GBP',
-  'AUD',
-  'CAD',
-  'CHF',
-  'CNY',
-  'SEK',
-  'NZD',
-  'MXN',
-  'SGD',
-  'HKD',
-  'NOK',
-  'KRW',
-  'TRY',
-  'RUB',
-  'INR',
-  'BRL',
-  'ZAR',
-  'IDR'
-];
 
 const DEFAULT_COLUMN_CATEGORIES = [
   {

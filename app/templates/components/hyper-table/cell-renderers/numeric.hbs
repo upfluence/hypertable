@@ -1,7 +1,7 @@
 <div class="editing-input">
   {{#if isEditing}}
-    {{input type="number" focus-out=(action "toggleEditing") type="text" value=value class="editing-input__field form-control"}}
-    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing"}}/>
+    {{input type="number" focus-out=(action "toggleEditing" value) type="text" value=value class="editing-input__field form-control"}}
+    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" value}}/>
   {{else}}
     <span data-toggle="tooltip" data-title={{format-numeric value}}>
       {{if emptyValue '—' (format-numeric value)}}
