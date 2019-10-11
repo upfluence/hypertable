@@ -107,13 +107,6 @@
     }
 
     &:hover {
-      span {
-        // max-width: 100%;
-        // overflow: hidden;
-        // text-overflow: ellipsis;
-        // white-space: nowrap;
-      }
-
       .fa-pencil {
         opacity: 1;
       }
@@ -130,6 +123,12 @@
     max-width: 310px;
     .editing-input__field {
       width: 100px;
+    }
+    .tooltip-inner {
+      max-width: none;
+      width: 350px;
+      overflow-wrap: break-word;
+      text-align: left;
     }
   }
 

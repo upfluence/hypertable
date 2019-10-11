@@ -12,7 +12,7 @@ export default Component.extend(EditableMixin, {
 
   truncatedText: computed('value', function() {
     let text = this.value;
-    let limit = 70;
+    let limit = 85;
     let truncatedText = '';
 
     if (text != null && text.length > 0) {

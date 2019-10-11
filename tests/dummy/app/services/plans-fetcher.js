@@ -42,10 +42,36 @@ const MOCK_DATA = A([
     usersCount: 'Custom',
     bulkEmailsCount: 'Custom',
     selected: false,
-    data1: 'D',
+    data1: 'Maquiadora Empreendedora Assessoria @stapietra 💌 Siga\
+           tb @beauty_4_share @julianarakozamakeuplab Clique\
+           no link para cursos e e-books gratuitos⤵️',
     data3: ['test1'],
   })
 ]);
+
+const CURRENCIES = [
+  'USD',
+  'EUR',
+  'JPY',
+  'GBP',
+  'AUD',
+  'CAD',
+  'CHF',
+  'CNY',
+  'SEK',
+  'NZD',
+  'MXN',
+  'SGD',
+  'HKD',
+  'NOK',
+  'KRW',
+  'TRY',
+  'RUB',
+  'INR',
+  'BRL',
+  'ZAR',
+  'IDR'
+];
 
 const DEFAULT_COLUMN_CATEGORIES = [
   {
@@ -186,8 +212,8 @@ export default Service.extend({
         resolve({
           items: data,
           meta: {
-            columns: columns,
-            columnCategories: columnCategories
+            columns,
+            columnCategories
           }
         });
       }, 1500)
