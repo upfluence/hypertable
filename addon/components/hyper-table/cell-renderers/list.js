@@ -1,7 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { empty } from '@ember/object/computed';
-import { run } from '@ember/runloop';
 
 export default Component.extend({
   value: computed('item', 'column.property', function() {

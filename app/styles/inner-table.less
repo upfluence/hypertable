@@ -23,7 +23,7 @@
 .hypertable__column {
   border-left: 1px solid lighten(@upf-gray, 15%);
 
-  min-width: 165px;
+  min-width: 150px;
 
   opacity: 1;
   transition: opacity .5s;
@@ -117,6 +117,18 @@
       .fa-pencil {
         opacity: 1;
       }
+    }
+  }
+
+  &.hypertable__cell--numeric:not(.hypertable__cell--header) {
+    .editing-input__field {
+      width: 70px;
+    }
+  }
+
+  &.hypertable__cell--text:not(.hypertable__cell--header) {
+    .editing-input__field {
+      width: 100px;
     }
   }
 
