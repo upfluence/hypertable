@@ -16,14 +16,14 @@
   </div>
 
   <div class="right-side">
-    <button class="upf-btn upf-btn--default upf-btn--small" {{action "openAvailableColumns"}}>
+    <button class="upf-btn upf-btn--default upf-btn--small" {{action "openAvailableFields"}}>
       <i class="fa fa-plus"></i> &nbsp; Field
     </button>
 
-    {{#if _availableColumnsPanel}}
-      <div class="available-columns">
-        <div class="available-columns__categories">
-          <div class="field-category {{if (not _activeColumnCategory) 'field-category--active'}}" {{action "setColumnCategory"}}>
+    {{#if _availableFieldsPanel}}
+      <div class="available-fields-wrapper">
+        <div class="available-fields-wrapper__categories">
+          <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setColumnCategory"}}>
             <div>All Fields</div>
             <div><i class="fa fa-caret-right"></i></div>
           </div>
@@ -35,25 +35,26 @@
           {{/each}}
         </div>
 
-        <div class="available-columns__fields">
+        <div class="available-fields-wrapper__fields">
           <div class="search">
             {{input
-              type="text" value=_availableColumnsKeyword
+              type="text" value=_availableFieldsKeyword
               class="upf-input upf-input--small"}}
           </div>
 
           <div class="fields-list">
-              {{#each _orderedFilteredColumns as |column|}}
-                <div class="field">
-                  {{upf-checkbox value=column.visible size="sm"}}
-                  <div class="margin-left-xxx-sm">{{column.title}}</div>
-                </div>
-              {{else}}
-                <div class="field margin-top-md">
-                  No columns found
-                </div>
-              {{/each}}
-
+            {{#each _orderedFilteredFields as |field|}}
+              <div class="field">
+                {{upf-checkbox
+                  value=field.visible size="sm"
+                  onValueChange=(action "fieldVisibilityUpdated" field)}}
+                <div class="margin-left-xxx-sm">{{field.title}}</div>
+              </div>
+            {{else}}
+              <div class="field margin-top-md">
+                No columns found
+              </div>
+            {{/each}}
           </div>
         </div>
       </div>
@@ -110,7 +111,7 @@
     {{/each}}
 
     {{#each _columns as |column index|}}
-      {{#if (and column.visible (gt index 0))}}
+      {{#if (gt index 0)}}
         {{#sortable-item
           classNames="hypertable__column" model=column group=group
           handle=".hypertable__cell--header"}}

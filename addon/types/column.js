@@ -2,7 +2,7 @@ import EmberObject, { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 
 export default EmberObject.extend({
-  visible: true,
+  field: null,
   orderKey: null,
   orderBy: null,
   filters: [],

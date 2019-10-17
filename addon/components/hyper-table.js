@@ -29,9 +29,9 @@ export default Component.extend({
   _allRowsSelected: false,
   _hasScrollbar: false,
 
-  _availableColumnsPanel: false,
-  _availableColumnsKeyword: '',
-  _activeColumnCategory: null,
+  _availableFieldsPanel: false,
+  _availableFieldsKeyword: '',
+  _activeFieldCategory: null,
 
   _searchQuery: null,
 
@@ -45,21 +45,21 @@ export default Component.extend({
     return typeOf(this.footer);
   }),
 
-  _orderedFilteredColumns: computed(
-    '_columns',
-    '_availableColumnsKeyword',
-    '_activeColumnCategory',
+  _orderedFilteredFields: computed(
+    'manager.fields',
+    '_availableFieldsKeyword',
+    '_activeFieldCategory',
     function() {
-      let columns = A(this._columns);
+      let fields = A(this.manager.fields);
 
-      columns = A(columns.filter((x) => {
-        const hasKeyword = !this._availableColumnsKeyword || x.title.toLowerCase().indexOf(this._availableColumnsKeyword.toLowerCase()) >= 0;
-        const hasActiveGroup = !this._activeColumnCategory || x.categories.indexOf(this._activeColumnCategory) >= 0;
+      fields = A(fields.filter((x) => {
+        const hasKeyword = !this._availableFieldsKeyword || x.title.toLowerCase().indexOf(this._availableFieldsKeyword.toLowerCase()) >= 0;
+        const hasActiveGroup = !this._activeFieldCategory || x.categories.indexOf(this._activeFieldCategory) >= 0;
 
         return hasKeyword && hasActiveGroup;
       }));
 
-      return columns.sortBy('title');
+      return fields.sortBy('title');
     }
   ),
 
@@ -151,21 +151,33 @@ export default Component.extend({
 
   actions: {
     reorderColumns(x, itemModels, _) {
-      let _cs = [x[0]].concat(itemModels.concat(x.filter(x => !x.visible)))
-      _cs.forEach((c, i) => c.set('order', i))
+      let _cs = [x[0]].concat(itemModels)
+
       this.manager.updateColumns(_cs);
+
+      if (this.hooks.onColumnsChange) {
+        this.hooks.onColumnsChange('columns:reorder');
+      }
     },
 
-    openAvailableColumns() {
-      this.toggleProperty('_availableColumnsPanel');
+    openAvailableFields() {
+      this.toggleProperty('_availableFieldsPanel');
     },
 
     toggleHover(item, value) {
       item.set('hovered', value);
     },
-    
+
     setColumnCategory(category) {
       this.set('_activeColumnCategory', category);
+    },
+
+    fieldVisibilityUpdated(field) {
+      this.manager.toggleColumnVisibility(field).then(() => {
+        if (this.hooks.onColumnsChange) {
+          this.hooks.onColumnsChange('columns:change');
+        }
+      });
     }
   }
 });

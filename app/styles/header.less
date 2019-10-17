@@ -67,12 +67,12 @@
   }
 
   /*
-   * Available Columns
+   * Available Fields
    * =================
-   * Access all available columns and toggle their visibility in the table
+   * Access all available fields and toggle their visibility in the table
    *
    */
-  .available-columns {
+  .available-fields-wrapper {
     background-color: #fff;
     border: 2px solid lighten(@upf-gray, 15%);
     border-radius: @default-radius;
@@ -85,7 +85,7 @@
     right: 0;
     z-index: 99999;
 
-    .available-columns__categories {
+    .available-fields-wrapper__categories {
       background-color: @upf-gray-light;
       border-right: 1px solid lighten(@upf-gray, 15%);
       min-width: 200px;
@@ -109,7 +109,7 @@
       }
     }
 
-    .available-columns__fields {
+    .available-fields-wrapper__fields {
       flex-direction: column;
       flex-grow: 1;
       padding: @spacing-xx-sm;

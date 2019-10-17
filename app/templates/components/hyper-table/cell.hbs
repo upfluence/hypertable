@@ -3,7 +3,7 @@
     {{yield}}
   {{else}}
     <div class="cell-header" {{action "orderColumn"}}>
-      {{column.title}}
+      {{column.field.title}}
 
       {{#if _ordered }}
         &nbsp;<i class={{concat "fa " _orderingIconClass}}></i>
