@@ -1,5 +1,11 @@
 <div class="hypertable__upper-header">
   <div class="left-side">
+    {{#if manager.options.features.selection}}
+      <div class="selected-count">
+        {{_selectedItems.length}}
+      </div>
+    {{/if}}
+
     {{#if manager.options.features.search}}
       {{input
         type="text" placeholder="Search..." value=_searchQuery
