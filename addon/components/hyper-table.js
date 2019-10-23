@@ -37,7 +37,7 @@ export default Component.extend({
 
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
-  _columnCategories: alias('manager.columnCategories'),
+  _fieldCategories: alias('manager.fieldCategories'),
   _selectedItems: filterBy('_collection', 'selected', true),
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -51,15 +51,16 @@ export default Component.extend({
     '_activeFieldCategory',
     function() {
       let fields = A(this.manager.fields);
+      let _keyword = this._availableFieldsKeyword.toLowerCase()
 
       fields = A(fields.filter((x) => {
-        const hasKeyword = !this._availableFieldsKeyword || x.title.toLowerCase().indexOf(this._availableFieldsKeyword.toLowerCase()) >= 0;
+        const hasKeyword = !this._availableFieldsKeyword || x.name.toLowerCase().indexOf(_keyword) >= 0;
         const hasActiveGroup = !this._activeFieldCategory || x.categories.indexOf(this._activeFieldCategory) >= 0;
 
         return hasKeyword && hasActiveGroup;
       }));
 
-      return fields.sortBy('title');
+      return fields.sortBy('name');
     }
   ),
 
@@ -168,8 +169,8 @@ export default Component.extend({
       item.set('hovered', value);
     },
 
-    setColumnCategory(category) {
-      this.set('_activeColumnCategory', category);
+    setFieldCategory(category) {
+      this.set('_activeFieldCategory', category);
     },
 
     fieldVisibilityUpdated(field) {

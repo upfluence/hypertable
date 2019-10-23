@@ -9,7 +9,7 @@ export default EmberObject.extend({
   columns: [],
   data: [],
   fields: [],
-  columnCategories: [],
+  fieldCategories: [],
   applyingFiltersOn: null,
 
   /*
@@ -30,9 +30,7 @@ export default EmberObject.extend({
   options: or('_options', '_defaultOptions'),
 
   updateFields(fields) {
-    this.set('fields', fields.map(({ property, title }) => {
-      return Field.create({ property, title });
-    }));
+    this.set('fields', fields);
   },
 
   updateColumns(columns) {
@@ -41,21 +39,18 @@ export default EmberObject.extend({
         column = Column.create(column);
       }
 
-      let field = this.fields.findBy('property', column.property);
+      let field = this.fields.findBy('key', column.key);
 
       column.setProperties({
         orderBy: column.orderBy || null,
-        orderKey: column.orderKey || column.property,
+        orderKey: column.orderKey || column.key,
         filters: (column.filters || []).map((x) => EmberObject.create(x)),
 
-        // move to Field ?
         type: column.type || 'text',
-        hasOrdering: (index === 0) ? false : (column.hasOrdering || false),
-        hasFiltering: (index === 0) ? false : (column.hasFiltering || false),
+        orderable: (index === 0) ? false : (column.orderable || false),
+        filterable: (index === 0) ? false : (column.filterable || false),
         field
       });
-
-      field.set('visible', true);
 
       return column;
     }));
@@ -67,7 +62,7 @@ export default EmberObject.extend({
     let orderedColumn = this.columns.find((c) => c.orderBy);
 
     if (orderedColumn) {
-      _d = _d.sortBy(orderedColumn.property);
+      _d = _d.sortBy(orderedColumn.key);
 
       if (orderedColumn.orderDirection === 'desc') {
         _d = _d.reverse();
@@ -82,8 +77,8 @@ export default EmberObject.extend({
     column.set('orderBy', orderBy);
   },
 
-  updateColumnCategories(columnCategories){
-    this.set('columnCategories', columnCategories);
+  updateFieldCategories(categories){
+    this.set('fieldCategories', categories);
   },
 
   updateColumnValue(key, item, value) {
@@ -92,13 +87,13 @@ export default EmberObject.extend({
 
   toggleColumnVisibility(field) {
     return new Promise((resolve, reject) => {
-      let _c = this.columns.findBy('property', field.property);
+      let _c = this.columns.findBy('key', field.key);
 
       if (_c) {
         this.columns.removeObject(_c);
       } else {
         this.columns.pushObject(
-          Column.create({ property: field.property, visible: true, field })
+          Column.create({ key: field.key, visible: true, field })
         )
       }
 

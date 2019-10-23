@@ -1,4 +1,4 @@
-{{#if column.hasOrdering}}
+{{#if column.orderable}}
   {{#input-wrapper}}
     <label>Order By</label>
     <div class="btn-group upf-radio-group">
@@ -11,8 +11,8 @@
   {{/input-wrapper}}
 {{/if}}
 
-{{#if column.hasFiltering}}
-  {{#input-wrapper classNames=(if column.hasOrdering "margin-top-xx-sm")}}
+{{#if column.filterable}}
+  {{#input-wrapper classNames=(if column.orderable "margin-top-xx-sm")}}
     <label>Filter</label>
 
     <div class="btn-group upf-radio-group">
