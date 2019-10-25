@@ -47,8 +47,8 @@ export default EmberObject.extend({
         filters: (column.filters || []).map((x) => EmberObject.create(x)),
 
         type: column.type || 'text',
-        orderable: (index === 0) ? false : (column.orderable || false),
-        filterable: (index === 0) ? false : (column.filterable || false),
+        orderable: index !== 0 && column.orderable,
+        filterable: index !== 0 && column.filterable,
         field
       });
 
