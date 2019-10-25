@@ -3,11 +3,13 @@ import { or } from '@ember/object/computed';
 import { typeOf } from '@ember/utils';
 
 import Column from '@upfluence/hypertable/types/column';
+import Field from '@upfluence/hypertable/types/field';
 
 export default EmberObject.extend({
   columns: [],
   data: [],
-  columnCategories: [],
+  fields: [],
+  fieldCategories: [],
   applyingFiltersOn: null,
 
   /*
@@ -27,27 +29,28 @@ export default EmberObject.extend({
   },
   options: or('_options', '_defaultOptions'),
 
+  updateFields(fields) {
+    this.set('fields', fields);
+  },
+
   updateColumns(columns) {
     this.set('columns', columns.map((column, index) => {
       if (typeOf(column) !== 'instance') {
         column = Column.create(column);
       }
 
-      column.set('visible', column.visible !== false);
-      column.set('orderKey', column.orderKey || column.property);
-      column.set('orderBy', column.orderBy || null);
-      column.set(
-        'filters',
-        (column.filters || []).map((x) => EmberObject.create(x))
-      );
-      column.set('type', column.type || 'text');
+      let field = this.fields.findBy('key', column.key);
 
-      column.set(
-        'hasOrdering', (index === 0) ? false : (column.hasOrdering || false)
-      );
-      column.set(
-        'hasFiltering', (index === 0) ? false : (column.hasFiltering || false)
-      );
+      column.setProperties({
+        orderBy: column.orderBy || null,
+        orderKey: column.orderKey || column.key,
+        filters: (column.filters || []).map((x) => EmberObject.create(x)),
+
+        type: column.type || 'text',
+        orderable: index !== 0 && column.orderable,
+        filterable: index !== 0 && column.filterable,
+        field
+      });
 
       return column;
     }));
@@ -59,7 +62,7 @@ export default EmberObject.extend({
     let orderedColumn = this.columns.find((c) => c.orderBy);
 
     if (orderedColumn) {
-      _d = _d.sortBy(orderedColumn.property);
+      _d = _d.sortBy(orderedColumn.key);
 
       if (orderedColumn.orderDirection === 'desc') {
         _d = _d.reverse();
@@ -74,11 +77,27 @@ export default EmberObject.extend({
     column.set('orderBy', orderBy);
   },
 
-  updateColumnCategories(columnCategories){
-    this.set('columnCategories', columnCategories);
+  updateFieldCategories(categories){
+    this.set('fieldCategories', categories);
   },
 
   updateColumnValue(key, item, value) {
     item.set(key, value);
+  },
+
+  toggleColumnVisibility(field) {
+    return new Promise((resolve, reject) => {
+      let _c = this.columns.findBy('key', field.key);
+
+      if (_c) {
+        this.columns.removeObject(_c);
+      } else {
+        this.columns.pushObject(
+          Column.create({ key: field.key, visible: true, field })
+        )
+      }
+
+      resolve();
+    });
   }
 });

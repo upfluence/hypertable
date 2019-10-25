@@ -54,9 +54,9 @@ export default Component.extend({
     'column.renderingComponent', '_typeInferredRenderingComponent'
   ),
 
-  _hasOrdering: and('manager.options.features.ordering', 'column.hasOrdering'),
-  _hasFiltering: and('manager.options.features.filtering', 'column.hasFiltering'),
-  _supportsOrderingOrFiltering: or('_hasOrdering', '_hasFiltering'),
+  _orderable: and('manager.options.features.ordering', 'column.orderable'),
+  _filterable: and('manager.options.features.filtering', 'column.filterable'),
+  _supportsOrderingOrFiltering: or('_orderable', '_filterable'),
 
   _filtersRenderingComponent: computed('column.type', function() {
     if (AVAILABLE_RENDERERS.includes(this.column.type)) {
@@ -74,7 +74,7 @@ export default Component.extend({
   },
 
   _filtersPanelListener() {
-    if (this.column.property !== this.manager.applyingFiltersOn) {
+    if (this.column.key !== this.manager.applyingFiltersOn) {
       this.set('showFiltersPanel', false);
     }
   },
@@ -119,7 +119,7 @@ export default Component.extend({
   actions: {
     toggleFiltersPanel() {
       this.toggleProperty('showFiltersPanel');
-      this.set('manager.applyingFiltersOn', this.column.property);
+      this.set('manager.applyingFiltersOn', this.column.key);
     },
 
     orderColumn() {

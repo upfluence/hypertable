@@ -8,8 +8,8 @@ import moment from 'moment';
 export default Component.extend({
   tagName: '',
 
-  value: computed('item', 'column.property', function() {
-    return this.item.get(this.column.property);
+  value: computed('item', 'column.key', function() {
+    return this.item.get(this.column.key);
   }),
 
   emptyValue: empty('value'),

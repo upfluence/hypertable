@@ -29,15 +29,15 @@ export default Component.extend({
   _allRowsSelected: false,
   _hasScrollbar: false,
 
-  _availableColumnsPanel: false,
-  _availableColumnsKeyword: '',
-  _activeColumnCategory: null,
+  _availableFieldsPanel: false,
+  _availableFieldsKeyword: '',
+  _activeFieldCategory: null,
 
   _searchQuery: null,
 
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
-  _columnCategories: alias('manager.columnCategories'),
+  _fieldCategories: alias('manager.fieldCategories'),
   _selectedItems: filterBy('_collection', 'selected', true),
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -45,21 +45,22 @@ export default Component.extend({
     return typeOf(this.footer);
   }),
 
-  _orderedFilteredColumns: computed(
-    '_columns',
-    '_availableColumnsKeyword',
-    '_activeColumnCategory',
+  _orderedFilteredFields: computed(
+    'manager.fields',
+    '_availableFieldsKeyword',
+    '_activeFieldCategory',
     function() {
-      let columns = A(this._columns);
+      let fields = A(this.manager.fields);
+      let _keyword = this._availableFieldsKeyword.toLowerCase()
 
-      columns = A(columns.filter((x) => {
-        const hasKeyword = !this._availableColumnsKeyword || x.title.toLowerCase().indexOf(this._availableColumnsKeyword.toLowerCase()) >= 0;
-        const hasActiveGroup = !this._activeColumnCategory || x.categories.indexOf(this._activeColumnCategory) >= 0;
+      fields = A(fields.filter((x) => {
+        const hasKeyword = !this._availableFieldsKeyword || x.name.toLowerCase().indexOf(_keyword) >= 0;
+        const hasActiveGroup = !this._activeFieldCategory || x.categories.indexOf(this._activeFieldCategory) >= 0;
 
         return hasKeyword && hasActiveGroup;
       }));
 
-      return columns.sortBy('title');
+      return fields.sortBy('name');
     }
   ),
 
@@ -81,15 +82,6 @@ export default Component.extend({
       }
     });
   }),
-
-  _columnsChanged: observer(
-    '_columns', '_columns.@each.{visible,orderBy,filters}',
-    function() {
-      if (this.hooks.onColumnsChange) {
-        this.hooks.onColumnsChange(this._columns);
-      }
-    }
-  ),
 
   _selectedItemsChanged: observer('_selectedItems', function() {
     if (this.contextualActions) {
@@ -151,21 +143,33 @@ export default Component.extend({
 
   actions: {
     reorderColumns(x, itemModels, _) {
-      let _cs = [x[0]].concat(itemModels.concat(x.filter(x => !x.visible)))
-      _cs.forEach((c, i) => c.set('order', i))
+      let _cs = [x[0]].concat(itemModels)
+
       this.manager.updateColumns(_cs);
+
+      if (this.hooks.onColumnsChange) {
+        this.hooks.onColumnsChange('columns:reorder');
+      }
     },
 
-    openAvailableColumns() {
-      this.toggleProperty('_availableColumnsPanel');
+    openAvailableFields() {
+      this.toggleProperty('_availableFieldsPanel');
     },
 
     toggleHover(item, value) {
       item.set('hovered', value);
     },
-    
-    setColumnCategory(category) {
-      this.set('_activeColumnCategory', category);
+
+    setFieldCategory(category) {
+      this.set('_activeFieldCategory', category);
+    },
+
+    fieldVisibilityUpdated(field) {
+      this.manager.toggleColumnVisibility(field).then(() => {
+        if (this.hooks.onColumnsChange) {
+          this.hooks.onColumnsChange('columns:change');
+        }
+      });
     }
   }
 });

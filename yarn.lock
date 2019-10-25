@@ -8942,10 +8942,10 @@ unzip-response@^2.0.1:
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
   integrity sha1-0vD3N9FrBhXnKmk17QQhRXLVb5c=
 
-upfluence-oss-components@^1.x:
-  version "1.2.7"
-  resolved "https://registry.yarnpkg.com/upfluence-oss-components/-/upfluence-oss-components-1.2.7.tgz#db61105b6a6c44dbb09a57898ec7f114f51dd8e6"
-  integrity sha512-AVm4gQLvsMrJLG7gkMubtKruq5/7k/2djIKHZwdzwslpsNenzgHg/0GnpfUWUCZoDP/PCGVvbadWNscJwvOBbg==
+upfluence-oss-components@^2.x:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/upfluence-oss-components/-/upfluence-oss-components-2.0.2.tgz#516d19b5a39ac8fc795cc9188d69e5c54766f9d4"
+  integrity sha512-HTx+PIieVWYierHG8JA2yM9hI+29xlBJHy38VCV4CYS3M0xC4p1mninnEylqAcHGAl9175hEei2B2z4ptsvcFw==
   dependencies:
     babel-plugin-debug-macros "^0.3.1"
     ember-cli-babel "^7.1.2"
@@ -8956,12 +8956,12 @@ upfluence-oss-components@^1.x:
     ember-cli-shims "^1.2.0"
     ember-cli-toggle "^3.0.0"
     ember-truth-helpers "^1.3.0"
-    upfluence-oss "^1.x"
+    upfluence-oss "^2.x"
 
-upfluence-oss@^1.x:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-1.1.3.tgz#8ee476fa76a295ecd470477920ca703443915ddc"
-  integrity sha512-oz+zxx62JqFMZRwz86tsJH/sQaRZ62as/fXkQaIOgiMD5cU62mtpB5osNVXI5LXeWAGxU03KPKhnH3G1XuaDDQ==
+upfluence-oss@^2.x:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-2.0.4.tgz#c2e2a80db18415ab3f871bcc4745ecbbebafa51b"
+  integrity sha512-YcMBahUvdEZ+ehu7oQCbxEc/B8YLPkb9Ux7C/SzCTxXUfsMSzmMOj43DFZtkwTQpsn1u+/brad0VcRbdh6jeUw==
   dependencies:
     bootstrap "^3.3.7"
     countdown.js "git+ssh://git@github.com/gumroad/countdown.js.git"

@@ -14,8 +14,8 @@ export default Component.extend(EditableMixin, {
     return this.item.get(this.column.currency_key);
   }),
 
-  amount: computed('item', 'column.property', function() {
-    return this.item.get(this.column.property);
+  amount: computed('item', 'column.key', function() {
+    return this.item.get(this.column.key);
   }),
 
   emptyAmount: empty('amount'),
