@@ -1,7 +1,15 @@
 {{#if emptyValue}}
   —
 {{else}}
-  <span data-toggle="tooltip" data-title={{get item column.property}}>
-    {{get item column.property}}
-  </span>
+  <div class="editing-input">
+    {{#if isEditing}}
+      {{input type="text" focus-out=(action "toggleEditing" value) value=value class="editing-input__field form-control"}}
+      <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" value}}/>
+    {{else}}
+      <span data-toggle="tooltip" data-title={{value}} data-placement="bottom">
+        {{truncatedText}}
+      </span>
+      <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
+    {{/if}}
+  </div>
 {{/if}}

@@ -76,5 +76,9 @@ export default EmberObject.extend({
 
   updateColumnCategories(columnCategories){
     this.set('columnCategories', columnCategories);
+  },
+
+  updateColumnValue(key, item, value) {
+    item.set(key, value);
   }
 });

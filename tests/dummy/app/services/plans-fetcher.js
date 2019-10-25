@@ -12,18 +12,19 @@ const MOCK_DATA = A([
     bulkEmailsCount: 0,
     selected: false,
     data1: 'A',
-    data2: 1620563995
+    data2: 1620563995,
+    data3: ['test1', 'test2', 'test3', 'test4']
   }),
   EmberObject.create({
     name: 'Silver',
     price: 195,
-    currency: 'EUR',
+    currency: 'USD',
     usersCount: 1,
     bulkEmailsCount: 100,
     selected: false,
-    hovered: false,
     data1: 'B',
-    data2: 1554800754
+    data2: 1554800754,
+    data3: ['test1', 'test2', 'test3', 'test4', 'test5'],
   }),
   EmberObject.create({
     name: 'Gold',
@@ -32,9 +33,8 @@ const MOCK_DATA = A([
     usersCount: 1,
     bulkEmailsCount: 300,
     selected: false,
-    hovered: false,
     data1: 'C',
-    data2: 1365498354
+    data2: 1365498354,
   }),
   EmberObject.create({
     name: 'Enterprise',
@@ -42,9 +42,10 @@ const MOCK_DATA = A([
     usersCount: 'Custom',
     bulkEmailsCount: 'Custom',
     selected: false,
-    hovered: false,
-    data1: 'D',
-    data2: 1383987954
+    data1: 'Maquiadora Empreendedora Assessoria @stapietra 💌 Siga\
+           tb @beauty_4_share @julianarakozamakeuplab Clique\
+           no link para cursos e e-books gratuitos⤵️',
+    data3: ['test1'],
   })
 ]);
 
@@ -112,7 +113,7 @@ const DEFAULT_COLUMNS = [
   {
     title: 'Data 3',
     property: 'data3',
-    type: 'numeric',
+    type: 'list',
     categories: ['category_2'],
     hasOrdering: true,
     hasFiltering: true
@@ -187,8 +188,8 @@ export default Service.extend({
         resolve({
           items: data,
           meta: {
-            columns: columns,
-            columnCategories: columnCategories
+            columns,
+            columnCategories
           }
         });
       }, 1500)

@@ -1,5 +1,16 @@
-{{#if (and emptyAmount emptyCurrency)}}
-  {{format-money amount currency}}
-{{else}}
-  —
-{{/if}}
+<div class="editing-input">
+  {{#if isEditing}}
+    {{#x-select class="editing-input__field editing-input__field--select form-control" value=currency on-change=(action "updateCurrency") as |xs|}}
+      {{#each manager.options.currencies as |code|}}
+        {{#xs.option value=code}}{{code}}{{/xs.option}}
+      {{/each}}
+    {{/x-select}}
+    {{input type="text" value=amount class="editing-input__field form-control"}}
+    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" amount}}/>
+  {{else}}
+    <span data-toggle="tooltip" data-title={{format-money amount currency}}>
+      {{if emptyAmount '—' (format-money amount currency)}}
+    </span>
+    <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
+  {{/if}}
+</div>

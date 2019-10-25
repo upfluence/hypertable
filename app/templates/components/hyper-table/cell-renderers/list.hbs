@@ -1,0 +1,14 @@
+{{#if emptyValue}}
+  —
+{{else}}
+  <div class="editing-input">
+    <span>
+      {{get value '0'}}
+    </span>
+    {{#if length}}
+      <span class="text-color-default-light show-more" data-toggle="tooltip" data-html="true" data-title={{formattedList}} data-placement="bottom">
+        +{{length}} more
+      </span>
+    {{/if}}
+  </div>
+{{/if}}

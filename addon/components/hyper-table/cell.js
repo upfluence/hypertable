@@ -5,7 +5,7 @@ import { capitalize } from '@ember/string';
 import { isEmpty } from '@ember/utils';
 
 const AVAILABLE_RENDERERS = [
-  'text', 'numeric', 'money', 'date', 'image'
+  'text', 'numeric', 'money', 'date', 'image', 'list'
 ];
 
 export default Component.extend({
@@ -22,6 +22,7 @@ export default Component.extend({
     'isNumeric:hypertable__cell--numeric',
     'isMoney:hypertable__cell--numeric',
     'isImage:hypertable__cell--image',
+    'isList:hypertable__cell--list',
     'onRowClicked:hypertable__cell--clickable'
   ],
 

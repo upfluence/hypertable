@@ -93,7 +93,7 @@
               column=column header=true manager=manager allowFiltering=false}}
 
             {{#each _collection as |item|}}
-              <div onmouseover={{action "toggleHover" item}} onmouseout={{action "toggleHover" item}}>
+              <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                 {{hyper-table/cell
                   item=item column=column onRowClicked=hooks.onRowClicked}}
               </div>
@@ -117,9 +117,9 @@
           {{hyper-table/cell column=column header=true manager=manager}}
 
           {{#each _collection as |item|}}
-            <div onmouseover={{action "toggleHover" item}} onmouseout={{action "toggleHover" item}}>
+            <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
               {{hyper-table/cell
-                item=item column=column onRowClicked=hooks.onRowClicked}}
+                item=item column=column onRowClicked=hooks.onRowClicked manager=manager}}
             </div>
           {{/each}}
 

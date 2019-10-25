@@ -29,6 +29,6 @@
   {{else if (has-block)}}
     {{yield}}
   {{else}}
-    {{component _renderingComponent item=item column=column}}
+    {{component _renderingComponent item=item column=column manager=manager}}
   {{/if}}
 {{/if}}
