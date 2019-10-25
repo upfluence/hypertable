@@ -19,5 +19,5 @@ export default Component.extend(EditableMixin, {
   }),
 
   emptyAmount: empty('amount'),
-  emptyCurrency: empty('currency'),
+  emptyCurrency: empty('currency')
 });

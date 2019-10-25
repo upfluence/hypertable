@@ -8,5 +8,5 @@ export default Component.extend(EditableMixin, {
     return this.item.get(this.column.property);
   }),
 
-  emptyValue: empty('value'),
+  emptyValue: empty('value')
 });
