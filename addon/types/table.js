@@ -53,6 +53,8 @@ export default EmberObject.extend({
         field
       });
 
+      field.set('visible', true);
+
       return column;
     }));
   },
