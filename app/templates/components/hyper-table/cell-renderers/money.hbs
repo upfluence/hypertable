@@ -6,11 +6,14 @@
       {{/each}}
     {{/x-select}}
     {{input type="text" value=amount class="editing-input__field form-control"}}
-    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" amount}}/>
+    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" amount}}></i>
   {{else}}
     <span data-toggle="tooltip" data-title={{format-money amount currency}}>
       {{if emptyAmount '—' (format-money amount currency)}}
     </span>
-    <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
+
+    {{#if column.upsertable}}
+      <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}></i>
+    {{/if}}
   {{/if}}
 </div>

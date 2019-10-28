@@ -6,8 +6,8 @@ export default Mixin.create({
 
   actions: {
     toggleEditing(value) {
-      this.toggleProperty("isEditing");
-      
+      this.toggleProperty('isEditing');
+
       if(this.get('isEditing')) {
         run.scheduleOnce('afterRender', this, () => {
           this.$('.editing-input__field').focus();
@@ -16,6 +16,7 @@ export default Mixin.create({
         this.manager.updateColumnValue(this.column.property, this.item, value);
       }
     },
+
     updateCurrency(currency) {
       this.manager.updateColumnValue(this.column.currency_key, this.item, currency);
     }

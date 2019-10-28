@@ -1,11 +1,14 @@
 <div class="editing-input">
   {{#if isEditing}}
     {{input type="number" focus-out=(action "toggleEditing" value) type="text" value=value class="editing-input__field form-control"}}
-    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" value}}/>
+    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
   {{else}}
     <span data-toggle="tooltip" data-title={{format-numeric value}}>
       {{if emptyValue '—' (format-numeric value)}}
     </span>
-    <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
+
+    {{#if column.upsertable}}
+      <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}></i>
+    {{/if}}
   {{/if}}
 </div>
