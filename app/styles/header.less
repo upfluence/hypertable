@@ -102,31 +102,37 @@
     .available-fields-wrapper__categories {
       background-color: @upf-gray-light;
       border-right: 1px solid lighten(@upf-gray, 15%);
-      min-width: 200px;
+      width: 250px;
 
       .field-category {
         background-color: #fff;
         border-bottom: 1px solid lighten(@upf-gray, 15%);
+        color: @color-text-light;
         font-size: 16/@rem;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
 
-        padding: @spacing-sm @spacing-xx-sm;
+        padding: @spacing-x-sm @spacing-xx-sm;
         cursor: pointer;
 
         &:hover,
         &--active {
           background-color: @upf-gray-light;
+          color: @upf-primary-bright-purple;
+        }
+
+        &:last-child {
+          border-bottom: none;
         }
       }
     }
 
     .available-fields-wrapper__fields {
       flex-direction: column;
-      flex-grow: 1;
       padding: @spacing-xx-sm;
+      width: 300px;
 
       .search {
         background-color: #fff;
@@ -139,8 +145,7 @@
       }
 
       .fields-list {
-        height: 200px;
-        max-height: 200px;
+        max-height: 300px;
         overflow: hidden scroll;
 
         .field {
@@ -149,6 +154,7 @@
           min-width: 270px;
           padding: @spacing-xxx-sm;
           display: flex;
+          text-transform: capitalize;
 
           &:hover {
             background-color: @upf-gray-light;
