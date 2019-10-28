@@ -10,6 +10,14 @@ export default Component.extend({
 
   contextualActions: null,
   footer: null,
+
+  /*
+   * Table States
+   * ============
+   *
+   * Various states in which the datatable can be.
+   *
+   */
   loadingMore: false,
 
   /*

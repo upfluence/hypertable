@@ -49,6 +49,7 @@ export default EmberObject.extend({
         type: column.type || 'text',
         orderable: index !== 0 && column.orderable,
         filterable: index !== 0 && column.filterable,
+        upsertable: column.upsertable || false,
         field
       });
 

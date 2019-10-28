@@ -12,6 +12,7 @@ export default EmberObject.extend({
 
   filterable: false,
   orderable: false,
+  upsertable: false,
 
   orderDirection: computed('orderBy', function() {
     if (!this.orderBy) return;
