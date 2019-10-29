@@ -5,6 +5,8 @@ import { typeOf } from '@ember/utils';
 import Column from '@upfluence/hypertable/types/column';
 import Field from '@upfluence/hypertable/types/field';
 
+const COLUMN_SIZES = ['s', 'm', 'l'];
+
 export default EmberObject.extend({
   columns: [],
   data: [],
@@ -44,6 +46,7 @@ export default EmberObject.extend({
       column.setProperties({
         orderBy: column.orderBy || null,
         orderKey: column.orderKey || column.key,
+        size: COLUMN_SIZES[Math.floor(Math.random() * 3)] || 'm',
         filters: (column.filters || []).map((x) => EmberObject.create(x)),
 
         type: column.type || 'text',

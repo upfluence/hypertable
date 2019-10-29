@@ -119,7 +119,7 @@
     {{#each _columns as |column index|}}
       {{#if (gt index 0)}}
         {{#sortable-item
-          classNames="hypertable__column" model=column group=group
+          classNames=(concat 'hypertable__column hypertable__column--size-' column.size) model=column group=group
           handle=".hypertable__cell--header"}}
           {{hyper-table/cell column=column header=true manager=manager}}
 
