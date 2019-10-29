@@ -7,7 +7,7 @@ export default EmberObject.extend({
   orderBy: null,
   filters: [],
   type: 'text',
-
+  size: 'm',
   renderingComponent: null,
 
   filterable: false,

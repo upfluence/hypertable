@@ -44,6 +44,7 @@ export default EmberObject.extend({
       column.setProperties({
         orderBy: column.orderBy || null,
         orderKey: column.orderKey || column.key,
+        size: column.size || 'm',
         filters: (column.filters || []).map((x) => EmberObject.create(x)),
 
         type: column.type || 'text',
