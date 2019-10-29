@@ -76,7 +76,7 @@
       {{#if (eq index 0)}}
         <div class="hypertable__sticky-columns">
           {{#if manager.options.features.selection}}
-            <div class="hypertable__column hypertable__column--selection">
+            <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
               {{#hyper-table/cell header=true selection=true}}
                 {{upf-checkbox value=_allRowsSelected size="sm"}}
               {{/hyper-table/cell}}
@@ -95,7 +95,7 @@
             </div>
           {{/if}}
 
-          <div class="hypertable__column">
+          <div class="hypertable__column {{concat "hypertable__column--size-" column.size}}">
             {{hyper-table/cell
               column=column header=true manager=manager allowFiltering=false}}
 
