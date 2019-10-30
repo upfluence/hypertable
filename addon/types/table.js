@@ -54,7 +54,10 @@ export default EmberObject.extend({
         field
       });
 
-      field.set('visible', true);
+      field.setProperties({
+        visible: true,
+        toggleable: index !== 0
+      });
 
       return column;
     }));

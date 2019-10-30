@@ -58,7 +58,7 @@ export default Component.extend({
     '_availableFieldsKeyword',
     '_activeFieldCategory',
     function() {
-      let fields = A(this.manager.fields);
+      let fields = A(this.manager.fields.filterBy('toggleable', true));
       let _keyword = this._availableFieldsKeyword.toLowerCase()
 
       fields = A(fields.filter((x) => {
