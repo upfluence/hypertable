@@ -119,7 +119,7 @@ export default Component.extend({
     let self = this;
 
     let _innerTable = this.$('.hypertable__table')[0];
-    let _innerTableHeight = $('html').innerHeight() - _innerTable.offsetTop;
+    let _innerTableHeight = window.innerHeight - _innerTable.offsetTop - 90;
 
     if (this.footer) {
       _innerTableHeight -= 90; // Footer Height + Margin
