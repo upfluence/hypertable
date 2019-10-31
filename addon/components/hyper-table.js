@@ -94,14 +94,11 @@ export default Component.extend({
     });
   }),
 
-  _columnsChanged: observer(	
-    '_columns', '_columns.@each.{orderBy}',
-    function() {
-      if (this.hooks.onColumnsChange) {
-        this.hooks.onColumnsChange('columns:change');	
-      }
+  _columnsChanged: observer('_columns.@each.orderBy', function() {
+    if (this.hooks.onColumnsChange) {
+      this.hooks.onColumnsChange('columns:change');	
     }
-  ),
+  }),
 
   _selectedItemsChanged: observer('_selectedItems', function() {
     if (this.contextualActions) {
