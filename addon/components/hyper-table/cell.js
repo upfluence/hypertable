@@ -123,7 +123,7 @@ export default Component.extend({
     },
 
     orderColumn() {
-      if (this.header && this.manager.options.features.ordering) {
+      if (this.header && this.manager.options.features.ordering && this.column.orderable) {
         let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
         this.manager.updateOrdering(
           this.column, `${this.column.orderKey}:${nextDirection}`
