@@ -95,12 +95,12 @@ export default Component.extend({
   }),
 
   _columnsChanged: observer(	
-    '_columns', '_columns.@each.{visible,orderBy,filters}',	
-    function() {	
-      if (this.hooks.onColumnsChange) {	
+    '_columns', '_columns.@each.{orderBy}',
+    function() {
+      if (this.hooks.onColumnsChange) {
         this.hooks.onColumnsChange('columns:change');	
-      }	
-    }	
+      }
+    }
   ),
 
   _selectedItemsChanged: observer('_selectedItems', function() {
