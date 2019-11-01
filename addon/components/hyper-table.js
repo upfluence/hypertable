@@ -18,6 +18,8 @@ export default Component.extend({
    * Various states in which the datatable can be.
    *
    */
+  refreshing: false,
+  loadingData: false,
   loadingMore: false,
 
   /*
@@ -43,6 +45,7 @@ export default Component.extend({
 
   _searchQuery: null,
 
+  _loadingCollection: new Array(12),
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
   _fieldCategories: alias('manager.fieldCategories'),
