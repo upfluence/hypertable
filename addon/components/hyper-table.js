@@ -118,7 +118,7 @@ export default Component.extend({
     }, 1000);
   }),
 
-  didInsertElement() {
+  _resizeInnerTable() {
     let self = this;
 
     let _innerTable = this.$('.hypertable__table')[0];
@@ -145,6 +145,22 @@ export default Component.extend({
         }
       }
     });
+  },
+
+  didInsertElement() {
+    let obs = new MutationObserver((mutations, observer) => {
+      for(var i=0; i < mutations.length; ++i) {
+        for (var j=0; j<mutations[i].addedNodes.length; ++j) {
+          let node = mutations[i].addedNodes[j];
+
+          if(node.classList && node.classList.contains('hypertable__table')) {
+            this._resizeInnerTable();
+          }
+        }
+      }
+    });
+
+    obs.observe(document.getElementById(this.elementId), { childList: true });
   },
 
   didRender() {
