@@ -13,8 +13,8 @@ export default Component.extend({
 
   orderingOptions: computed('column.orderKey', function() {
     return {
-      'A — Z': this.column.orderKey + ':asc',
-      'Z — A': this.column.orderKey + ':desc'
+      'A — Z': `${this.column.orderKey}:asc`,
+      'Z — A': `${this.column.orderKey}:desc`
     }
   }),
 
