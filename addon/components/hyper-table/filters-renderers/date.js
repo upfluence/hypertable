@@ -8,8 +8,8 @@ export default Component.extend({
 
   orderingOptions: computed('column.orderKey', function() {
     return {
-      'Oldest — Newest': this.column.orderKey + ':asc',
-      'Newest — Oldest': this.column.orderKey + ':desc'
+      'Oldest — Newest': `${this.column.orderKey}:asc`,
+      'Newest — Oldest': `${this.column.orderKey}:desc`
     }
   }),
 
