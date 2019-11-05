@@ -1,5 +1,10 @@
-{{#if emptyValue}}
-  —
+{{#if (and emptyValue (not isEditing))}}
+  {{#if column.upsertable}}
+    Add Value
+    <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}></i>
+  {{else}}
+    —
+  {{/if}}
 {{else}}
   <div class="editing-input">
     {{#if isEditing}}

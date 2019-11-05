@@ -33,7 +33,8 @@ export default Component.extend({
     onColumnsChange: null,
     onBottomReached: null,
     onSearchQueryChange: null,
-    onRowClicked: null
+    onRowClicked: null,
+    onLiveEdit: null
   },
 
   _allRowsSelected: false,
