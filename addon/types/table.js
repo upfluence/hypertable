@@ -3,7 +3,6 @@ import { or } from '@ember/object/computed';
 import { typeOf } from '@ember/utils';
 
 import Column from '@upfluence/hypertable/types/column';
-import Field from '@upfluence/hypertable/types/field';
 
 export default EmberObject.extend({
   columns: [],

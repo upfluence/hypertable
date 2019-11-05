@@ -116,7 +116,7 @@
                 {{#each _collection as |item|}}
                   <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                     {{hyper-table/cell
-                      item=item column=column onRowClicked=hooks.onRowClicked}}
+                      item=item column=column onRowClicked=hooks.onRowClicked onLiveEdit=hooks.onLiveEdit}}
                   </div>
                 {{/each}}
 
@@ -146,7 +146,7 @@
               {{#each _collection as |item|}}
                 <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                   {{hyper-table/cell
-                    item=item column=column onRowClicked=hooks.onRowClicked manager=manager}}
+                    item=item column=column onRowClicked=hooks.onRowClicked manager=manager onLiveEdit=hooks.onLiveEdit}}
                 </div>
               {{/each}}
 

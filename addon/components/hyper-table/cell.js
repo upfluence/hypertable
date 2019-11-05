@@ -117,6 +117,10 @@ export default Component.extend({
   },
 
   actions: {
+    onLiveEdit(data) {
+      this.onLiveEdit(data);
+    },
+
     toggleFiltersPanel() {
       this.toggleProperty('showFiltersPanel');
       this.set('manager.applyingFiltersOn', this.column.key);
