@@ -32,7 +32,6 @@ export default Component.extend({
 
   _ordered: false,
   _filtered: false,
-  _showFiltersPanel: false,
 
   _orderingIconClass: computed('_ordered', function() {
     if (this._ordered) {
@@ -73,12 +72,6 @@ export default Component.extend({
     this.set('_filtered', !isEmpty(this.column.filters));
   },
 
-  _filtersPanelListener() {
-    if (this.column.key !== this.manager.applyingFiltersOn) {
-      this.set('showFiltersPanel', false);
-    }
-  },
-
   didReceiveAttrs() {
     if (this.column && !this.column.renderingComponent) {
       AVAILABLE_RENDERERS.forEach((rendererType) => {
@@ -97,12 +90,6 @@ export default Component.extend({
           this,
           this._tableStateListener
         );
-
-        this.addObserver(
-          'manager.applyingFiltersOn',
-          this,
-          this._filtersPanelListener
-        );
       }
 
       this.set('_ordered', !isEmpty(this.column.orderBy));
@@ -118,8 +105,37 @@ export default Component.extend({
 
   actions: {
     toggleFiltersPanel() {
-      this.toggleProperty('showFiltersPanel');
-      this.set('manager.applyingFiltersOn', this.column.key);
+      if (this.manager.applyingFiltersOn !== this.column.key) {
+        this.set('manager.applyingFiltersOn', this.column.key);
+
+        if (document.querySelector('.available-filters')) {
+          document.querySelector('.available-filters').remove();
+        }
+
+        Ember.run.later(() => {
+          let tetherOptions = {
+            element: `#${this.elementId} .available-filters`,
+            target: `#${this.elementId} .cell-header`,
+            attachment: 'top left',
+            targetAttachment: 'bottom center',
+            offset: '-20px 0'
+          };
+
+          if (this.manager.tetherFilters) {
+            this.manager.tetherFilters.setOptions(tetherOptions);
+          } else {
+            this.set('manager.tetherFilters', new Tether(tetherOptions));
+          }
+
+          document.querySelector('.available-filters').classList.add(
+            'available-filters--visible'
+          );
+        });
+      } else {
+        this.set('manager.applyingFiltersOn', null);
+        document.querySelector('.available-filters').remove()
+        if (this.manager.tetherFilters) this.manager.tetherFilters.destroy();
+      }
     },
 
     orderColumn() {
