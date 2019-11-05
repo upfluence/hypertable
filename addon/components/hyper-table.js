@@ -94,6 +94,12 @@ export default Component.extend({
     });
   }),
 
+  _columnsChanged: observer('_columns.@each.orderBy', function() {
+    if (this.hooks.onColumnsChange) {
+      this.hooks.onColumnsChange('columns:change');	
+    }
+  }),
+
   _selectedItemsChanged: observer('_selectedItems', function() {
     if (this.contextualActions) {
       let ca = document.querySelector('.contextual-actions');

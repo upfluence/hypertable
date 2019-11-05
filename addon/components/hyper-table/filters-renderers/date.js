@@ -6,10 +6,12 @@ import moment from 'moment';
 export default Component.extend({
   classNames: ['available-filters'],
 
-  orderingOptions: {
-    'Oldest — Newest': 'alphanumerical:asc',
-    'Newest — Oldest': 'alphanumerical:desc'
-  },
+  orderingOptions: computed('column.orderKey', function() {
+    return {
+      'Oldest — Newest': `${this.column.orderKey}:asc`,
+      'Newest — Oldest': `${this.column.orderKey}:desc`
+    }
+  }),
 
   filteringOptions: {
     'Moving': 'moving',

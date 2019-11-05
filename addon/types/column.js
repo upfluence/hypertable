@@ -17,7 +17,7 @@ export default EmberObject.extend({
   orderDirection: computed('orderBy', function() {
     if (!this.orderBy) return;
 
-    return this.orderBy.split(':')[1];
+    return this.orderBy.split(':').slice(-1)[0];
   }),
 
   addFilters(type, value) {

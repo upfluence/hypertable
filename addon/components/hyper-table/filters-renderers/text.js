@@ -11,10 +11,12 @@ export default Component.extend({
     return searchTerm ? searchTerm.value.term : null;
   }),
 
-  orderingOptions: {
-    'A — Z': 'alphanumerical:asc',
-    'Z — A': 'alphanumerical:desc'
-  },
+  orderingOptions: computed('column.orderKey', function() {
+    return {
+      'A — Z': `${this.column.orderKey}:asc`,
+      'Z — A': `${this.column.orderKey}:desc`
+    }
+  }),
 
   _addSearchFilter() {
     this.column.addFilters(
