@@ -94,18 +94,24 @@
   }
 
   &:not(.hypertable__cell--header) {
-    .editing-input {
+    .cell-container {
       display:flex;
       align-items:center;
+    }
 
+    .upf-loading .spinner > div {
+      width: 6px;
+      height: 6px;
+    }
+
+    .editing-input {
       &__field {
-        margin-left: -3px;
-        margin-top: -2px;
-        padding: 2px;
+        margin-left: -5px;
+        margin-top: -1px;
+        padding: 5px 4px;
         display: inline;
         font-size: inherit;
         height: auto;
-
       }
     }
 

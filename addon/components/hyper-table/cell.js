@@ -112,7 +112,9 @@ export default Component.extend({
 
   click(e) {
     if (!this.header && this.onRowClicked) {
-      this.onRowClicked(this.item);
+      if(this.item.editStatus === null) {
+        this.onRowClicked(this.item);
+      }
     }
   },
 
