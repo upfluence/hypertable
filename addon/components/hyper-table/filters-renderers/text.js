@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { observer, computed } from '@ember/object';
 import { run } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend({
   classNames: ['available-filters'],
@@ -20,7 +21,10 @@ export default Component.extend({
   }),
 
   _addSearchFilter() {
-    this.column.set('filters', [{ key: 'value', value: this._searchQuery }]);
+    this.column.set(
+      'filters',
+      isEmpty(this._searchQuery) ? [] : [{ key: 'value', value: this._searchQuery }]
+    );
   },
 
   _searchQueryObserver: observer('_searchQuery', function() {
