@@ -4,7 +4,7 @@
     <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
   {{else}}
     <span data-toggle="tooltip" data-title={{format-numeric value}}>
-      {{if emptyValue '—' (format-numeric value)}}
+      {{if emptyValue '—' (format-number value)}}
     </span>
 
     {{#if column.upsertable}}
