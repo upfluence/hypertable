@@ -1,9 +1,10 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-
 import moment from 'moment';
 
-export default Component.extend({
+import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
+
+export default Component.extend(FiltersRendererMixin, {
   classNames: ['available-filters'],
 
   orderingOptions: computed('column.orderKey', function() {
@@ -129,7 +130,7 @@ export default Component.extend({
 
     // Mixin Candidate
     clearFilters() {
-      this.column.clearFilters();
+      this._super();
       this.flatpickrRef.clear();
     }
   }
