@@ -9,10 +9,12 @@ export default Mixin.create({
         run.scheduleOnce('afterRender', this, () => {
           this.$('.editing-input__field').focus();
         });
-      } else {
-        this.item.set('editStatus', {key: this.column.key, status: 'saving'});
-        this.manager.updateColumnValue(this.column.key, this.item, value);
-        this.onLiveEdit({key: this.column.key, field: this.item, value});
+      } else if(this.get('item.editStatus.status') !== 'success') {
+        run.once(this, () => {
+          this.item.set('editStatus', {key: this.column.key, status: 'saving'});
+          this.manager.updateColumnValue(this.column.key, this.item, value);
+          this.onLiveEdit({key: this.column.key, field: this.item, value});
+        });
       }
     },
 
