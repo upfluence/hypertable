@@ -131,8 +131,11 @@
   }
 
   &.hypertable__cell--numeric:not(.hypertable__cell--header) {
+    justify-content: flex-end;
+
     .editing-input__field {
       width: 70px;
+
       &--select {
         width: 50px;
         margin-right: 7px;
@@ -263,35 +266,6 @@
     i.fa-bars { cursor: move; }
   }
 
-  & > .available-filters {
-    background-color: #fff;
-    border: 2px solid lighten(@upf-gray, 15%);
-    border-radius: @default-radius;
-
-    min-width: 300px;
-    width: 300px;
-
-    position: absolute;
-    padding: @spacing-xx-sm;
-    top: 50px;
-
-    .filters {
-      padding-top: @spacing-xx-sm;
-
-      .filters__option {
-        padding: @spacing-xxx-sm;
-
-        &:hover {
-          background-color: @upf-gray-light;
-          cursor: pointer;
-        }
-      }
-
-      .filters__option--active {
-        background-color: @upf-gray-light;
-      }
-    }
-  }
 
   &:hover {
     background-color: lighten(@upf-gray, 15%);
@@ -300,6 +274,47 @@
       opacity: 1;
       display: block;
     }
+  }
+}
+
+//
+// Available Filters Container
+// ===========================
+//
+// This container is placed outside of the table cell because it's handled by
+// Tether.js, positioning it at the body tag level.
+//
+.available-filters {
+  background-color: #fff;
+  border: 2px solid lighten(@upf-gray, 15%);
+  border-radius: @default-radius;
+  box-shadow: 0 0 20px 10px fadeout(@upf-gray, 80%);
+  display: none;
+
+  min-width: 300px;
+  width: 300px;
+
+  padding: @spacing-xx-sm;
+
+  .filters {
+    padding-top: @spacing-xx-sm;
+
+    .filters__option {
+      padding: @spacing-xxx-sm;
+
+      &:hover {
+        background-color: @upf-gray-light;
+        cursor: pointer;
+      }
+    }
+
+    .filters__option--active {
+      background-color: @upf-gray-light;
+    }
+  }
+
+  &--visible {
+    display: block;
   }
 }
 

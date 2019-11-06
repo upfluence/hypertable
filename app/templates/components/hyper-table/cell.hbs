@@ -18,7 +18,7 @@
       <i class="fa fa-bars fa-rotate-90"></i>
     </div>
 
-    {{#if (and _supportsOrderingOrFiltering showFiltersPanel)}}
+    {{#if (and _supportsOrderingOrFiltering (eq manager.applyingFiltersOn column.key))}}
       {{component
         _filtersRenderingComponent item=item column=column manager=manager}}
     {{/if}}

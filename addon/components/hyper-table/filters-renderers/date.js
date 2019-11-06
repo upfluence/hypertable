@@ -1,9 +1,10 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-
 import moment from 'moment';
 
-export default Component.extend({
+import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
+
+export default Component.extend(FiltersRendererMixin, {
   classNames: ['available-filters'],
 
   orderingOptions: computed('column.orderKey', function() {
@@ -28,21 +29,18 @@ export default Component.extend({
     return 'moving';
   }),
 
-  _currentDateValue: computed(
-    'column.filters.@each.value.alias',
-    function() {
-    let filter = this.column.filters.find((f) => f.type === 'range');
+  _currentDateValue: computed('column', function() {
+    let lowerBound = this.column.filters.findBy('key', 'lower_bound');
+    let upperBound = this.column.filters.findBy('key', 'upper_bound');
 
-    if (!filter) return null;
-
-    if (filter.value.alias === 'custom_range') {
+    if (lowerBound && upperBound) {
       return [
-        moment.unix(filter.value.from).toDate(),
-        moment.unix(filter.value.to).toDate()
+        moment.unix(lowerBound.value).toDate(),
+        moment.unix(upperBound.value).toDate()
       ];
-    } else {
-      return filter.value.alias;
     }
+
+    return null;
   }),
 
   movingDateOptions: {
@@ -121,15 +119,18 @@ export default Component.extend({
 
     selectFixedDate(value) {
       let [fromDate, toDate] = value;
-      if(fromDate && toDate)
-        this.column.addFilters(
-          'range', this._buildDateRange('custom_range', fromDate, toDate)
-        );
+
+      if(fromDate && toDate) {
+        this.column.set('filters', [
+          { key: 'lower_bound', value: (+fromDate/1000).toString() },
+          { key: 'upper_bound', value: (+toDate/1000).toString() }
+        ]);
+      }
     },
 
     // Mixin Candidate
     clearFilters() {
-      this.column.clearFilters();
+      this._super();
       this.flatpickrRef.clear();
     }
   }

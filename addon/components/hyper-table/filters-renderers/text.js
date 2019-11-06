@@ -1,14 +1,17 @@
 import Component from '@ember/component';
 import { observer, computed } from '@ember/object';
 import { run } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
 
-export default Component.extend({
+import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
+
+export default Component.extend(FiltersRendererMixin, {
   classNames: ['available-filters'],
 
   _searchQuery: computed('column', 'column.filters', function() {
-    let searchTerm = this.column.filters.find((x)=> x.value.term);
+    let searchTerm = this.column.filters.findBy('key', 'value');
 
-    return searchTerm ? searchTerm.value.term : null;
+    return searchTerm ? searchTerm.value : null;
   }),
 
   orderingOptions: computed('column.orderKey', function() {
@@ -19,11 +22,9 @@ export default Component.extend({
   }),
 
   _addSearchFilter() {
-    this.column.addFilters(
-      'search', {
-        alias: 'search',
-        term: this._searchQuery,
-      }
+    this.column.set(
+      'filters',
+      isEmpty(this._searchQuery) ? [] : [{ key: 'value', value: this._searchQuery }]
     );
   },
 
@@ -34,6 +35,10 @@ export default Component.extend({
   actions: {
     orderingOptionChanged(value) {
       this.manager.updateOrdering(this.column, value);
+    },
+
+    clearFilters() {
+      this.set('_searchQuery', null)
     }
   }
 });

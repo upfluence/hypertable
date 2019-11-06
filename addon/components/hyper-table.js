@@ -94,9 +94,9 @@ export default Component.extend({
     });
   }),
 
-  _columnsChanged: observer('_columns.@each.orderBy', function() {
+  _columnsChanged: observer('_columns.@each.{orderBy,filters.[]}', function() {
     if (this.hooks.onColumnsChange) {
-      this.hooks.onColumnsChange('columns:change');	
+      this.hooks.onColumnsChange('columns:change');
     }
   }),
 
