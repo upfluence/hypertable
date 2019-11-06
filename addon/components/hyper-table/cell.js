@@ -115,9 +115,9 @@ export default Component.extend({
         Ember.run.later(() => {
           let tetherOptions = {
             element: `#${this.elementId} .available-filters`,
-            target: `#${this.elementId} .cell-header`,
-            attachment: 'top left',
-            targetAttachment: 'bottom center',
+            target: `#${this.elementId}`,
+            attachment: 'top center',
+            targetAttachment: 'bottom left',
             offset: '-20px 0'
           };
 
