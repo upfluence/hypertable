@@ -3,6 +3,7 @@ import { computed } from '@ember/object';
 import { run } from '@ember/runloop';
 
 export default Mixin.create({
+  classNameBindings: [`editStatus.status`],
 
   editStatus: computed('item.editStatus', 'column.key', function() {
     if(this.column.key === this.get('item.editStatus.key')) {

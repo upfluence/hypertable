@@ -7,11 +7,13 @@
 {{else}}
   <div class="editing-input">
     {{#if (and editStatus.status (not-eq editStatus.status "success"))}}
-      {{input type="text" focus-out=(action "toggleEditing" value) insert-newline=(action "toggleEditing" value) value=value class="editing-input__field form-control"}}
+      <div>
+        {{input type="text" focus-out=(action "toggleEditing" value) insert-newline=(action "toggleEditing" value) value=value class="editing-input__field form-control"}}
+      </div>
     {{else}}
-      <span data-toggle="tooltip" data-title={{value}} data-placement="bottom">
+      <div data-toggle="tooltip" data-title={{value}} data-placement="bottom">
         {{truncatedText}}
-      </span>
+      </div>
     {{/if}}
   </div>
 {{/if}}
