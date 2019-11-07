@@ -53,15 +53,19 @@ export default Component.extend({
     'column.renderingComponent', '_typeInferredRenderingComponent'
   ),
 
-  _orderable: and('manager.options.features.ordering', 'column.orderable'),
-  _filterable: and('manager.options.features.filtering', 'column.filterable'),
-  _supportsOrderingOrFiltering: or('_orderable', '_filterable'),
-
-  _filtersRenderingComponent: computed('column.type', function() {
+  _typeInferredFiltersRenderingComponent: computed('column.type', function() {
     if (AVAILABLE_RENDERERS.includes(this.column.type)) {
       return `hyper-table/filters-renderers/${this.column.type}`;
     }
   }),
+
+  _filtersRenderingComponent: or(
+    'column.filtersRenderingComponent', '_typeInferredFiltersRenderingComponent'
+  ),
+
+  _orderable: and('manager.options.features.ordering', 'column.orderable'),
+  _filterable: and('manager.options.features.filtering', 'column.filterable'),
+  _supportsOrderingOrFiltering: or('_orderable', '_filterable'),
 
   _filtersChanged: observer('column.filters.@each', function () {
     this.set('_filtered', !isEmpty(this.column.filters));
@@ -95,6 +99,8 @@ export default Component.extend({
       this.set('_ordered', !isEmpty(this.column.orderBy));
       this.set('_filtered', !isEmpty(this.column.filters));
     }
+
+    this._super();
   },
 
   click(e) {
