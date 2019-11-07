@@ -77,16 +77,18 @@ export default Component.extend({
   },
 
   didReceiveAttrs() {
-    if (this.column && !this.column.renderingComponent) {
-      AVAILABLE_RENDERERS.forEach((rendererType) => {
-        defineProperty(
-          this,
-          `is${capitalize(rendererType)}`,
-          computed('column.type', function() {
-            return this.column.type === rendererType;
-          })
-        );
-      });
+    if (this.column) {
+      if (!this.column.renderingComponent) {
+        AVAILABLE_RENDERERS.forEach((rendererType) => {
+          defineProperty(
+            this,
+            `is${capitalize(rendererType)}`,
+            computed('column.type', function() {
+              return this.column.type === rendererType;
+            })
+          );
+        });
+      }
 
       if (this.header) {
         this.addObserver(
@@ -94,10 +96,10 @@ export default Component.extend({
           this,
           this._tableStateListener
         );
-      }
 
-      this.set('_ordered', !isEmpty(this.column.orderBy));
-      this.set('_filtered', !isEmpty(this.column.filters));
+        this.set('_ordered', !isEmpty(this.column.orderBy));
+        this.set('_filtered', !isEmpty(this.column.filters));
+      }
     }
 
     this._super();
