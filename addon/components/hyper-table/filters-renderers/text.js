@@ -6,8 +6,6 @@ import { isEmpty } from '@ember/utils';
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
 
 export default Component.extend(FiltersRendererMixin, {
-  classNames: ['available-filters'],
-
   _searchQuery: computed('column', 'column.filters', function() {
     let searchTerm = this.column.filters.findBy('key', 'value');
 

@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import { alias, filterBy } from '@ember/object/computed';
-import { run } from '@ember/runloop';
+import { run, once } from '@ember/runloop';
 import { typeOf } from '@ember/utils';
 
 export default Component.extend({
@@ -94,9 +94,13 @@ export default Component.extend({
     });
   }),
 
+  _triggerColumnChangeHook() {
+    this.hooks.onColumnsChange('columns:change');
+  },
+
   _columnsChanged: observer('_columns.@each.{orderBy,filters.[]}', function() {
     if (this.hooks.onColumnsChange) {
-      this.hooks.onColumnsChange('columns:change');
+      once(this, this._triggerColumnChangeHook);
     }
   }),
 

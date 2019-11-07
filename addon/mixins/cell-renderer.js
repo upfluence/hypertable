@@ -6,7 +6,7 @@ export default Mixin.create({
   classNameBindings: ['emptyValue:text-color-default-lighter'],
 
   value: computed('item', 'column.key', function() {
-      return this.item.get(this.column.key);
+    return this.item.get(this.column.key);
   }),
 
   emptyValue: empty('value'),

@@ -5,8 +5,6 @@ import moment from 'moment';
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
 
 export default Component.extend(FiltersRendererMixin, {
-  classNames: ['available-filters'],
-
   orderingOptions: computed('column.orderKey', function() {
     return {
       'Oldest — Newest': `${this.column.orderKey}:asc`,
