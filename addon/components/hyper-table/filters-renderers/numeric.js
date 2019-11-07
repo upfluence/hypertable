@@ -5,8 +5,6 @@ import { run } from '@ember/runloop';
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
 
 export default Component.extend(FiltersRendererMixin, {
-  classNames: ['available-filters'],
-
   lowerBoundFilter: null,
   upperBoundFilter: null,
 
