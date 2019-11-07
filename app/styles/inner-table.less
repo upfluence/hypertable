@@ -26,17 +26,17 @@
   border-left: 1px solid lighten(@upf-gray, 15%);
 
   &--size-S {
-    min-width: 100px;
+    width: 100px;
     flex-grow: 100;
   }
 
   &--size-M {
-    min-width: 200px;
+    width: 200px;
     flex-grow: 200;
   }
 
   &--size-L {
-    min-width: 300px;
+    width: 300px;
     flex-grow: 300;
   }
 
@@ -94,18 +94,42 @@
   }
 
   &:not(.hypertable__cell--header) {
-    .editing-input {
+    .cell-container {
+      width: 100%;
       display:flex;
       align-items:center;
+      &.editing,
+      &.saving {
+        .editing-input {
+          width: 100%;
+        }
+      }
+    }
+
+    .upf-loading .spinner {
+      width: auto;
+      margin-left: @spacing-xx-sm;
+      > div {
+        width: 6px;
+        height: 6px;
+      }
+    }
+
+    .editing-input {
+      max-width: 80%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      div {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
 
       &__field {
-        margin-left: -3px;
-        margin-top: -2px;
-        padding: 2px;
-        display: inline;
+        width: 100%;
+        padding: 5px 4px;
         font-size: inherit;
         height: auto;
-
       }
     }
 
@@ -144,9 +168,6 @@
   }
 
   &.hypertable__cell--text:not(.hypertable__cell--header) {
-    .editing-input__field {
-      width: 100px;
-    }
     .tooltip-inner {
       max-width: 350px;
       overflow-wrap: break-word;

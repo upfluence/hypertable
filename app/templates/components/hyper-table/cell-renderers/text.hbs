@@ -1,18 +1,31 @@
-{{#if emptyValue}}
-  —
+{{#if (and emptyValue (or (not editStatus.status) (eq editStatus.status "success")))}}
+  {{#if column.upsertable}}
+    Add Value
+  {{else}}
+    —
+  {{/if}}
 {{else}}
   <div class="editing-input">
-    {{#if isEditing}}
-      {{input type="text" focus-out=(action "toggleEditing" value) value=value class="editing-input__field form-control"}}
-      <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
+    {{#if (and editStatus.status (not-eq editStatus.status "success"))}}
+      <div>
+        {{input type="text" focus-out=(action "toggleEditing" value) insert-newline=(action "toggleEditing" value) value=value class="editing-input__field form-control"}}
+      </div>
     {{else}}
-      <span data-toggle="tooltip" data-title={{value}} data-placement="bottom">
+      <div data-toggle="tooltip" data-title={{value}} data-placement="bottom">
         {{truncatedText}}
-      </span>
-
-      {{#if column.upsertable}}
-        <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}></i>
-      {{/if}}
+      </div>
     {{/if}}
   </div>
+{{/if}}
+{{!-- TODO: Extract to component --}}
+{{#if column.upsertable}}
+  {{#if (eq editStatus.status "success")}}
+    <i class="fa fa-check padding-left-xx-sm" onclick={{action "toggleEditing"}}></i>
+  {{else if (eq editStatus.status "editing")}}
+    <i class="fa fa-save padding-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
+  {{else if (eq editStatus.status "saving")}}
+    {{loading-state}}
+  {{else}}
+    <i class="fa fa-pencil padding-left-xx-sm" onclick={{action "toggleEditing"}}></i>
+  {{/if}}
 {{/if}}

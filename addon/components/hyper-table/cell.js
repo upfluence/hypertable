@@ -107,11 +107,17 @@ export default Component.extend({
 
   click(e) {
     if (!this.header && this.onRowClicked) {
-      this.onRowClicked(this.item);
+      if(this.item.editStatus === null) {
+        this.onRowClicked(this.item);
+      }
     }
   },
 
   actions: {
+    onLiveEdit(data) {
+      this.onLiveEdit(data);
+    },
+
     toggleFiltersPanel() {
       if (this.manager.applyingFiltersOn !== this.column.key) {
         this.set('manager.applyingFiltersOn', this.column.key);
