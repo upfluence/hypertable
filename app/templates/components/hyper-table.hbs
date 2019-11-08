@@ -139,8 +139,8 @@
       {{#each _columns as |column index|}}
         {{#if (gt index 0)}}
           {{#hyper-table/column
-            item=item column=column group=group manager=manager
-            handle=".hypertable__column-header"}}
+            model=column item=item column=column group=group manager=manager
+            handle="header"}}
             {{#if loadingData}}
               {{#each _loadingCollection}}
                 {{hyper-table/cell loading=true}}
