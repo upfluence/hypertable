@@ -1,0 +1,146 @@
+@cell-height: 60px;
+
+.hypertable__cell {
+  border-bottom: 1px solid lighten(@upf-gray, 15%);
+  display: flex;
+  align-items: center;
+
+  height: @cell-height;
+  max-height: @cell-height;
+  padding: @spacing-xx-sm;
+  width: 100%;
+
+  .tooltip > .tooltip-inner {
+    padding: 15px;
+    font-size: 15px;
+  }
+
+  .ember-flatpickr-input {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    width: 90%;
+    box-shadow: none;
+    &.active {
+      padding: 4px;
+      margin-left: -5px;
+      margin-top: 0px;
+      border: 1px solid @upf-gray-light;
+    }
+  }
+
+  &:not(.hypertable__cell--header) {
+    .editing-input {
+      display:flex;
+      align-items:center;
+
+      &__field {
+        margin-left: -3px;
+        margin-top: -2px;
+        padding: 2px;
+        display: inline;
+        font-size: inherit;
+        height: auto;
+
+      }
+    }
+
+    .form-control:focus {
+      box-shadow: none;
+      border-color: @upf-primary-bright-purple;
+    }
+
+    .fa {
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .fa-pencil {
+      opacity: 0;
+    }
+
+    &:hover {
+      .fa-pencil {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.hypertable__cell--header {
+  background-color: @upf-gray-light;
+  color: @upf-primary-rock-blue;
+  cursor: pointer;
+  text-transform: capitalize;
+
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  & > .column-name {
+    display: flex;
+  }
+
+  & > .cell-header {
+    width: 100%;
+    margin-right: 30px;
+  }
+
+  & > .icon-commands {
+    position: absolute;
+    right: @spacing-xx-sm;
+    color: @color-text-lighter;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    i {
+      opacity: 0;
+      display: none;
+      font-size: 16/@rem;
+      margin-left: @spacing-xx-sm;
+    }
+
+    i:hover, i:active {
+      color: @color-text;
+      cursor: pointer;
+    }
+
+    i.fa-bars { cursor: move; }
+  }
+
+
+  &:hover {
+    background-color: lighten(@upf-gray, 15%);
+
+    .icon-commands i {
+      opacity: 1;
+      display: block;
+    }
+  }
+}
+
+.hypertable__cell--selected,
+.hypertable__cell--hovered {
+  background-color: @upf-gray-light;
+}
+
+.hypertable__cell--clickable {
+  cursor: pointer;
+}
+
+.hypertable__cell--loading .skeleton-placeholder {
+  height: 10px;
+  animation: skeleton-content 1.2s ease-in-out infinite;
+  background-color: #eee;
+  background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  border-radius: @default-radius;
+  display: inline-block;
+  line-height: 1;
+  width: 100%;
+}
