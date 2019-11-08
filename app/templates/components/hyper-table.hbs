@@ -119,7 +119,9 @@
                 {{#each _collection as |item|}}
                   <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                     {{hyper-table/cell
-                      item=item column=column onRowClicked=hooks.onRowClicked onLiveEdit=hooks.onLiveEdit}}
+                      item=item column=column onRowClicked=hooks.onRowClicked
+                      manager=manager onLiveEdit=hooks.onLiveEdit
+                      renderingComponent=(cell-rendering-inferer column)}}
                   </div>
                 {{/each}}
 
@@ -137,8 +139,8 @@
       {{#each _columns as |column index|}}
         {{#if (gt index 0)}}
           {{#hyper-table/column
-            column=column group=group handle=".hypertable__column-header"
-            manager=manager}}
+            item=item column=column group=group manager=manager
+            handle=".hypertable__column-header"}}
             {{#if loadingData}}
               {{#each _loadingCollection}}
                 {{hyper-table/cell loading=true}}
@@ -147,7 +149,9 @@
               {{#each _collection as |item|}}
                 <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                   {{hyper-table/cell
-                    item=item column=column onRowClicked=hooks.onRowClicked manager=manager onLiveEdit=hooks.onLiveEdit}}
+                    item=item column=column onRowClicked=hooks.onRowClicked
+                    manager=manager onLiveEdit=hooks.onLiveEdit
+                    renderingComponent=(cell-rendering-inferer column)}}
                 </div>
               {{/each}}
 

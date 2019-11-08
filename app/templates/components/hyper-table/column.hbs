@@ -12,8 +12,7 @@
   </div>
 
   {{#if (and _supportsOrderingOrFiltering (eq manager.applyingFiltersOn column.key))}}
-    {{component
-      _filtersRenderingComponent item=item column=column manager=manager}}
+    {{component _filtersRenderingComponent column=column manager=manager}}
   {{/if}}
 </header>
 

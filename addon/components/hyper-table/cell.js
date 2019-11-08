@@ -16,16 +16,7 @@ export default Component.extend({
   ],
 
   loading: false,
-
-  _typeInferredRenderingComponent: computed('column.type', function() {
-    if (AVAILABLE_RENDERERS.includes(this.column.type)) {
-      return `hyper-table/cell-renderers/${this.column.type}`;
-    }
-  }),
-
-  _renderingComponent: or(
-    'column.renderingComponent', '_typeInferredRenderingComponent'
-  ),
+  renderingComponent: null,
 
   click(e) {
     if (!this.header && this.onRowClicked) {
