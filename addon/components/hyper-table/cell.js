@@ -3,6 +3,7 @@ import { computed, defineProperty, observer } from '@ember/object';
 import { and, or } from '@ember/object/computed';
 import { capitalize } from '@ember/string';
 import { isEmpty } from '@ember/utils';
+import { run } from '@ember/runloop';
 
 const AVAILABLE_RENDERERS = [
   'text', 'numeric', 'money', 'date', 'image', 'list'
@@ -15,33 +16,12 @@ export default Component.extend({
     'item.selected:hypertable__cell--selected',
     'item.hovered:hypertable__cell--hovered',
     'loading:hypertable__cell--loading',
-    '_ordered:hypertable__cell--ordered',
-    '_filtered:hypertable__cell--filtered',
-
-    'isText:hypertable__cell--text',
-    'isNumeric:hypertable__cell--numeric',
-    'isMoney:hypertable__cell--numeric',
-    'isImage:hypertable__cell--image',
-    'isList:hypertable__cell--list',
     'onRowClicked:hypertable__cell--clickable'
   ],
 
   header: false,
   selection: false,
   loading: false,
-
-  _ordered: false,
-  _filtered: false,
-
-  _orderingIconClass: computed('_ordered', function() {
-    if (this._ordered) {
-      if (this.column.orderDirection === 'asc') {
-        return 'fa-long-arrow-up'
-      } else {
-        return 'fa-long-arrow-down';
-      }
-    }
-  }),
 
   _typeInferredRenderingComponent: computed('column.type', function() {
     if (AVAILABLE_RENDERERS.includes(this.column.type)) {
@@ -67,44 +47,6 @@ export default Component.extend({
   _filterable: and('manager.options.features.filtering', 'column.filterable'),
   _supportsOrderingOrFiltering: or('_orderable', '_filterable'),
 
-  _filtersChanged: observer('column.filters.@each', function () {
-    this.set('_filtered', !isEmpty(this.column.filters));
-  }),
-
-  _tableStateListener() {
-    this.set('_ordered', !isEmpty(this.column.orderBy));
-    this.set('_filtered', !isEmpty(this.column.filters));
-  },
-
-  didReceiveAttrs() {
-    if (this.column) {
-      if (!this.column.renderingComponent) {
-        AVAILABLE_RENDERERS.forEach((rendererType) => {
-          defineProperty(
-            this,
-            `is${capitalize(rendererType)}`,
-            computed('column.type', function() {
-              return this.column.type === rendererType;
-            })
-          );
-        });
-      }
-
-      if (this.header) {
-        this.addObserver(
-          'manager.columns.@each.orderBy',
-          this,
-          this._tableStateListener
-        );
-
-        this.set('_ordered', !isEmpty(this.column.orderBy));
-        this.set('_filtered', !isEmpty(this.column.filters));
-      }
-    }
-
-    this._super();
-  },
-
   click(e) {
     if (!this.header && this.onRowClicked) {
       if(this.item.editStatus === null) {
@@ -126,7 +68,7 @@ export default Component.extend({
           document.querySelector('.available-filters').remove();
         }
 
-        Ember.run.later(() => {
+        run.later(() => {
           let tetherOptions = {
             element: `#${this.elementId} .available-filters`,
             target: `#${this.elementId}`,

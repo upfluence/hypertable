@@ -80,9 +80,9 @@
           <div class="hypertable__sticky-columns">
             {{#if manager.options.features.selection}}
               <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
-                {{#hyper-table/cell header=true selection=true}}
+                <div class="hypertable__cell hypertable__cell--header">
                   {{upf-checkbox value=_allRowsSelected size="sm"}}
-                {{/hyper-table/cell}}
+                </div>
 
                 {{#if loadingData}}
                   {{#each _loadingCollection}}
@@ -105,8 +105,7 @@
             {{/if}}
 
             <div class="hypertable__column {{concat "hypertable__column--size-" column.size}}">
-              {{hyper-table/cell
-                column=column header=true manager=manager allowFiltering=false}}
+              {{hyper-table/cell column=column header=true manager=manager}}
 
               {{#if loadingData}}
                 {{#each _loadingCollection}}
@@ -133,9 +132,8 @@
 
       {{#each _columns as |column index|}}
         {{#if (gt index 0)}}
-          {{#sortable-item
-            classNames=(concat 'hypertable__column hypertable__column--size-' column.size) model=column group=group
-            handle=".hypertable__cell--header"}}
+          {{#hyper-table/column
+            column=column group=group handle=".hypertable__cell--header"}}
             {{hyper-table/cell column=column header=true manager=manager}}
 
             {{#if loadingData}}
@@ -156,7 +154,7 @@
                 {{hyper-table/cell loading=true}}
               {{/if}}
             {{/if}}
-          {{/sortable-item}}
+          {{/hyper-table/column}}
         {{/if}}
       {{/each}}
     {{/sortable-group}}
