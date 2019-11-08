@@ -1,5 +1,7 @@
 import SortableItem from 'ember-sortable/components/sortable-item';
 import { computed, defineProperty, observer } from '@ember/object';
+import { and, or } from '@ember/object/computed';
+import { run } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { isEmpty } from '@ember/utils';
 
@@ -35,6 +37,20 @@ export default SortableItem.extend({
     }
   }),
 
+  _orderable: and('manager.options.features.ordering', 'column.orderable'),
+  _filterable: and('manager.options.features.filtering', 'column.filterable'),
+  _supportsOrderingOrFiltering: or('_orderable', '_filterable'),
+
+  _typeInferredFiltersRenderingComponent: computed('column.type', function() {
+    if (AVAILABLE_RENDERERS.includes(this.column.type)) {
+      return `hyper-table/filters-renderers/${this.column.type}`;
+    }
+  }),
+
+  _filtersRenderingComponent: or(
+    'column.filtersRenderingComponent', '_typeInferredFiltersRenderingComponent'
+  ),
+
   _filtersChanged: observer('column.filters.@each', function () {
     this.set('_filtered', !isEmpty(this.column.filters));
   }),
@@ -66,6 +82,52 @@ export default SortableItem.extend({
 
       this.set('_ordered', !isEmpty(this.column.orderBy));
       this.set('_filtered', !isEmpty(this.column.filters));
+    }
+  },
+
+  actions: {
+    toggleFiltersPanel() {
+      if (this.manager.applyingFiltersOn !== this.column.key) {
+        this.set('manager.applyingFiltersOn', this.column.key);
+
+        if (document.querySelector('.available-filters')) {
+          document.querySelector('.available-filters').remove();
+        }
+
+        run.later(() => {
+          let tetherOptions = {
+            element: `#${this.elementId} .available-filters`,
+            target: `#${this.elementId} header`,
+            attachment: 'top center',
+            targetAttachment: 'bottom left',
+            offset: '-20px 0'
+          };
+
+          if (this.manager.tetherFilters) {
+            this.manager.tetherFilters.setOptions(tetherOptions);
+          } else {
+            this.set('manager.tetherFilters', new Tether(tetherOptions));
+          }
+
+          document.querySelector('.available-filters').classList.add(
+            'available-filters--visible'
+          );
+        });
+      } else {
+        this.set('manager.applyingFiltersOn', null);
+        document.querySelector('.available-filters').remove()
+        if (this.manager.tetherFilters) this.manager.tetherFilters.destroy();
+      }
+    },
+
+    orderColumn() {
+      if (this.manager.options.features.ordering && this.column.orderable) {
+        let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
+
+        this.manager.updateOrdering(
+          this.column, `${this.column.orderKey}:${nextDirection}`
+        );
+      }
     }
   }
 });

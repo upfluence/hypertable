@@ -80,9 +80,9 @@
           <div class="hypertable__sticky-columns">
             {{#if manager.options.features.selection}}
               <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
-                <div class="hypertable__cell hypertable__cell--header">
+                <header>
                   {{upf-checkbox value=_allRowsSelected size="sm"}}
-                </div>
+                </header>
 
                 {{#if loadingData}}
                   {{#each _loadingCollection}}
@@ -105,7 +105,11 @@
             {{/if}}
 
             <div class="hypertable__column {{concat "hypertable__column--size-" column.size}}">
-              {{hyper-table/cell column=column header=true manager=manager}}
+              <header>
+                <div class="cell-header">
+                  {{column.field.name}}
+                </div>
+              </header>
 
               {{#if loadingData}}
                 {{#each _loadingCollection}}
@@ -133,9 +137,8 @@
       {{#each _columns as |column index|}}
         {{#if (gt index 0)}}
           {{#hyper-table/column
-            column=column group=group handle=".hypertable__cell--header"}}
-            {{hyper-table/cell column=column header=true manager=manager}}
-
+            column=column group=group handle=".hypertable__column-header"
+            manager=manager}}
             {{#if loadingData}}
               {{#each _loadingCollection}}
                 {{hyper-table/cell loading=true}}

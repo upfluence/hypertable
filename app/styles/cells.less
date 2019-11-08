@@ -30,95 +30,38 @@
     }
   }
 
-  &:not(.hypertable__cell--header) {
-    .editing-input {
-      display:flex;
-      align-items:center;
+  .editing-input {
+    display:flex;
+    align-items:center;
 
-      &__field {
-        margin-left: -3px;
-        margin-top: -2px;
-        padding: 2px;
-        display: inline;
-        font-size: inherit;
-        height: auto;
+    &__field {
+      margin-left: -3px;
+      margin-top: -2px;
+      padding: 2px;
+      display: inline;
+      font-size: inherit;
+      height: auto;
 
-      }
-    }
-
-    .form-control:focus {
-      box-shadow: none;
-      border-color: @upf-primary-bright-purple;
-    }
-
-    .fa {
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .fa-pencil {
-      opacity: 0;
-    }
-
-    &:hover {
-      .fa-pencil {
-        opacity: 1;
-      }
     }
   }
-}
 
-.hypertable__cell--header {
-  background-color: @upf-gray-light;
-  color: @upf-primary-rock-blue;
-  cursor: pointer;
-  text-transform: capitalize;
-
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-
-  & > .column-name {
-    display: flex;
+  .form-control:focus {
+    box-shadow: none;
+    border-color: @upf-primary-bright-purple;
   }
 
-  & > .cell-header {
-    width: 100%;
-    margin-right: 30px;
+  .fa {
+    font-size: 1.5rem;
+    cursor: pointer;
   }
 
-  & > .icon-commands {
-    position: absolute;
-    right: @spacing-xx-sm;
-    color: @color-text-lighter;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    i {
-      opacity: 0;
-      display: none;
-      font-size: 16/@rem;
-      margin-left: @spacing-xx-sm;
-    }
-
-    i:hover, i:active {
-      color: @color-text;
-      cursor: pointer;
-    }
-
-    i.fa-bars { cursor: move; }
+  .fa-pencil {
+    opacity: 0;
   }
-
 
   &:hover {
-    background-color: lighten(@upf-gray, 15%);
-
-    .icon-commands i {
+    .fa-pencil {
       opacity: 1;
-      display: block;
     }
   }
 }

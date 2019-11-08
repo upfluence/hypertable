@@ -33,6 +33,66 @@
   }
 }
 
+.hypertable__column header {
+  border-bottom: 1px solid lighten(@upf-gray, 15%);
+  display: flex;
+  align-items: center;
+
+  height: @cell-height;
+  max-height: @cell-height;
+  padding: @spacing-xx-sm;
+  width: 100%;
+
+  background-color: @upf-gray-light;
+  color: @upf-primary-rock-blue;
+  cursor: pointer;
+  text-transform: capitalize;
+
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+
+  & > .cell-header {
+    width: 100%;
+    margin-right: 30px;
+  }
+
+  & > .icon-commands {
+    position: absolute;
+    right: @spacing-xx-sm;
+    color: @color-text-lighter;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    i {
+      opacity: 0;
+      display: none;
+      font-size: 16/@rem;
+      margin-left: @spacing-xx-sm;
+    }
+
+    i:hover, i:active {
+      color: @color-text;
+      cursor: pointer;
+    }
+
+    i.fa-bars { cursor: move; }
+  }
+
+
+  &:hover {
+    background-color: lighten(@upf-gray, 15%);
+
+    .icon-commands i {
+      opacity: 1;
+      display: block;
+    }
+  }
+}
+
 .hypertable__column--selection {
   width: 40px;
   min-width: 40px;
@@ -40,7 +100,7 @@
 }
 
 .hypertable__column--ordered {
-  & > .hypertable__cell--header {
+  & > header {
     .fa.fa-filter {
       opacity: 1;
       display: inline-block;
@@ -68,7 +128,7 @@
 }
 
 .hypertable__column--filtered {
-  & > .hypertable__cell--header {
+  & > header {
     .icon-commands .fa.fa-filter {
       color: @color-text-light;
       display: block;
@@ -78,7 +138,7 @@
   }
 }
 
-.hypertable__column--numeric .hypertable__cell:not(.hypertable__cell--header) {
+.hypertable__column--numeric .hypertable__cell {
   justify-content: flex-end;
 
   .editing-input__field {
@@ -91,7 +151,7 @@
   }
 }
 
-.hypertable__column--text .hypertable__cell:not(.hypertable__cell--header) {
+.hypertable__column--text .hypertable__cell {
   .editing-input__field {
     width: 100px;
   }
@@ -102,7 +162,7 @@
   }
 }
 
-.hypertable__column--list .hypertable__cell:not(.hypertable__cell--header) {
+.hypertable__column--list .hypertable__cell {
   & > div:first-child {
     width: 100%;
   }
@@ -116,7 +176,7 @@
   }
 }
 
-.hypertable__column--image .hypertable__cell:not(.hypertable__cell--header) {
+.hypertable__column--image .hypertable__cell {
   display: flex;
   align-items: center;
 
