@@ -1,6 +1,6 @@
 import SortableItem from 'ember-sortable/components/sortable-item';
 import { computed, defineProperty, observer } from '@ember/object';
-import { and, or } from '@ember/object/computed';
+import { and, notEmpty, or } from '@ember/object/computed';
 import { run } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { isEmpty } from '@ember/utils';
@@ -24,8 +24,8 @@ export default SortableItem.extend({
     'isList:hypertable__column--list',
   ],
 
-  _ordered: false,
-  _filtered: false,
+  _ordered: notEmpty('column.orderBy'),
+  _filtered: notEmpty('column.filters'),
 
   _columnSize: computed('column.size', function() {
     return `hypertable__column--size-${this.column.size}`;
@@ -51,47 +51,30 @@ export default SortableItem.extend({
     'column.filtersRenderingComponent', '_typeInferredFiltersRenderingComponent'
   ),
 
-  _filtersChanged: observer('column.filters.@each', function () {
-    this.set('_filtered', !isEmpty(this.column.filters));
-  }),
-
-  _tableStateListener() {
-    this.set('_ordered', !isEmpty(this.column.orderBy));
-    this.set('_filtered', !isEmpty(this.column.filters));
-  },
 
   didReceiveAttrs() {
-    if (this.column) {
-      if (!this.column.renderingComponent) {
-        AVAILABLE_RENDERERS.forEach((rendererType) => {
-          defineProperty(
-            this,
-            `is${capitalize(rendererType)}`,
-            computed('column.type', function() {
-              return this.column.type === rendererType;
-            })
-          );
-        });
-      }
-
-      this.addObserver(
-        'manager.columns.@each.orderBy',
-        this,
-        this._tableStateListener
-      );
-
-      this.set('_ordered', !isEmpty(this.column.orderBy));
-      this.set('_filtered', !isEmpty(this.column.filters));
+    if (this.column && !this.column.renderingComponent) {
+      AVAILABLE_RENDERERS.forEach((rendererType) => {
+        defineProperty(
+          this,
+          `is${capitalize(rendererType)}`,
+          computed('column.type', function() {
+            return this.column.type === rendererType;
+          })
+        );
+      });
     }
   },
 
   actions: {
     toggleFiltersPanel() {
+      let availableFilters = document.querySelector('.available-filters');
+
       if (this.manager.applyingFiltersOn !== this.column.key) {
         this.set('manager.applyingFiltersOn', this.column.key);
 
-        if (document.querySelector('.available-filters')) {
-          document.querySelector('.available-filters').remove();
+        if (availableFilters) {
+          availableFilters.remove();
         }
 
         run.later(() => {
@@ -109,13 +92,13 @@ export default SortableItem.extend({
             this.set('manager.tetherFilters', new Tether(tetherOptions));
           }
 
-          document.querySelector('.available-filters').classList.add(
+          availableFilters.classList.add(
             'available-filters--visible'
           );
         });
       } else {
         this.set('manager.applyingFiltersOn', null);
-        document.querySelector('.available-filters').remove()
+        availableFilters.remove()
         if (this.manager.tetherFilters) this.manager.tetherFilters.destroy();
       }
     },
