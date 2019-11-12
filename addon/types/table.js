@@ -1,5 +1,5 @@
 import EmberObject from '@ember/object';
-import { or } from '@ember/object/computed';
+import { or, alias } from '@ember/object/computed';
 import { typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 
@@ -30,9 +30,10 @@ export default EmberObject.extend({
       ordering: false,
       filtering: false
     },
-    hooks: null
   },
-  options: or('_options', '_defaultOptions'),
+  options: or('_options.features', '_defaultOptions'),
+
+  hooks: alias('_options.hooks'),
 
   updateFields(fields) {
     this.set('fields', fields);

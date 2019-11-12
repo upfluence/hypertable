@@ -19,9 +19,9 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    if (!this.header && this.manager.options.hooks.onRowClicked) {
+    if (!this.header && this.manager.hooks.onRowClicked) {
       if(this.item.editStatus === null) {
-        this.manager.options.hooks.onRowClicked(this.item);
+        this.manager.hooks.onRowClicked(this.item);
       }
     }
   },

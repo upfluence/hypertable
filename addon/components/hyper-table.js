@@ -70,7 +70,7 @@ export default Component.extend({
     '_hasScrollbar',
     'loadingMore',
     function() {
-      return this.manager.options.hooks.onBottomReached && this._hasScrollbar && this.loadingMore;
+      return this.manager.hooks.onBottomReached && this._hasScrollbar && this.loadingMore;
     }
   ),
 
@@ -102,8 +102,8 @@ export default Component.extend({
 
   _searchQueryObserver: observer('_searchQuery', function() {
     run.debounce(this, () => {
-      if (this.manager.options.hooks.onSearchQueryChange) {
-        this.manager.options.hooks.onSearchQueryChange(this.get('_searchQuery'));
+      if (this.manager.hooks.onSearchQueryChange) {
+        this.manager.hooks.onSearchQueryChange(this.get('_searchQuery'));
       }
     }, 1000);
   }),
@@ -130,8 +130,8 @@ export default Component.extend({
       self.set('_hasScrollbar', (tableHeight <= contentHeight));
 
       if ((heightScrolled + tableHeight) >= contentHeight) {
-        if (self.manager.options.hooks.onBottomReached) {
-          self.manager.options.hooks.onBottomReached();
+        if (self.manager.hooks.onBottomReached) {
+          self.manager.hooks.onBottomReached();
         }
       }
     });
@@ -167,8 +167,8 @@ export default Component.extend({
       if(!hasSameOrder) {
         this.manager.updateColumns(_cs);
 
-        if (this.manager.options.hooks.onColumnsChange) {
-          this.manager.options.hooks.onColumnsChange('columns:reorder');
+        if (this.manager.hooks.onColumnsChange) {
+          this.manager.hooks.onColumnsChange('columns:reorder');
         }
       }
     },
@@ -187,8 +187,8 @@ export default Component.extend({
 
     fieldVisibilityUpdated(field) {
       this.manager.toggleColumnVisibility(field).then(() => {
-        if (this.manager.options.hooks.onColumnsChange) {
-          this.manager.options.hooks.onColumnsChange('columns:change');
+        if (this.manager.hooks.onColumnsChange) {
+          this.manager.hooks.onColumnsChange('columns:change');
         }
       });
     }
