@@ -1,34 +1,15 @@
-{{#if header}}
-  {{#if selection}}
-    {{yield}}
-  {{else}}
-    <div class="cell-header" {{action "orderColumn"}}>
-      {{column.field.name}}
-
-      {{#if _ordered }}
-        &nbsp;<i class={{concat "fa " _orderingIconClass}}></i>
-      {{/if}}
-    </div>
-
-    <div class="icon-commands">
-      {{#if _supportsOrderingOrFiltering}}
-        <i class="fa fa-filter" {{action "toggleFiltersPanel"}}></i>
-      {{/if}}
-
-      <i class="fa fa-bars fa-rotate-90"></i>
-    </div>
-
-    {{#if (and _supportsOrderingOrFiltering (eq manager.applyingFiltersOn column.key))}}
-      {{component
-        _filtersRenderingComponent item=item column=column manager=manager}}
-    {{/if}}
-  {{/if}}
+{{#if loading}}
+  <div class="skeleton-placeholder"></div>
+{{else if (has-block)}}
+  {{yield}}
 {{else}}
   {{#if loading}}
     <div class="skeleton-placeholder"></div>
   {{else if (has-block)}}
     {{yield}}
   {{else}}
-    {{component _renderingComponent item=item column=column manager=manager onLiveEdit=(action "onLiveEdit")}}
+    {{component
+      renderingComponent item=item column=column manager=manager
+      onLiveEdit=(action "onLiveEdit")}}
   {{/if}}
 {{/if}}

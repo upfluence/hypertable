@@ -80,9 +80,9 @@
           <div class="hypertable__sticky-columns">
             {{#if manager.options.features.selection}}
               <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
-                {{#hyper-table/cell header=true selection=true}}
+                <header>
                   {{upf-checkbox value=_allRowsSelected size="sm"}}
-                {{/hyper-table/cell}}
+                </header>
 
                 {{#if loadingData}}
                   {{#each _loadingCollection}}
@@ -105,8 +105,11 @@
             {{/if}}
 
             <div class="hypertable__column {{concat "hypertable__column--size-" column.size}}">
-              {{hyper-table/cell
-                column=column header=true manager=manager allowFiltering=false}}
+              <header>
+                <div class="cell-header">
+                  {{column.field.name}}
+                </div>
+              </header>
 
               {{#if loadingData}}
                 {{#each _loadingCollection}}
@@ -116,7 +119,9 @@
                 {{#each _collection as |item|}}
                   <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                     {{hyper-table/cell
-                      item=item column=column onRowClicked=hooks.onRowClicked onLiveEdit=hooks.onLiveEdit}}
+                      item=item column=column onRowClicked=hooks.onRowClicked
+                      manager=manager onLiveEdit=hooks.onLiveEdit
+                      renderingComponent=(cell-rendering-inferer column)}}
                   </div>
                 {{/each}}
 
@@ -133,11 +138,9 @@
 
       {{#each _columns as |column index|}}
         {{#if (gt index 0)}}
-          {{#sortable-item
-            classNames=(concat 'hypertable__column hypertable__column--size-' column.size) model=column group=group
-            handle=".hypertable__cell--header"}}
-            {{hyper-table/cell column=column header=true manager=manager}}
-
+          {{#hyper-table/column
+            model=column item=item column=column group=group manager=manager
+            handle="header"}}
             {{#if loadingData}}
               {{#each _loadingCollection}}
                 {{hyper-table/cell loading=true}}
@@ -146,7 +149,9 @@
               {{#each _collection as |item|}}
                 <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                   {{hyper-table/cell
-                    item=item column=column onRowClicked=hooks.onRowClicked manager=manager onLiveEdit=hooks.onLiveEdit}}
+                    item=item column=column onRowClicked=hooks.onRowClicked
+                    manager=manager onLiveEdit=hooks.onLiveEdit
+                    renderingComponent=(cell-rendering-inferer column)}}
                 </div>
               {{/each}}
 
@@ -156,7 +161,7 @@
                 {{hyper-table/cell loading=true}}
               {{/if}}
             {{/if}}
-          {{/sortable-item}}
+          {{/hyper-table/column}}
         {{/if}}
       {{/each}}
     {{/sortable-group}}

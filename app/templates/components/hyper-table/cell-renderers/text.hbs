@@ -8,7 +8,10 @@
   <div class="editing-input">
     {{#if (and editStatus.status (not-eq editStatus.status "success"))}}
       <div>
-        {{input type="text" focus-out=(action "toggleEditing" value) insert-newline=(action "toggleEditing" value) value=value class="editing-input__field form-control"}}
+        {{input
+          type="text" value=value class="editing-input__field form-control"
+          focus-out=(action "toggleEditing" value)
+          insert-newline=(action "toggleEditing" value) }}
       </div>
     {{else}}
       <div data-toggle="tooltip" data-title={{value}} data-placement="bottom">
@@ -17,10 +20,11 @@
     {{/if}}
   </div>
 {{/if}}
+
 {{!-- TODO: Extract to component --}}
 {{#if column.upsertable}}
   {{#if (eq editStatus.status "success")}}
-    <i class="fa fa-check padding-left-xx-sm" onclick={{action "toggleEditing"}}></i>
+    <span class="text-color-success upf-icon upf-icon--check padding-left-xx-sm" onclick={{action "toggleEditing"}}></span>
   {{else if (eq editStatus.status "editing")}}
     <i class="fa fa-save padding-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
   {{else if (eq editStatus.status "saving")}}
