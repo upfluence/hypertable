@@ -92,7 +92,7 @@ export default SortableItem.extend({
             this.set('manager.tetherFilters', new Tether(tetherOptions));
           }
 
-          availableFilters.classList.add(
+          document.querySelector('.available-filters').classList.add(
             'available-filters--visible'
           );
         });

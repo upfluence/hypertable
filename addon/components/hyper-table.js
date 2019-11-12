@@ -44,7 +44,11 @@ export default Component.extend({
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
 
-  _searchQuery: null,
+  _searchQuery: computed('_columns.firstObject', function() {
+    let searchTerm = this._columns.firstObject.filters.findBy('key', 'value');
+
+    return searchTerm ? searchTerm.value : null;
+  }),
 
   _loadingCollection: new Array(12),
   _collection: alias('manager.data'),
