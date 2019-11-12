@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import { alias, filterBy } from '@ember/object/computed';
-import { run, once } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { typeOf, compare } from '@ember/utils';
 
 export default Component.extend({
