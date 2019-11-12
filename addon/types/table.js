@@ -1,8 +1,13 @@
 import EmberObject from '@ember/object';
 import { or } from '@ember/object/computed';
 import { typeOf } from '@ember/utils';
+import { dasherize } from '@ember/string';
 
 import Column from '@upfluence/hypertable/types/column';
+
+const DEFAULT_RENDERERS = [
+  'text', 'numeric', 'money', 'date', 'image'
+];
 
 export default EmberObject.extend({
   columns: [],
@@ -91,6 +96,17 @@ export default EmberObject.extend({
     item.set(key, value);
   },
 
+  formatField(field) {
+    if (field.type === 'string') field.set('type', 'text');
+    if (field.type === 'integer') field.set('type', 'numeric');
+    if (!DEFAULT_RENDERERS.includes(field.type)) {
+      field.set('renderingComponent', `crm/column-renderers/${dasherize(field.type)}`);
+      if (field.filterable) {
+        field.filtersRenderingComponent = `crm/filters-renderers/${dasherize(column.type)}`;
+      }
+    }
+  },
+
   toggleColumnVisibility(field) {
     return new Promise((resolve, reject) => {
       let _c = this.columns.findBy('key', field.key);
@@ -98,9 +114,18 @@ export default EmberObject.extend({
       if (_c) {
         this.columns.removeObject(_c);
       } else {
+        this.formatField(field);
+
         this.columns.pushObject(
-          Column.create({ key: field.key, visible: true, field })
-        )
+          Column.create({
+            key: field.key,
+            visible: true,
+            type: field.type,
+            renderingComponent: field.renderingComponent,
+            filtersRenderingComponent: field.filtersRenderingComponent,
+            field
+          })
+        );
       }
 
       resolve();
