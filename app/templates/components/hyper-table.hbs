@@ -8,7 +8,6 @@
           {{_selectedItems.length}}
         </div>
       {{/if}}
-
       {{#if manager.options.features.search}}
         {{input
           type="text" placeholder="Search..." value=_searchQuery
@@ -119,8 +118,8 @@
                 {{#each _collection as |item|}}
                   <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                     {{hyper-table/cell
-                      item=item column=column onRowClicked=hooks.onRowClicked
-                      manager=manager onLiveEdit=hooks.onLiveEdit
+                      item=item column=column
+                      manager=manager
                       renderingComponent=(cell-rendering-inferer column)}}
                   </div>
                 {{/each}}
@@ -149,8 +148,8 @@
               {{#each _collection as |item|}}
                 <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                   {{hyper-table/cell
-                    item=item column=column onRowClicked=hooks.onRowClicked
-                    manager=manager onLiveEdit=hooks.onLiveEdit
+                    item=item column=column
+                    manager=manager
                     renderingComponent=(cell-rendering-inferer column)}}
                 </div>
               {{/each}}

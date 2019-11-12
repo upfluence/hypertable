@@ -29,7 +29,8 @@ export default EmberObject.extend({
       search: false,
       ordering: false,
       filtering: false
-    }
+    },
+    hooks: null
   },
   options: or('_options', '_defaultOptions'),
 
@@ -86,6 +87,7 @@ export default EmberObject.extend({
   updateOrdering(column, orderBy) {
     this.columns.forEach((c) => c.set('orderBy', null));
     column.set('orderBy', orderBy);
+    this.options.hooks.onColumnsChange('columns:change');
   },
 
   updateFieldCategories(categories){

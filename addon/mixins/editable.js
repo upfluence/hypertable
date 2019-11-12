@@ -22,7 +22,7 @@ export default Mixin.create({
         run.once(this, () => {
           this.item.set('editStatus', {key: this.column.key, status: 'saving'});
           this.manager.updateColumnValue(this.column.key, this.item, value);
-          this.onLiveEdit({key: this.column.key, field: this.item, value});
+          this.manager.options.hooks.onLiveEdit({key: this.column.key, field: this.item, value});
         });
       }
     },
