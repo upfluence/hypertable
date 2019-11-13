@@ -103,7 +103,7 @@ export default Component.extend({
   _searchQueryObserver: observer('_searchQuery', function() {
     run.debounce(this, () => {
       if (this.manager.hooks.onSearchQueryChange) {
-        this.manager.hooks.onSearchQueryChange(this.get('_searchQuery'));
+        this.manager.hooks.onSearchQueryChange(this._searchQuery);
       }
     }, 1000);
   }),

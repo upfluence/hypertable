@@ -33,6 +33,18 @@ export default EmberObject.extend({
   },
   options: or('_options.features', '_defaultOptions'),
 
+  /*
+  * Event Hooks	
+  * ===========	
+  *	
+  * Actions to be called to react to various events happening on the datatable	
+  *	
+  * Available Hooks:
+  *   onColumnsChange, onBottomReached,
+  *   onSearchQueryChange, onRowClicked,
+  *   onLiveEdit
+  */	
+
   hooks: alias('_options.hooks'),
 
   updateFields(fields) {
