@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import { alias, filterBy } from '@ember/object/computed';
-import { run, once } from '@ember/runloop';
+import { run } from '@ember/runloop';
 import { typeOf, compare } from '@ember/utils';
 
 export default Component.extend({
@@ -21,21 +21,6 @@ export default Component.extend({
   refreshing: false,
   loadingData: false,
   loadingMore: false,
-
-  /*
-   * Event Hooks
-   * ===========
-   *
-   * Actions to be called to react to various events happening on the datatable
-   *
-   */
-  hooks: {
-    onColumnsChange: null,
-    onBottomReached: null,
-    onSearchQueryChange: null,
-    onRowClicked: null,
-    onLiveEdit: null
-  },
 
   _allRowsSelected: false,
   _hasScrollbar: false,
@@ -85,7 +70,7 @@ export default Component.extend({
     '_hasScrollbar',
     'loadingMore',
     function() {
-      return this.hooks.onBottomReached && this._hasScrollbar && this.loadingMore;
+      return this.manager.hooks.onBottomReached && this._hasScrollbar && this.loadingMore;
     }
   ),
 
@@ -97,16 +82,6 @@ export default Component.extend({
         item.set('selected', false);
       }
     });
-  }),
-
-  _triggerColumnChangeHook() {
-    this.hooks.onColumnsChange('columns:change');
-  },
-
-  _columnsChanged: observer('_columns.@each.{orderBy,filters.[]}', function() {
-    if (this.hooks.onColumnsChange) {
-      once(this, this._triggerColumnChangeHook);
-    }
   }),
 
   _selectedItemsChanged: observer('_selectedItems', function() {
@@ -127,8 +102,8 @@ export default Component.extend({
 
   _searchQueryObserver: observer('_searchQuery', function() {
     run.debounce(this, () => {
-      if (this.hooks.onSearchQueryChange) {
-        this.hooks.onSearchQueryChange(this.get('_searchQuery'));
+      if (this.manager.hooks.onSearchQueryChange) {
+        this.manager.hooks.onSearchQueryChange(this._searchQuery);
       }
     }, 1000);
   }),
@@ -155,8 +130,8 @@ export default Component.extend({
       self.set('_hasScrollbar', (tableHeight <= contentHeight));
 
       if ((heightScrolled + tableHeight) >= contentHeight) {
-        if (self.hooks.onBottomReached) {
-          self.hooks.onBottomReached();
+        if (self.manager.hooks.onBottomReached) {
+          self.manager.hooks.onBottomReached();
         }
       }
     });
@@ -192,8 +167,8 @@ export default Component.extend({
       if(!hasSameOrder) {
         this.manager.updateColumns(_cs);
 
-        if (this.hooks.onColumnsChange) {
-          this.hooks.onColumnsChange('columns:reorder');
+        if (this.manager.hooks.onColumnsChange) {
+          this.manager.hooks.onColumnsChange('columns:reorder');
         }
       }
     },
@@ -212,8 +187,8 @@ export default Component.extend({
 
     fieldVisibilityUpdated(field) {
       this.manager.toggleColumnVisibility(field).then(() => {
-        if (this.hooks.onColumnsChange) {
-          this.hooks.onColumnsChange('columns:change');
+        if (this.manager.hooks.onColumnsChange) {
+          this.manager.hooks.onColumnsChange('columns:change');
         }
       });
     }

@@ -19,16 +19,10 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    if (!this.header && this.onRowClicked) {
+    if (!this.header && this.manager.hooks.onRowClicked) {
       if(this.item.editStatus === null) {
-        this.onRowClicked(this.item);
+        this.manager.hooks.onRowClicked(this.item);
       }
     }
   },
-
-  actions: {
-    onLiveEdit(data) {
-      this.onLiveEdit(data);
-    }
-  }
 });

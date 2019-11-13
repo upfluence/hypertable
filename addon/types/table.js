@@ -29,9 +29,22 @@ export default EmberObject.extend({
       search: false,
       ordering: false,
       filtering: false
-    }
+    },
   },
   options: or('_options', '_defaultOptions'),
+
+  /*
+  * Event Hooks	
+  * ===========	
+  *	
+  * Actions to be called to react to various events happening on the datatable	
+  *	
+  * Available Hooks:
+  *   onColumnsChange, onBottomReached,
+  *   onSearchQueryChange, onRowClicked,
+  *   onLiveEdit
+  */	
+  hooks: {},
 
   updateFields(fields) {
     this.set('fields', fields);
@@ -86,6 +99,7 @@ export default EmberObject.extend({
   updateOrdering(column, orderBy) {
     this.columns.forEach((c) => c.set('orderBy', null));
     column.set('orderBy', orderBy);
+    this.hooks.onColumnsChange('columns:change');
   },
 
   updateFieldCategories(categories){
