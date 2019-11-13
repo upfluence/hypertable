@@ -76,7 +76,8 @@ export default SortableItem.extend({
           attachment: 'top center',
           targetAttachment: 'bottom left',
           offset: '-20px 0'
-        }
+        },
+        true
       );
     },
 

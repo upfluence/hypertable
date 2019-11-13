@@ -1,6 +1,6 @@
 import EmberObject from '@ember/object';
 import { or } from '@ember/object/computed';
-import { run } from '@ember/runloop';
+import { scheduleOnce } from '@ember/runloop';
 import { typeOf } from '@ember/utils';
 
 import Column from '@upfluence/hypertable/types/column';
@@ -111,39 +111,42 @@ export default EmberObject.extend({
     });
   },
 
-  triggerTetherContainer(on, elementClass, options) {
+  triggerTetherContainer(on, elementClass, options, backdrop = true) {
     if (this.tetherOn !== on) {
       this.set('tetherOn', on);
 
-      if (this.tetherInstance) {
-        this.tetherInstance.element.remove()
-      }
-
-      run.later(() => {
+      scheduleOnce('afterRender', this, () => {
         if (this.tetherInstance) {
           this.tetherInstance.setOptions(options);
         } else {
           this.set('tetherInstance', new Tether(options));
         }
 
-        document.querySelector(`.${elementClass}`).classList.add(
-          `${elementClass}--visible`
-        );
+        setTimeout(() => {
+          document.querySelector(`.${elementClass}`).classList.add(
+            `${elementClass}--visible`
+          );
+        }, 200);
 
-        this.set('tetherOn', on);
+        this.setProperties({
+          tetherOn: on,
+          tetherBackdrop: backdrop
+        });
       });
     } else {
       this.set('tetherOn', null);
 
-      if (this.tetherInstance) {
+      if (this.tetherInstance && this.tetherInstance.element) {
         this.destroyTetherInstance();
       }
     }
   },
 
   destroyTetherInstance() {
-    this.tetherInstance.element.remove()
-    this.tetherInstance.destroy();
-    this.set('tetherInstance', null);
+    if (this.tetherInstance) {
+      this.tetherInstance.element.remove()
+      this.tetherInstance.destroy();
+      this.set('tetherInstance', null);
+    }
   }
 });

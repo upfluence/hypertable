@@ -72,7 +72,7 @@
   </div>
 
   <div class="hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}">
-    {{#if manager.tetherInstance}}
+    {{#if (and manager.tetherInstance manager.tetherBackdrop)}}
       <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
     {{/if}}
 
