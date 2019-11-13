@@ -1,5 +1,5 @@
 import EmberObject from '@ember/object';
-import { or, alias } from '@ember/object/computed';
+import { or } from '@ember/object/computed';
 import { typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 
