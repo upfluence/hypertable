@@ -31,7 +31,7 @@ export default EmberObject.extend({
       filtering: false
     },
   },
-  options: or('_options.features', '_defaultOptions'),
+  options: or('_options', '_defaultOptions'),
 
   /*
   * Event Hooks	
@@ -45,7 +45,7 @@ export default EmberObject.extend({
   *   onLiveEdit
   */	
 
-  hooks: alias('_options.hooks'),
+  hooks: {},
 
   updateFields(fields) {
     this.set('fields', fields);
