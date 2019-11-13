@@ -137,6 +137,7 @@ export default EmberObject.extend({
             type: field.type,
             renderingComponent: field.renderingComponent,
             filtersRenderingComponent: field.filtersRenderingComponent,
+            upsertable: field.upsertable,
             field
           })
         );
