@@ -3,7 +3,7 @@ import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import { alias, filterBy } from '@ember/object/computed';
 import { run, once } from '@ember/runloop';
-import { typeOf } from '@ember/utils';
+import { typeOf, compare } from '@ember/utils';
 
 export default Component.extend({
   classNames: ['hypertable-container'],
@@ -186,11 +186,15 @@ export default Component.extend({
   actions: {
     reorderColumns(x, itemModels, _) {
       let _cs = [x[0]].concat(itemModels)
+      let hasSameOrder =
+        compare(_cs.mapBy('key'), this.manager.columns.mapBy('key')) === 0;
 
-      this.manager.updateColumns(_cs);
+      if(!hasSameOrder) {
+        this.manager.updateColumns(_cs);
 
-      if (this.hooks.onColumnsChange) {
-        this.hooks.onColumnsChange('columns:reorder');
+        if (this.hooks.onColumnsChange) {
+          this.hooks.onColumnsChange('columns:reorder');
+        }
       }
     },
 
