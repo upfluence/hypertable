@@ -120,7 +120,7 @@ export default EmberObject.extend({
     if (!DEFAULT_RENDERERS.includes(field.type)) {
       field.set('renderingComponent', `crm/column-renderers/${dasherize(field.type)}`);
       if (field.filterable) {
-        field.filtersRenderingComponent = `crm/filters-renderers/${dasherize(column.type)}`;
+        field.filtersRenderingComponent = `crm/filters-renderers/${dasherize(field.type)}`;
       }
     }
   },

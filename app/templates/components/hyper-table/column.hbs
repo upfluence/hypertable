@@ -1,6 +1,11 @@
 <header>
   <div class="cell-header" {{action "orderColumn"}}>
-    {{column.field.name}}
+    {{#if column.field.iconPrefix}}
+      <span class="text-style-capitalize"><i class={{column.field.iconPrefix}}></i> &nbsp;
+      {{column.field.iconSuffix}}</span>
+    {{else}}
+      {{column.field.name}}
+    {{/if}}
   </div>
 
   <div class="icon-commands">
