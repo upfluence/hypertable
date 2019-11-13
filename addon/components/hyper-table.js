@@ -187,7 +187,7 @@ export default Component.extend({
     reorderColumns(x, itemModels, _) {
       let _cs = [x[0]].concat(itemModels)
       let hasSameOrder =
-        compare(_cs.mapBy("key"), this.manager.columns.mapBy("key")) === 0;
+        compare(_cs.mapBy('key'), this.manager.columns.mapBy('key')) === 0;
 
       if(!hasSameOrder) {
         this.manager.updateColumns(_cs);
