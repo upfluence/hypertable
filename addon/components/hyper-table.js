@@ -112,14 +112,15 @@ export default Component.extend({
     let self = this;
 
     let _innerTable = this.$('.hypertable__table')[0];
-    let _innerTableHeight = window.innerHeight - _innerTable.offsetTop - 90;
+    this.set('_innerTableHeight', window.innerHeight - _innerTable.offsetTop - 90);
 
     if (this.footer) {
-      _innerTableHeight -= 90; // Footer Height + Margin
+      this.set('_innerTableHeight', this._innerTableHeight - 90); // Footer Height + Margin
     }
 
+
     _innerTable.setAttribute(
-      'style', `height: ${_innerTableHeight}px !important;`
+      'style', `height: ${this._innerTableHeight}px !important;`
     );
 
     this.$('.hypertable__table').on('scroll', function() {
@@ -191,6 +192,10 @@ export default Component.extend({
           this.manager.hooks.onColumnsChange('columns:change');
         }
       });
+    },
+
+    onBackdropClick() {
+      this.manager.destroyTetherInstance();
     }
   }
 });

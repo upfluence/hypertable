@@ -1,5 +1,6 @@
 import EmberObject from '@ember/object';
 import { or } from '@ember/object/computed';
+import { scheduleOnce } from '@ember/runloop';
 import { typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 
@@ -15,6 +16,9 @@ export default EmberObject.extend({
   fields: [],
   fieldCategories: [],
   applyingFiltersOn: null,
+
+  tetherInstance: null,
+  tetherOn: null,
 
   /*
    * Configuration
@@ -144,5 +148,44 @@ export default EmberObject.extend({
 
       resolve();
     });
+  },
+
+  triggerTetherContainer(on, elementClass, options, backdrop = true) {
+    if (this.tetherOn !== on) {
+      this.set('tetherOn', on);
+
+      scheduleOnce('afterRender', this, () => {
+        if (this.tetherInstance) {
+          this.tetherInstance.setOptions(options);
+        } else {
+          this.set('tetherInstance', new Tether(options));
+        }
+
+        setTimeout(() => {
+          document.querySelector(`.${elementClass}`).classList.add(
+            `${elementClass}--visible`
+          );
+        }, 200);
+
+        this.setProperties({
+          tetherOn: on,
+          tetherBackdrop: backdrop
+        });
+      });
+    } else {
+      this.set('tetherOn', null);
+
+      if (this.tetherInstance && this.tetherInstance.element) {
+        this.destroyTetherInstance();
+      }
+    }
+  },
+
+  destroyTetherInstance() {
+    if (this.tetherInstance) {
+      this.tetherInstance.element.remove()
+      this.tetherInstance.destroy();
+      this.set('tetherInstance', null);
+    }
   }
 });

@@ -51,7 +51,6 @@ export default SortableItem.extend({
     'column.filtersRenderingComponent', '_typeInferredFiltersRenderingComponent'
   ),
 
-
   didReceiveAttrs() {
     if (this.column && !this.column.renderingComponent) {
       AVAILABLE_RENDERERS.forEach((rendererType) => {
@@ -68,39 +67,18 @@ export default SortableItem.extend({
 
   actions: {
     toggleFiltersPanel() {
-      let availableFilters = document.querySelector('.available-filters');
-
-      if (this.manager.applyingFiltersOn !== this.column.key) {
-        this.set('manager.applyingFiltersOn', this.column.key);
-
-        if (availableFilters) {
-          availableFilters.remove();
-        }
-
-        run.later(() => {
-          let tetherOptions = {
-            element: `#${this.elementId} .available-filters`,
-            target: `#${this.elementId} header`,
-            attachment: 'top center',
-            targetAttachment: 'bottom left',
-            offset: '-20px 0'
-          };
-
-          if (this.manager.tetherFilters) {
-            this.manager.tetherFilters.setOptions(tetherOptions);
-          } else {
-            this.set('manager.tetherFilters', new Tether(tetherOptions));
-          }
-
-          document.querySelector('.available-filters').classList.add(
-            'available-filters--visible'
-          );
-        });
-      } else {
-        this.set('manager.applyingFiltersOn', null);
-        availableFilters.remove()
-        if (this.manager.tetherFilters) this.manager.tetherFilters.destroy();
-      }
+      this.manager.triggerTetherContainer(
+        this.column.key,
+        'available-filters',
+        {
+          element: `#${this.elementId} .available-filters`,
+          target: `#${this.elementId} header`,
+          attachment: 'top center',
+          targetAttachment: 'bottom left',
+          offset: '-20px 0'
+        },
+        true
+      );
     },
 
     orderColumn() {
