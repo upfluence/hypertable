@@ -44,7 +44,6 @@ export default EmberObject.extend({
   *   onSearchQueryChange, onRowClicked,
   *   onLiveEdit
   */	
-
   hooks: {},
 
   updateFields(fields) {
