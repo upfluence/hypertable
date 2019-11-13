@@ -3,7 +3,6 @@ import { computed, defineProperty, observer } from '@ember/object';
 import { and, notEmpty, or } from '@ember/object/computed';
 import { run } from '@ember/runloop';
 import { capitalize } from '@ember/string';
-import { isEmpty } from '@ember/utils';
 
 const AVAILABLE_RENDERERS = [
   'text', 'numeric', 'money', 'date', 'image', 'list'
