@@ -5,6 +5,7 @@
   border-radius: @default-radius;
   height: 700px;
   overflow: auto;
+  position: relative;
 }
 
 .hypertable__table--empty {
@@ -18,6 +19,17 @@
   left: 0;
   position: sticky;
   z-index: 6;
+}
+
+.hypertable__backdrop {
+  background-color: transparent;
+  cursor: pointer;
+
+  height: -webkit-fill-available;
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  z-index: 7;
 }
 
 @import 'columns';

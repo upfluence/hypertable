@@ -72,6 +72,10 @@
   </div>
 
   <div class="hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}">
+    {{#if manager.tetherInstance}}
+      <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
+    {{/if}}
+
     {{#sortable-group
       direction="x" model=_columns onChange=(action "reorderColumns")
       classNames="hypertable" as |group|}}

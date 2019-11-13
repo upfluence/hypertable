@@ -1,5 +1,6 @@
 import EmberObject from '@ember/object';
 import { or } from '@ember/object/computed';
+import { run } from '@ember/runloop';
 import { typeOf } from '@ember/utils';
 
 import Column from '@upfluence/hypertable/types/column';
@@ -10,6 +11,9 @@ export default EmberObject.extend({
   fields: [],
   fieldCategories: [],
   applyingFiltersOn: null,
+
+  tetherInstance: null,
+  tetherOn: null,
 
   /*
    * Configuration
@@ -105,5 +109,41 @@ export default EmberObject.extend({
 
       resolve();
     });
+  },
+
+  triggerTetherContainer(on, elementClass, options) {
+    if (this.tetherOn !== on) {
+      this.set('tetherOn', on);
+
+      if (this.tetherInstance) {
+        this.tetherInstance.element.remove()
+      }
+
+      run.later(() => {
+        if (this.tetherInstance) {
+          this.tetherInstance.setOptions(options);
+        } else {
+          this.set('tetherInstance', new Tether(options));
+        }
+
+        document.querySelector(`.${elementClass}`).classList.add(
+          `${elementClass}--visible`
+        );
+
+        this.set('tetherOn', on);
+      });
+    } else {
+      this.set('tetherOn', null);
+
+      if (this.tetherInstance) {
+        this.destroyTetherInstance();
+      }
+    }
+  },
+
+  destroyTetherInstance() {
+    this.tetherInstance.element.remove()
+    this.tetherInstance.destroy();
+    this.set('tetherInstance', null);
   }
 });
