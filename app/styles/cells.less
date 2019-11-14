@@ -2,8 +2,10 @@
 
 .hypertable__cell {
   border-bottom: 1px solid lighten(@upf-gray, 15%);
+  border-left: 1px solid lighten(@upf-gray, 15%);
   display: flex;
   align-items: center;
+  background-color: white;
 
   height: @cell-height;
   max-height: @cell-height;
@@ -37,7 +39,7 @@
     &.editing,
     &.saving {
       .editing-input {
-        width: 100%;
+        width: 70%;
       }
     }
   }
@@ -66,6 +68,16 @@
       padding: 5px 4px;
       font-size: inherit;
       height: auto;
+    }
+  }
+
+  .list-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    span:nth-child(2) {
+      width: 65px
     }
   }
 

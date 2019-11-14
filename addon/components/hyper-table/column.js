@@ -1,7 +1,6 @@
 import SortableItem from 'ember-sortable/components/sortable-item';
 import { computed, defineProperty, observer } from '@ember/object';
 import { and, notEmpty, or } from '@ember/object/computed';
-import { run } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 
 const AVAILABLE_RENDERERS = [

@@ -1,14 +1,14 @@
 {{#if emptyValue}}
   —
 {{else}}
-  <div class="editing-input">
-    <span>
+  <div class="list-container">
+    <div>
       {{get value '0'}}
-    </span>
+    </div>
     {{#if length}}
-      <span class="text-color-default-light margin-left-sm" data-toggle="tooltip" data-html="true" data-title={{formattedList}} data-placement="bottom">
+      <div class="text-color-default-light margin-left-sm" data-toggle="tooltip" data-html="true" data-title={{formattedList}} data-placement="bottom">
         +{{length}} more
-      </span>
+      </div>
     {{/if}}
   </div>
 {{/if}}
