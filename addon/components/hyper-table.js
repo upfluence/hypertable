@@ -10,6 +10,7 @@ export default Component.extend({
 
   contextualActions: null,
   footer: null,
+  bottomReachedOffset: 0,
 
   /*
    * Table States
@@ -130,7 +131,8 @@ export default Component.extend({
 
       self.set('_hasScrollbar', (tableHeight <= contentHeight));
 
-      if ((heightScrolled + tableHeight) >= contentHeight) {
+      let _bottom = contentHeight - this.bottomReachedOffset;
+      if ((heightScrolled + tableHeight) >= _bottom) {
         if (self.manager.hooks.onBottomReached) {
           self.manager.hooks.onBottomReached();
         }
