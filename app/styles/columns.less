@@ -20,7 +20,7 @@
   }
 
   opacity: 1;
-  transition: opacity .5s;
+  transition: transform .1s;
 
   &:first-child,
   &:nth-child(2) {
@@ -29,7 +29,8 @@
 
   // Animate Columns Drag & Drop
   &.is-dragging {
-    opacity: .75;
+    background-color: white;
+    z-index: 10;
   }
 
   &.is-dropping {
