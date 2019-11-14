@@ -2,10 +2,6 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { or } from '@ember/object/computed';
 
-const AVAILABLE_RENDERERS = [
-  'text', 'numeric', 'money', 'date', 'image', 'list'
-];
-
 export default Component.extend({
   classNames: ['hypertable__cell'],
   classNameBindings: [
@@ -19,10 +15,8 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    if (!this.header && this.manager.hooks.onRowClicked) {
-      if(this.item.editStatus === null) {
-        this.manager.hooks.onRowClicked(this.item);
-      }
+    if (this.manager.hooks.onRowClicked && !this.item.editStatus) {
+      this.manager.hooks.onRowClicked(this.item);
     }
   },
 });
