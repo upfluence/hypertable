@@ -22,7 +22,8 @@
 
   &:first-child,
   &:nth-child(2) {
-    .hypertable__cell {
+    .hypertable__cell,
+    header {
       border-left: none;
     }
   }
@@ -36,6 +37,10 @@
 
   &.is-dropping {
     opacity: 1;
+  }
+
+  header {
+    border-left: 1px solid lighten(@upf-gray, 15%);
   }
 }
 
