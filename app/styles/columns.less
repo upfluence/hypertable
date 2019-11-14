@@ -1,6 +1,4 @@
 .hypertable__column {
-  border-left: 1px solid lighten(@upf-gray, 15%);
-
   &--size-S {
     min-width: 150px;
     width: 3rem;
@@ -24,7 +22,9 @@
 
   &:first-child,
   &:nth-child(2) {
-    border-left: none;
+    .hypertable__cell {
+      border-left: none;
+    }
   }
 
   // Animate Columns Drag & Drop
