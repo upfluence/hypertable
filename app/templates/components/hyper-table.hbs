@@ -169,6 +169,10 @@
       {{/each}}
     {{/sortable-group}}
 
+    {{#if (and (not loadingData) manager.hooks.onBottomReached)}}
+      {{hyper-table/infinity-loader onBottomReached=manager.hooks.onBottomReached}}
+    {{/if}}
+
     {{#if (and (eq _collection.length 0) (not loadingData))}}
       <div class="hypertable__state hypertable__state--empty">
         {{#if (has-block "inverse")}}

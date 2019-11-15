@@ -2,8 +2,8 @@ import { A } from '@ember/array';
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
 import { alias, filterBy } from '@ember/object/computed';
-import { run } from '@ember/runloop';
-import { typeOf, compare } from '@ember/utils';
+import { run, once } from '@ember/runloop';
+import { compare, isEmpty, typeOf } from '@ember/utils';
 
 export default Component.extend({
   classNames: ['hypertable-container'],
@@ -31,6 +31,8 @@ export default Component.extend({
   _activeFieldCategory: null,
 
   _searchQuery: computed('_columns.firstObject', function() {
+    if (isEmpty(this._columns)) return;
+
     let searchTerm = this._columns.firstObject.filters.findBy('key', 'value');
 
     return searchTerm ? searchTerm.value : null;
@@ -110,54 +112,28 @@ export default Component.extend({
   }),
 
   _resizeInnerTable() {
-    let self = this;
-
-    let _innerTable = this.$('.hypertable__table')[0];
-    this.set('_innerTableHeight', window.innerHeight - _innerTable.offsetTop - 90);
+    this.set(
+      '_innerTableHeight', window.innerHeight - this._innerTable.offsetTop - 90
+    );
 
     if (this.footer) {
       this.set('_innerTableHeight', this._innerTableHeight - 90); // Footer Height + Margin
     }
 
-    _innerTable.setAttribute(
+    this._innerTable.setAttribute(
       'style', `height: ${this._innerTableHeight}px !important;`
     );
-
-    this.$('.hypertable__table').on('scroll', function() {
-      let tableHeight = $(this).innerHeight();
-      let contentHeight = $('.hypertable')[0].scrollHeight;
-      let heightScrolled = $(this).scrollTop();
-
-      self.set('_hasScrollbar', (tableHeight <= contentHeight));
-
-      let _bottom = contentHeight - this.bottomReachedOffset;
-      if ((heightScrolled + tableHeight) >= _bottom) {
-        if (self.manager.hooks.onBottomReached) {
-          self.manager.hooks.onBottomReached();
-        }
-      }
-    });
-  },
-
-  didInsertElement() {
-    let obs = new MutationObserver((mutations, observer) => {
-      for(var i=0; i < mutations.length; ++i) {
-        for (var j=0; j<mutations[i].addedNodes.length; ++j) {
-          let node = mutations[i].addedNodes[j];
-
-          if(node.classList && node.classList.contains('hypertable__table')) {
-            this._resizeInnerTable();
-          }
-        }
-      }
-    });
-
-    obs.observe(document.getElementById(this.elementId), { childList: true });
   },
 
   didRender() {
     this._super();
     this.$('[data-toggle="tooltip"]').tooltip();
+
+
+    once(() => {
+      this.set('_innerTable', document.querySelector('.hypertable__table'));
+      this._resizeInnerTable();
+    })
   },
 
   actions: {
