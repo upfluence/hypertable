@@ -8,7 +8,7 @@ export default Component.extend({
     'item.selected:hypertable__cell--selected',
     'item.hovered:hypertable__cell--hovered',
     'loading:hypertable__cell--loading',
-    'onRowClicked:hypertable__cell--clickable'
+    'manager.hooks.onRowClicked:hypertable__cell--clickable'
   ],
 
   loading: false,
