@@ -24,6 +24,7 @@ export default Component.extend(FiltersRendererMixin, {
       'filters',
       isEmpty(this._searchQuery) ? [] : [{ key: 'value', value: this._searchQuery }]
     );
+    this.manager.hooks.onColumnsChange('columns:change');
   },
 
   _searchQueryObserver: observer('_searchQuery', function() {

@@ -124,6 +124,7 @@ export default Component.extend(FiltersRendererMixin, {
           { key: 'upper_bound', value: (+toDate/1000).toString() }
         ]);
       }
+      this.manager.hooks.onColumnsChange('columns:change');
     },
 
     // Mixin Candidate

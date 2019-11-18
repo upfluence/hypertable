@@ -33,6 +33,7 @@ export default EmberObject.extend({
         return f;
       }));
     }
+    this.manager.hooks.onColumnsChange('columns:change');
   },
 
   clearFilters() {
