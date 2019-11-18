@@ -19,12 +19,10 @@ export default Component.extend({
    * Various states in which the datatable can be.
    *
    */
-  refreshing: false,
   loadingData: false,
   loadingMore: false,
 
   _allRowsSelected: false,
-  _hasScrollbar: false,
 
   _availableFieldsPanel: false,
   _availableFieldsKeyword: '',
@@ -70,10 +68,26 @@ export default Component.extend({
 
   _loadingMore: computed(
     'onBottomReached',
-    '_hasScrollbar',
     'loadingMore',
     function() {
-      return this.manager.hooks.onBottomReached && this._hasScrollbar && this.loadingMore;
+      return this.manager.hooks.onBottomReached && this.loadingMore;
+    }
+  ),
+
+  _infinityLoaderToggler: observer(
+    'loadingData',
+    'loadingMore',
+    '_collection.length',
+    function() {
+      run.debounce(this, () => {
+        let _loadingSmthn = this.loadingData || this.loadingMore;
+        let _hasInfinity = this.manager.hooks.onBottomReached;
+
+        this.set(
+          '_displayInfinityLoader',
+          _hasInfinity && !_loadingSmthn && this._collection.length > 0
+        );
+      }, 3000)
     }
   ),
 
@@ -128,7 +142,6 @@ export default Component.extend({
   didRender() {
     this._super();
     this.$('[data-toggle="tooltip"]').tooltip();
-
 
     once(() => {
       this.set('_innerTable', document.querySelector('.hypertable__table'));

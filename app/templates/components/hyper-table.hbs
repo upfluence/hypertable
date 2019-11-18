@@ -130,6 +130,11 @@
                 {{hyper-table/cell loading=true}}
                 {{hyper-table/cell loading=true}}
               {{/if}}
+
+              {{#if _displayInfinityLoader}}
+                {{hyper-table/infinity-loader
+                  onBottomReached=manager.hooks.onBottomReached}}
+              {{/if}}
             {{/if}}
           </div>
         </div>
@@ -165,10 +170,6 @@
       {{/if}}
     {{/each}}
   {{/sortable-group}}
-
-  {{#unless (or loadingData loadingMore (not manager.hooks.onBottomReached))}}
-    {{hyper-table/infinity-loader onBottomReached=manager.hooks.onBottomReached}}
-  {{/unless}}
 
   {{#if (and (eq _collection.length 0) (not loadingData))}}
     <div class="hypertable__state hypertable__state--empty">
