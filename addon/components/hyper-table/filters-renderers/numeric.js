@@ -26,6 +26,7 @@ export default Component.extend(FiltersRendererMixin, {
       { key: 'lower_bound', value: this.lowerBoundFilter },
       { key: 'upper_bound', value: this.upperBoundFilter }
     ]);
+    this.manager.hooks.onColumnsChange('columns:change');
   },
 
   didReceiveAttrs() {

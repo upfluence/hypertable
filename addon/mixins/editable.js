@@ -19,16 +19,12 @@ export default Mixin.create({
           this.$('.editing-input__field').focus();
         });
       } else if(this.get('editStatus.status') !== 'success') {
-        run.once(this, () => {
-          this.item.set('editStatus', {key: this.column.key, status: 'saving'});
-          this.manager.updateColumnValue(this.column.key, this.item, value);
-          this.manager.hooks.onLiveEdit({key: this.column.key, field: this.item, value});
-        });
+        this.manager.hooks.onLiveEdit({key: this.column.key, field: this.item, value});
       }
     },
 
     updateCurrency(currency) {
-      this.manager.updateColumnValue(this.column.currency_key, this.item, currency);
+      this.item.set(this.column.currency_key, currency);
     }
   }
 });

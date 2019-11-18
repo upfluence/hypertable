@@ -39,7 +39,7 @@ export default Component.extend({
       this.set("isEditing", false);
     },
     updateDate(date) {
-      this.manager.updateColumnValue(this.column.property, this.item, +date[0]/1000);
+      this.item.set(this.column.property, +date[0]/1000);
       this.set('_formattedDate', date);
       this.set("isEditing", false);
     }
