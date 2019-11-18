@@ -1,117 +1,87 @@
-{{#if refreshing}}
-  {{loading-state}}
-{{else}}
-  <div class="hypertable__upper-header">
-    <div class="left-side">
-      {{#if manager.options.features.selection}}
-        <div class="selected-count">
-          {{_selectedItems.length}}
-        </div>
-      {{/if}}
-      {{#if manager.options.features.search}}
-        {{input
-          type="text" placeholder="Search..." value=_searchQuery
-          class="form-control upf-input upf-input--small"}}
-      {{/if}}
+<div class="hypertable__upper-header">
+  <div class="left-side">
+    {{#if manager.options.features.selection}}
+      <div class="selected-count">
+        {{_selectedItems.length}}
+      </div>
+    {{/if}}
+    {{#if manager.options.features.search}}
+      {{input
+        type="text" placeholder="Search..." value=_searchQuery
+        class="form-control upf-input upf-input--small"}}
+    {{/if}}
 
-      {{#if (and contextualActions (gt _collection.length 0))}}
-        <div class="contextual-actions contextual-actions--no-animation
-                    {{unless manager.options.features.search 'contextual-actions--no-search-sibling'}}">
-          {{component
-            contextualActions selectedItems=_selectedItems collection=_collection}}
-        </div>
-      {{/if}}
-    </div>
+    {{#if (and contextualActions (gt _collection.length 0))}}
+      <div class="contextual-actions contextual-actions--no-animation
+                  {{unless manager.options.features.search 'contextual-actions--no-search-sibling'}}">
+        {{component
+          contextualActions selectedItems=_selectedItems collection=_collection}}
+      </div>
+    {{/if}}
+  </div>
 
-    <div class="right-side">
-      <button class="upf-btn upf-btn--primary upf-btn--small" {{action "openAvailableFields"}}>
-        <i class="fa fa-columns"></i> &nbsp; Manage Fields
-      </button>
+  <div class="right-side">
+    <button class="upf-btn upf-btn--primary upf-btn--small" {{action "openAvailableFields"}}>
+      <i class="fa fa-columns"></i> &nbsp; Manage Fields
+    </button>
 
-      {{#if _availableFieldsPanel}}
-        <div class="available-fields-wrapper">
-          <div class="available-fields-wrapper__categories">
-            <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setFieldCategory"}}>
-              <div>All Fields</div>
+    {{#if _availableFieldsPanel}}
+      <div class="available-fields-wrapper">
+        <div class="available-fields-wrapper__categories">
+          <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setFieldCategory"}}>
+            <div>All Fields</div>
+            <div><i class="fa fa-caret-right"></i></div>
+          </div>
+          {{#each _fieldCategories as |category|}}
+            <div class="field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}" {{action "setFieldCategory" category.key}}>
+              <div>{{category.label}}</div>
               <div><i class="fa fa-caret-right"></i></div>
             </div>
-            {{#each _fieldCategories as |category|}}
-              <div class="field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}" {{action "setFieldCategory" category.key}}>
-                <div>{{category.label}}</div>
-                <div><i class="fa fa-caret-right"></i></div>
+          {{/each}}
+        </div>
+
+        <div class="available-fields-wrapper__fields">
+          <div class="search">
+            {{input
+              type="text" value=_availableFieldsKeyword
+              class="upf-input upf-input--small"}}
+          </div>
+
+          <div class="fields-list">
+            {{#each _orderedFilteredFields as |field|}}
+              <div class="field">
+                {{upf-checkbox
+                  value=field.visible size="sm"
+                  onValueChange=(action "fieldVisibilityUpdated" field)}}
+                <div class="margin-left-xxx-sm">{{field.name}}</div>
+              </div>
+            {{else}}
+              <div class="field margin-top-md">
+                No columns found
               </div>
             {{/each}}
           </div>
-
-          <div class="available-fields-wrapper__fields">
-            <div class="search">
-              {{input
-                type="text" value=_availableFieldsKeyword
-                class="upf-input upf-input--small"}}
-            </div>
-
-            <div class="fields-list">
-              {{#each _orderedFilteredFields as |field|}}
-                <div class="field">
-                  {{upf-checkbox
-                    value=field.visible size="sm"
-                    onValueChange=(action "fieldVisibilityUpdated" field)}}
-                  <div class="margin-left-xxx-sm">{{field.name}}</div>
-                </div>
-              {{else}}
-                <div class="field margin-top-md">
-                  No columns found
-                </div>
-              {{/each}}
-            </div>
-          </div>
         </div>
-      {{/if}}
-    </div>
-  </div>
-
-  <div class="hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}">
-    {{#if (and manager.tetherInstance manager.tetherBackdrop)}}
-      <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
+      </div>
     {{/if}}
+  </div>
+</div>
 
-    {{#sortable-group
-      direction="x" model=_columns onChange=(action "reorderColumns")
-      classNames="hypertable" as |group|}}
-      {{#each _columns as |column index|}}
-        {{#if (eq index 0)}}
-          <div class="hypertable__sticky-columns">
-            {{#if manager.options.features.selection}}
-              <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
-                <header>
-                  {{upf-checkbox value=_allRowsSelected size="sm"}}
-                </header>
+<div class="hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}">
+  {{#if (and manager.tetherInstance manager.tetherBackdrop)}}
+    <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
+  {{/if}}
 
-                {{#if loadingData}}
-                  {{#each _loadingCollection}}
-                    {{hyper-table/cell loading=true}}
-                  {{/each}}
-                {{else}}
-                  {{#each _collection as |item|}}
-                    <div class="hypertable__cell">
-                      {{upf-checkbox value=item.selected size="sm"}}
-                    </div>
-                  {{/each}}
-
-                  {{#if _loadingMore}}
-                    {{hyper-table/cell loading=true}}
-                    {{hyper-table/cell loading=true}}
-                    {{hyper-table/cell loading=true}}
-                  {{/if}}
-                {{/if}}
-              </div>
-            {{/if}}
-
-            <div class="hypertable__column {{concat "hypertable__column--size-" column.size}}">
+  {{#sortable-group
+    direction="x" model=_columns onChange=(action "reorderColumns")
+    classNames="hypertable" as |group|}}
+    {{#each _columns as |column index|}}
+      {{#if (eq index 0)}}
+        <div class="hypertable__sticky-columns">
+          {{#if manager.options.features.selection}}
+            <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
               <header>
-                <div class="cell-header">
-                  {{column.field.name}}
-                </div>
+                {{upf-checkbox value=_allRowsSelected size="sm"}}
               </header>
 
               {{#if loadingData}}
@@ -120,11 +90,8 @@
                 {{/each}}
               {{else}}
                 {{#each _collection as |item|}}
-                  <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
-                    {{hyper-table/cell
-                      item=item column=column
-                      manager=manager
-                      renderingComponent=(cell-rendering-inferer column)}}
+                  <div class="hypertable__cell">
+                    {{upf-checkbox value=item.selected size="sm"}}
                   </div>
                 {{/each}}
 
@@ -135,15 +102,15 @@
                 {{/if}}
               {{/if}}
             </div>
-          </div>
-        {{/if}}
-      {{/each}}
+          {{/if}}
 
-      {{#each _columns as |column index|}}
-        {{#if (gt index 0)}}
-          {{#hyper-table/column
-            model=column item=item column=column group=group manager=manager
-            handle="header"}}
+          <div class="hypertable__column {{concat "hypertable__column--size-" column.size}}">
+            <header>
+              <div class="cell-header">
+                {{column.field.name}}
+              </div>
+            </header>
+
             {{#if loadingData}}
               {{#each _loadingCollection}}
                 {{hyper-table/cell loading=true}}
@@ -164,33 +131,62 @@
                 {{hyper-table/cell loading=true}}
               {{/if}}
             {{/if}}
-          {{/hyper-table/column}}
-        {{/if}}
-      {{/each}}
-    {{/sortable-group}}
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
 
-    {{#if (and (not loadingData) manager.hooks.onBottomReached)}}
-      {{hyper-table/infinity-loader onBottomReached=manager.hooks.onBottomReached}}
-    {{/if}}
+    {{#each _columns as |column index|}}
+      {{#if (gt index 0)}}
+        {{#hyper-table/column
+          model=column item=item column=column group=group manager=manager
+          handle="header"}}
+          {{#if loadingData}}
+            {{#each _loadingCollection}}
+              {{hyper-table/cell loading=true}}
+            {{/each}}
+          {{else}}
+            {{#each _collection as |item|}}
+              <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
+                {{hyper-table/cell
+                  item=item column=column
+                  manager=manager
+                  renderingComponent=(cell-rendering-inferer column)}}
+              </div>
+            {{/each}}
 
-    {{#if (and (eq _collection.length 0) (not loadingData))}}
-      <div class="hypertable__state hypertable__state--empty">
-        {{#if (has-block "inverse")}}
-          {{yield to="inverse"}}
-        {{else}}
-          No Data
-        {{/if}}
-      </div>
-    {{/if}}
-  </div>
+            {{#if _loadingMore}}
+              {{hyper-table/cell loading=true}}
+              {{hyper-table/cell loading=true}}
+              {{hyper-table/cell loading=true}}
+            {{/if}}
+          {{/if}}
+        {{/hyper-table/column}}
+      {{/if}}
+    {{/each}}
+  {{/sortable-group}}
 
-  {{#if footer}}
-    <div class="hypertable__footer">
-      {{#if (eq _footerType "string")}}
-        {{component footer collection=_collection}}
+  {{#unless (or loadingData loadingMore (not manager.hooks.onBottomReached))}}
+    {{hyper-table/infinity-loader onBottomReached=manager.hooks.onBottomReached}}
+  {{/unless}}
+
+  {{#if (and (eq _collection.length 0) (not loadingData))}}
+    <div class="hypertable__state hypertable__state--empty">
+      {{#if (has-block "inverse")}}
+        {{yield to="inverse"}}
       {{else}}
-        {{footer}}
+        No Data
       {{/if}}
     </div>
   {{/if}}
+</div>
+
+{{#if footer}}
+  <div class="hypertable__footer">
+    {{#if (eq _footerType "string")}}
+      {{component footer collection=_collection}}
+    {{else}}
+      {{footer}}
+    {{/if}}
+  </div>
 {{/if}}
