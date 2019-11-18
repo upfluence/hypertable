@@ -110,10 +110,6 @@ export default EmberObject.extend({
     this.set('fieldCategories', categories);
   },
 
-  updateColumnValue(key, item, value) {
-    item.set(key, value);
-  },
-
   formatField(field) {
     if (field.type === 'string') field.set('type', 'text');
     if (field.type === 'integer') field.set('type', 'numeric');
