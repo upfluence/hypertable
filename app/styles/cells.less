@@ -37,9 +37,11 @@
     display:flex;
     align-items:center;
     &.editing,
-    &.saving {
+    &.saving,
+    &.error {
       .editing-input {
         width: 70%;
+        max-width: 200px;
       }
     }
   }
@@ -55,6 +57,7 @@
 
   .editing-input {
     max-width: 80%;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
 

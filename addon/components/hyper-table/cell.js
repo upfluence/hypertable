@@ -1,6 +1,4 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
-import { or } from '@ember/object/computed';
 
 export default Component.extend({
   classNames: ['hypertable__cell'],
@@ -15,7 +13,7 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    if (this.manager.hooks.onRowClicked && !this.item.editStatus) {
+    if (this.manager.hooks.onRowClicked && !this.manager.editStatus) {
       this.manager.hooks.onRowClicked(this.item);
     }
   },
