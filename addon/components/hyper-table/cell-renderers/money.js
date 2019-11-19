@@ -14,6 +14,6 @@ export default Component.extend(EditableMixin, CellRendererMixin, {
   }),
 
   emptyValue: computed('amount', 'currency', function() {
-    return !(this.amount && this.currency)
+    return !(this.amount && this.currency);
   })
 });

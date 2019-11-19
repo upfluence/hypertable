@@ -10,3 +10,27 @@
     </div>
   {{/input-wrapper}}
 {{/if}}
+
+{{#if column.filterable}}
+  <div class="row {{if column.orderable 'margin-top-xx-sm'}}">
+    {{#input-wrapper classNames="col-xs-6"}}
+      <label>From</label>
+      {{input
+        type="number" placeholder="From" value=lowerBoundFilter
+        class="form-control upf-input upf-input--textarea"}}
+    {{/input-wrapper}}
+
+    {{#input-wrapper classNames="col-xs-6"}}
+      <label>To</label>
+      {{input
+        type="number" placeholder="To" value=upperBoundFilter
+        class="form-control upf-input upf-input--textarea"}}
+    {{/input-wrapper}}
+  </div>
+
+  <div class="margin-top-xx-sm upf-align--right">
+    <button class="upf-btn upf-btn--default upf-btn--small" {{action "clearFilters"}}>
+      Clear Filters
+    </button>
+  </div>
+{{/if}}
