@@ -1,23 +1,19 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { empty } from '@ember/object/computed';
+
 import EditableMixin from '@upfluence/hypertable/mixins/editable';
+import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
 
-export default Component.extend(EditableMixin, {
-  currency: computed('column', 'column.currency_key', 'item.currency', function() {
-    if (this.column && !this.column.currency_key) {
-      throw new Error(
-        '[upf-table/cell-renderers][money] You are trying to render Money without a currency'
-      );
-    }
-
-    return this.item.get(this.column.currency_key);
+export default Component.extend(EditableMixin, CellRendererMixin, {
+  amount: computed('value', function() {
+    return (this.value) ? (parseInt(this.value.cents) || 0) / 10000 : null;
   }),
 
-  amount: computed('item', 'column.key', function() {
-    return this.item.get(this.column.key);
+  currency: computed('value', function() {
+    return (this.value) ? this.value.currency : null;
   }),
 
-  emptyAmount: empty('amount'),
-  emptyCurrency: empty('currency')
+  emptyValue: computed('amount', 'currency', function() {
+    return !(this.amount && this.currency);
+  })
 });

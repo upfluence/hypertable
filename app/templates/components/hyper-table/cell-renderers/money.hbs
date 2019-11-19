@@ -1,6 +1,8 @@
 <div class="editing-input">
   {{#if isEditing}}
-    {{#x-select class="editing-input__field editing-input__field--select form-control" value=currency on-change=(action "updateCurrency") as |xs|}}
+    {{#x-select
+      class="editing-input__field editing-input__field--select form-control"
+      value=item.currency on-change=(action "updateCurrency") as |xs|}}
       {{#each manager.options.currencies as |code|}}
         {{#xs.option value=code}}{{code}}{{/xs.option}}
       {{/each}}
@@ -8,8 +10,8 @@
     {{input type="text" value=amount class="editing-input__field form-control"}}
     <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" amount}}></i>
   {{else}}
-    <span data-toggle="tooltip" data-title={{format-money amount currency}}>
-      {{if emptyAmount '—' (format-money amount currency)}}
+    <span data-toggle="tooltip" data-title={{format-money amount item.currency}}>
+      {{if emptyValue '—' (format-money amount currency)}}
     </span>
 
     {{#if column.upsertable}}
