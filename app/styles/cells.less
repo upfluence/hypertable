@@ -86,6 +86,13 @@
     border-color: @upf-primary-bright-purple;
   }
 
+  .is-invalid > .form-control {
+    border-color: @upf-feedback-error;
+    &:focus {
+      border-color: @upf-feedback-error;
+    }
+  }
+
   .fa {
     font-size: 1.5rem;
     cursor: pointer;

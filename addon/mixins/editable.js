@@ -1,6 +1,6 @@
 import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
-import { run } from '@ember/runloop';
+import { run, debounce } from '@ember/runloop';
 
 export default Mixin.create({
   classNameBindings: [`editStatus.status`],
@@ -11,6 +11,11 @@ export default Mixin.create({
     }
   }),
 
+  isSuccess: computed.equal('editStatus.status', 'success'),
+  isEditing: computed.equal('editStatus.status', 'editing'),
+  isSaving: computed.equal('editStatus.status', 'saving'),
+  isError: computed.equal('editStatus.status', 'error'),
+
   actions: {
     toggleEditing(value) {
       if(!this.get('editStatus.status')){
@@ -19,7 +24,10 @@ export default Mixin.create({
           this.$('.editing-input__field').focus();
         });
       } else if(this.get('editStatus.status') !== 'success') {
-        this.manager.hooks.onLiveEdit({key: this.column.key, field: this.item, value});
+        debounce(this, () => {
+          this.manager.hooks.onLiveEdit({key: this.column.key, field: this.item, value})
+        }, 150);
+        ;
       }
     },
 

@@ -10,5 +10,5 @@ export default Mixin.create({
     return this.item.get(this.column.key);
   }),
 
-  emptyValue: empty('value'),
+  emptyValue: empty('value')
 });

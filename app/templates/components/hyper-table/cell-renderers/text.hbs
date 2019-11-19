@@ -1,4 +1,20 @@
-{{#if (and emptyValue (or (not editStatus.status) (eq editStatus.status "success")))}}
+{{#if isSuccess}}
+  {{log 'isSuccess' isSuccess}}
+{{/if}}
+
+{{#if isEditing}}
+  {{log 'isEditing' isEditing}}
+{{/if}}
+
+{{#if isSaving}}
+  {{log 'isSaving' isSaving}}
+{{/if}}
+
+{{#if isError}}
+  {{log 'isError' isError}}
+{{/if}}
+
+{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
   {{#if column.upsertable}}
     Add Value
   {{else}}
@@ -6,8 +22,8 @@
   {{/if}}
 {{else}}
   <div class="editing-input">
-    {{#if (and editStatus.status (not-eq editStatus.status "success"))}}
-      <div>
+    {{#if (and editStatus.status (not isSuccess))}}
+      <div class={{if isError 'is-invalid'}}>
         {{input
           type="text" value=value class="editing-input__field form-control"
           focus-out=(action "toggleEditing" value)
@@ -23,11 +39,11 @@
 
 {{!-- TODO: Extract to component --}}
 {{#if column.upsertable}}
-  {{#if (eq editStatus.status "success")}}
-    <span class="text-color-success upf-icon upf-icon--check padding-left-xx-sm" onclick={{action "toggleEditing"}}></span>
-  {{else if (eq editStatus.status "editing")}}
-    <i class="fa fa-save padding-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
-  {{else if (eq editStatus.status "saving")}}
+  {{#if isSuccess}}
+    <span class="text-color-success upf-icon upf-icon--check padding-left-xx-sm"></span>
+  {{else if (or isEditing isError)}}
+    <i class="fa fa-save padding-left-xx-sm"></i>
+  {{else if isSaving}}
     {{loading-state}}
   {{else}}
     <i class="fa fa-pencil padding-left-xx-sm" onclick={{action "toggleEditing"}}></i>
