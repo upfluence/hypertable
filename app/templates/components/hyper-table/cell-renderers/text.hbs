@@ -1,6 +1,6 @@
 {{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
   {{#if column.upsertable}}
-    <span class="input-trigger">Add Value</span>
+    Add Value
   {{else}}
     —
   {{/if}}
@@ -13,7 +13,7 @@
           insert-newline=(action "toggleEditing" editableValue) }}
       </div>
     {{else}}
-      <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
+      <div data-toggle="tooltip" data-title={{value}} data-placement="bottom">
         {{value}}
       </div>
     {{/if}}

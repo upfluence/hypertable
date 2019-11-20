@@ -19,10 +19,7 @@ export default Mixin.create({
 
   actions: {
     toggleEditing(value) {
-      if (
-        !this.get('editStatus.status') || 
-          this.manager.get('editStatus.status') === 'success'
-      ) {
+      if (!this.get('editStatus.status') || this.manager.get('editStatus.status') === 'success') {
         if (this.value !== this.editableValue) {
           this.set('editableValue', this.value);
         }
@@ -32,6 +29,7 @@ export default Mixin.create({
           status: 'editing',
           item: this.item
         });
+
         run.scheduleOnce('afterRender', this, () => {
           this.$('.editing-input__field').focus();
         });
