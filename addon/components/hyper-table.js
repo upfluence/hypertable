@@ -139,6 +139,12 @@ export default Component.extend({
     );
   },
 
+  init() {
+    this._super();
+
+    $(window).on('resize', this._resizeInnerTable.bind(this));
+  },
+
   didRender() {
     this._super();
     this.$('[data-toggle="tooltip"]').tooltip();
@@ -147,6 +153,10 @@ export default Component.extend({
       this.set('_innerTable', document.querySelector('.hypertable__table'));
       this._resizeInnerTable();
     })
+  },
+
+  willDestroyElement() {
+    $(window).off('resize');
   },
 
   actions: {
