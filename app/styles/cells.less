@@ -44,22 +44,20 @@
         max-width: 200px;
       }
     }
+    &.empty-value {
+      color: @color-text-lighter;
+    }
   }
 
-  .upf-loading .spinner {
-    width: auto;
-    margin-left: @spacing-xx-sm;
-    > div {
-      width: 6px;
-      height: 6px;
-    }
+  .input-trigger {
+    z-index: 10;
   }
 
   .editing-input {
     max-width: 80%;
-    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 10;
 
     div {
       text-overflow: ellipsis;
@@ -108,6 +106,67 @@
   &:hover {
     .fa-pencil {
       opacity: 1;
+      &.delayed {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .fa-pencil.delayed {
+    animation: scaleIn 0.3s ease forwards;
+    animation-delay: 1.4s;
+  }
+
+  .status-container {
+    position: relative;
+    .fa,
+    .upf-icon--check,
+    .upf-loading {
+      position: absolute;
+      padding: @spacing-xx-sm;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50% , -50%);
+      -webkit-transform: translate(-50%, -50%);
+    }
+    .upf-loading {
+      width: 100px;
+      .spinner {
+        width: auto;
+        margin-left: @spacing-xx-sm;
+        > div {
+          width: 6px;
+          height: 6px;
+        }
+      }
+    }
+  }
+
+  .upf-icon--check {
+    background-color: white;
+    animation: fadeIn 1.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% {
+      transform: translate(-50% , -50%) scale(1);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(0);
+      visibility: hidden;
+     }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: translate(-50% , -50%) scale(0);
+      visibility: visible;
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+      visibility: visible;
     }
   }
 }
@@ -115,6 +174,9 @@
 .hypertable__cell--selected,
 .hypertable__cell--hovered {
   background-color: @upf-gray-light;
+  .upf-icon--check {
+    background-color: @upf-gray-light;
+  }
 }
 
 .hypertable__cell--clickable {

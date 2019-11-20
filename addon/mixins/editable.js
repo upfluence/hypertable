@@ -7,8 +7,8 @@ export default Mixin.create({
 
   editStatus: computed('manager.editStatus', 'column.key', function() {
     if (
-      this.item === this.manager.get("editStatus.item") &&
-      this.column.key === this.manager.get("editStatus.key")
+      this.item === this.manager.get('editStatus.item') &&
+      this.column.key === this.manager.get('editStatus.key')
     ) return this.manager.editStatus;
   }),
 
@@ -19,16 +19,28 @@ export default Mixin.create({
 
   actions: {
     toggleEditing(value) {
-      if(!this.get('editStatus.status')){
-        if(this.value !== this.editableValue) {
-          this.set('editableValue', this.value)
+      if (
+        !this.get('editStatus.status') || 
+          this.manager.get('editStatus.status') === 'success'
+      ) {
+        if (this.value !== this.editableValue) {
+          this.set('editableValue', this.value);
         }
-        this.manager.set('editStatus', {key: this.column.key, status: 'editing', item: this.item})
+
+        this.manager.set('editStatus', {
+          key: this.column.key,
+          status: 'editing',
+          item: this.item
+        });
         run.scheduleOnce('afterRender', this, () => {
           this.$('.editing-input__field').focus();
         });
-      } else if(this.get('editStatus.status') !== 'success') {
-        this.manager.hooks.onLiveEdit({key: this.column.key, field: this.item, value})
+      } else if (this.get('editStatus.status') !== 'success') {
+        this.manager.hooks.onLiveEdit({
+          key: this.column.key,
+          field: this.item,
+          value
+        });
       }
     },
 

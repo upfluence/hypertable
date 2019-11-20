@@ -13,7 +13,7 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    if (this.manager.hooks.onRowClicked && !this.manager.editStatus) {
+    if (this.manager.hooks.onRowClicked && (!this.manager.editStatus) || this.manager.get('editStatus.status')) {
       this.manager.hooks.onRowClicked(this.item);
     }
   },
