@@ -1,13 +1,14 @@
-<div class="editing-input">
-  {{ember-flatpickr
-      onChange=(action "updateDate")
-      onOpen=(action "toggleEditing")
-      onClose=(action "onCalendarClose")
-      date=(readonly _formattedDate)
-      altInput=true
-      placeholder="—"
-      getFlatpickrRef=(action (mut flatpickrRef))}}
-  {{#unless isEditing}}
-    <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}/>
-  {{/unless}}
-</div>
+{{#if (or emptyValue (eq value 0))}}
+  —
+{{else}}
+  <div class="editing-input">
+    {{ember-flatpickr
+        onChange=(action "updateDate") onOpen=(action "toggleEditing")
+        onClose=(action "onCalendarClose") date=(readonly _formattedDate)
+        altInput=true placeholder="—" getFlatpickrRef=(action (mut flatpickrRef))}}
+
+    {{#unless (or isEditing (not column.upsertable))}}
+      <i class="fa fa-pencil margin-left-xxx-sm" {{action "toggleEditing"}}></i>
+    {{/unless}}
+  </div>
+{{/if}}
