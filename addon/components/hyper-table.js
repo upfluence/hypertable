@@ -177,9 +177,13 @@ export default Component.extend({
     },
 
     fieldVisibilityUpdated(field) {
-      this.manager.toggleColumnVisibility(field).then(() => {
+      this.manager.toggleColumnVisibility(field).then((action) => {
         if (this.manager.hooks.onColumnsChange) {
           this.manager.hooks.onColumnsChange('columns:change');
+        }
+
+        if (action === 'addition') {
+          this._innerTable.firstElementChild.scrollLeft = this._innerTable.firstElementChild.scrollWidth;
         }
       });
     },

@@ -124,9 +124,11 @@ export default EmberObject.extend({
   toggleColumnVisibility(field) {
     return new Promise((resolve, reject) => {
       let _c = this.columns.findBy('key', field.key);
+      let _action = null;
 
       if (_c) {
         this.columns.removeObject(_c);
+        _action = 'removal';
       } else {
         this.formatField(field);
 
@@ -141,9 +143,11 @@ export default EmberObject.extend({
             field
           })
         );
+
+        _action = 'addition';
       }
 
-      resolve();
+      resolve(_action);
     });
   },
 
