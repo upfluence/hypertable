@@ -13,8 +13,9 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    if (this.manager.hooks.onRowClicked && (!this.manager.editStatus) || this.manager.get('editStatus.status') === 'success') {
+    let status = this.manager.getWithDefault('editStatus.status', 'success');
+
+    if (this.manager.hooks.onRowClicked && status === 'success')
       this.manager.hooks.onRowClicked(this.item);
-    }
   },
 });
