@@ -6,7 +6,8 @@ export default Component.extend({
     'item.selected:hypertable__cell--selected',
     'item.hovered:hypertable__cell--hovered',
     'loading:hypertable__cell--loading',
-    'manager.hooks.onRowClicked:hypertable__cell--clickable'
+    'manager.hooks.onRowClicked:hypertable__cell--clickable',
+    'column.key'
   ],
 
   loading: false,
@@ -16,6 +17,6 @@ export default Component.extend({
     let status = this.manager.getWithDefault('editStatus.status', 'success');
 
     if (this.manager.hooks.onRowClicked && status === 'success')
-      this.manager.hooks.onRowClicked(this.item);
+      this.manager.hooks.onRowClicked(this.item.influencer_id, this.column.key);
   },
 });

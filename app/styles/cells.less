@@ -32,6 +32,18 @@
     }
   }
 
+  &.email {
+    background-color: white;
+    .text-value:hover {
+      color: @upf-primary-bright-purple;
+      text-decoration: underline;
+    }
+
+    .tooltip {
+      display: none !important;
+    }
+  }
+
   .cell-container {
     width: 100%;
     display:flex;
@@ -168,7 +180,7 @@
 
 .hypertable__cell--selected,
 .hypertable__cell--hovered {
-  background-color: @upf-gray-light;
+  background-color: @upf-gray-light !important;
   .upf-icon--check {
     background-color: @upf-gray-light;
   }
