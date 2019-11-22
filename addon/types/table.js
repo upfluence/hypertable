@@ -85,19 +85,7 @@ export default EmberObject.extend({
   },
 
   updateData(data) {
-    let _d = data;
-
-    let orderedColumn = this.columns.find((c) => c.orderBy);
-
-    if (orderedColumn) {
-      _d = _d.sortBy(orderedColumn.key);
-
-      if (orderedColumn.orderDirection === 'desc') {
-        _d = _d.reverse();
-      }
-    }
-
-    this.set('data', _d);
+    this.set('data', data);
   },
 
   updateOrdering(column, orderBy) {
@@ -140,6 +128,8 @@ export default EmberObject.extend({
             renderingComponent: field.renderingComponent,
             filtersRenderingComponent: field.filtersRenderingComponent,
             upsertable: field.upsertable,
+            orderable: field.orderable,
+            filterable: field.filterable,
             field
           })
         );
