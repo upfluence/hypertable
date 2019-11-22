@@ -10,7 +10,7 @@
 
   <div class="icon-commands">
     {{#if _supportsOrderingOrFiltering}}
-      <i class="fa fa-filter" {{action "toggleFiltersPanel"}}></i>
+      <i data-toggle="tooltip" data-title='Filters' data-placement="bottom" class="fa fa-filter" {{action "toggleFiltersPanel"}}></i>
     {{/if}}
 
     <i class="fa fa-bars fa-rotate-90"></i>
