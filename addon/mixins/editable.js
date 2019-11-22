@@ -27,7 +27,7 @@ export default Mixin.create({
       if(this.get('editStatus.status') && status !== 'success') {
         this.manager.hooks.onLiveEdit({
           key: this.column.key,
-          field: this.item,
+          item: this.item,
           value
         });
         return;
