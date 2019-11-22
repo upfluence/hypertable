@@ -1,20 +1,21 @@
-{{#if (and emptyValue (or (not editStatus.status) (eq editStatus.status "success")))}}
+{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
   {{#if column.upsertable}}
-    Add Value
+    <span {{action "toggleEditing"}}>
+      Add Value
+    </span>
   {{else}}
     —
   {{/if}}
 {{else}}
   <div class="editing-input">
-    {{#if (and editStatus.status (not-eq editStatus.status "success"))}}
-      <div>
+    {{#if (and editStatus.status (not isSuccess))}}
+      <div class={{if isError 'is-invalid'}}>
         {{input
-          type="text" value=value class="editing-input__field form-control"
-          focus-out=(action "toggleEditing" value)
-          insert-newline=(action "toggleEditing" value) }}
+          type="text" value=editableValue class="editing-input__field form-control upf-input"
+          insert-newline=(action "toggleEditing" editableValue) }}
       </div>
     {{else}}
-      <div data-toggle="tooltip" data-title={{value}} data-placement="bottom">
+      <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
         {{value}}
       </div>
     {{/if}}
@@ -23,13 +24,16 @@
 
 {{!-- TODO: Extract to component --}}
 {{#if column.upsertable}}
-  {{#if (eq editStatus.status "success")}}
-    <span class="text-color-success upf-icon upf-icon--check padding-left-xx-sm" onclick={{action "toggleEditing"}}></span>
-  {{else if (eq editStatus.status "editing")}}
-    <i class="fa fa-save padding-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
-  {{else if (eq editStatus.status "saving")}}
-    {{loading-state}}
-  {{else}}
-    <i class="fa fa-pencil padding-left-xx-sm" onclick={{action "toggleEditing"}}></i>
-  {{/if}}
+  <div class="status-container margin-left-x-sm text-color-default-lighter">
+    {{#if isSuccess}}
+      <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
+      <span class="text-color-success upf-icon upf-icon--check text-size-6"></span>
+    {{else if (or isEditing isError)}}
+      <i class="fa fa-save" onclick={{action "toggleEditing" editableValue}}></i>
+    {{else if isSaving}}
+      {{loading-state}}
+    {{else}}
+      <i class="fa fa-pencil" onclick={{action "toggleEditing"}}></i>
+    {{/if}}
+  </div>
 {{/if}}

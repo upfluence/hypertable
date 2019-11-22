@@ -3,12 +3,11 @@ import { computed } from '@ember/object';
 import { empty } from '@ember/object/computed';
 
 export default Mixin.create({
-  classNameBindings: ['emptyValue:text-color-default-lighter'],
+  classNameBindings: ['emptyValue'],
   classNames: ['cell-container'],
-
-  value: computed('item', 'column.key', function() {
+  value: computed('item', 'column.key', 'manager.editStatus', function() {
     return this.item.get(this.column.key);
   }),
-
-  emptyValue: empty('value'),
+  editableValue: computed.oneWay('value'),
+  emptyValue: empty('value')
 });

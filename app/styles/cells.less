@@ -31,24 +31,32 @@
     }
   }
 
+  &.email {
+    background-color: white;
+    .text-value:hover {
+      color: @upf-primary-bright-purple;
+      text-decoration: underline;
+    }
+
+    .tooltip {
+      display: none !important;
+    }
+  }
+
   .cell-container {
     width: 100%;
     display:flex;
     align-items:center;
     &.editing,
-    &.saving {
+    &.saving,
+    &.error {
       .editing-input {
         width: 70%;
+        max-width: 200px;
       }
     }
-  }
-
-  .upf-loading .spinner {
-    width: auto;
-    margin-left: @spacing-xx-sm;
-    > div {
-      width: 6px;
-      height: 6px;
+    &.empty-value {
+      color: @color-text-lighter;
     }
   }
 
@@ -85,6 +93,13 @@
     border-color: @upf-primary-bright-purple;
   }
 
+  .is-invalid > .form-control {
+    border-color: @upf-feedback-error;
+    &:focus {
+      border-color: @upf-feedback-error;
+    }
+  }
+
   .fa {
     font-size: 1.5rem;
     cursor: pointer;
@@ -97,13 +112,77 @@
   &:hover {
     .fa-pencil {
       opacity: 1;
+      &.delayed {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .fa-pencil.delayed {
+    animation: scaleIn 0.3s ease forwards;
+    animation-delay: 1.4s;
+  }
+
+  .status-container {
+    position: relative;
+    .fa,
+    .upf-icon--check,
+    .upf-loading {
+      position: absolute;
+      padding: @spacing-xxx-sm;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50% , -50%);
+      -webkit-transform: translate(-50%, -50%);
+    }
+    .upf-loading {
+      width: 100px;
+      .spinner {
+        width: auto;
+        margin-left: @spacing-xx-sm;
+        > div {
+          width: 6px;
+          height: 6px;
+        }
+      }
+    }
+  }
+
+  .upf-icon--check {
+    background-color: white;
+    animation: fadeIn 1.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% {
+      transform: translate(-50% , -50%) scale(1);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(0);
+      visibility: hidden;
+     }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: translate(-50% , -50%) scale(0);
+      visibility: visible;
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+      visibility: visible;
     }
   }
 }
 
 .hypertable__cell--selected,
 .hypertable__cell--hovered {
-  background-color: @upf-gray-light;
+  background-color: @upf-gray-light !important;
+  .upf-icon--check {
+    background-color: @upf-gray-light;
+  }
 }
 
 .hypertable__cell--clickable {
