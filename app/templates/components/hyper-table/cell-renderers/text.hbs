@@ -1,6 +1,6 @@
 {{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
   {{#if column.upsertable}}
-    <span onclick={{action "toggleEditing"}}>
+    <span {{action "toggleEditing"}}>
       Add Value
     </span>
   {{else}}

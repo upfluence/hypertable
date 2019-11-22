@@ -7,8 +7,9 @@ export default Mixin.create({
 
   editStatus: computed('manager.editStatus', 'column.key', function() {
     let { item, key } = this.manager.editStatus || {}
-    if (this.item === item && this.column.key === key)
+    if (this.item === item && this.column.key === key) {
       return this.manager.editStatus;
+    }
   }),
 
   isSuccess: computed.equal('editStatus.status', 'success'),
