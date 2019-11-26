@@ -141,6 +141,12 @@ export default EmberObject.extend({
       resolve(_action);
     });
   },
+  
+  refreshScrollableStatus() {
+    let table = document.querySelector('.hypertable');
+    let isScrollable = table.scrollWidth > table.offsetWidth;
+    this.set('isScrollable', isScrollable);
+  },
 
   triggerTetherContainer(on, elementClass, options, backdrop = true) {
     if (this.tetherOn !== on) {
