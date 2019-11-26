@@ -72,6 +72,16 @@
     <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
   {{/if}}
 
+  {{#if (and (eq _collection.length 0) (not loadingData))}}
+    <div class="hypertable__state hypertable__state--empty">
+      {{#if (has-block "inverse")}}
+        {{yield to="inverse"}}
+      {{else}}
+        No Data
+      {{/if}}
+    </div>
+  {{/if}}
+
   {{#sortable-group
     direction="x" model=_columns onChange=(action "reorderColumns")
     classNames="hypertable" as |group|}}
@@ -171,16 +181,6 @@
       {{/if}}
     {{/each}}
   {{/sortable-group}}
-
-  {{#if (and (eq _collection.length 0) (not loadingData))}}
-    <div class="hypertable__state hypertable__state--empty">
-      {{#if (has-block "inverse")}}
-        {{yield to="inverse"}}
-      {{else}}
-        No Data
-      {{/if}}
-    </div>
-  {{/if}}
 </div>
 
 {{#if footer}}
