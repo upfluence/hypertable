@@ -145,6 +145,7 @@
       {{#if (gt index 0)}}
         {{#hyper-table/column
           model=column item=item column=column group=group manager=manager
+          onDragStart=(action "dragStarted")
           handle="header"}}
           {{#if loadingData}}
             {{#each _loadingCollection}}

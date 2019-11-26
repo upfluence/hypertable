@@ -175,6 +175,9 @@ export default Component.extend({
     },
 
     openAvailableFields() {
+      if(this.manager.tetherOn) {
+        this.manager.destroyTetherInstance();
+      }
       this.toggleProperty('_availableFieldsPanel');
     },
 
@@ -200,6 +203,12 @@ export default Component.extend({
 
     onBackdropClick() {
       this.manager.destroyTetherInstance();
-    }
+    },
+
+    dragStarted() {
+      if(this.manager.tetherOn) {
+        this.manager.destroyTetherInstance();
+      }
+    },
   }
 });

@@ -177,6 +177,7 @@ export default EmberObject.extend({
       this.tetherInstance.element.remove()
       this.tetherInstance.destroy();
       this.set('tetherInstance', null);
+      this.set('tetherOn', null);
     }
   }
 });

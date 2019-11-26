@@ -48,8 +48,9 @@ export default Component.extend(FiltersRendererMixin, {
       this.manager.updateOrdering(this.column, value);
     },
 
-    clearFilters() {
+    reset() {
       this._super();
+      this.manager.updateOrdering(this.column, null);
       this.setProperties({ lowerBoundFilter: null, upperBoundFilter: null });
     }
   }

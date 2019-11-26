@@ -128,8 +128,9 @@ export default Component.extend(FiltersRendererMixin, {
     },
 
     // Mixin Candidate
-    clearFilters() {
+    reset() {
       this._super();
+      this.manager.updateOrdering(this.column, null);
       this.flatpickrRef.clear();
     }
   }

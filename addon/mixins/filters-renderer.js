@@ -4,8 +4,8 @@ export default Mixin.create({
   classNames: ['available-filters'],
 
   actions: {
-    clearFilters() {
-      this.column.clearFilters();
+    reset() {
+      this.column.reset();
     }
   }
 });

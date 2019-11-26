@@ -36,7 +36,7 @@ export default EmberObject.extend({
     this.manager.hooks.onColumnsChange('columns:change');
   },
 
-  clearFilters() {
+  reset() {
     this.set('filters', []);
   }
 });
