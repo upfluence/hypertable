@@ -84,8 +84,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    span:nth-child(2) {
-      width: 65px
+    > div:first-child {
+      max-width: 70%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .list-elements {
+      min-width: 55px;
     }
   }
 

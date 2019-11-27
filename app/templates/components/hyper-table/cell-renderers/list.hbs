@@ -2,11 +2,11 @@
   —
 {{else}}
   <div class="list-container">
-    <div>
+    <div data-toggle="tooltip" data-html="true" data-title={{get value '0'}} data-placement="bottom">
       {{get value '0'}}
     </div>
     {{#if length}}
-      <div class="text-color-default-lighter margin-left-sm" data-toggle="tooltip" data-html="true" data-title={{formattedList}} data-placement="bottom">
+      <div class="text-color-default-lighter margin-left-xxx-sm list-elements" data-toggle="tooltip" data-html="true" data-title={{formattedList}} data-placement="bottom">
         +{{length}} more
       </div>
     {{/if}}
