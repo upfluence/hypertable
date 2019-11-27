@@ -97,7 +97,7 @@
     position: absolute;
     top: 55px;
     right: 0;
-    z-index: 99999;
+    z-index: 20;
 
     .available-fields-wrapper__categories {
       background-color: @upf-gray-light;
@@ -168,7 +168,13 @@
       }
 
       ::-webkit-scrollbar {
-        display: none;
+        background-color: @upf-gray;
+        width: 7px;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: @upf-gray-light;
       }
     }
 
