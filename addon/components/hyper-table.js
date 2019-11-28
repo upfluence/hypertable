@@ -23,8 +23,6 @@ export default Component.extend({
   loadingMore: false,
 
   _allRowsSelected: false,
-
-  _availableFieldsPanel: false,
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
 
@@ -178,7 +176,7 @@ export default Component.extend({
       if(this.manager.tetherOn) {
         this.manager.destroyTetherInstance();
       }
-      this.toggleProperty('_availableFieldsPanel');
+      this.manager.toggleProperty('availableFieldsPanel');
     },
 
     toggleHover(item, value) {

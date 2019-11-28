@@ -93,11 +93,16 @@
 
     display: flex;
     flex-direction: row;
+    opacity: 0;
 
     position: absolute;
     top: 55px;
     right: 0;
     z-index: 20;
+
+    &.visible {
+      opacity: 1;
+    }
 
     .available-fields-wrapper__categories {
       background-color: @upf-gray-light;

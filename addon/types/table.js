@@ -19,6 +19,7 @@ export default EmberObject.extend({
   editStatus: null,
   tetherInstance: null,
   tetherOn: null,
+  availableFieldsPanel: false,
 
   /*
    * Configuration
