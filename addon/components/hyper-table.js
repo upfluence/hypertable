@@ -23,8 +23,6 @@ export default Component.extend({
   loadingMore: false,
 
   _allRowsSelected: false,
-
-  _availableFieldsPanel: false,
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
 
@@ -175,7 +173,10 @@ export default Component.extend({
     },
 
     openAvailableFields() {
-      this.toggleProperty('_availableFieldsPanel');
+      if(this.manager.tetherOn) {
+        this.manager.destroyTetherInstance();
+      }
+      this.manager.toggleProperty('availableFieldsPanel');
     },
 
     toggleHover(item, value) {
@@ -200,6 +201,12 @@ export default Component.extend({
 
     onBackdropClick() {
       this.manager.destroyTetherInstance();
-    }
+    },
+
+    dragStarted() {
+      if(this.manager.tetherOn) {
+        this.manager.destroyTetherInstance();
+      }
+    },
   }
 });

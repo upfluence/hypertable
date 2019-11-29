@@ -5,7 +5,7 @@
   border-top: 1px solid lighten(@upf-gray, 15%);
 
   &--size-S {
-    min-width: 150px;
+    min-width: 170px;
     width: 3rem;
     flex-grow: 150;
   }
@@ -72,6 +72,9 @@
   & > .cell-header {
     margin-right: 30px;
     font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   & > .icon-commands {

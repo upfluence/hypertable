@@ -91,13 +91,17 @@
     border: 2px solid lighten(@upf-gray, 15%);
     border-radius: @default-radius;
 
-    display: flex;
+    display: none;
     flex-direction: row;
 
     position: absolute;
     top: 55px;
     right: 0;
-    z-index: 99999;
+    z-index: 20;
+
+    &.visible {
+      display: flex
+    }
 
     .available-fields-wrapper__categories {
       background-color: @upf-gray-light;
@@ -168,7 +172,13 @@
       }
 
       ::-webkit-scrollbar {
-        display: none;
+        background-color: @upf-gray;
+        width: 7px;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: @upf-gray-light;
       }
     }
 

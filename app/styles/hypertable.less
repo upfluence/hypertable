@@ -22,9 +22,19 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  z-index: 10;
 
-  height: 90%;
+  top: @cell-height;
+  height: calc(100% - @cell-height);
   width: 100%;
+
+  img {
+      padding: 0;
+  }
+
+  &--empty {
+    position: absolute;
+  }
 }
 
 .hypertable__infinity-loader {

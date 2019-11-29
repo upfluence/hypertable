@@ -25,51 +25,59 @@
       <i class="fa fa-columns"></i> &nbsp; Manage Fields
     </button>
 
-    {{#if _availableFieldsPanel}}
-      <div class="available-fields-wrapper">
-        <div class="available-fields-wrapper__categories">
-          <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setFieldCategory"}}>
-            <div>All Fields</div>
+    <div class="available-fields-wrapper {{if manager.availableFieldsPanel 'visible'}}">
+      <div class="available-fields-wrapper__categories">
+        <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setFieldCategory"}}>
+          <div>All Fields</div>
+          <div><i class="fa fa-caret-right"></i></div>
+        </div>
+        {{#each _fieldCategories as |category|}}
+          <div class="field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}" {{action "setFieldCategory" category.key}}>
+            <div>{{category.label}}</div>
             <div><i class="fa fa-caret-right"></i></div>
           </div>
-          {{#each _fieldCategories as |category|}}
-            <div class="field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}" {{action "setFieldCategory" category.key}}>
-              <div>{{category.label}}</div>
-              <div><i class="fa fa-caret-right"></i></div>
+        {{/each}}
+      </div>
+
+      <div class="available-fields-wrapper__fields">
+        <div class="search">
+          {{input
+            type="text" value=_availableFieldsKeyword
+            class="upf-input upf-input--small"}}
+        </div>
+
+        <div class="fields-list">
+          {{#each _orderedFilteredFields as |field|}}
+            <div class="field">
+              {{upf-checkbox
+                value=field.visible size="sm"
+                onValueChange=(action "fieldVisibilityUpdated" field)}}
+              <div class="margin-left-xxx-sm">{{field.name}}</div>
+            </div>
+          {{else}}
+            <div class="field margin-top-md">
+              No columns found
             </div>
           {{/each}}
         </div>
-
-        <div class="available-fields-wrapper__fields">
-          <div class="search">
-            {{input
-              type="text" value=_availableFieldsKeyword
-              class="upf-input upf-input--small"}}
-          </div>
-
-          <div class="fields-list">
-            {{#each _orderedFilteredFields as |field|}}
-              <div class="field">
-                {{upf-checkbox
-                  value=field.visible size="sm"
-                  onValueChange=(action "fieldVisibilityUpdated" field)}}
-                <div class="margin-left-xxx-sm">{{field.name}}</div>
-              </div>
-            {{else}}
-              <div class="field margin-top-md">
-                No columns found
-              </div>
-            {{/each}}
-          </div>
-        </div>
       </div>
-    {{/if}}
+    </div>
   </div>
 </div>
 
 <div class="hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}">
   {{#if (and manager.tetherInstance manager.tetherBackdrop)}}
     <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
+  {{/if}}
+
+  {{#if (and (eq _collection.length 0) (not loadingData))}}
+    <div class="hypertable__state hypertable__state--empty">
+      {{#if (has-block "inverse")}}
+        {{yield to="inverse"}}
+      {{else}}
+        No Data
+      {{/if}}
+    </div>
   {{/if}}
 
   {{#sortable-group
@@ -145,6 +153,7 @@
       {{#if (gt index 0)}}
         {{#hyper-table/column
           model=column item=item column=column group=group manager=manager
+          onDragStart=(action "dragStarted")
           handle="header"}}
           {{#if loadingData}}
             {{#each _loadingCollection}}
@@ -170,16 +179,6 @@
       {{/if}}
     {{/each}}
   {{/sortable-group}}
-
-  {{#if (and (eq _collection.length 0) (not loadingData))}}
-    <div class="hypertable__state hypertable__state--empty">
-      {{#if (has-block "inverse")}}
-        {{yield to="inverse"}}
-      {{else}}
-        No Data
-      {{/if}}
-    </div>
-  {{/if}}
 </div>
 
 {{#if footer}}

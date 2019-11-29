@@ -65,6 +65,10 @@ export default SortableItem.extend({
 
   actions: {
     toggleFiltersPanel() {
+      if(this.manager.tetherOn !== this.column.key) {
+        this.manager.destroyTetherInstance();
+      }
+
       this.manager.triggerTetherContainer(
         this.column.key,
         'available-filters',

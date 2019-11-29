@@ -18,5 +18,8 @@ export default Component.extend({
 
     if (this.manager.hooks.onRowClicked && status === 'success')
       this.manager.hooks.onRowClicked(this.item.influencer_id, this.column.key);
-  },
+      if(this.manager.availableFieldsPanel) {
+        this.manager.toggleProperty('availableFieldsPanel');
+      }
+    },
 });

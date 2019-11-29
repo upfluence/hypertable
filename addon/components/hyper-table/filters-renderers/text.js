@@ -20,11 +20,13 @@ export default Component.extend(FiltersRendererMixin, {
   }),
 
   _addSearchFilter() {
-    this.column.set(
-      'filters',
-      isEmpty(this._searchQuery) ? [] : [{ key: 'value', value: this._searchQuery }]
-    );
-    this.manager.hooks.onColumnsChange('columns:change');
+    if(this._searchQuery !== null) {
+      this.column.set(
+        'filters',
+        isEmpty(this._searchQuery) ? [] : [{ key: 'value', value: this._searchQuery }]
+      );
+      this.manager.hooks.onColumnsChange('columns:change');
+    }
   },
 
   _searchQueryObserver: observer('_searchQuery', function() {
@@ -36,7 +38,9 @@ export default Component.extend(FiltersRendererMixin, {
       this.manager.updateOrdering(this.column, value);
     },
 
-    clearFilters() {
+    reset() {
+      this._super();
+      this.manager.updateOrdering(this.column, null);
       this.set('_searchQuery', null)
     }
   }
