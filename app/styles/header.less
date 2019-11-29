@@ -91,9 +91,8 @@
     border: 2px solid lighten(@upf-gray, 15%);
     border-radius: @default-radius;
 
-    display: flex;
+    display: none;
     flex-direction: row;
-    opacity: 0;
 
     position: absolute;
     top: 55px;
@@ -101,7 +100,7 @@
     z-index: 20;
 
     &.visible {
-      opacity: 1;
+      display: flex
     }
 
     .available-fields-wrapper__categories {
