@@ -31,6 +31,11 @@ export default Component.extend(CellRendererMixin, {
           target: `#${this.elementId} .list-container`,
           attachment: 'top center',
           targetAttachment: 'bottom center',
+          constraints: [
+            {
+              to: 'scrollParent',
+            }
+          ]
         },
         false
       );
