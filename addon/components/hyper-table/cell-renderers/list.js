@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { empty } from '@ember/object/computed';
 import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
 
 export default Component.extend(CellRendererMixin, {
@@ -11,6 +10,30 @@ export default Component.extend(CellRendererMixin, {
   isEditing: false,
 
   formattedList: computed('value', function() {
-    return this.value.slice(1).join('<br>')
-  })
+    return this.value.slice(1);
+  }),
+
+  actions: {
+    goToUrl(url) {
+      window.open(url, '_blank')
+    },
+
+    toggleList() {
+      if(this.manager.tetherOn !== this.elementId) {
+        this.manager.destroyTetherInstance();
+      }
+
+      this.manager.triggerTetherContainer(
+        this.elementId,
+        'expandable-list',
+        {
+          element: `#${this.elementId} .expandable-list`,
+          target: `#${this.elementId} .list-container`,
+          attachment: 'top center',
+          targetAttachment: 'bottom center',
+        },
+        false
+      );
+    },
+  }
 });
