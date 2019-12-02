@@ -86,7 +86,7 @@
     justify-content: space-between;
     background-color: white;
     padding: @spacing-xxx-sm @spacing-xx-sm;
-    border-radius: 4px;
+    border-radius: @default-radius;
     position: relative;
     > div:first-child {
       overflow: hidden;
@@ -225,8 +225,8 @@
   padding-top: @spacing-xx-sm;
   padding-bottom: @spacing-xx-sm;
   box-shadow: 0 4px 4px 2px fadeout(@upf-gray, 80%);
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: @default-radius;
+  border-bottom-right-radius: @default-radius;
   opacity: 0;
   overflow-y: hidden;
   width: 226px;
@@ -247,10 +247,10 @@
   &::-webkit-scrollbar {
     background-color: @upf-gray;
     width: 7px;
-    border-radius: 4px;
+    border-radius: @default-radius;
   }
   &::-webkit-scrollbar-thumb {
-    border-radius: 4px;
+    border-radius: @default-radius;
     background-color: @upf-gray-light;
   }
 
