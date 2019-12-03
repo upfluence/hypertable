@@ -39,6 +39,6 @@ export default Component.extend(CellRendererMixin, {
         },
         false
       );
-    },
+    }
   }
 });
