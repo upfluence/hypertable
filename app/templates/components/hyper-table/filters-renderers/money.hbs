@@ -28,9 +28,13 @@
     {{/input-wrapper}}
   </div>
 
-  <div class="margin-top-xx-sm upf-align--right">
+  <div class="margin-top-xx-sm buttons-container">
+    <button class="upf-btn upf-btn--destructive upf-btn--small" {{action "removeField"}}>
+      Remove Field
+    </button>
+
     <button class="upf-btn upf-btn--default upf-btn--small" {{action "reset"}}>
-      Reset
+      Clear Filters
     </button>
   </div>
 {{/if}}

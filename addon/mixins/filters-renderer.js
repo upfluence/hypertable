@@ -6,6 +6,12 @@ export default Mixin.create({
   actions: {
     reset() {
       this.column.reset();
+    },
+    removeField() {
+      if (this.manager.tetherInstance) {
+        this.manager.destroyTetherInstance();
+      }
+      this.column.field.set('visible', false);
     }
   }
 });
