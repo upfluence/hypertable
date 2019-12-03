@@ -25,12 +25,18 @@
 
 .hypertable-footer__stats-container {
   display: flex;
-
-  flex-direction: row;
   flex-grow: 1;
 
-  align-items: center;
-  justify-content: space-around;
+  .content {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 @spacing-sm;
+    width: 100%;
+  }
 }
 
 .hypertable-footer__stat {
