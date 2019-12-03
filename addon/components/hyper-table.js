@@ -129,7 +129,7 @@ export default Component.extend({
     );
 
     if (this.footer) {
-      this.set('_innerTableHeight', this._innerTableHeight - 90); // Footer Height + Margin
+      this.set('_innerTableHeight', this._innerTableHeight - 20); // Footer Height + Margin
     }
 
     this._innerTable.setAttribute(
