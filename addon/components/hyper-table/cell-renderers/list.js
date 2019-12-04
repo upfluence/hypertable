@@ -10,7 +10,10 @@ export default Component.extend(CellRendererMixin, {
   isEditing: false,
 
   formattedList: computed('value', function() {
-    return this.value.slice(1);
+    if(this.value.firstObject.name) {
+      return this.value.mapBy('name').join('<br>');
+    }
+    return this.value.slice().join('<br>');
   }),
 
   actions: {

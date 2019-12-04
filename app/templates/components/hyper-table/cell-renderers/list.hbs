@@ -1,15 +1,14 @@
 {{#if emptyValue}}
   —
 {{else}}
-  <div class="list-container">
+  <div class="list-container" {{action "toggleList" bubbles=false}}>
     {{#if value.firstObject.name}}
-      <div data-toggle="tooltip" data-html="true" data-title={{value.firstObject.name}} data-placement="bottom" 
-           {{action "goToUrl" (concat url value.firstObject.id) bubbles=false}}>
+      <div>
         {{value.firstObject.name}}
       </div>
       {{#if (and length (eq manager.tetherOn elementId))}}
         <div class="expandable-list">
-          {{#each formattedList as |item|}}
+          {{#each value as |item|}}
             <div {{action "goToUrl" (concat url item.id) bubbles=false}}>
               {{item.name}}
             </div>
@@ -23,9 +22,9 @@
     {{/if}}
 
     {{#if length}}
-      <div class="margin-left-xxx-sm list-elements" {{action 'toggleList' bubbles=false}}>
+      <div class="margin-left-xxx-sm list-elements" data-toggle="tooltip" data-html="true" data-title={{formattedList}} data-placement="bottom">
         +{{length}} more
-        <i class="fa fa-caret-down padding-left-xxx-sm"></i>
+        <i class="fa {{if (eq manager.tetherOn elementId) 'fa-caret-up' 'fa-caret-down' }}  padding-left-xxx-sm"></i>
       </div>
     {{/if}}
   </div>
