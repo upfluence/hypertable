@@ -11,7 +11,7 @@ export default Component.extend(CellRendererMixin, {
 
   formattedList: computed('value', function() {
     if(this.value.firstObject.name) {
-      return this.value.mapBy("name").join('<br>');
+      return this.value.mapBy('name').join('<br>');
     }
     return this.value.slice().join('<br>');
   }),

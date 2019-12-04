@@ -7,7 +7,7 @@ export default Mixin.create({
     reset() {
       this.column.reset();
     },
-    removeField() {
+    removeColumn() {
       if (this.manager.tetherInstance) {
         this.manager.destroyTetherInstance();
       }
