@@ -1,7 +1,7 @@
 {{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
   {{#if column.upsertable}}
     <span {{action "toggleEditing"}}>
-      {{column.field.emptyValue}}
+      {{or column.field.emptyPlaceholder 'Add value'}}
     </span>
   {{else}}
     —
