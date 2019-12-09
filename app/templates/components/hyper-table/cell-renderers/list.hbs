@@ -9,7 +9,7 @@
       {{#if (and length (eq manager.tetherOn elementId))}}
         <div class="expandable-list">
           {{#each value as |item|}}
-            <div {{action "goToUrl" (concat url item.id) bubbles=false}}>
+            <div class="expandable-list__item" {{action "goToUrl" (concat url item.id) bubbles=false}}>
               {{item.name}}
             </div>
           {{/each}}
