@@ -244,12 +244,13 @@
   overflow-y: hidden;
   width: 226px;
   animation: slideDown 0.45s ease-in-out forwards;
-  
+
   > div {
     padding: @spacing-xx-sm @spacing-x-sm;
     cursor: pointer;
+
     &:hover {
-      background-color: lighten(@upf-gray, 10%);
+      background-color: @upf-gray-light;
     }
   }
 
@@ -262,6 +263,7 @@
     width: 7px;
     border-radius: @default-radius;
   }
+
   &::-webkit-scrollbar-thumb {
     border-radius: @default-radius;
     background-color: @upf-gray-light;
