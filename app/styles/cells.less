@@ -87,17 +87,21 @@
     padding: @spacing-xxx-sm @spacing-xx-sm;
     border-radius: @default-radius;
     position: relative;
+
     > div:first-child {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+
     .list-elements {
       display: flex;
       align-items: center;
+      justify-content: flex-end;
       min-width: 75px;
       padding-left: 1em;
     }
+
     &.tether-enabled {
       border: 1px solid @upf-gray;
       z-index: 11;
@@ -105,9 +109,11 @@
       border-bottom-right-radius: 0;
       background-color: lighten(@upf-gray, 10%);
       margin-left: -1px;
+
       .tooltip {
         display: none !important;
       }
+
       .list-elements {
         margin-right: -2px;
       }
