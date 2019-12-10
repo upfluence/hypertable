@@ -36,5 +36,25 @@
   z-index: 7;
 }
 
+.search-input-container {
+  position: relative;
+
+  input {
+    color: @color-text;
+  }
+
+  input::placeholder {
+    color: lighten(@upf-primary-rock-blue, 20%);
+  }
+
+  .fa-search {
+    position: absolute;
+    right: 10px;
+    top: 27%;
+    font-size: 15px;
+    color: lighten(@upf-primary-rock-blue, 20%);
+  }
+}
+
 @import 'columns';
 @import 'cells';

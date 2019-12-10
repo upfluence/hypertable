@@ -58,6 +58,14 @@
     }
     &.empty-value {
       color: @color-text-lighter;
+      span:first-child {
+        &:hover {
+          color: @color-text;
+          + .status-container {
+            color: @color-text
+          }
+        };
+      }
     }
   }
 

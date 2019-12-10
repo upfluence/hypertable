@@ -44,8 +44,8 @@
   }
 
   header {
-    border-left: 1px solid lighten(@upf-gray, 15%);
-    border-right: 1px solid lighten(@upf-gray, 15%);
+    border-left: 1px solid darken(@upf-gray-light, 10%);
+    border-right: 1px solid darken(@upf-gray-light, 10%);
   }
 }
 
@@ -59,7 +59,7 @@
   padding: @spacing-xx-sm;
   width: calc(100% + 2px);
 
-  background-color: @upf-gray-light;
+  background-color: darken(@upf-gray-light, 5%);
   color: @upf-primary-rock-blue;
   cursor: pointer;
   text-transform: capitalize;
@@ -74,6 +74,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    color: darken(@upf-gray-light, 40%);
+    font-size: 15px;
+    .subtitle {
+      font-weight: normal;
+    }
   }
 
   & > .icon-commands {
@@ -106,7 +111,7 @@
 
 
   &:hover {
-    background-color: lighten(@upf-gray, 15%);
+    background-color: darken(@upf-gray-light, 10%);
 
     .icon-commands i {
       opacity: 1;
@@ -134,18 +139,14 @@
     }
 
     .cell-header {
-      color: @upf-primary-bright-purple;
-
-      &::before {
+      .order-direction {
         font-family: 'FontAwesome';
-        content: ' ';
-        color: @upf-primary-bright-purple;
+        font-size: 25/@rem;
+        margin-left: 1px;
+        color: @color-text;
       }
     }
   }
-
-  &.hypertable__column--ordered-asc .cell-header::before { content: "\f176 \00a0"; }
-  &.hypertable__column--ordered-desc .cell-header::before { content: "\f175 \00a0"; }
 }
 
 .hypertable__column--filtered {
