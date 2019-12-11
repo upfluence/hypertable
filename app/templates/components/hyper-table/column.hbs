@@ -7,10 +7,10 @@
         {{column.field.name}}
       {{/if}}
 
-      {{#if (eq column.orderDirection 'asc') }}
-        <span class="order-direction">&uarr;</span>
-      {{else if (eq column.orderDirection 'desc')}}
-        <span class="order-direction">&darr;</span>
+      {{#if (eq column.orderDirection "asc") }}
+        &nbsp;<span class="order-direction">&uarr;</span>
+      {{else if (eq column.orderDirection "desc")}}
+        &nbsp;<span class="order-direction">&darr;</span>
       {{/if}}
     </div>
 

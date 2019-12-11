@@ -59,8 +59,7 @@
   padding: @spacing-xx-sm;
   width: calc(100% + 2px);
 
-  background-color: darken(@upf-gray-light, 5%);
-  color: @upf-primary-rock-blue;
+  background-color: @field-background-color;
   cursor: pointer;
   text-transform: capitalize;
 
@@ -69,13 +68,15 @@
   top: 0;
 
   & > .cell-header {
-    margin-right: 30px;
+    color: @color-text-light;
+    font-size: 18/@rem;
     font-weight: bold;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+
+    margin-right: 30px;
     overflow: hidden;
-    color: darken(@upf-gray-light, 40%);
-    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
     .subtitle {
       font-weight: normal;
     }
@@ -109,9 +110,8 @@
     i.fa-bars { cursor: move; }
   }
 
-
   &:hover {
-    background-color: darken(@upf-gray-light, 10%);
+    background-color: darken(@field-background-color, 5%);
 
     .icon-commands i {
       opacity: 1;
@@ -140,10 +140,9 @@
 
     .cell-header {
       .order-direction {
-        font-family: 'FontAwesome';
-        font-size: 25/@rem;
-        margin-left: 1px;
         color: @color-text;
+        font-family: 'FontAwesome';
+        font-size: 24/@rem;
       }
     }
   }
