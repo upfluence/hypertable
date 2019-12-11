@@ -6,12 +6,9 @@
       </div>
     {{/if}}
     {{#if manager.options.features.search}}
-      <div class="search-input-container">
-        {{input
-          type="text" placeholder="Search..." value=_searchQuery
-          class="form-control upf-input upf-input--small"}}
-        <i class="fa fa-search"></i>
-      </div>
+      {{input
+        type="text" placeholder="Search..." value=_searchQuery
+        class="form-control upf-input upf-input--small"}}
     {{/if}}
 
     {{#if (and contextualActions (gt _collection.length 0))}}
