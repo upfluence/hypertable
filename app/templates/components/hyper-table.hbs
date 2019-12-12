@@ -43,7 +43,7 @@
         <div class="search">
           {{input
             type="text" value=_availableFieldsKeyword
-            class="upf-input upf-input--small"}}
+            class="upf-input upf-input--small" placeholder="Search Fields"}}
         </div>
 
         <div class="fields-list">
@@ -88,7 +88,7 @@
         <div class="hypertable__sticky-columns">
           {{#if manager.options.features.selection}}
             <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
-              <header>
+              <header data-toggle="tooltip" data-title="Select displayed rows" data-placement="right">
                 {{upf-checkbox value=_allRowsSelected size="sm"}}
               </header>
 
