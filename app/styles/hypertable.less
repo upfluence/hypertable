@@ -47,25 +47,30 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   position: absolute;
   right: 13px;
-  z-index: 100;
   top: calc(@cell-height - 17px);
+
+  z-index: 100;
   overflow-x: hidden;
+
   transition: max-width 0.3s ease-in-out;
   max-width: 0;
   &.is-visible {
     max-width: 200px;
   }
+
   .scroll-button {
-    background-color: white;
     height: 34px;
-    padding: @spacing-xxx-sm @spacing-xx-sm;
     border: 1px solid lighten(@upf-gray, 15%);
+    padding: @spacing-xxx-sm @spacing-xx-sm;
+
     background-color: @upf-gray-light;
-    opacity: 0;
-    transform: translateX(100px);
+
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateX(100px);
+    opacity: 0;
     &.is-visible {
       opacity: 1;
       transform: translateX(0);
