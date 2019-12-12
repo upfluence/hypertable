@@ -1,8 +1,8 @@
 <header>
   <div class="cell-header" data-toggle="tooltip" data-title={{column.field.name}} data-placement="bottom" {{action "orderColumn"}}>
     <div>
-      {{#if column.field.iconSuffix}}
-        <span class="text-style-capitalize">{{column.field.iconSuffix}}</span>
+      {{#if column.field.title}}
+        <span class="text-style-capitalize">{{column.field.title}}</span>
       {{else}}
         {{column.field.name}}
       {{/if}}
