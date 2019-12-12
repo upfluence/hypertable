@@ -143,6 +143,15 @@ export default Component.extend({
     $(window).on('resize', this._resizeInnerTable.bind(this));
 
     run.scheduleOnce('afterRender', this, () => {
+      let table = document.querySelector('.hypertable');
+      $(table).scroll(() => {
+        if(table.scrollLeft === table.scrollWidth - table.clientWidth) {
+          this.manager.set('isScrollable', false);
+        } else if(!this.manager.isScrollable) {
+          this.manager.set('isScrollable', true);
+        }
+      });
+
       this.manager.refreshScrollableStatus();
     });
   },
