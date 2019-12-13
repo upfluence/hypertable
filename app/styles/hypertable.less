@@ -44,10 +44,6 @@
 }
 
 .scroll-button-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   position: absolute;
   right: 13px;
   top: calc(@cell-height - 17px);
@@ -62,6 +58,9 @@
   }
 
   .scroll-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     height: 34px;
     border: 1px solid lighten(@upf-gray, 15%);
     padding: @spacing-xxx-sm @spacing-xx-sm;
