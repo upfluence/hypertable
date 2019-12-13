@@ -10509,9 +10509,9 @@ upath@^1.1.1:
   integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
 
 upfluence-oss-components@^2.x:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/upfluence-oss-components/-/upfluence-oss-components-2.0.3.tgz#5116e1e8086a60f993914f7d6a6947682785e466"
-  integrity sha512-bu79S61kdrg4Cv8uSI/xeGYVX7MNXO1UvHRuXueIdb7aTs5m+ldiTgs+xF8JaaVyE5AJMsdndV0y2qvxeMv+Sw==
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/upfluence-oss-components/-/upfluence-oss-components-2.0.4.tgz#b7cf14f9c61da8b2872d3df6fbcc8e5a544fdf50"
+  integrity sha512-mCZOtOJ1QLC1nX1d5KrNJ0xC9aR8KT+Sy0yTkyB+aepmIc9MdB5xNN8l9iPFbaTuBYLf2HsriMAPpjHcVtIBZA==
   dependencies:
     babel-plugin-debug-macros "^0.3.1"
     ember-cli-babel "^7.1.2"
@@ -10525,9 +10525,9 @@ upfluence-oss-components@^2.x:
     upfluence-oss "^2.x"
 
 upfluence-oss@^2.x:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-2.1.0.tgz#43608aee8c088ef33d4e820f6e65b1bb832d7937"
-  integrity sha512-79/vicdKHEKGqqt32d2w2iVO8LIw3NM+RtXvX+r4wp7S58c3XzUNco3n1cIXmfj5BKzIvM8ugg98aT0meeI8bg==
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-2.1.2.tgz#dc2cab64db9e2bc221a84094bc512e57b71edf1b"
+  integrity sha512-WoPDrqID3aPM17FID+DxbCQoXbxTMhnEwxcrbUE84MlP75W4OjWfQ7BfNaby9DNg0yCstvI7GrIGRVoD95Torg==
   dependencies:
     bootstrap "^3.3.7"
     countdown.js "git+ssh://git@github.com/gumroad/countdown.js.git"

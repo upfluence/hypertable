@@ -67,12 +67,14 @@
   position: sticky;
   top: 0;
 
+  .tooltip {
+    text-transform: capitalize;
+  }
+
   & > .cell-header {
     color: @color-text-light;
     font-size: 18/@rem;
     font-weight: bold;
-
-    margin-right: 30px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -112,7 +114,9 @@
 
   &:hover {
     background-color: darken(@field-background-color, 5%);
-
+    .cell-header {
+      margin-right: 40px;
+    }
     .icon-commands i {
       opacity: 1;
       display: block;
