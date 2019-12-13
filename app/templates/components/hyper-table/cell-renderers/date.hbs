@@ -1,11 +1,18 @@
 {{#if (or emptyValue (eq value 0))}}
-  —
+  {{#if column.upsertable}}
+    <span {{action "toggleEditing"}}>
+      {{or column.field.emptyPlaceholder "Add value"}}
+    </span>
+  {{else}}
+    —
+  {{/if}}
 {{else}}
   <div class="editing-input">
     {{ember-flatpickr
         onChange=(action "updateDate") onOpen=(action "toggleEditing")
-        onClose=(action "onCalendarClose") date=(readonly _formattedDate)
-        altInput=true placeholder="—" getFlatpickrRef=(action (mut flatpickrRef))}}
+        clickOpens=column.upsertable onClose=(action "onCalendarClose")
+        date=(readonly _formattedDate) altInput=true placeholder="—"
+        getFlatpickrRef=(action (mut flatpickrRef))}}
 
     {{#unless (or isEditing (not column.upsertable))}}
       <i class="fa fa-pencil margin-left-xxx-sm" {{action "toggleEditing"}}></i>

@@ -24,6 +24,8 @@
     cursor: pointer;
     width: 90%;
     box-shadow: none;
+    font-size: inherit;
+    color: inherit;
     &.active {
       padding: 4px;
       margin-left: -5px;
@@ -58,6 +60,14 @@
     }
     &.empty-value {
       color: @color-text-lighter;
+      span:first-child {
+        &:hover {
+          color: @color-text;
+          + .status-container {
+            color: @color-text
+          }
+        };
+      }
     }
   }
 

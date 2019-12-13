@@ -25,7 +25,7 @@
       <i class="fa fa-columns"></i> &nbsp; Manage Fields
     </button>
 
-    <div class="available-fields-wrapper {{if manager.availableFieldsPanel 'visible'}}">
+    <div class="available-fields-wrapper {{if manager.availableFieldsPanel 'visible' 'invisible'}}">
       <div class="available-fields-wrapper__categories">
         <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setFieldCategory"}}>
           <div>All Fields</div>

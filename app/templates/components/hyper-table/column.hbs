@@ -1,10 +1,21 @@
 <header>
   <div class="cell-header" data-toggle="tooltip" data-title={{column.field.name}} data-placement="bottom" {{action "orderColumn"}}>
-    {{#if column.field.iconPrefix}}
-      <span class="text-style-capitalize"><span class={{column.field.iconPrefix}}></span> &nbsp;
-      {{column.field.iconSuffix}}</span>
+    {{#if column.field.title}}
+      <span class="text-style-capitalize">{{column.field.title}}</span>
     {{else}}
       {{column.field.name}}
+    {{/if}}
+
+    {{#if (eq column.orderDirection "asc") }}
+      &nbsp;<span class="order-direction">&uarr;</span>
+    {{else if (eq column.orderDirection "desc")}}
+      &nbsp;<span class="order-direction">&darr;</span>
+    {{/if}}
+
+    {{#if column.field.subtitle}}
+      <div class="subtitle text-size-4">
+        {{column.field.subtitle}}
+      </div>
     {{/if}}
   </div>
 
