@@ -144,8 +144,7 @@ export default EmberObject.extend({
   
   refreshScrollableStatus() {
     let table = document.querySelector('.hypertable');
-    let isScrollable = table.scrollWidth > table.offsetWidth;
-    this.set('isScrollable', isScrollable);
+    this.set('isScrollable', table.scrollWidth > table.offsetWidth);
   },
 
   triggerTetherContainer(on, elementClass, options, backdrop = true) {
