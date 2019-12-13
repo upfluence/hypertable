@@ -42,3 +42,37 @@
   width: 1px;
   opacity: 0;
 }
+
+.scroll-button-container {
+  position: absolute;
+  right: 13px;
+  top: calc(@cell-height - 17px);
+
+  z-index: 19;
+  overflow-x: hidden;
+
+  transition: max-width 0.3s ease-in-out;
+  max-width: 0;
+  &.is-visible {
+    max-width: 200px;
+  }
+
+  .scroll-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 34px;
+    border: 1px solid lighten(@upf-gray, 15%);
+    padding: @spacing-xxx-sm @spacing-xx-sm;
+
+    background-color: @upf-gray-light;
+
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateX(100px);
+    opacity: 0;
+    &.is-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}

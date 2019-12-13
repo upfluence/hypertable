@@ -179,6 +179,13 @@
       {{/if}}
     {{/each}}
   {{/sortable-group}}
+
+  <div class="scroll-button-container {{if manager.isScrollable 'is-visible'}}">
+    <button class="upf-btn upf-btn--small scroll-button {{if manager.isScrollable 'is-visible'}}" {{action "scrollToEnd"}}>
+      More &nbsp;
+      <i class="fa fa-chevron-right"></i>
+    </button>
+  </div>
 </div>
 
 {{#if footer}}

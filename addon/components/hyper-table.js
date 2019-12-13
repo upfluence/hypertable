@@ -141,6 +141,19 @@ export default Component.extend({
     this._super();
 
     $(window).on('resize', this._resizeInnerTable.bind(this));
+
+    run.scheduleOnce('afterRender', this, () => {
+      let table = document.querySelector('.hypertable');
+      $(table).scroll(() => {
+        if(table.scrollLeft === table.scrollWidth - table.clientWidth) {
+          this.manager.set('isScrollable', false);
+        } else if(!this.manager.isScrollable) {
+          this.manager.set('isScrollable', true);
+        }
+      });
+
+      this.manager.refreshScrollableStatus();
+    });
   },
 
   didRender() {
@@ -179,6 +192,10 @@ export default Component.extend({
       this.manager.toggleProperty('availableFieldsPanel');
     },
 
+    scrollToEnd() {
+      this._innerTable.firstElementChild.scrollLeft = this._innerTable.firstElementChild.scrollWidth;
+    },
+
     toggleHover(item, value) {
       item.set('hovered', value);
     },
@@ -196,6 +213,7 @@ export default Component.extend({
         if (action === 'addition') {
           this._innerTable.firstElementChild.scrollLeft = this._innerTable.firstElementChild.scrollWidth;
         }
+        this.manager.refreshScrollableStatus()
       });
     },
 
