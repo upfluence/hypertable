@@ -98,9 +98,9 @@
                 {{/each}}
               {{else}}
                 {{#each _collection as |item|}}
-                  <div class="hypertable__cell {{if item.hovered 'hypertable__cell--hovered'}}">
+                  {{#hyper-table/cell item=item}}
                     {{upf-checkbox value=item.selected size="sm"}}
-                  </div>
+                  {{/hyper-table/cell}}
                 {{/each}}
 
                 {{#if _loadingMore}}
