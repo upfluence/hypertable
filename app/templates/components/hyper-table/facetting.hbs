@@ -1,0 +1,13 @@
+{{#each facets as |facet|}}
+  <div class="hypertable__facetting-item">
+    <div class="item">
+      {{upf-checkbox
+        value=facet.applied size="sm" onValueChange=(action "toggleAppliedFacet" facet)}}
+        <span class={{if facet.applied "text-style-bold"}}>{{facet.formattedIdentifier}}</span>
+    </div>
+
+    <div class="count">
+      {{facet.count}}
+    </div>
+  </div>
+{{/each}}
