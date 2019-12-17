@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend({
   classNames: ['hypertable__facetting'],
@@ -11,7 +12,9 @@ export default Component.extend({
     toggleAppliedFacet(facet) {
       Ember.run.later(() => {
         this.column.applyFacets(
-          this.filteringKey, this.facets.filterBy('applied', true)
+          this.filteringKey, this.facets.filter((f) => {
+            return f.applied && !isEmpty(f.identifier);
+          })
         );
       }, 500)
     }
