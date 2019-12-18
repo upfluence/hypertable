@@ -1,13 +1,22 @@
-{{#each facets as |facet|}}
-  <div class="hypertable__facetting-item">
-    <div class="item">
-      {{upf-checkbox
-        value=facet.applied size="sm" onValueChange=(action "toggleAppliedFacet" facet)}}
-        <span class={{if facet.applied "text-style-bold"}}>{{facet.formattedIdentifier}}</span>
+{{#if loading}}
+  {{#each loadingFacetsRange}}
+    <div class="hypertable__facetting-item">
+      <div class="item"></div>
+      <div class="count"></div>
     </div>
+  {{/each}}
+{{else}}
+  {{#each facets as |facet|}}
+    <div class="hypertable__facetting-item">
+      <div class="item">
+        {{upf-checkbox
+          value=facet.applied size="sm" onValueChange=(action "toggleAppliedFacet" facet)}}
+          <span class={{if facet.applied "text-style-bold"}}>{{facet.formattedIdentifier}}</span>
+      </div>
 
-    <div class="count">
-      {{facet.count}}
+      <div class="count">
+        {{facet.count}}
+      </div>
     </div>
-  </div>
-{{/each}}
+  {{/each}}
+{{/if}}

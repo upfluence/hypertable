@@ -3,6 +3,33 @@
   overflow-y: scroll;
 }
 
+.hypertable__facetting--loading {
+  overflow: hidden;
+
+  .hypertable__facetting-item {
+    padding-right: 0;
+
+    .item, .count {
+      animation: skeleton-content 1.2s ease-in-out infinite;
+      background-color: #eee;
+      background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+      background-size: 200px 100%;
+      background-repeat: no-repeat;
+      border-radius: @default-radius;
+    }
+
+    .item {
+      height: 15px;
+      width: 60%;
+    }
+
+    .count {
+      height: 15px;
+      width: 10%;
+    }
+  }
+}
+
 .hypertable__facetting-item {
   display: flex;
   justify-content: space-between;
