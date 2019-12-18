@@ -36,6 +36,14 @@ export default EmberObject.extend({
     this.manager.hooks.onColumnsChange('columns:change');
   },
 
+  applyFacets(key, facets) {
+    this.set(
+      'filters',
+      isEmpty(facets) ? [] : [{ key, value: facets.mapBy('identifier').join(',')}]
+    );
+    this.manager.hooks.onColumnsChange('columns:change');
+  },
+
   reset() {
     this.set('filters', []);
   }

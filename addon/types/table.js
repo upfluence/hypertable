@@ -64,6 +64,7 @@ export default EmberObject.extend({
       let field = this.fields.findBy('key', column.key);
 
       column.setProperties({
+        manager: this,
         orderBy: column.orderBy || null,
         orderKey: column.orderKey || column.key,
         size: column.size || 'M',
