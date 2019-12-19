@@ -9210,9 +9210,9 @@ resolve@1.5.0:
     path-parse "^1.0.5"
 
 resolve@^1.1.2, resolve@^1.1.6, resolve@^1.10.0, resolve@^1.3.3:
-  version "1.13.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.13.1.tgz#be0aa4c06acd53083505abb35f4d66932ab35d16"
-  integrity sha512-CxqObCX8K8YtAhOBRg+lrcdn+LK+WYOS8tSjqSFbjtrI5PnS63QPhZl4+yKfrU9tdsbMu9Anr/amegT87M9Z6w==
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.14.1.tgz#9e018c540fcf0c427d678b9931cbf45e984bcaff"
+  integrity sha512-fn5Wobh4cxbLzuHaE+nphztHy43/b++4M6SsGFC2gB8uYwf0C8LcarfCz1un7UTW8OFQg9iNjZ4xpcFVGebDPg==
   dependencies:
     path-parse "^1.0.6"
 
@@ -10525,9 +10525,9 @@ upfluence-oss-components@^2.x:
     upfluence-oss "^2.x"
 
 upfluence-oss@^2.x:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-2.1.2.tgz#dc2cab64db9e2bc221a84094bc512e57b71edf1b"
-  integrity sha512-WoPDrqID3aPM17FID+DxbCQoXbxTMhnEwxcrbUE84MlP75W4OjWfQ7BfNaby9DNg0yCstvI7GrIGRVoD95Torg==
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-2.1.3.tgz#d3c2505713a0f2c5af108f599b356f7c6ac714c4"
+  integrity sha512-i1+X2cdtR6Ied6+guw0SYbKDm8oQOFrwrtgfO1wyEY+ILkBTRhZbQdNqG9aoBmAYSrmDFycm0nZK3SDBx+iRfw==
   dependencies:
     bootstrap "^3.3.7"
     countdown.js "git+ssh://git@github.com/gumroad/countdown.js.git"
