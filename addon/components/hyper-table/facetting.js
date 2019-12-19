@@ -14,6 +14,10 @@ export default Component.extend({
 
   actions: {
     toggleAppliedFacet(facet) {
+      if (this.onToggleAppliedFacet) {
+        this.onToggleAppliedFacet(facet);
+      }
+
       run.later(() => {
         this.column.applyFacets(
           this.filteringKey, this.facets.filter((f) => {
