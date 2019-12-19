@@ -11,7 +11,14 @@
       <div class="item">
         {{upf-checkbox
           value=facet.applied size="sm" onValueChange=(action "toggleAppliedFacet" facet)}}
-          <span class={{if facet.applied "text-style-bold"}}>{{facet.formattedIdentifier}}</span>
+
+        {{#if facet.facetRenderer}}
+          {{facet.facetRenderer}}
+        {{else}}
+          <span class={{if facet.applied "text-style-bold"}}>
+            {{facet.formattedIdentifier}}
+          </span>
+        {{/if}}
       </div>
 
       <div class="count">
