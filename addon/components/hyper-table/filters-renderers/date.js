@@ -17,10 +17,8 @@ export default Component.extend(FiltersRendererMixin, {
     'Fixed': 'fixed'
   },
 
-  filterOption: computed('column.filters', function() {
-    let filter = this.column.filters.find((f) => f.key === 'value');
-
-    if (!filter) {
+  filterOption: computed('currentMovingDateOption', function() {
+    if (!this.currentMovingDateOption) {
       return 'fixed';
     }
 
@@ -76,8 +74,6 @@ export default Component.extend(FiltersRendererMixin, {
 
     selectFixedDate(value) {
       let [fromDate, toDate] = value;
-
-      console.log(value)
 
       if (fromDate && toDate) {
         this.column.set('filters', [
