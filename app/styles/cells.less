@@ -113,11 +113,11 @@
     }
 
     &.tether-enabled {
-      border: 1px solid @upf-gray;
+      border: 1px solid lighten(@upf-gray, 15%);
       z-index: 11;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      background-color: lighten(@upf-gray, 10%);
+      background-color: @field-background-color;
       margin-left: -1px;
 
       .tooltip {

@@ -34,7 +34,7 @@ export default Component.extend({
     return searchTerm ? searchTerm.value : null;
   }),
 
-  _loadingCollection: new Array(12),
+  _loadingCollection: new Array(20),
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
   _fieldCategories: alias('manager.fieldCategories'),
