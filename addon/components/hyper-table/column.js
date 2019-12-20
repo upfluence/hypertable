@@ -65,6 +65,8 @@ export default SortableItem.extend({
 
   actions: {
     toggleFiltersPanel() {
+      let isLastColumn =
+        this.manager.columns.indexOf(this.column) === this.manager.columns.length - 1;
       if(this.manager.tetherOn !== this.column.key) {
         this.manager.destroyTetherInstance();
       }
@@ -77,7 +79,7 @@ export default SortableItem.extend({
           target: `#${this.elementId} header`,
           attachment: 'top center',
           targetAttachment: 'bottom left',
-          offset: '-20px 0'
+          offset: isLastColumn ? '-5px 60px' : '-5px 0'
         },
         true
       );

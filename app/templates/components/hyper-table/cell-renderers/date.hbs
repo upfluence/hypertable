@@ -4,7 +4,7 @@
       {{or column.field.emptyPlaceholder "Add value"}}
     </span>
   {{else}}
-    —
+    {{or column.field.emptyState "—"}}
   {{/if}}
 {{else}}
   <div class="editing-input">

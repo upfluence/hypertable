@@ -6,7 +6,8 @@ import { typeOf } from '@ember/utils';
 import moment from 'moment';
 
 export default Component.extend({
-  tagName: '',
+  classNameBindings: ['emptyValue'],
+  classNames: ['cell-container'],
 
   value: computed('item', 'column.key', function() {
     return this.item.get(this.column.key);

@@ -1,14 +1,38 @@
-<div class="editing-input">
-  {{#if isEditing}}
-    {{input type="number" focus-out=(action "toggleEditing" value) type="text" value=value class="editing-input__field form-control"}}
-    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" value}}></i>
-  {{else}}
-    <span data-toggle="tooltip" data-title={{format-numeric value}}>
-      {{if emptyValue '—' (format-number value)}}
+{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
+  {{#if column.upsertable}}
+    <span {{action "toggleEditing"}}>
+      {{or column.field.emptyPlaceholder "Add value"}}
     </span>
-
-    {{#if column.upsertable}}
-      <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}></i>
-    {{/if}}
+  {{else}}
+    {{or column.field.emptyState "—"}}
   {{/if}}
-</div>
+{{else}}
+  <div class="editing-input">
+    {{#if (and editStatus.status (not isSuccess))}}
+      <div class={{if isError 'is-invalid'}}>
+        {{input type="number" focus-out=(action "toggleEditing" value) type="text"
+          value=value class="editing-input__field form-control"}}
+      </div>
+    {{else}}
+      <div data-toggle="tooltip" class="text-value" data-title={{format-numeric value}} data-placement="bottom">
+        {{format-number value}}
+      </div>
+    {{/if}}
+  </div>
+{{/if}}
+
+{{!-- TODO: Extract to component --}}
+{{#if column.upsertable}}
+  <div class="status-container margin-left-x-sm text-color-default-lighter">
+    {{#if isSuccess}}
+      <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
+      <span class="text-color-success upf-icon upf-icon--check text-size-6"></span>
+    {{else if (or isEditing isError)}}
+      <i class="fa fa-save" onclick={{action "toggleEditing" editableValue}}></i>
+    {{else if isSaving}}
+      {{loading-state}}
+    {{else}}
+      <i class="fa fa-pencil" onclick={{action "toggleEditing"}}></i>
+    {{/if}}
+  </div>
+{{/if}}
