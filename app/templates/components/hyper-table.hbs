@@ -98,7 +98,7 @@
                 {{/each}}
               {{else}}
                 {{#each _collection as |item|}}
-                  {{#hyper-table/cell item=item}}
+                  {{#hyper-table/cell item=item manager=manager}}
                     {{upf-checkbox value=item.selected size="sm"}}
                   {{/hyper-table/cell}}
                 {{/each}}
