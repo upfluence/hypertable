@@ -85,7 +85,7 @@ export default SortableItem.extend({
 
     orderColumn() {
       if (this.manager.options.features.ordering && this.column.orderable) {
-        let nextDirection = this.column.orderDirection === 'asc' ? 'desc' : 'asc';
+        let nextDirection = this.column.orderDirection === 'desc' ? 'asc' : 'desc';
 
         this.manager.updateOrdering(
           this.column, `${this.column.orderKey}:${nextDirection}`
