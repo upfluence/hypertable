@@ -10525,9 +10525,9 @@ upfluence-oss-components@^2.x:
     upfluence-oss "^2.x"
 
 upfluence-oss@^2.x:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-2.2.0.tgz#5df5a5b0303dc527e1a907b98fcb1dc4bde89213"
-  integrity sha512-j5QzhQIAlQaEEGnedR19CLX8A/ad3M+z03dFe4mA1kB4AHJsA70wS8MuA9YsRUp6Q9LthFDGOKjuHbTepepo2w==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/upfluence-oss/-/upfluence-oss-2.2.1.tgz#f338b742989291bae43c23e7de6ddd04aa63a3ae"
+  integrity sha512-0+e/tFGrgt915qWNg/TXB9llyo74QT/vpT35C4tQSmaB9ficmC8I6tdwczY+pgIgW1FmKKuSIxqJdTiHZh91gw==
   dependencies:
     bootstrap "^3.3.7"
     countdown.js "git+ssh://git@github.com/gumroad/countdown.js.git"
