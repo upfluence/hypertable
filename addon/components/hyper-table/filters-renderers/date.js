@@ -17,17 +17,20 @@ export default Component.extend(FiltersRendererMixin, {
     'Fixed': 'fixed'
   },
 
-  filterOption: computed('column.filters.@each.value.alias', function() {
-    let filter = this.column.filters.find((f) => f.type === 'range');
-
-    if (filter && filter.value.alias === 'custom_range') {
+  filterOption: computed('currentMovingDateOption', function() {
+    if (!this.currentMovingDateOption) {
       return 'fixed';
     }
 
     return 'moving';
   }),
 
-  _currentDateValue: computed('column', function() {
+  currentMovingDateOption: computed('column.filters', function() {
+    let filter = this.column.filters.find((f) => f.key === 'value');
+    return filter ? filter.value : null;
+  }),
+
+  _currentDateValue: computed('column.filters', function() {
     let lowerBound = this.column.filters.findBy('key', 'lower_bound');
     let upperBound = this.column.filters.findBy('key', 'upper_bound');
 
@@ -38,7 +41,7 @@ export default Component.extend(FiltersRendererMixin, {
       ];
     }
 
-    return null;
+    return [];
   }),
 
   movingDateOptions: {
@@ -48,56 +51,6 @@ export default Component.extend(FiltersRendererMixin, {
     'Last Week': 'last_week',
     'This Month': 'this_month',
     'This Year': 'this_year',
-  },
-
-  _buildDateRange(from_key, from_date = null, to_date = null) {
-    switch(from_key) {
-      case 'today':
-        return {
-          alias: 'today',
-          from: moment().startOf('day').format('X'),
-          to: moment().endOf('day').format('X')
-        }
-      case 'yesterday':
-        return {
-          alias: 'yesterday',
-          from: moment().subtract(1, 'day').startOf('day').format('X'),
-          to: moment().subtract(1, 'day').endOf('day').format('X')
-        }
-      case 'this_week':
-        return {
-          alias: 'this_week',
-          from: moment().startOf('week').format('X'),
-          to: moment().endOf('week').format('X')
-        }
-      case 'last_week':
-        return {
-          alias: 'last_week',
-          from: moment().subtract(1, 'week').startOf('week').format('X'),
-          to: moment().subtract(1, 'week').endOf('week').format('X')
-        }
-      case 'this_month':
-        return {
-          alias: 'this_month',
-          from: moment().startOf('month').format('X'),
-          to: moment().endOf('month').format('X')
-        }
-      case 'this_year':
-        return {
-          alias: 'this_year',
-          from: moment().startOf('year').format('X'),
-          to: moment().endOf('year').format('X')
-        }
-      case 'custom_range':
-        //+ is a shortcut to get the timestamp directly from a date object
-        return {
-          alias: 'custom_range',
-          from: +from_date/1000,
-          to: +to_date/1000
-        }
-      default:
-        break;
-    }
   },
 
   actions: {
@@ -110,28 +63,36 @@ export default Component.extend(FiltersRendererMixin, {
     },
 
     selectMovingDate(value) {
-      this.column.addFilters(
-        'range', this._buildDateRange(value)
+      this.set(
+        'column.filters', [{
+          key: 'value', value: value
+        }]
       );
+      this.set('currentMovingDateOption', value);
+      this.manager.hooks.onColumnsChange('columns:change');
     },
 
     selectFixedDate(value) {
       let [fromDate, toDate] = value;
 
-      if(fromDate && toDate) {
+      if (fromDate && toDate) {
         this.column.set('filters', [
           { key: 'lower_bound', value: (+fromDate/1000).toString() },
           { key: 'upper_bound', value: (+toDate/1000).toString() }
         ]);
+
+        this.manager.hooks.onColumnsChange('columns:change');
       }
-      this.manager.hooks.onColumnsChange('columns:change');
     },
 
     // Mixin Candidate
     reset() {
       this._super();
       this.manager.updateOrdering(this.column, null);
-      this.flatpickrRef.clear();
+
+      if (this.flatpickrRef) {
+        this.flatpickrRef.clear();
+      }
     }
   }
 });
