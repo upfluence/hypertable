@@ -146,7 +146,7 @@
 
         &:hover,
         &--active {
-          background-color: @upf-gray-light;
+          background-color: @field-background-color;
           color: @upf-primary-bright-purple;
         }
 
@@ -183,13 +183,13 @@
           display: flex;
           text-transform: capitalize;
 
-          &:hover {
-            background-color: @upf-gray-light;
-            cursor: pointer;
+          &--visible {
+            font-weight: bold;
           }
 
-          &.field:not(.visible) {
-            color: @color-text-lighter;
+          &:hover {
+            background-color: @field-background-color;
+            cursor: pointer;
           }
         }
       }

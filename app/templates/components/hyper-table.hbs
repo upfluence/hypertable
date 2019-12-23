@@ -48,7 +48,7 @@
 
         <div class="fields-list">
           {{#each _orderedFilteredFields as |field|}}
-            <div class="field">
+            <div class="field {{if field.visible 'field--visible'}}">
               {{upf-checkbox
                 value=field.visible size="sm"
                 onValueChange=(action "fieldVisibilityUpdated" field)}}
