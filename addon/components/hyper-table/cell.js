@@ -14,9 +14,9 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    let editStatus = this.manager.get('editStatus').filterBy('status')
-    
-    if (this.manager.hooks.onRowClicked && !editStatus[0] && !this.selection)
+    let editStatus = this.manager.get('editStatus').filterBy('status', 'editing')
+
+    if (this.manager.hooks.onRowClicked && editStatus.length === 0 && !this.selection)
       this.manager.hooks.onRowClicked(
         this.item.influencer_id, (this.column || {}).key
       );
