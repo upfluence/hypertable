@@ -2,7 +2,11 @@
   <div class="left-side">
     {{#if manager.options.features.selection}}
       <div class="selected-count">
-        {{_selectedItems.length}}
+        {{#if (and selectAllIncludesHidden _allRowsSelected)}}
+          {{meta.total}}
+        {{else}}
+          {{_selectedItems.length}}
+        {{/if}}
       </div>
     {{/if}}
     {{#if manager.options.features.search}}
@@ -15,7 +19,8 @@
       <div class="contextual-actions contextual-actions--no-animation
                   {{unless manager.options.features.search 'contextual-actions--no-search-sibling'}}">
         {{component
-          contextualActions selectedItems=_selectedItems collection=_collection}}
+          contextualActions selectedItems=_selectedItems collection=_collection
+          manager=manager}}
       </div>
     {{/if}}
   </div>
@@ -88,7 +93,7 @@
         <div class="hypertable__sticky-columns">
           {{#if manager.options.features.selection}}
             <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
-              <header data-toggle="tooltip" data-title="Select loaded rows" data-placement="right">
+              <header>
                 {{upf-checkbox value=_allRowsSelected size="sm"}}
               </header>
 

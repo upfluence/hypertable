@@ -1,7 +1,7 @@
-import EmberObject from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
-import { typeOf } from '@ember/utils';
+import { isEmpty, typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 
 import Column from '@upfluence/hypertable/types/column';
@@ -50,6 +50,17 @@ export default EmberObject.extend({
   *   onLiveEdit
   */
   hooks: {},
+
+
+  appliedFilters: computed('columns.@each.filters.[]', function() {
+    return this.columns.map((column) => {
+      if (!isEmpty(column.filters)) {
+        let _c = {}
+        _c[column.key] = column.filters;
+        return _c;
+      }
+    }).compact();
+  }),
 
   updateFields(fields) {
     this.set('fields', fields);
