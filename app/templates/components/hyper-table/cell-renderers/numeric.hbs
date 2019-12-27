@@ -10,7 +10,7 @@
   <div class="editing-input">
     {{#if (and editStatus.status (not isSuccess))}}
       <div class={{if isError 'is-invalid'}}>
-        {{input type="number" focus-out=(action "toggleEditing" value) type="text"
+        {{input type="number" insert-newline=(action "toggleEditing" editableValue)
           value=value class="editing-input__field form-control"}}
       </div>
     {{else}}

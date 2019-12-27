@@ -17,6 +17,7 @@ export default EmberObject.extend({
   fieldCategories: [],
   applyingFiltersOn: null,
   editStatus: null,
+  editStatus2: [],
   tetherInstance: null,
   tetherOn: null,
   availableFieldsPanel: false,

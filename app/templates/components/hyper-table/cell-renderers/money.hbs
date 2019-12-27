@@ -1,21 +1,45 @@
-<div class="editing-input">
-  {{#if isEditing}}
-    {{#x-select
-      class="editing-input__field editing-input__field--select form-control"
-      value=item.currency on-change=(action "updateCurrency") as |xs|}}
-      {{#each manager.options.currencies as |code|}}
-        {{#xs.option value=code}}{{code}}{{/xs.option}}
-      {{/each}}
-    {{/x-select}}
-    {{input type="text" value=amount class="editing-input__field form-control"}}
-    <i class="fa fa-save margin-left-xx-sm" onclick={{action "toggleEditing" amount}}></i>
-  {{else}}
-    <span data-toggle="tooltip" data-title={{format-money amount item.currency}}>
-      {{if emptyValue '—' (format-money amount currency)}}
+{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
+  {{#if column.upsertable}}
+    <span {{action "toggleEditing"}}>
+      {{or column.field.emptyPlaceholder "Add value"}}
     </span>
-
-    {{#if column.upsertable}}
-      <i class="fa fa-pencil margin-left-xxx-sm" onclick={{action "toggleEditing"}}></i>
-    {{/if}}
+  {{else}}
+    {{or column.field.emptyState "—"}}
   {{/if}}
-</div>
+{{else}}
+  <div class="editing-input">
+    {{#if (and editStatus.status (not isSuccess))}}
+      <div class={{if isError 'is-invalid'}}>
+        {{#x-select
+          class="editing-input__field editing-input__field--select form-control"
+          value=item.currency on-change=(action "updateCurrency") as |xs|}}
+          {{#each manager.options.currencies as |code|}}
+            {{#xs.option value=code}}{{code}}{{/xs.option}}
+          {{/each}}
+        {{/x-select}}
+        {{input type="number" insert-newline=(action "toggleEditing" editableValue)
+          value=value class="editing-input__field form-control"}}
+      </div>
+    {{else}}
+      <div data-toggle="tooltip" class="text-value" data-title={{format-money amount item.currency}} data-placement="bottom">
+        {{if emptyValue (or column.field.emptyState "—") (format-money amount currency)}}
+      </div>
+    {{/if}}
+  </div>
+{{/if}}
+
+{{!-- TODO: Extract to component --}}
+{{#if column.upsertable}}
+  <div class="status-container margin-left-x-sm text-color-default-lighter">
+    {{#if isSuccess}}
+      <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
+      <span class="text-color-success upf-icon upf-icon--check text-size-6"></span>
+    {{else if (or isEditing isError)}}
+      <i class="fa fa-save" onclick={{action "toggleEditing" editableValue}}></i>
+    {{else if isSaving}}
+      {{loading-state}}
+    {{else}}
+      <i class="fa fa-pencil" onclick={{action "toggleEditing"}}></i>
+    {{/if}}
+  </div>
+{{/if}}
