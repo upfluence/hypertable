@@ -14,7 +14,7 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    let editStatus = this.manager.get('editStatus2').filterBy('status')
+    let editStatus = this.manager.get('editStatus').filterBy('status')
     
     if (this.manager.hooks.onRowClicked && !editStatus[0] && !this.selection)
       this.manager.hooks.onRowClicked(

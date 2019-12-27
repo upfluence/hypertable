@@ -5,8 +5,8 @@ import { run } from '@ember/runloop';
 export default Mixin.create({
   classNameBindings: [`editStatus.status`],
 
-  editStatus: computed('manager.editStatus2', 'column.key', function() {
-    let editStatus = this.manager.get('editStatus2').filterBy('id', this.element.id)
+  editStatus: computed('manager.editStatus', 'column.key', function() {
+    let editStatus = this.manager.get('editStatus').filterBy('id', this.element.id)
     let { item, key } = editStatus[0] || {}
 
     if (this.item === item && this.column.key === key) {
@@ -21,7 +21,7 @@ export default Mixin.create({
 
   actions: {
     toggleEditing(value) {
-      let editStatus = this.manager.get('editStatus2');
+      let editStatus = this.manager.get('editStatus');
       let elementEditStatus = editStatus.filterBy('id', this.element.id)
 
       // no editing status -> user hasn't started modification
@@ -60,11 +60,11 @@ export default Mixin.create({
 
       if(!elementEditStatus.length) {
         let newStatus = [...editStatus, editableStatus]
-        this.manager.set('editStatus2', newStatus)
+        this.manager.set('editStatus', newStatus)
       } else {
         let index = editStatus.indexOf(elementEditStatus[0])
         let newStatus = [...editStatus].replace(index, 1, [editableStatus])
-        this.manager.set('editStatus2', newStatus)
+        this.manager.set('editStatus', newStatus)
       }
 
       // automatically focuses the input
