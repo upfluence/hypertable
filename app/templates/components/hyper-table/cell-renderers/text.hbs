@@ -12,8 +12,8 @@
         focus-out=(action "toggleEditing" editableValue)
         insert-newline=(action "toggleEditing" editableValue) }}
     </div>
-    <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
-      {{value}}
+    <div data-toggle="tooltip" class="text-value" data-title={{editableValue}} data-placement="bottom">
+      {{editableValue}}
     </div>
 </div>
 {{!-- TODO: Extract to component --}}

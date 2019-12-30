@@ -105,15 +105,26 @@
       }
     }
     &.empty-value {
-      .editing-input{
+      .editing-input input {
         display: none;
+      }
+      &.saving {
+        span:first-child {
+          display: none;
+        }
+        .text-value {
+          display: block;
+        }
       }
       &.editing {
         span:first-child {
           display: none;
         }
-        .editing-input {
+        .editing-input input {
           display: block;
+        }
+        .text-value {
+          display: none;
         }
       }
     }
