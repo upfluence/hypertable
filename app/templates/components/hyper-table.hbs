@@ -2,13 +2,10 @@
   <div class="left-side">
     {{#if manager.options.features.selection}}
       <div class="selected-count">
-        {{#if (and selectAllIncludesHidden _allRowsSelected)}}
-          {{meta.total}}
-        {{else}}
-          {{_selectedItems.length}}
-        {{/if}}
+        {{format-number _selectedCount}}
       </div>
     {{/if}}
+
     {{#if manager.options.features.search}}
       {{input
         type="text" placeholder="Search..." value=_searchQuery
@@ -104,7 +101,9 @@
               {{else}}
                 {{#each _collection as |item|}}
                   {{#hyper-table/cell item=item manager=manager}}
-                    {{upf-checkbox value=item.selected size="sm"}}
+                    {{upf-checkbox
+                      value=(or (and selectAllIncludesHidden _allRowsSelected) item.selected)
+                      size="sm" disabled=(and selectAllIncludesHidden _allRowsSelected)}}
                   {{/hyper-table/cell}}
                 {{/each}}
 

@@ -42,7 +42,20 @@ export default Component.extend({
   _fieldCategories: computed('manager.fieldCategories', function() {
     return this.manager.fieldCategories.sortBy('label');
   }),
+
   _selectedItems: filterBy('_collection', 'selected', true),
+  _selectedCount: computed(
+    'selectAllIncludesHidden',
+    '_allRowsSelected',
+    '_selectedItems', function() {
+      if (this.selectAllIncludesHidden && this._allRowsSelected) {
+        return this.meta.total;
+      }
+
+      return this._selectedItems.length;
+    }
+  ),
+
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
   _footerType: computed('footer', function() {
