@@ -16,11 +16,12 @@ export default Component.extend({
   click(e) {
     let status = this.manager.getWithDefault('editStatus.status', 'success');
 
-    if (this.manager.hooks.onRowClicked && status === 'success')
+    if (this.manager.hooks.onRowClicked && status === 'success' && !this.selection)
       this.manager.hooks.onRowClicked(
         this.item.influencer_id, (this.column || {}).key
       );
-      if(this.manager.availableFieldsPanel) {
+
+      if (this.manager.availableFieldsPanel) {
         this.manager.toggleProperty('availableFieldsPanel');
       }
     },

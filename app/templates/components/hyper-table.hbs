@@ -100,7 +100,7 @@
                 {{/each}}
               {{else}}
                 {{#each _collection as |item|}}
-                  {{#hyper-table/cell item=item manager=manager}}
+                  {{#hyper-table/cell item=item manager=manager selection=true}}
                     {{upf-checkbox
                       value=(or (and selectAllIncludesHidden _allRowsSelected) item.selected)
                       size="sm" disabled=(and selectAllIncludesHidden _allRowsSelected)}}
