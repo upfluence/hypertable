@@ -11,6 +11,8 @@ export default Component.extend({
   contextualActions: null,
   footer: null,
   bottomReachedOffset: 0,
+  selectAllIncludesHidden: false,
+  meta: {},
 
   /*
    * Table States
@@ -37,7 +39,9 @@ export default Component.extend({
   _loadingCollection: new Array(20),
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
-  _fieldCategories: alias('manager.fieldCategories'),
+  _fieldCategories: computed('manager.fieldCategories', function() {
+    return this.manager.fieldCategories.sortBy('label');
+  }),
   _selectedItems: filterBy('_collection', 'selected', true),
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -90,6 +94,8 @@ export default Component.extend({
   ),
 
   _selectAllObserver: observer('_allRowsSelected', function() {
+    this.manager.set('_allRowsSelected', this._allRowsSelected);
+
     this.get('_collection').forEach((item) => {
       if (this.get('_allRowsSelected')) {
         item.set('selected', true);
