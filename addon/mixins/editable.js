@@ -27,15 +27,12 @@ export default Mixin.create({
       // editing status = success -> user has finished modification
       // other than these 2 statuses means an edit is still on going and the hook will be called
       if(elementEditStatus[0] && elementEditStatus[0].status !== 'success') {
-        run.once(() => {
-          this.manager.hooks.onLiveEdit({
-            key: this.column.key,
-            item: this.item,
-            value,
-            id: this.element.id
-          });
+        this.manager.hooks.onLiveEdit({
+          key: this.column.key,
+          item: this.item,
+          value,
+          id: this.element.id
         });
-
         return;
       }
 
@@ -46,13 +43,6 @@ export default Mixin.create({
       }
 
       // sets the global editing status to let the table know of any on going editing
-      // this.manager.set('editStatus', {
-      //   key: this.column.key,
-      //   status: 'editing',
-      //   item: this.item,
-      //   id: this.element.id
-      // });
-
       let editableStatus = {
         key: this.column.key,
         status: 'editing',

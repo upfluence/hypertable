@@ -1,28 +1,21 @@
-{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
-  {{#if column.upsertable}}
-    <span {{action "toggleEditing"}}>
-      {{or column.field.emptyPlaceholder "Add value"}}
-    </span>
-  {{else}}
-    —
-  {{/if}}
+{{#if column.upsertable}}
+  <span {{action "toggleEditing"}}>
+    {{or column.field.emptyPlaceholder "Add value"}}
+  </span>
 {{else}}
-  <div class="editing-input">
-    {{#if (and editStatus.status (not isSuccess))}}
-      <div class={{if isError 'is-invalid'}}>
-        {{input
-          type="text" value=editableValue class="editing-input__field form-control upf-input"
-          focus-out=(action "toggleEditing" editableValue)
-          insert-newline=(action "toggleEditing" editableValue) }}
-      </div>
-    {{else}}
-      <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
-        {{value}}
-      </div>
-    {{/if}}
-  </div>
+  —
 {{/if}}
-
+<div class="editing-input">
+    <div class={{if isError 'is-invalid'}}>
+      {{input
+        type="text" value=editableValue class="editing-input__field form-control upf-input"
+        focus-out=(action "toggleEditing" editableValue)
+        insert-newline=(action "toggleEditing" editableValue) }}
+    </div>
+    <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
+      {{value}}
+    </div>
+</div>
 {{!-- TODO: Extract to component --}}
 {{#if column.upsertable}}
   <div class="status-container margin-left-x-sm text-color-default-lighter">

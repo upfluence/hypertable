@@ -50,9 +50,7 @@
     width: 100%;
     display:flex;
     align-items:center;
-    &.editing,
-    &.saving,
-    &.error {
+    &.editing {
       .editing-input {
         width: 70%;
         max-width: 200px;
@@ -86,6 +84,38 @@
       padding: 5px 4px;
       font-size: inherit;
       height: auto;
+    }
+  }
+
+  //live edit input state management
+  .cell-container {
+    &:not(.empty-value) {
+      span:first-child {
+        display: none;
+      }
+      &:not(.editing) {
+        .editing-input input {
+          display: none;
+        }
+      }
+      &.editing {
+        .text-value {
+          display: none;
+        }
+      }
+    }
+    &.empty-value {
+      .editing-input{
+        display: none;
+      }
+      &.editing {
+        span:first-child {
+          display: none;
+        }
+        .editing-input {
+          display: block;
+        }
+      }
     }
   }
 
@@ -181,7 +211,7 @@
       width: 100px;
       .spinner {
         width: auto;
-        margin-left: @spacing-xx-sm;
+        margin: 0 0 0 @spacing-xx-sm;
         > div {
           width: 6px;
           height: 6px;
