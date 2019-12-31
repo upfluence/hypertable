@@ -5,17 +5,21 @@
 {{else}}
   —
 {{/if}}
-<div class="editing-input">
-    <div class={{if isError 'is-invalid'}}>
-      {{input
-        type="text" value=editableValue class="editing-input__field form-control upf-input"
-        focus-out=(action "toggleEditing" editableValue)
-        insert-newline=(action "toggleEditing" editableValue) }}
-    </div>
-    <div data-toggle="tooltip" class="text-value" data-title={{editableValue}} data-placement="bottom">
-      {{editableValue}}
-    </div>
-</div>
+
+{{#if column.upsertable}}
+  <div class="editing-input">
+      <div class={{if isError 'is-invalid'}}>
+        {{input
+          type="text" value=editableValue class="editing-input__field form-control upf-input"
+          focus-out=(action "toggleEditing" editableValue)
+          insert-newline=(action "toggleEditing" editableValue) }}
+      </div>
+      <div data-toggle="tooltip" class="text-value" data-title={{editableValue}} data-placement="bottom">
+        {{editableValue}}
+      </div>
+  </div>
+{{/if}}
+
 {{!-- TODO: Extract to component --}}
 {{#if column.upsertable}}
   <div class="status-container margin-left-x-sm text-color-default-lighter">
