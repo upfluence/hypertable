@@ -144,6 +144,7 @@ export default EmberObject.extend({
             upsertable: field.upsertable,
             orderable: field.orderable,
             filterable: field.filterable,
+            orderKey: field.orderKey || field.key,
             field
           })
         );
