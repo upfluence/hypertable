@@ -6,11 +6,7 @@ export default Mixin.create({
   classNameBindings: [`editStatus.status`],
 
   editStatus: computed('manager.editStatus', 'column.key', function() {
-    let editStatus = this.manager.get('editStatus').filterBy('id', this.element.id)
-
-    if (editStatus[0] && editStatus[0].id === this.element.id) {
-      return editStatus[0];
-    }
+    return this.manager.get('editStatus').findBy('id', this.element.id);
   }),
 
   isSuccess: computed.equal('editStatus.status', 'success'),
@@ -21,12 +17,12 @@ export default Mixin.create({
   actions: {
     toggleEditing(value) {
       let editStatus = this.manager.get('editStatus');
-      let elementEditStatus = editStatus.filterBy('id', this.element.id)
+      let elementEditStatus = editStatus.findBy('id', this.element.id)
 
       // no editing status -> user hasn't started modification
       // editing status = success -> user has finished modification
       // other than these 2 statuses means an edit is still on going and the hook will be called
-      if(elementEditStatus[0] && elementEditStatus[0].status !== 'success') {
+      if(elementEditStatus && elementEditStatus.status !== 'success') {
         this.manager.hooks.onLiveEdit({
           key: this.column.key,
           item: this.item,
@@ -50,11 +46,11 @@ export default Mixin.create({
         id: this.element.id
       }
 
-      if(!elementEditStatus.length) {
+      if(!elementEditStatus) {
         let newStatus = [...editStatus, editableStatus]
         this.manager.set('editStatus', newStatus)
       } else {
-        let index = editStatus.indexOf(elementEditStatus[0])
+        let index = editStatus.indexOf(elementEditStatus)
         let newStatus = [...editStatus].replace(index, 1, [editableStatus])
         this.manager.set('editStatus', newStatus)
       }
