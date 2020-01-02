@@ -17,6 +17,11 @@
         {{else}}
           <span class={{if facet.applied "text-style-bold"}}>
             {{facet.formattedIdentifier}}
+            {{#if facet.infoBubble}}
+              &nbsp; &nbsp; <i class="fa fa-info-circle text-color-blue-gray"
+                               data-toggle="tooltip" data-placemment="bottom"
+                               title={{facet.infoBubble}}></i>
+             {{/if}}
           </span>
         {{/if}}
       </div>
