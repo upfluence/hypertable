@@ -5,7 +5,7 @@ import { run } from '@ember/runloop';
 export default Mixin.create({
   classNameBindings: [`editStatus.status`],
 
-  editStatus: computed('manager.editStatus', 'column.key', function() {
+  editStatus: computed('manager.editStatus.[]', 'manager.editStatus.@each.status', function() {
     return this.manager.get('editStatus').findBy('id', this.element.id);
   }),
 
@@ -39,20 +39,15 @@ export default Mixin.create({
       }
 
       // sets the global editing status to let the table know of any on going editing
-      let editableStatus = {
-        key: this.column.key,
-        status: 'editing',
-        item: this.item,
-        id: this.element.id
-      }
-
       if(!elementEditStatus) {
-        let newStatus = [...editStatus, editableStatus]
-        this.manager.set('editStatus', newStatus)
+        this.manager.editStatus.pushObject(Ember.Object.create({
+          key: this.column.key,
+          status: 'editing',
+          item: this.item,
+          id: this.element.id
+        }))
       } else {
-        let index = editStatus.indexOf(elementEditStatus)
-        let newStatus = [...editStatus].replace(index, 1, [editableStatus])
-        this.manager.set('editStatus', newStatus)
+        elementEditStatus.set('status', 'editing');
       }
 
       // automatically focuses the input
