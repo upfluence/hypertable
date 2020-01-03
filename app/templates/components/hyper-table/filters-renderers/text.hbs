@@ -13,6 +13,17 @@
 
 {{#if column.filterable}}
   {{#input-wrapper classNames=(if column.orderable "margin-top-xx-sm")}}
+    <label>Display</label>
+    <div class="btn-group upf-radio-group upf-radio-group--block">
+      {{#each-in existenceFilters as |label value|}}
+        {{radio-button
+          value=value currentValue=currentExistenceFilter label=label
+          options=existenceFilters onCheck="existenceFilterChanged"}}
+      {{/each-in}}
+    </div>
+  {{/input-wrapper}}
+
+  {{#input-wrapper}}
     <label>Search</label>
     <div>
       {{input
