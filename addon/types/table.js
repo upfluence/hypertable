@@ -20,6 +20,7 @@ export default EmberObject.extend({
   tetherInstance: null,
   tetherOn: null,
   availableFieldsPanel: false,
+  _allRowsSelected: false,
 
   /*
    * Configuration
@@ -98,6 +99,7 @@ export default EmberObject.extend({
   },
 
   updateData(data) {
+    data.setEach('selected', this._allRowsSelected);
     this.set('data', data);
   },
 
