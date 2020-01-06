@@ -5,6 +5,7 @@ export default Component.extend({
   classNameBindings: [
     'item.selected:hypertable__cell--selected',
     'item.hovered:hypertable__cell--hovered',
+    'item.deleted:hypertable__cell--deleted',
     'loading:hypertable__cell--loading',
     'manager.hooks.onRowClicked:hypertable__cell--clickable',
     'column.key'

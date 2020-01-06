@@ -268,6 +268,17 @@
   }
 }
 
+.hypertable__cell--deleted {
+  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  border: 0;
+  background-color: @upf-feedback-error !important;
+}
+
 .hypertable__cell--clickable {
   cursor: pointer;
 }
