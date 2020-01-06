@@ -19,6 +19,21 @@ export default Component.extend(FiltersRendererMixin, {
     }
   }),
 
+  existenceFilters: {
+    'With Value': 'with',
+    'Without Value': 'without'
+  },
+
+  currentExistenceFilter: computed('column.filters.[]', '_searchQuery', function() {
+    let _existenceFilter = this.column.filters.findBy('key', 'existence');
+
+    if (_existenceFilter) {
+      return _existenceFilter.value;
+    }
+
+    return this._searchQuery ? 'with' : null;
+  }),
+
   _addSearchFilter() {
     if(this._searchQuery !== null) {
       this.column.set(
@@ -36,6 +51,13 @@ export default Component.extend(FiltersRendererMixin, {
   actions: {
     orderingOptionChanged(value) {
       this.manager.updateOrdering(this.column, value);
+    },
+
+    existenceFilterChanged(value) {
+      this.set('currentExistenceFilter', value);
+
+      this.column.set('filters', [{ key: 'existence', value }]);
+      this.manager.hooks.onColumnsChange('columns:change');
     },
 
     reset() {

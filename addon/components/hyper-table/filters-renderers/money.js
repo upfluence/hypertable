@@ -1,26 +1,8 @@
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
-import { run } from '@ember/runloop';
 
-import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
+import NumericFilterRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers/numeric';
 
-export default Component.extend(FiltersRendererMixin, {
-  lowerBoundFilter: null,
-  upperBoundFilter: null,
-
-  orderingOptions: computed('column.orderKey', function() {
-    return {
-      '0 — 9': `${this.column.orderKey}:asc`,
-      '9 — 0': `${this.column.orderKey}:desc`
-    }
-  }),
-
-  _: observer('lowerBoundFilter', 'upperBoundFilter', function() {
-    if (this.lowerBoundFilter && this.upperBoundFilter) {
-      run.debounce(this, this._addRangeFilter, 1000);
-    }
-  }),
-
+export default NumericFilterRenderer.extend({
   _addRangeFilter() {
     this.column.set('filters', [
       { key: 'lower_bound', value: (this.lowerBoundFilter * 100).toString() },

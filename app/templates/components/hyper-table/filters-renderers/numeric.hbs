@@ -12,7 +12,18 @@
 {{/if}}
 
 {{#if column.filterable}}
-  <div class="row {{if column.orderable 'margin-top-xx-sm'}}">
+  {{#input-wrapper classNames=(if column.orderable "margin-top-xx-sm")}}
+    <label>Display</label>
+    <div class="btn-group upf-radio-group upf-radio-group--block">
+      {{#each-in existenceFilters as |label value|}}
+        {{radio-button
+          value=value currentValue=currentExistenceFilter label=label
+          options=existenceFilters onCheck="existenceFilterChanged"}}
+      {{/each-in}}
+    </div>
+  {{/input-wrapper}}
+
+  <div class="row margin-top-xx-sm">
     {{#input-wrapper classNames="col-xs-6"}}
       <label>From</label>
       {{input
