@@ -1,24 +1,22 @@
-{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
-  {{#if column.upsertable}}
-    <span {{action "toggleEditing"}}>
-      {{or column.field.emptyPlaceholder "Add value"}}
-    </span>
-  {{else}}
-    —
-  {{/if}}
+{{#if column.upsertable}}
+  <span {{action "toggleEditing"}}>
+    {{or column.field.emptyPlaceholder "Add value"}}
+  </span>
 {{else}}
+  —
+{{/if}}
+
+{{#if column.upsertable}}
   <div class="editing-input">
-    {{#if (and editStatus.status (not isSuccess))}}
       <div class={{if isError 'is-invalid'}}>
         {{input
           type="text" value=editableValue class="editing-input__field form-control upf-input"
+          focus-out=(action "toggleEditing" editableValue)
           insert-newline=(action "toggleEditing" editableValue) }}
       </div>
-    {{else}}
-      <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
-        {{value}}
+      <div data-toggle="tooltip" class="text-value" data-title={{editableValue}} data-placement="bottom">
+        {{editableValue}}
       </div>
-    {{/if}}
   </div>
 {{/if}}
 

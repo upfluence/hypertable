@@ -1,15 +1,12 @@
 import Mixin from '@ember/object/mixin';
-import { computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { run } from '@ember/runloop';
 
 export default Mixin.create({
   classNameBindings: [`editStatus.status`],
 
-  editStatus: computed('manager.editStatus', 'column.key', function() {
-    let { item, key } = this.manager.editStatus || {}
-    if (this.item === item && this.column.key === key) {
-      return this.manager.editStatus;
-    }
+  editStatus: computed('manager.editStatus.[]', 'manager.editStatus.@each.status', function() {
+    return this.manager.get('editStatus').findBy('id', this.element.id);
   }),
 
   isSuccess: computed.equal('editStatus.status', 'success'),
@@ -19,16 +16,18 @@ export default Mixin.create({
 
   actions: {
     toggleEditing(value) {
-      let status = this.manager.getWithDefault('editStatus.status', 'success');
+      let editStatus = this.manager.get('editStatus');
+      let elementEditStatus = editStatus.findBy('id', this.element.id)
 
       // no editing status -> user hasn't started modification
       // editing status = success -> user has finished modification
       // other than these 2 statuses means an edit is still on going and the hook will be called
-      if(this.get('editStatus.status') && status !== 'success') {
+      if(elementEditStatus && elementEditStatus.status !== 'success') {
         this.manager.hooks.onLiveEdit({
           key: this.column.key,
           item: this.item,
-          value
+          value,
+          id: this.element.id
         });
         return;
       }
@@ -40,11 +39,16 @@ export default Mixin.create({
       }
 
       // sets the global editing status to let the table know of any on going editing
-      this.manager.set('editStatus', {
-        key: this.column.key,
-        status: 'editing',
-        item: this.item
-      });
+      if(!elementEditStatus) {
+        this.manager.editStatus.pushObject(EmberObject.create({
+          key: this.column.key,
+          status: 'editing',
+          item: this.item,
+          id: this.element.id
+        }))
+      } else {
+        elementEditStatus.set('status', 'editing');
+      }
 
       // automatically focuses the input
       run.scheduleOnce('afterRender', this, () => {
