@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import { computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { run } from '@ember/runloop';
 
 export default Mixin.create({
@@ -40,7 +40,7 @@ export default Mixin.create({
 
       // sets the global editing status to let the table know of any on going editing
       if(!elementEditStatus) {
-        this.manager.editStatus.pushObject(Ember.Object.create({
+        this.manager.editStatus.pushObject(EmberObject.create({
           key: this.column.key,
           status: 'editing',
           item: this.item,
