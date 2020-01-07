@@ -24,18 +24,18 @@
   justify-content: center;
   flex-direction: column;
   z-index: 10;
-  background-color: white;
 
   top: @cell-height;
   height: calc(100% - @cell-height);
-  width: 100%;
 
   img {
-      padding: 0;
+    padding: 0;
   }
 
   &--empty {
     position: absolute;
+    transform: translateX(50%);
+    z-index: -1;
   }
 }
 
