@@ -77,9 +77,9 @@ export default SortableItem.extend({
         {
           element: `#${this.elementId} .available-filters`,
           target: `#${this.elementId} header`,
-          attachment: 'top center',
+          attachment: 'top left',
           targetAttachment: 'bottom left',
-          offset: isLastColumn ? '-5px 60px' : '-5px 0'
+          offset: isLastColumn ? '0 60px' : '0 0'
         },
         true
       );
