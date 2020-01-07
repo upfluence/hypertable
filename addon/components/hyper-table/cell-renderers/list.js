@@ -40,7 +40,8 @@ export default Component.extend(CellRendererMixin, {
             }
           ]
         },
-        false
+        false,
+        document.querySelector(`#${this.elementId} .list-container`).offsetWidth
       );
     }
   }

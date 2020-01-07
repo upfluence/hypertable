@@ -163,11 +163,17 @@ export default EmberObject.extend({
     this.set('isScrollable', table.scrollWidth > table.offsetWidth);
   },
 
-  triggerTetherContainer(on, elementClass, options, backdrop = true) {
+  triggerTetherContainer(on, elementClass, options, backdrop = true, width) {
     if (this.tetherOn !== on) {
       this.set('tetherOn', on);
 
       scheduleOnce('afterRender', this, () => {
+        var expandableList = document.querySelector(`.${elementClass}`);
+
+        if(width) {
+          expandableList.style.width = `${width}px`;
+        }
+
         if (this.tetherInstance) {
           this.tetherInstance.setOptions(options);
         } else {
@@ -175,7 +181,7 @@ export default EmberObject.extend({
         }
 
         setTimeout(() => {
-          document.querySelector(`.${elementClass}`).classList.add(
+          expandableList.classList.add(
             `${elementClass}--visible`
           );
         }, 200);
