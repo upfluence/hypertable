@@ -93,11 +93,13 @@
       span:first-child {
         display: none;
       }
+
       &:not(.editing) {
-        .editing-input input {
+        .editing-input input:not(.ember-flatpickr-input) {
           display: none;
         }
       }
+
       &.editing {
         .text-value {
           display: none;
