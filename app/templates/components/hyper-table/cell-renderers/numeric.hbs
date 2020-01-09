@@ -1,5 +1,5 @@
 {{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
-  {{#if column.upsertable}}
+  {{#if isUpsertable}}
     <span {{action "toggleEditing"}}>
       {{or column.field.emptyPlaceholder "Add value"}}
     </span>
@@ -10,7 +10,9 @@
   <div class="editing-input">
     {{#if (and editStatus.status (not isSuccess))}}
       <div class={{if isError 'is-invalid'}}>
-        {{input type="number" insert-newline=(action "toggleEditing" editableValue)
+        {{input type="number"
+          focus-out=(action "toggleEditing" editableValue)
+          insert-newline=(action "toggleEditing" editableValue)
           value=value class="editing-input__field form-control"}}
       </div>
     {{else}}
@@ -22,17 +24,15 @@
 {{/if}}
 
 {{!-- TODO: Extract to component --}}
-{{#if column.upsertable}}
+{{#if isUpsertable}}
   <div class="status-container margin-left-x-sm text-color-default-lighter">
-    {{#if isSuccess}}
+    {{#if isSaving}}
+      {{loading-state}}
+    {{else if isSuccess}}
       <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
       <span class="text-color-success upf-icon upf-icon--check text-size-6"></span>
-    {{else if (or isEditing isError)}}
-      <i class="fa fa-save" onclick={{action "toggleEditing" editableValue}}></i>
-    {{else if isSaving}}
-      {{loading-state}}
-    {{else}}
-      <i class="fa fa-pencil" onclick={{action "toggleEditing"}}></i>
+    {{else if (not editStatus.status)}}
+      <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
     {{/if}}
   </div>
 {{/if}}

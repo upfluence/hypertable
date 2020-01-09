@@ -3,7 +3,7 @@ import EmberObject, { computed } from '@ember/object';
 import { run } from '@ember/runloop';
 
 export default Mixin.create({
-  classNameBindings: [`editStatus.status`],
+  classNameBindings: ['editStatus.status', 'isUpsertable'],
 
   editStatus: computed('manager.editStatus.[]', 'manager.editStatus.@each.status', function() {
     return this.manager.get('editStatus').findBy('id', this.element.id);
@@ -13,6 +13,7 @@ export default Mixin.create({
   isEditing: computed.equal('editStatus.status', 'editing'),
   isSaving: computed.equal('editStatus.status', 'saving'),
   isError: computed.equal('editStatus.status', 'error'),
+  isUpsertable: computed.equal('column.upsertable', true),
 
   actions: {
     toggleEditing(value) {
