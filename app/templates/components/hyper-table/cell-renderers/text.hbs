@@ -1,12 +1,14 @@
-{{#if column.upsertable}}
+{{#if isUpsertable}}
   <span {{action "toggleEditing"}}>
     {{or column.field.emptyPlaceholder "Add value"}}
   </span>
 {{else}}
-  —
+  <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
+    {{if emptyValue '—' value}}
+  </div>
 {{/if}}
 
-{{#if column.upsertable}}
+{{#if isUpsertable}}
   <div class="editing-input">
       <div class={{if isError 'is-invalid'}}>
         {{input
@@ -19,19 +21,16 @@
       </div>
   </div>
 {{/if}}
-
 {{!-- TODO: Extract to component --}}
-{{#if column.upsertable}}
+{{#if isUpsertable}}
   <div class="status-container margin-left-x-sm text-color-default-lighter">
-    {{#if isSuccess}}
+    {{#if isSaving}}
+      {{loading-state}}
+    {{else if isSuccess}}
       <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
       <span class="text-color-success upf-icon upf-icon--check text-size-6"></span>
-    {{else if (or isEditing isError)}}
-      <i class="fa fa-save" onclick={{action "toggleEditing" editableValue}}></i>
-    {{else if isSaving}}
-      {{loading-state}}
-    {{else}}
-      <i class="fa fa-pencil" onclick={{action "toggleEditing"}}></i>
+    {{else if (not editStatus.status)}}
+      <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
     {{/if}}
   </div>
 {{/if}}
