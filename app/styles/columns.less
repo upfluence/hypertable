@@ -160,7 +160,7 @@
 .hypertable__column--filtered {
   & > header {
     .icon-commands .fa.fa-filter {
-      color: @color-text-light;
+      color: @color-text;
       display: block;
       font-weight: bold;
       opacity: 1;
@@ -245,13 +245,16 @@
   border: 2px solid lighten(@upf-gray, 15%);
   border-radius: @default-radius;
   box-shadow: 0 0 20px 10px fadeout(@upf-gray, 80%);
-  display: none;
 
   min-width: 300px;
   width: 300px;
 
   padding: @spacing-xx-sm;
   z-index: 10;
+  transform-origin: 95% top;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
 
   .filters {
     padding-top: @spacing-xx-sm;
@@ -272,7 +275,23 @@
   }
 
   &--visible {
-    display: block;
+    animation: openFilters .3s ease-out forwards;
+  }
+
+  @keyframes openFilters {
+    10% {
+      opacity: 1;
+    }
+    99% {
+      opacity: 1;
+      max-height: 500px;
+      overflow: hidden;
+    }
+    100% {
+      opacity: 1;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
 
   .buttons-container {
