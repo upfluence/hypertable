@@ -65,8 +65,11 @@ export default SortableItem.extend({
 
   actions: {
     toggleFiltersPanel() {
-      let isLastColumn =
-        this.manager.columns.indexOf(this.column) === this.manager.columns.length - 1;
+      let isFirstColumn =
+        this.manager.columns.indexOf(this.column) === 1;
+      let isMedium = this.column.size === 'M';
+      let isSmall = this.column.size === 'S'
+
       if(this.manager.tetherOn !== this.column.key) {
         this.manager.destroyTetherInstance();
       }
@@ -77,9 +80,9 @@ export default SortableItem.extend({
         {
           element: `#${this.elementId} .available-filters`,
           target: `#${this.elementId} header`,
-          attachment: 'top left',
-          targetAttachment: 'bottom left',
-          offset: isLastColumn ? '0 60px' : '0 0'
+          attachment: 'top right',
+          targetAttachment: 'bottom right',
+          offset: isFirstColumn ? `0 ${isMedium? '-50px' : isSmall? '-130px' : '0' }` : '0 0'
         },
         true
       );
