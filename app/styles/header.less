@@ -173,7 +173,10 @@
 
       .fields-list {
         max-height: 363px;
-        overflow: hidden scroll;
+
+        // shortcut not used for Safari support -_-
+        overflow-x: hidden;
+        overflow-y: scroll;
 
         .field {
           border-radius: @default-radius;
