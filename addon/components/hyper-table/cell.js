@@ -15,8 +15,9 @@ export default Component.extend({
   renderingComponent: null,
 
   click(e) {
-    let editStatus = this.manager.get('editStatus').findBy('status', 'editing')
-
+    let editStatus = this.manager.get('editStatus').find((editStatus) => {
+      return editStatus.status === 'editing' || editStatus.status === 'error';
+    });
     if (this.manager.hooks.onRowClicked && !editStatus && !this.selection)
       this.manager.hooks.onRowClicked(
         this.item.influencer_id, (this.column || {}).key

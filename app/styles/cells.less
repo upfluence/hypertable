@@ -87,20 +87,20 @@
     }
   }
 
-  //live edit input state management
+  //live edit input state management: TODO REFACTOR
   .cell-container.is-upsertable {
     &:not(.empty-value) {
       span:first-child {
         display: none;
       }
 
-      &:not(.editing) {
+      &:not(.editing):not(.error) {
         .editing-input input:not(.ember-flatpickr-input) {
           display: none;
         }
       }
 
-      &.editing {
+      &.editing, &.error{
         .text-value {
           display: none;
         }
@@ -118,7 +118,7 @@
           display: block;
         }
       }
-      &.editing {
+      &.editing, &.error {
         span:first-child {
           display: none;
         }
