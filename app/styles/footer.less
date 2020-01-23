@@ -56,6 +56,29 @@
   }
 }
 
+.hypertable-footer__stat--loading {
+  .title, .number {
+  animation: skeleton-content 1.2s ease-in-out infinite;
+  background-color: #eee;
+  background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  border-radius: @default-radius;
+  display: inline-block;
+  line-height: 1;
+  }
+
+  .title {
+    height: 10px;
+    width: 70px;
+  }
+
+  .number {
+    height: 25px;
+    width: 25px;
+  }
+}
+
 .hypertable-footer__stats-separator {
   height: 50%;
   width: 1px;
