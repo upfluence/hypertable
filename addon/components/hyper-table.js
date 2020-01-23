@@ -245,5 +245,13 @@ export default Component.extend({
         this.manager.destroyTetherInstance();
       }
     },
+
+    resetAllFilters() {
+      this._columns.setEach('filters', []);
+
+      if (this.manager.hooks.onColumnsChange) {
+        this.manager.hooks.onColumnsChange('columns:change');
+      }
+    }
   }
 });
