@@ -68,7 +68,7 @@ export default EmberObject.extend({
   },
 
   updateColumns(columns) {
-    this.set('columns', columns.map((column, index) => {
+    this.set('columns', columns.filter((column) => this.fields.findBy('key', column.key)).map((column, index) => {
       if (typeOf(column) !== 'instance') {
         column = Column.create(column);
       }
