@@ -20,14 +20,9 @@ export default Mixin.create({
       if(typeof value !== 'string') {
         value = value.toString();
       }
-      console.log("here");
-      
-      console.log(autosave);
-      
       
       let editStatus = this.manager.get('editStatus');
       let elementEditStatus = editStatus.findBy('id', this.element.id)
-
 
       // check if autosave is set to true
       // will initialize the item's edit status
