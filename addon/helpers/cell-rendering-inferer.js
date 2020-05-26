@@ -1,7 +1,7 @@
 import { helper } from '@ember/component/helper';
 
 const AVAILABLE_RENDERERS = [
-  'text', 'numeric', 'money', 'date', 'image', 'list'
+  'text', 'numeric', 'money', 'date', 'image', 'list', 'rating'
 ];
 
 export function cellRenderingInferer(params/*, hash*/) {

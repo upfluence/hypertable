@@ -16,14 +16,34 @@ export default Mixin.create({
   isUpsertable: computed.equal('column.upsertable', true),
 
   actions: {
-    toggleEditing(value) {
+    toggleEditing(value, autosave = false) {
+      if(typeof value !== 'string') {
+        value = value.toString();
+      }
+      console.log("here");
+      
+      console.log(autosave);
+      
+      
       let editStatus = this.manager.get('editStatus');
       let elementEditStatus = editStatus.findBy('id', this.element.id)
+
+
+      // check if autosave is set to true
+      // will initialize the item's edit status
+      if(autosave) {
+        this.manager.editStatus.pushObject(EmberObject.create({
+          key: this.column.key,
+          status: 'editing',
+          item: this.item,
+          id: this.element.id
+        }))
+      }
 
       // no editing status -> user hasn't started modification
       // editing status = success -> user has finished modification
       // other than these 2 statuses means an edit is still on going and the hook will be called
-      if(elementEditStatus && elementEditStatus.status !== 'success') {
+      if(autosave || (elementEditStatus && elementEditStatus.status !== 'success')) {
         this.manager.hooks.onLiveEdit({
           key: this.column.key,
           item: this.item,
