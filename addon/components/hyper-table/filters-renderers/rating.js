@@ -1,6 +1,5 @@
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
-import { run } from '@ember/runloop';
+import { computed } from '@ember/object';
 
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
 
