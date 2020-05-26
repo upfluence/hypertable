@@ -12,8 +12,8 @@ export default Component.extend(FiltersRendererMixin, {
 
   orderingOptions: computed('column.orderKey', function() {
     return {
-      '0 — 9': `${this.column.orderKey}:asc`,
-      '9 — 0': `${this.column.orderKey}:desc`
+      '0 — 5': `${this.column.orderKey}:asc`,
+      '5 — 0': `${this.column.orderKey}:desc`
     }
   }),
 
