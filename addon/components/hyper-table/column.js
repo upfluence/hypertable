@@ -4,7 +4,7 @@ import { and, notEmpty, or } from '@ember/object/computed';
 import { capitalize } from '@ember/string';
 
 const AVAILABLE_RENDERERS = [
-  'text', 'numeric', 'money', 'date', 'image', 'list', 'rating'
+  'text', 'numeric', 'money', 'date', 'image', 'list'
 ];
 
 export default SortableItem.extend({
@@ -20,7 +20,6 @@ export default SortableItem.extend({
     'isMoney:hypertable__column--numeric',
     'isImage:hypertable__column--image',
     'isList:hypertable__column--list',
-    'isRating:hypertable__column--rating',
   ],
 
   _ordered: notEmpty('column.orderBy'),
