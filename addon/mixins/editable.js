@@ -27,12 +27,14 @@ export default Mixin.create({
       // check if autosave is set to true
       // will initialize the item's edit status
       if(autosave) {
-        this.manager.editStatus.pushObject(EmberObject.create({
-          key: this.column.key,
-          status: 'editing',
-          item: this.item,
-          id: this.element.id
-        }))
+        this.manager.editStatus.pushObject(
+          EmberObject.create({
+            key: this.column.key,
+            status: 'editing',
+            item: this.item,
+            id: this.element.id
+          })
+        )
       }
 
       // no editing status -> user hasn't started modification

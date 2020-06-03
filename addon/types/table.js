@@ -7,7 +7,7 @@ import { dasherize } from '@ember/string';
 import Column from '@upfluence/hypertable/types/column';
 
 const DEFAULT_RENDERERS = [
-  'text', 'numeric', 'money', 'date', 'image',
+  'text', 'numeric', 'money', 'date', 'image'
 ];
 
 export default EmberObject.extend({
