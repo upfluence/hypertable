@@ -117,6 +117,8 @@ export default EmberObject.extend({
     if (field.type === 'string') field.set('type', 'text');
     if (field.type === 'integer') field.set('type', 'numeric');
     if (field.type === 'timestamp') field.set('type', 'date');
+    if (field.type === 'rating') field.set('autosave', true);
+
     if (!DEFAULT_RENDERERS.includes(field.type)) {
       field.set('renderingComponent', `crm/column-renderers/${dasherize(field.type)}`);
       if (field.filterable) {
