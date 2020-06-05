@@ -17,7 +17,7 @@ export default Mixin.create({
 
   actions: {
     toggleEditing(value, autosave = false) {
-      if(typeof value !== 'string') {
+      if(value && typeof value !== 'string') {
         value = value.toString();
       }
       
