@@ -18,7 +18,10 @@ export default Component.extend({
     let editStatus = this.manager.get('editStatus').find((editStatus) => {
       return editStatus.status === 'editing' || editStatus.status === 'error';
     });
-    if (this.manager.hooks.onRowClicked && !editStatus && !this.selection && !this.column.autosave)
+
+    let isAutosave = this.column.autosave || this.column.field.autosave;
+
+    if (this.manager.hooks.onRowClicked && !editStatus && !this.selection && !isAutosave)
       this.manager.hooks.onRowClicked(
         this.item.influencer_id, (this.column || {}).key
       );
