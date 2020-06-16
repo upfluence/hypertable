@@ -27,9 +27,66 @@
       Reset Filters
     </button>
 
+    <button class="margin-left-xxx-sm upf-btn upf-btn--default upf-btn--small" {{action "openAvailableViews"}}>
+      <i class="fa fa-eye"></i> &nbsp; Table Views
+    </button>
+
     <button class="margin-left-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle" {{action "openAvailableFields"}}>
       <i class="fa fa-columns"></i> &nbsp; Manage Fields
     </button>
+
+    <div class="table-views-wrapper {{if manager.availableTableViews 'visible' 'invisible'}}">
+      <div>
+        <div class="text-color-default-light">Search</div>
+        {{input
+          type="text" placeholder="Search..."
+          class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-x-sm"}}
+      </div>
+
+      <div class="views-container">
+        {{#each this.manager.views as |view|}}
+          <div class="view-line">
+            <div class="view-name">{{view.name}}</div>
+            <div class="view-icons">
+              <i class="fa fa-retweet"></i>
+              <i class="fa fa-share-alt"></i>
+              <i class="fa fa-close" {{action "deleteView" view}}></i>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+
+      {{!-- <div class="view-line">
+        <div class="view-name selected">Live Capture</div>
+        <div class="view-icons">
+          <i class="fa fa-retweet"></i>
+          <i class="fa fa-share-alt"></i>
+          <i class="fa fa-close"></i>
+        </div>
+      </div>
+
+      <div class="view-line">
+        <div class="view-name">Social Media Overview</div>
+        <div class="view-icons">
+          <i class="fa fa-retweet"></i>
+          <i class="fa fa-share-alt"></i>
+          <i class="fa fa-close"></i>
+        </div>
+      </div>
+
+      <div class="view-line">
+        <div class="view-name">Relationship</div>
+        <div class="view-icons">
+          <i class="fa fa-retweet"></i>
+          <i class="fa fa-share-alt"></i>
+          <i class="fa fa-close"></i>
+        </div>
+      </div> --}}
+
+      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn" {{action "addView"}}>
+        <i class="fa fa-plus"></i> &nbsp; Add View
+      </button>
+    </div>
 
     <div class="available-fields-wrapper {{if manager.availableFieldsPanel 'visible' 'invisible'}}">
       <div class="available-fields-wrapper__categories">

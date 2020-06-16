@@ -204,11 +204,30 @@ export default Component.extend({
       }
     },
 
+    addView() {
+      if(this.manager.hooks.onAddView) {
+        this.manager.hooks.onAddView()
+      }
+    },
+
+    deleteView(view) {
+      if(this.manager.hooks.onDeleteView) {
+        this.manager.hooks.onDeleteView(view)
+      }
+    },
+
     openAvailableFields() {
       if(this.manager.tetherOn) {
         this.manager.destroyTetherInstance();
       }
       this.manager.toggleProperty('availableFieldsPanel');
+    },
+
+    openAvailableViews() {
+      if(this.manager.tetherOn) {
+        this.manager.destroyTetherInstance();
+      }
+      this.manager.toggleProperty('availableTableViews');
     },
 
     scrollToEnd() {

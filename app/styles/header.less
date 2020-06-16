@@ -87,16 +87,71 @@
    * Access all available fields and toggle their visibility in the table
    *
    */
-  .available-fields-wrapper {
+
+   .available-fields-wrapper {
+    right: 0;
+    flex-direction: row;
+   }
+
+   .table-views-wrapper {
+     right: 140px;
+     padding: @spacing-x-sm;
+     flex-direction: column;
+     width: 280px;
+     
+     .view-icons {
+       .fa {
+          margin-left: @spacing-xxx-sm;
+          color: @color-text-lighter;
+       }
+     }
+
+     .views-container {
+       max-height: 130px;
+       overflow-x: auto;
+
+       &::-webkit-scrollbar {
+        background-color: @upf-gray;
+        width: 7px;
+        border-radius: @default-radius;
+      }
+    
+      &::-webkit-scrollbar-thumb {
+        border-radius: @default-radius;
+        background-color: @upf-gray-light;
+      }
+     }
+
+     .view-line {
+       display: flex;
+       justify-content: space-between;
+       cursor: pointer;
+       margin-bottom: @spacing-xxx-sm;
+       margin-right: 0.5em;
+     }
+
+     .view-name {
+       &.selected {
+         font-weight: bold;
+       }
+     }
+
+     .add-view-btn {
+       width: 100px;
+       margin-top: @spacing-sm;
+       padding: 0;
+     }
+   }
+
+  .available-fields-wrapper,
+  .table-views-wrapper {
     background-color: #fff;
     box-shadow: 0px 0px 1.2rem rgba(0,0,0,0.2);
     border-radius: @default-radius;
     margin-top: 7px;
     display: flex;
-    flex-direction: row;
     position: absolute;
     top: 55px;
-    right: 0;
     z-index: 22;
     transform-origin: 95% top;
 

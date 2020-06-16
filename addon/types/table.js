@@ -12,6 +12,7 @@ const DEFAULT_RENDERERS = [
 
 export default EmberObject.extend({
   columns: [],
+  views: [],
   data: [],
   fields: [],
   fieldCategories: [],
@@ -20,6 +21,7 @@ export default EmberObject.extend({
   tetherInstance: null,
   tetherOn: null,
   availableFieldsPanel: false,
+  availableTableViews: false,
   _allRowsSelected: false,
 
   /*
@@ -101,6 +103,12 @@ export default EmberObject.extend({
   updateData(data) {
     data.setEach('selected', this._allRowsSelected);
     this.set('data', data);
+  },
+
+  updateViews(views) {
+    this.set('views', views);
+    console.log(this.views);
+    
   },
 
   updateOrdering(column, orderBy) {
