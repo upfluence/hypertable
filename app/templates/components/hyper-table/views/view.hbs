@@ -1,0 +1,16 @@
+<div class="view-line">
+  <div class="view-name">{{view.name}}</div>
+  <div class="view-icons">
+    <i class="fa fa-retweet" {{action toggleUpdateViewModal view}}></i>
+    <i class="fa fa-share-alt" {{action "toggleSharingModal"}}></i>
+    <i class="fa fa-close" {{action deleteView view}}></i>
+  </div>
+</div>
+
+{{!-- {{#if showSharingModal}}
+  {{ownership-selection-modal
+      model=view header="Test"
+      successfulSharing="Test"
+      modelType="view"  closeModal=(action "toggleSharingModal")}}
+  {{ownership-selection-modal}}
+{{/if}} --}}

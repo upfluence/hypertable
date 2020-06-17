@@ -1,0 +1,75 @@
+<div class="table-views-wrapper {{if manager.availableTableViews 'visible' 'invisible'}}">
+  <div>
+    <div class="text-color-default-light">Search</div>
+    {{input
+      type="text" placeholder="Search..."
+      class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-x-sm"}}
+  </div>
+
+  <div class="views-container">
+    {{#each this.manager.views as |view|}}
+      {{hyper-table/views/view view=view deleteView=(action "deleteView") toggleUpdateViewModal=(action "toggleUpdateViewModal")}}
+    {{/each}}
+  </div>
+
+  {{#modal-view
+    title="New"
+    hidden=isHiddenAddViewModal closeAction=(action "toggleAddViewModal")
+    container="body"}}
+    <div class="modal-body text-center">
+      <div class="modal-body-content padding-left-x-sm padding-right-x-sm">
+        <h2>New Table View</h2>
+        <p class="padding-left-x-sm padding-right-x-sm">
+          You are just now going to save a new view with the columns, ordering and filters currently applied to your table.
+          <br>
+          Your existing saved views will not be affected.
+        </p>
+
+        {{input
+          type="text" placeholder="Profile View Name.." value=newViewName
+          class="form-control upf-input upf-input--small"}}
+
+        <p>
+          We suggest using a name that will help you easily identify your new IRM Table View.
+        </p>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn" {{action "addView"}}>
+        Save View
+      </button>
+    </div>
+  {{/modal-view}}
+
+  {{#modal-view
+    title="Update"
+    hidden=isHiddenUpdateViewModal closeAction=(action "toggleUpdateViewModal")
+    container="body"}}
+    <div class="modal-body text-center">
+      <div class="modal-body-content padding-left-x-sm padding-right-x-sm">
+        <h2>Update Table View</h2>
+        <p class="padding-left-x-sm padding-right-x-sm">
+          You are going to update the <b>{{selectedView.name}}</b> Table View with
+          the settings currently applied to your table.
+          <br>
+          Do you want to update your table view?
+        </p>
+      </div>
+    </div>
+    
+    <div class="modal-footer btn-group center-block">
+      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn" {{action "updateView"}}>
+        Update
+      </button>
+
+      <button class="upf-btn upf-btn--default upf-btn--small add-view-btn" {{action "toggleUpdateViewModal"}}>
+        Cancel
+      </button>
+    </div>
+  {{/modal-view}}
+
+  <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn" {{action "toggleAddViewModal"}}>
+    <i class="fa fa-plus"></i> &nbsp; Add View
+  </button>
+</div>
