@@ -2,14 +2,28 @@
   <div>
     <div class="text-color-default-light">Search</div>
     {{input
-      type="text" placeholder="Search..."
+      type="text" placeholder="Search..." value=_searchQuery
       class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-x-sm"}}
   </div>
 
   <div class="views-container">
-    {{#each this.manager.views as |view|}}
+    {{#if manager.predefinedViews}}
+      {{#each manager.predefinedViews as |view|}}
+        {{hyper-table/views/view view=view deleteView=(action "deleteView") 
+                                toggleUpdateViewModal=(action "toggleUpdateViewModal")
+                                selectedView=selectedView
+                                predefined=true
+                                addPredefinedView=(action "addPredefinedView")
+                                onSelectView=(action "selectView")}}
+      {{/each}}
+
+      <hr>
+    {{/if}}
+
+    {{#each (if filteredViews.length filteredViews this.manager.views) as |view|}}
       {{hyper-table/views/view view=view deleteView=(action "deleteView") 
                                toggleUpdateViewModal=(action "toggleUpdateViewModal")
+                               selectedView=selectedView
                                onSelectView=(action "selectView")}}
     {{/each}}
   </div>

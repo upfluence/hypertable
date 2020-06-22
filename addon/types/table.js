@@ -105,8 +105,15 @@ export default EmberObject.extend({
     this.set('data', data);
   },
 
-  updateViews(views) {
+  updateViews(views, predefinedViews) {
     this.set('views', views);
+
+    if(predefinedViews) {
+      predefinedViews = predefinedViews.filter((view)=> {
+        return views.filterBy('name', view.name).length === 0;
+      })
+      this.set('predefinedViews', predefinedViews);
+    }
   },
 
   updateOrdering(column, orderBy) {
@@ -159,7 +166,6 @@ export default EmberObject.extend({
             field
           })
         );
-        console.log("toggleColumnVisibility", field);
         
         _action = 'addition';
       }

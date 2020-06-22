@@ -1,9 +1,13 @@
 <div class="view-line" {{action onSelectView view}}>
-  <div class="view-name">{{view.name}}</div>
+  <div class="view-name {{if (and selectedView (eq selectedView.id view.id)) 'selected'}}">{{view.name}}</div>
   <div class="view-icons">
-    <i class="fa fa-retweet" {{action toggleUpdateViewModal view bubbles=false}}></i>
-    <i class="fa fa-share-alt" {{action "toggleSharingModal" bubbles=false}}></i>
-    <i class="fa fa-close" {{action deleteView view bubbles=false}}></i>
+    {{#if predefined}}
+      <i class="fa fa-plus" {{action addPredefinedView view bubbles=false}}></i>
+    {{else}}
+      <i class="fa fa-retweet" {{action toggleUpdateViewModal view bubbles=false}}></i>
+      <i class="fa fa-share-alt" {{action "toggleSharingModal" bubbles=false}}></i>
+      <i class="fa fa-close" {{action deleteView view bubbles=false}}></i>
+    {{/if}}
   </div>
 </div>
 
