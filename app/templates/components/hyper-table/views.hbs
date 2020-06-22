@@ -8,7 +8,9 @@
 
   <div class="views-container">
     {{#each this.manager.views as |view|}}
-      {{hyper-table/views/view view=view deleteView=(action "deleteView") toggleUpdateViewModal=(action "toggleUpdateViewModal")}}
+      {{hyper-table/views/view view=view deleteView=(action "deleteView") 
+                               toggleUpdateViewModal=(action "toggleUpdateViewModal")
+                               onSelectView=(action "selectView")}}
     {{/each}}
   </div>
 

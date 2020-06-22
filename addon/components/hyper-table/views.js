@@ -27,6 +27,12 @@ export default Component.extend({
       }
     },
 
+    selectView(view) {
+      if(this.manager.hooks.onSelectView) {
+        this.manager.hooks.onSelectView(view)
+      }
+    },
+
     toggleAddViewModal() {
       this.set('newViewName', '');
       this.toggleProperty('isHiddenAddViewModal');
