@@ -23,7 +23,7 @@ export default Component.extend({
    */
   loadingData: false,
   loadingMore: false,
-  
+
   _allRowsSelected: false,
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,

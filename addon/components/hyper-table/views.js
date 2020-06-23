@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { observer } from '@ember/object';
 import { run } from '@ember/runloop';
+import { isPresent, isEmpty } from '@ember/utils';
 
 export default Component.extend({
   isHiddenAddViewModal: true,
@@ -13,17 +14,19 @@ export default Component.extend({
   
 
   _searchQueryObserver: observer('_searchQuery', function() {
-    run.debounce(this, () => {
-      if (this._searchQuery !== null) {
-        this.set('filteredViews', this.manager.views.filter((view) => {
-          return view.name.toLowerCase().includes(this._searchQuery.toLowerCase());
-        }));
-        return;
-      }
-
-      this.set('filteredViews', null)
-    }, 500);
+    run.debounce(this, this.searchView, 500);
   }),
+
+  searchView() {
+    if (!isEmpty(this._searchQuery)) {
+      this.set('filteredViews', this.manager.views.filter((view) => {
+        return view.name.toLowerCase().includes(this._searchQuery.toLowerCase());
+      }));
+      return;
+    };
+
+    this.set('filteredViews', null);
+  },
 
   actions: {
     addPredefinedView(view) {
@@ -34,7 +37,7 @@ export default Component.extend({
     },
 
     addView() {
-      if(this.manager.hooks.onAddView && this.newViewName.length > 0) {
+      if(this.manager.hooks.onAddView && isPresent(this.newViewName)) {
         this.manager.hooks.onAddView(this.newViewName);
         this.toggleProperty('isHiddenAddViewModal');
       }
