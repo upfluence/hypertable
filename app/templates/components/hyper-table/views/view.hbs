@@ -11,10 +11,9 @@
   </div>
 </div>
 
-{{!-- {{#if showSharingModal}}
+{{#if showSharingModal}}
   {{ownership-selection-modal
-      model=view header="Test"
-      successfulSharing="Test"
-      modelType="view"  closeModal=(action "toggleSharingModal")}}
-  {{ownership-selection-modal}}
-{{/if}} --}}
+      model=view header="Share View"
+      successfulSharing="Your campaign has been shared"
+      modelType="view" closeModal=(action "toggleSharingModal")}}
+{{/if}}
