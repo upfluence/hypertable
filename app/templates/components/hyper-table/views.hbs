@@ -33,7 +33,7 @@
     hidden=isHiddenAddViewModal closeAction=(action "toggleAddViewModal")
     container="body"}}
     <div class="modal-body text-center">
-      <div class="modal-body-content padding-left-x-sm padding-right-x-sm">
+      <div class="modal-body-content padding-left-sm padding-right-sm">
         <h2>New Table View</h2>
         <p class="padding-left-x-sm padding-right-x-sm">
           You are just now going to save a new view with the columns, ordering and filters currently applied to your table.
@@ -43,16 +43,16 @@
 
         {{input
           type="text" placeholder="Profile View Name.." value=newViewName
-          class="form-control upf-input upf-input--small"}}
+          class="form-control upf-input upf-input--small margin-top-md"}}
 
-        <p>
+        <p class="margin-top-xx-sm">
           We suggest using a name that will help you easily identify your new IRM Table View.
         </p>
       </div>
     </div>
     
     <div class="modal-footer">
-      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn" {{action "addView"}}>
+      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "addView"}}>
         Save View
       </button>
     </div>
@@ -75,11 +75,11 @@
     </div>
     
     <div class="modal-footer btn-group center-block">
-      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn" {{action "updateView"}}>
+      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "updateView"}}>
         Update
       </button>
 
-      <button class="upf-btn upf-btn--default upf-btn--small add-view-btn" {{action "toggleUpdateViewModal"}}>
+      <button class="upf-btn upf-btn--default upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "toggleUpdateViewModal"}}>
         Cancel
       </button>
     </div>
