@@ -166,7 +166,7 @@ export default EmberObject.extend({
             field
           })
         );
-        
+
         _action = 'addition';
       }
 
