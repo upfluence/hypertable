@@ -209,6 +209,7 @@ export default Component.extend({
         this.manager.destroyTetherInstance();
       }
       this.manager.toggleProperty('availableFieldsPanel');
+      this.manager.set('availableTableViews', false);
     },
 
     openAvailableViews() {
@@ -216,6 +217,7 @@ export default Component.extend({
         this.manager.destroyTetherInstance();
       }
       this.manager.toggleProperty('availableTableViews');
+      this.manager.set('availableFieldsPanel', false);
     },
 
     scrollToEnd() {
