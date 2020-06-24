@@ -22,6 +22,7 @@ export default EmberObject.extend({
   tetherOn: null,
   availableFieldsPanel: false,
   availableTableViews: false,
+  updatingTableView: false,
   _allRowsSelected: false,
 
   /*
@@ -169,6 +170,8 @@ export default EmberObject.extend({
 
         _action = 'addition';
       }
+
+      field.toggleProperty('visible');
 
       resolve(_action);
     });
