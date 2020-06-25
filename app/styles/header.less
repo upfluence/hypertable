@@ -95,7 +95,7 @@
 
    .table-views-wrapper {
      right: 140px;
-     padding: @spacing-x-sm;
+     padding: @spacing-xx-sm;
      flex-direction: column;
      width: 280px;
      
@@ -103,6 +103,10 @@
        .fa {
           margin-left: @spacing-xxx-sm;
           color: @color-text-lighter;
+
+          &:hover {
+            color: @color-text;
+          }
        }
      }
 
@@ -122,12 +126,20 @@
       }
      }
 
+     .view-search-container {
+       padding: @spacing-xxx-sm;
+     }
+
      .view-line {
        display: flex;
        justify-content: space-between;
        cursor: pointer;
-       margin-bottom: @spacing-xxx-sm;
        margin-right: 0.5em;
+       padding: @spacing-xxx-sm;
+
+       &:hover {
+        background-color: @field-background-color;
+      }
      }
 
      .view-name {
@@ -140,7 +152,8 @@
 
      .add-view-btn {
        width: 100px;
-       margin-top: @spacing-sm;
+       margin-top: @spacing-x-sm;
+       margin-left: @spacing-xxx-sm;
        padding: 0;
      }
    }

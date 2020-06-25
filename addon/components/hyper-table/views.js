@@ -6,6 +6,7 @@ import { isPresent, isEmpty } from '@ember/utils';
 export default Component.extend({
   isHiddenAddViewModal: true,
   isHiddenUpdateViewModal: true,
+  isHiddenDeleteViewModal: true,
   newViewName: '',
   selectedView: null,
   filteredViews: null,
@@ -50,9 +51,12 @@ export default Component.extend({
       }
     },
 
-    deleteView(view) {
-      if(this.manager.hooks.onDeleteView) {
-        this.manager.hooks.onDeleteView(view)
+    deleteView(_, defer) {
+      if(this.manager.hooks.onDeleteView && this.selectedView) {
+        this.manager.hooks.onDeleteView(this.selectedView).then(() => {
+          this.toggleProperty('isHiddenDeleteViewModal');
+          defer.resolve();
+        });
       }
     },
 
@@ -72,5 +76,10 @@ export default Component.extend({
       this.set('selectedView', selectedView);
       this.toggleProperty('isHiddenUpdateViewModal');
     },
+
+    toggleDeleteViewModal(selectedView) {
+      this.set('selectedView', selectedView);
+      this.toggleProperty('isHiddenDeleteViewModal');
+    }
   }
 });

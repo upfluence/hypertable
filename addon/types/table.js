@@ -179,7 +179,6 @@ export default EmberObject.extend({
         _action = 'addition';
       }
 
-
       resolve(_action);
     });
   },

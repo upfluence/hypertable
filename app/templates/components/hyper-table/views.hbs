@@ -1,9 +1,9 @@
 <div class="table-views-wrapper {{if manager.availableTableViews 'visible' 'invisible'}}">
-  <div>
+  <div class="view-search-container">
     <div class="text-color-default-light">Search</div>
     {{input
       type="text" placeholder="Search..." value=_searchQuery
-      class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-x-sm"}}
+      class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-xxx-sm"}}
   </div>
 
   <div class="views-container">
@@ -14,14 +14,14 @@
                                 selectedView=selectedView
                                 predefined=true
                                 addPredefinedView=(action "addPredefinedView")
-                                onSelectView=(action "selectView")}}
+                                onSelectView=(action "addPredefinedView")}}
       {{/each}}
 
       <hr>
     {{/if}}
 
     {{#each (if filteredViews.length filteredViews this.manager.views) as |view|}}
-      {{hyper-table/views/view view=view deleteView=(action "deleteView") 
+      {{hyper-table/views/view view=view deleteView=(action "toggleDeleteViewModal") 
                                toggleUpdateViewModal=(action "toggleUpdateViewModal")
                                selectedView=selectedView
                                onSelectView=(action "selectView")}}
@@ -82,6 +82,23 @@
       <button class="upf-btn upf-btn--default upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "toggleUpdateViewModal"}}>
         Cancel
       </button>
+    </div>
+  {{/modal-view}}
+
+  {{#modal-view
+    hidden=isHiddenDeleteViewModal title="Delete View"
+    closeAction=(action "toggleDeleteViewModal") container="body"}}
+    <div class="modal-body text-center">
+      <p class="text-size-4 text-color-default-lighter">
+        Are you sure you would like to delete this view?
+      </p>
+    </div>
+
+    <div class="modal-footer">
+      {{#loading-button
+        slowAction="deleteView" class="upf-btn upf-btn--destructive"}}
+        Delete View
+      {{/loading-button}}
     </div>
   {{/modal-view}}
 
