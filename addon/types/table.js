@@ -141,7 +141,7 @@ export default EmberObject.extend({
     }
   },
 
-  toggleColumnVisibility(field) {
+  toggleColumnVisibility(field, column) {
     return new Promise((resolve, reject) => {
       let _c = this.columns.findBy('key', field.key);
       let _action = null;
@@ -163,6 +163,8 @@ export default EmberObject.extend({
             orderable: field.orderable,
             filterable: field.filterable,
             orderKey: field.orderKey || field.key,
+            orderBy: column && column.order? `${column.order.key}:${column.order.direction}` : null,
+            filters: column && column.filters? column.filters : null,
             manager: this,
             field
           })

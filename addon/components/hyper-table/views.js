@@ -59,7 +59,7 @@ export default Component.extend({
     selectView(view) {
       if(this.manager.hooks.onSelectView) {
         this.set('selectedView', view);
-        this.manager.hooks.onSelectView(view)
+        this.manager.hooks.onSelectView(view);
       }
     },
 
