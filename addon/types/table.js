@@ -151,29 +151,34 @@ export default EmberObject.extend({
         _action = 'removal';
       } else {
         this.formatField(field);
+        field.set('visible', true);
 
-        this.columns.pushObject(
-          Column.create({
-            key: field.key,
-            visible: true,
-            type: field.type,
-            renderingComponent: field.renderingComponent,
-            filtersRenderingComponent: field.filtersRenderingComponent,
-            upsertable: field.upsertable,
-            orderable: field.orderable,
-            filterable: field.filterable,
-            orderKey: field.orderKey || field.key,
-            orderBy: column && column.order? `${column.order.key}:${column.order.direction}` : null,
-            filters: column && column.filters? column.filters : null,
-            manager: this,
-            field
-          })
-        );
+        let newColumn = Column.create({
+          key: field.key,
+          type: field.type,
+          renderingComponent: field.renderingComponent,
+          filtersRenderingComponent: field.filtersRenderingComponent,
+          upsertable: field.upsertable,
+          orderable: field.orderable,
+          filterable: field.filterable,
+          orderKey: field.orderKey || field.key,
+          manager: this,
+          field
+        });
+
+        if(column && column.order) {
+          newColumn.orderBy = `${column.order.key}:${column.order.direction}`;
+        }
+
+        if(column && column.filters) {
+          newColumn.filters = column.filters;
+        }
+
+        this.columns.pushObject(newColumn);
 
         _action = 'addition';
       }
 
-      field.toggleProperty('visible');
 
       resolve(_action);
     });
