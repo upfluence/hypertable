@@ -147,6 +147,7 @@ export default EmberObject.extend({
       let _action = null;
 
       if (_c) {
+        field.set('visible', false);
         this.columns.removeObject(_c);
         _action = 'removal';
       } else {
