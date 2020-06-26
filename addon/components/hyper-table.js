@@ -209,6 +209,15 @@ export default Component.extend({
         this.manager.destroyTetherInstance();
       }
       this.manager.toggleProperty('availableFieldsPanel');
+      this.manager.set('availableTableViews', false);
+    },
+
+    openAvailableViews() {
+      if(this.manager.tetherOn) {
+        this.manager.destroyTetherInstance();
+      }
+      this.manager.toggleProperty('availableTableViews');
+      this.manager.set('availableFieldsPanel', false);
     },
 
     scrollToEnd() {
@@ -224,6 +233,10 @@ export default Component.extend({
     },
 
     fieldVisibilityUpdated(field) {
+      if(this.manager.updatingTableView) {
+        return;
+      }
+
       this.manager.toggleColumnVisibility(field).then((action) => {
         if (this.manager.hooks.onColumnsChange) {
           this.manager.hooks.onColumnsChange('columns:change');

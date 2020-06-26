@@ -29,5 +29,9 @@ export default Component.extend({
       if (this.manager.availableFieldsPanel) {
         this.manager.toggleProperty('availableFieldsPanel');
       }
+
+      if (this.manager.availableTableViews) {
+        this.manager.toggleProperty('availableTableViews');
+      }
     },
 });

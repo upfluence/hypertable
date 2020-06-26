@@ -12,6 +12,7 @@ const DEFAULT_RENDERERS = [
 
 export default EmberObject.extend({
   columns: [],
+  views: [],
   data: [],
   fields: [],
   fieldCategories: [],
@@ -20,6 +21,8 @@ export default EmberObject.extend({
   tetherInstance: null,
   tetherOn: null,
   availableFieldsPanel: false,
+  availableTableViews: false,
+  updatingTableView: false,
   _allRowsSelected: false,
 
   /*
@@ -103,6 +106,17 @@ export default EmberObject.extend({
     this.set('data', data);
   },
 
+  updateViews(views, predefinedViews) {
+    this.set('views', views);
+
+    if(predefinedViews) {
+      predefinedViews = predefinedViews.filter((view)=> {
+        return views.filterBy('name', view.name).length === 0;
+      })
+      this.set('predefinedViews', predefinedViews);
+    }
+  },
+
   updateOrdering(column, orderBy) {
     this.columns.forEach((c) => c.set('orderBy', null));
     column.set('orderBy', orderBy);
@@ -127,7 +141,7 @@ export default EmberObject.extend({
     }
   },
 
-  toggleColumnVisibility(field) {
+  toggleColumnVisibility(field, column) {
     return new Promise((resolve, reject) => {
       let _c = this.columns.findBy('key', field.key);
       let _action = null;
@@ -137,22 +151,30 @@ export default EmberObject.extend({
         _action = 'removal';
       } else {
         this.formatField(field);
+        field.set('visible', true);
 
-        this.columns.pushObject(
-          Column.create({
-            key: field.key,
-            visible: true,
-            type: field.type,
-            renderingComponent: field.renderingComponent,
-            filtersRenderingComponent: field.filtersRenderingComponent,
-            upsertable: field.upsertable,
-            orderable: field.orderable,
-            filterable: field.filterable,
-            orderKey: field.orderKey || field.key,
-            manager: this,
-            field
-          })
-        );
+        let newColumn = Column.create({
+          key: field.key,
+          type: field.type,
+          renderingComponent: field.renderingComponent,
+          filtersRenderingComponent: field.filtersRenderingComponent,
+          upsertable: field.upsertable,
+          orderable: field.orderable,
+          filterable: field.filterable,
+          orderKey: field.orderKey || field.key,
+          manager: this,
+          field
+        });
+
+        if(column && column.order) {
+          newColumn.orderBy = `${column.order.key}:${column.order.direction}`;
+        }
+
+        if(column && column.filters) {
+          newColumn.filters = column.filters;
+        }
+
+        this.columns.pushObject(newColumn);
 
         _action = 'addition';
       }
