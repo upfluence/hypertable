@@ -64,7 +64,16 @@
               {{upf-checkbox
                 value=field.visible size="sm"
                 onValueChange=(action "fieldVisibilityUpdated" field)}}
-              <div class="margin-left-xxx-sm">{{field.name}}</div>
+              <div class="margin-left-xxx-sm">
+                {{#if field.title}}
+                  {{field.title}}
+                  {{#if field.subtitle}}
+                    - {{field.subtitle}}
+                  {{/if}}
+                {{else}}
+                  {{field.name}}
+                {{/if}}
+              </div>
             </div>
           {{else}}
             <div class="field margin-top-md">
