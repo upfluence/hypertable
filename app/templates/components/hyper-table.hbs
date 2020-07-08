@@ -66,10 +66,10 @@
                 onValueChange=(action "fieldVisibilityUpdated" field)}}
               <div class="margin-left-xxx-sm">
                 {{#if field.title}}
-                  {{field.title}}
                   {{#if field.subtitle}}
-                    - {{field.subtitle}}
+                    {{field.subtitle}} -
                   {{/if}}
+                  {{field.title}}
                 {{else}}
                   {{field.name}}
                 {{/if}}
