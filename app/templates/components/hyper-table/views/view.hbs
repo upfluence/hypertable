@@ -4,9 +4,14 @@
     {{#if predefined}}
       <i class="fa fa-plus" {{action addPredefinedView view bubbles=false}}></i>
     {{else}}
-      <i class="fa fa-retweet" {{action toggleUpdateViewModal view bubbles=false}}></i>
-      <i class="fa fa-share-alt" {{action "toggleSharingModal" bubbles=false}}></i>
-      <i class="fa fa-close" {{action deleteView view bubbles=false}}></i>
+      <i class="fa fa-retweet" data-toggle="tooltip" data-title="Update this view with the current columns & filters"
+         {{action toggleUpdateViewModal view bubbles=false}}></i>
+
+      <i class="fa fa-share-alt" data-toggle="tooltip" data-title="Share this view"
+         {{action "toggleSharingModal" bubbles=false}}></i>
+
+      <i class="fa fa-close" data-toggle="tooltip" data-title="Delete the view"
+         {{action deleteView view bubbles=false}}></i>
     {{/if}}
   </div>
 </div>
