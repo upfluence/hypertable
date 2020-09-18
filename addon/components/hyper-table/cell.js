@@ -19,7 +19,7 @@ export default Component.extend({
       return editStatus.status === 'editing' || editStatus.status === 'error';
     });
 
-    let isAutosave = this.column.autosave || this.column.field.autosave;
+    let isAutosave = this.column && (this.column.autosave || this.column.field.autosave);
 
     if (this.manager.hooks.onRowClicked && !editStatus && !this.selection && !isAutosave)
       this.manager.hooks.onRowClicked(
