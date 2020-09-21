@@ -83,6 +83,18 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
+    .header-title-container {
+      display: flex;
+      align-items: center;
+
+      .field-title {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-right: @spacing-xxx-sm
+      }
+    }
+
     .subtitle {
       font-weight: normal;
     }
