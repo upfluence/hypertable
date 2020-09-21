@@ -1,22 +1,25 @@
 <header>
   <div class="cell-header" {{action "orderColumn"}}>
-    <span data-toggle="tooltip" data-title={{column.field.name}} data-placement="bottom">
-      {{#if column.field.title}}
-        <span class="text-style-capitalize">{{column.field.title}}</span>
-      {{else}}
-        {{column.field.name}}
+
+    <div class="header-title-container">
+      <span class="field-title" data-toggle="tooltip" data-title={{column.field.name}} data-placement="bottom">
+        {{#if column.field.title}}
+          <span class="text-style-capitalize">{{column.field.title}}</span>
+        {{else}}
+          {{column.field.name}}
+        {{/if}}
+      </span>
+
+      {{#if column.field.tooltip}}
+        <i data-toggle="tooltip" data-title={{column.field.tooltip}} data-html="true" data-placement="bottom" class="fa fa-info-circle header-tooltip"></i>
       {{/if}}
-    </span>
 
-    {{#if column.field.tooltip}}
-      <i data-toggle="tooltip" data-title={{column.field.tooltip}} data-html="true" data-placement="bottom" class="fa fa-info-circle header-tooltip"></i>
-    {{/if}}
-
-    {{#if (eq column.orderDirection "asc") }}
-      &nbsp;<span class="order-direction">&uarr;</span>
-    {{else if (eq column.orderDirection "desc")}}
-      &nbsp;<span class="order-direction">&darr;</span>
-    {{/if}}
+      {{#if (eq column.orderDirection "asc") }}
+        &nbsp;<span class="order-direction">&uarr;</span>
+      {{else if (eq column.orderDirection "desc")}}
+        &nbsp;<span class="order-direction">&darr;</span>
+      {{/if}}
+    </div>
 
     {{#if column.field.subtitle}}
       <div class="subtitle text-size-4">
