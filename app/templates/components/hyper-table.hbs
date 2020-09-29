@@ -71,17 +71,13 @@
                   value=field.visible size="sm"
                   onValueChange=(action "fieldVisibilityUpdated" field)}}
                 <div class="margin-left-xxx-sm">
-                  {{#if (get field 0)}}
-                    {{log (get field 0)}}
-                  {{else}}
-                    {{#if field.title}}
-                      {{#if field.subtitle}}
-                        {{field.subtitle}} -
-                      {{/if}}
-                      {{field.title}}
-                    {{else}}
-                      {{field.name}}
+                  {{#if field.title}}
+                    {{#if field.subtitle}}
+                      {{field.subtitle}} -
                     {{/if}}
+                    {{field.title}}
+                  {{else}}
+                    {{field.name}}
                   {{/if}}
                 </div>
               </div>
