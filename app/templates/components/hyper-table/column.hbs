@@ -21,7 +21,11 @@
       {{/if}}
     </div>
 
-    {{#if column.field.subtitle}}
+    {{#if column.field.clustering_key}}
+      <div class="subtitle text-size-4">
+        {{column.field.clustering_key}}
+      </div>
+    {{else if column.field.subtitle}}
       <div class="subtitle text-size-4">
         {{column.field.subtitle}}
       </div>
