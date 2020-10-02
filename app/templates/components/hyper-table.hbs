@@ -59,13 +59,13 @@
         </div>
 
         <div class="fields-list">
-          {{#each _orderedFilteredClusters as |cluster|}}
-            {{#if (get cluster 0)}}
+          {{#each-in _orderedFilteredClusters as |clusterName fields|}}
+            {{#if clusterName}}
               <p class="text-style-capitalize text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
-                {{get cluster 0}}
+                {{clusterName}}
               </p>
             {{/if}}
-            {{#each (get cluster 1) as |field|}}
+            {{#each fields as |field|}}
               <div class="field {{if field.visible 'field--visible'}}">
                 {{upf-checkbox
                   value=field.visible size="sm"
@@ -83,7 +83,7 @@
             <div class="field margin-top-md">
               No columns found
             </div>
-          {{/each}}
+          {{/each-in}}
         </div>
       </div>
     </div>
