@@ -59,27 +59,31 @@
         </div>
 
         <div class="fields-list">
-          {{#each _orderedFilteredFields as |field|}}
-            <div class="field {{if field.visible 'field--visible'}}">
-              {{upf-checkbox
-                value=field.visible size="sm"
-                onValueChange=(action "fieldVisibilityUpdated" field)}}
-              <div class="margin-left-xxx-sm">
-                {{#if field.title}}
-                  {{#if field.subtitle}}
-                    {{field.subtitle}} -
+          {{#each-in _orderedFilteredClusters as |clusterName fields|}}
+            {{#if clusterName}}
+              <p class="text-style-capitalize text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
+                {{clusterName}}
+              </p>
+            {{/if}}
+            {{#each fields as |field|}}
+              <div class="field {{if field.visible 'field--visible'}}">
+                {{upf-checkbox
+                  value=field.visible size="sm"
+                  onValueChange=(action "fieldVisibilityUpdated" field)}}
+                <div class="margin-left-xxx-sm">
+                  {{#if field.title}}
+                    {{field.title}}
+                  {{else}}
+                    {{field.name}}
                   {{/if}}
-                  {{field.title}}
-                {{else}}
-                  {{field.name}}
-                {{/if}}
+                </div>
               </div>
-            </div>
+            {{/each}}
           {{else}}
             <div class="field margin-top-md">
               No columns found
             </div>
-          {{/each}}
+          {{/each-in}}
         </div>
       </div>
     </div>

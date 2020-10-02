@@ -62,22 +62,23 @@ export default Component.extend({
     return typeOf(this.footer);
   }),
 
-  _orderedFilteredFields: computed(
+  _orderedFilteredClusters: computed(
     'manager.fields',
     '_availableFieldsKeyword',
     '_activeFieldCategory',
     function() {
-      let fields = A(this.manager.fields.filterBy('toggleable', true));
       let _keyword = this._availableFieldsKeyword.toLowerCase()
 
-      fields = A(fields.filter((x) => {
+      let fields = A(this.manager.fields.filter((x) => {
         const hasKeyword = !this._availableFieldsKeyword || x.name.toLowerCase().indexOf(_keyword) >= 0;
         const hasActiveGroup = !this._activeFieldCategory || x.categories.indexOf(this._activeFieldCategory) >= 0;
+        const isToggleable = x.toggleable === true;
 
-        return hasKeyword && hasActiveGroup;
+        return hasKeyword && hasActiveGroup && isToggleable;
       }));
 
-      return fields.sortBy('name');
+      fields.sortBy('name');
+      return this.groupByClusteringKey(fields);
     }
   ),
 
@@ -154,6 +155,16 @@ export default Component.extend({
     this._innerTable.setAttribute(
       'style', `height: ${this._innerTableHeight}px !important;`
     );
+  },
+
+  groupByClusteringKey(fields) {
+    const map = {};
+
+    fields.forEach((field) => {
+      (map[field.clustering_key] || (map[field.clustering_key] = [])).push(field)
+    });
+
+    return map;
   },
 
   init() {

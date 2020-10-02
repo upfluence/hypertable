@@ -242,7 +242,9 @@
       }
 
       .fields-list {
-        max-height: 363px;
+        //It would be better to turn this value into a dynamic value
+        //Based on the number of categories passed to the table: (n * height of each category) - search bar height
+        max-height: 488px;
 
         // shortcut not used for Safari support -_-
         overflow-x: hidden;
