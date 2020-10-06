@@ -158,10 +158,16 @@ export default Component.extend({
   },
 
   groupByClusteringKey(fields) {
-    const map = {};
+    const map = new Map();
 
     fields.forEach((field) => {
-      (map[field.clustering_key] || (map[field.clustering_key] = [])).push(field)
+      const cluster = map.get(field.clustering_key);
+
+      if (!cluster) {
+        map.set(field.clustering_key, [field]);
+      } else {
+        cluster.push(field);
+      }
     });
 
     return map;
