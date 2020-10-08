@@ -7,7 +7,7 @@ import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer'
 
 export default Component.extend(FiltersRendererMixin, {
   _searchQuery: computed('column', 'column.filters', function() {
-    let searchTerm = this.column.filters.findBy('key', 'value');
+    let searchTerm = this.column.filters.findBy('key', this.searchKey || 'value');
 
     return searchTerm ? searchTerm.value : null;
   }),
@@ -38,7 +38,7 @@ export default Component.extend(FiltersRendererMixin, {
     if(this._searchQuery !== null) {
       this.column.set(
         'filters',
-        isEmpty(this._searchQuery) ? [] : [{ key: 'value', value: this._searchQuery }]
+        isEmpty(this._searchQuery) ? [] : [{ key: this.searchKey || 'value', value: this._searchQuery }]
       );
       this.manager.hooks.onColumnsChange('columns:change');
     }
