@@ -102,7 +102,10 @@ export default EmberObject.extend({
   },
 
   updateData(data) {
-    data.setEach('selected', this._allRowsSelected);
+    if(this._allRowsSelected) {
+      data.setEach('selected', this._allRowsSelected);
+    }
+
     this.set('data', data);
   },
 
