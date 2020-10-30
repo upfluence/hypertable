@@ -98,6 +98,8 @@
     .subtitle {
       font-weight: normal;
       text-transform: initial;
+      text-overflow: ellipsis;
+      overflow: hidden;
 
       &:first-letter {
         text-transform: capitalize;
@@ -152,7 +154,7 @@
   &:hover {
     background-color: darken(@field-background-color, 5%);
     .cell-header {
-      margin-right: 40px;
+      margin-right: 55px;
     }
     .icon-commands i {
       opacity: 1;
