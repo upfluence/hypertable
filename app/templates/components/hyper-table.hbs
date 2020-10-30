@@ -66,7 +66,7 @@
               </p>
             {{/if}}
             {{#each fields as |field|}}
-              <div class="field {{if field.visible 'field--visible'}}">
+              <div class="field {{if field.visible 'field--visible'}}" {{action "updateFieldVisibility" field}}>
                 {{upf-checkbox
                   value=field.visible size="sm"
                   onValueChange=(action "fieldVisibilityUpdated" field)}}

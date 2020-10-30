@@ -249,6 +249,10 @@ export default Component.extend({
       this.set('_activeFieldCategory', category);
     },
 
+    updateFieldVisibility(field) {
+      field.set('visible', !field.visible);
+    },
+
     fieldVisibilityUpdated(field) {
       if(this.manager.updatingTableView) {
         return;
