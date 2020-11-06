@@ -14,6 +14,18 @@
   justify-content: space-between;
   position: relative;
 
+  button.icon-responsive {
+    @media screen and (max-width: 1430px) {
+      span {
+        display: none;
+      }
+    }
+  }
+
+  .right-side {
+    display: flex;
+  }
+
   .left-side {
     display: flex;
     flex-grow: 1;
@@ -27,6 +39,7 @@
   .left-side {
     input {
       max-width: 250px;
+      min-width: 100px;
     }
   }
 
@@ -41,6 +54,7 @@
 
     height: 34px;
     width: 34px;
+    min-width: 34px;
     margin-right: @spacing-xx-sm;
   }
 
