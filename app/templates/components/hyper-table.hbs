@@ -27,12 +27,18 @@
       Reset Filters
     </button>
 
-    <button class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle" {{action "openAvailableViews"}}>
-      <i class="fa fa-eye"></i> &nbsp; Table Views
+    <button class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive" {{action "openAvailableViews"}}>
+      <i class="fa fa-eye"></i>
+      <span>
+        &nbsp; Table Views
+      </span>
     </button>
 
-    <button class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle" {{action "openAvailableFields"}}>
-      <i class="fa fa-columns"></i> &nbsp; Manage Fields
+    <button class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive" {{action "openAvailableFields"}}>
+      <i class="fa fa-columns"></i> 
+      <span>
+        &nbsp; Manage Fields
+      </span>
     </button>
 
     {{hyper-table/views manager=this.manager}}
