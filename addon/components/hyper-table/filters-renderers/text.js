@@ -6,11 +6,7 @@ import { isEmpty } from '@ember/utils';
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
 
 export default Component.extend(FiltersRendererMixin, {
-  _searchQuery: computed('column', 'column.filters', function() {
-    let searchTerm = this.column.filters.findBy('key', this.searchKey || 'value');
-
-    return searchTerm ? searchTerm.value : null;
-  }),
+  _searchQuery: null,
 
   orderingOptions: computed('column.orderKey', function() {
     return {
@@ -47,6 +43,13 @@ export default Component.extend(FiltersRendererMixin, {
   _searchQueryObserver: observer('_searchQuery', function() {
     run.debounce(this, this._addSearchFilter, 1000);
   }),
+
+  init() {
+    this._super();
+
+    let searchTerm = this.column.filters.findBy('key', this.searchKey || 'value');
+    this.set('_searchQuery', searchTerm?.value);
+  },
 
   actions: {
     orderingOptionChanged(value) {
