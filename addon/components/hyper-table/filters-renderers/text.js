@@ -47,7 +47,7 @@ export default Component.extend(FiltersRendererMixin, {
   init() {
     this._super();
 
-    let searchTerm = this.column.filters.findBy('key', this.searchKey || 'value');
+    const searchTerm = this.column.filters.findBy('key', this.searchKey || 'value');
     this.set('_searchQuery', searchTerm?.value);
   },
 
