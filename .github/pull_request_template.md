@@ -12,7 +12,16 @@ Related to : #<!-- enter issue number here -->
 <!-- Bug: a given issue trail on sentry should stop happening -->
 <!-- Feature: Implements X thrift service / Z HTTP REST API added, provide instructions on how leverage your feature from staging or your workstation -->
 
+### 🧑‍💻 Developer Heads Up
+
+⚡ Since we are using [Ember Octane](https://blog.emberjs.com/octane-is-here/) now:
+* Feel free to migrate existing components to Glimmer Components.
+* Write new ones exclusively in it.
+
+Useful Resource : [Ember Octane vs Classic Cheat Sheet](https://ember-learn.github.io/ember-octane-vs-classic-cheat-sheet/)
+
 ### Good PR checklist
+
 
 - [ ] Title makes sense
 - [ ] Is against the correct branch
@@ -20,34 +29,8 @@ Related to : #<!-- enter issue number here -->
 - [ ] Properly assigned
 - [ ] Added/updated tests
 - [ ] Added/updated documentation
+- [ ] Migrated touched components to Glimmer Components
 - [ ] Properly labeled
-
-### Impacted components
-
-<!-- List here all the different Upfluence components that could be impacted by your changes -->
-<!-- Please be as precise as possible specifying after the major component which part of it will be impacted -->
-<!-- For example:  -->
-<!-- - [x] Side Panel : Brand Mentions -->
-
-<!-- You must tick at least one component -->
-
-- [ ] CRM :
-- [ ] Mailings :
-- [ ] Workflow :
-- [ ] Search :
-- [ ] Side Panel :
-- [ ] Analytics :
-- [ ] Live Capture :
-- [ ] Payments :
-- [ ] Plugin :
-- [ ] Stores :
-  - [ ] PG store : <!-- Inbox, Analytics, Influencer ... -->
-  - [ ] ES store : <!-- Inbox, Analytics, Influencer ... -->
-  - [ ] Cassandra store : <!-- Activity, Graph-server ... -->
-- [ ] Harvest : <!-- Scrappers -->
-- [ ] Infrastructure : <!-- UDS, Vulcan ... -->
-- [ ] Other : <!-- Your changes concern something more particular -->
-- [ ] No impact <!-- Documentation for example -->
 
 ### Additional Notes
 
