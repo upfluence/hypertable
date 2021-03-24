@@ -27,23 +27,25 @@
       Reset Filters
     </button>
 
-    <button class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive" {{action "openAvailableViews"}}>
+    <button class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
+      {{action "openAvailableViews" bubbles=false}}>
       <i class="fa fa-eye"></i>
       <span>
         &nbsp; Table Views
       </span>
     </button>
 
-    <button class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive" {{action "openAvailableFields"}}>
-      <i class="fa fa-columns"></i> 
+    <button class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive"
+      {{action "openAvailableFields" bubbles=false}}>
+      <i class="fa fa-columns"></i>
       <span>
         &nbsp; Manage Fields
       </span>
     </button>
 
-    {{hyper-table/views manager=this.manager}}
+    {{hyper-table/views manager=this.manager closeAvailableViews=(action "closeAvailableViews")}}
 
-    <div class="available-fields-wrapper {{if manager.availableFieldsPanel 'visible' 'invisible'}}">
+    <div class="available-fields-wrapper {{if manager.availableFieldsPanel 'visible' 'invisible'}}" {{on-click-outside (action "closeAvailableFields")}}>
       <div class="available-fields-wrapper__categories">
         <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setFieldCategory"}}>
           <div>All Fields</div>
