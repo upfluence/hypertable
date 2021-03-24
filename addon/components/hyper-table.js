@@ -229,12 +229,20 @@ export default Component.extend({
       this.manager.set('availableTableViews', false);
     },
 
+    closeAvailableFields() {
+      this.manager.set('availableFieldsPanel', false);
+    },
+
     openAvailableViews() {
       if(this.manager.tetherOn) {
         this.manager.destroyTetherInstance();
       }
       this.manager.toggleProperty('availableTableViews');
       this.manager.set('availableFieldsPanel', false);
+    },
+
+    closeAvailableViews() {
+      this.manager.set('availableTableViews', false);
     },
 
     scrollToEnd() {

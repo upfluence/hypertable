@@ -1,4 +1,4 @@
-<div class="table-views-wrapper {{if manager.availableTableViews 'visible' 'invisible'}}">
+<div class="table-views-wrapper {{if manager.availableTableViews 'visible' 'invisible'}}" {{on-click-outside this.closeAvailableViews}}>
   <div class="view-search-container">
     <div class="text-color-default-light">Search</div>
     {{input
@@ -9,7 +9,7 @@
   <div class="views-container">
     {{#if manager.predefinedViews}}
       {{#each manager.predefinedViews as |view|}}
-        {{hyper-table/views/view view=view deleteView=(action "deleteView") 
+        {{hyper-table/views/view view=view deleteView=(action "deleteView")
                                 toggleUpdateViewModal=(action "toggleUpdateViewModal")
                                 selectedView=selectedView
                                 predefined=true
@@ -21,7 +21,7 @@
     {{/if}}
 
     {{#each (if filteredViews.length filteredViews this.manager.views) as |view|}}
-      {{hyper-table/views/view view=view deleteView=(action "toggleDeleteViewModal") 
+      {{hyper-table/views/view view=view deleteView=(action "toggleDeleteViewModal")
                                toggleUpdateViewModal=(action "toggleUpdateViewModal")
                                selectedView=selectedView
                                onSelectView=(action "selectView")}}
@@ -50,7 +50,7 @@
         </p>
       </div>
     </div>
-    
+
     <div class="modal-footer">
       <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "addView"}}>
         Save View
@@ -73,7 +73,7 @@
         </p>
       </div>
     </div>
-    
+
     <div class="modal-footer btn-group center-block">
       <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "updateView"}}>
         Update
