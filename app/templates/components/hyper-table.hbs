@@ -7,9 +7,13 @@
     {{/if}}
 
     {{#if manager.options.features.search}}
-      {{input
-        type="text" placeholder="Search..." value=_searchQuery
-        class="form-control upf-input upf-input--small"}}
+      <Input
+        @type="text"
+        @placeholder="Search..."
+        @value={{_searchQuery}}
+        data-control-name="table_search_input"
+        class="form-control upf-input upf-input--small"
+        />
     {{/if}}
 
     {{#if (and contextualActions (gt _collection.length 0))}}
@@ -23,11 +27,16 @@
   </div>
 
   <div class="right-side">
-    <button class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small" {{action "resetAllFilters"}}>
+    <button
+      class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small"
+      data-control-name="table_reset_filters"
+      {{action "resetAllFilters"}}>
       Reset Filters
     </button>
 
-    <button class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
+    <button
+      class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
+      data-control-name="table_toggle_views"
       {{action "openAvailableViews" bubbles=false}}>
       <i class="fa fa-eye"></i>
       <span>
@@ -35,7 +44,9 @@
       </span>
     </button>
 
-    <button class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive"
+    <button
+      class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive"
+      data-control-name="table_toggle_fields"
       {{action "openAvailableFields" bubbles=false}}>
       <i class="fa fa-columns"></i>
       <span>
@@ -52,7 +63,8 @@
           <div><i class="fa fa-caret-right"></i></div>
         </div>
         {{#each _fieldCategories as |category|}}
-          <div class="field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}" {{action "setFieldCategory" category.key}}>
+          <div class="field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}"
+               data-control-name={{concat "field_category_toggle_" category.key}} {{action "setFieldCategory" category.key}}>
             <div>{{category.label}}</div>
             <div><i class="fa fa-caret-right"></i></div>
           </div>
@@ -61,9 +73,11 @@
 
       <div class="available-fields-wrapper__fields">
         <div class="search">
-          {{input
-            type="text" value=_availableFieldsKeyword
-            class="upf-input upf-input--small" placeholder="Search Fields"}}
+          <Input
+            @type="text"
+            @value={{_availableFieldsKeyword}}
+            data-control-name="field_search_input"
+            class="upf-input upf-input--small" placeholder="Search Fields"/>
         </div>
 
         <div class="fields-list">
@@ -77,6 +91,7 @@
               <div class="field {{if field.visible 'field--visible'}}" {{action "updateFieldVisibility" field}}>
                 {{upf-checkbox
                   value=field.visible size="sm"
+                  data-control-name=(concat "field_toggle_checkbox_" field.key)
                   onValueChange=(action "fieldVisibilityUpdated" field)}}
                 <div class="margin-left-xxx-sm">
                   {{#if field.title}}
@@ -122,7 +137,7 @@
           {{#if manager.options.features.selection}}
             <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
               <header>
-                {{upf-checkbox value=_allRowsSelected size="sm"}}
+                {{upf-checkbox value=_allRowsSelected size="sm" data-control-name="row_select_all_toggle_checkbox"}}
               </header>
 
               {{#if loadingData}}
@@ -134,6 +149,7 @@
                   {{#hyper-table/cell item=item manager=manager selection=true}}
                     {{upf-checkbox
                       value=item.selected size="sm"
+                      data-control-name="row_select_toggle_checkbox"
                       disabled=(and selectAllIncludesHidden _allRowsSelected)}}
                   {{/hyper-table/cell}}
                 {{/each}}
