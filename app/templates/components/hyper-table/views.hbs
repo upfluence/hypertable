@@ -1,9 +1,10 @@
 <div class="table-views-wrapper {{if manager.availableTableViews 'visible' 'invisible'}}" {{on-click-outside this.closeAvailableViews}}>
   <div class="view-search-container">
     <div class="text-color-default-light">Search</div>
-    {{input
-      type="text" placeholder="Search..." value=_searchQuery
-      class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-xxx-sm"}}
+    <Input
+      type="text" placeholder="Search..." @value={{_searchQuery}}
+      data-control-name="view_search_input"
+      class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-xxx-sm"/>
   </div>
 
   <div class="views-container">
@@ -41,9 +42,10 @@
           Your existing saved views will not be affected.
         </p>
 
-        {{input
-          type="text" placeholder="Profile View Name.." value=newViewName
-          class="form-control upf-input upf-input--small margin-top-md"}}
+        <Input
+          type="text" placeholder="Profile View Name.." @value={{newViewName}}
+          data-control-name="modal_create_view_input"
+          class="form-control upf-input upf-input--small margin-top-md"/>
 
         <p class="margin-top-xx-sm">
           We suggest using a name that will help you easily identify your new IRM Table View.
@@ -52,7 +54,10 @@
     </div>
 
     <div class="modal-footer">
-      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "addView"}}>
+      <button
+       class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm"
+       data-control-name="modal_confirm_create_view_button"
+       {{action "addView"}}>
         Save View
       </button>
     </div>
@@ -75,7 +80,10 @@
     </div>
 
     <div class="modal-footer btn-group center-block">
-      <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm" {{action "updateView"}}>
+      <button
+        class="upf-btn upf-btn--primary upf-btn--small add-view-btn margin-bottom-xxx-sm"
+        data-control-name="modal_confirm_update_view_button"
+        {{action "updateView"}}>
         Update
       </button>
 
@@ -96,13 +104,16 @@
 
     <div class="modal-footer">
       {{#loading-button
-        slowAction="deleteView" class="upf-btn upf-btn--destructive"}}
+        slowAction="deleteView" data-control-name="modal_confirm_delete_view_button" class="upf-btn upf-btn--destructive"}}
         Delete View
       {{/loading-button}}
     </div>
   {{/modal-view}}
 
-  <button class="upf-btn upf-btn--primary upf-btn--small add-view-btn" {{action "toggleAddViewModal"}}>
+  <button
+    class="upf-btn upf-btn--primary upf-btn--small add-view-btn"
+    data-control-name="add_view_button"
+    {{action "toggleAddViewModal"}}>
     <i class="fa fa-plus"></i> &nbsp; Add View
   </button>
 </div>
