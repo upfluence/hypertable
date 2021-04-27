@@ -9,7 +9,7 @@
     {{#if manager.options.features.search}}
       <Input
         @type="text"
-        @placeholder="Search..."
+        @placeholder={{placeholder}}
         @value={{_searchQuery}}
         data-control-name="table_search_input"
         class="form-control upf-input upf-input--small"
