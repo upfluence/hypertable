@@ -1,7 +1,7 @@
 {{#if column.orderable}}
   {{#input-wrapper}}
     <label>Order By</label>
-    <div class="btn-group upf-radio-group">
+    <div class="btn-group upf-radio-group" data-control-name={{concat _controlNamePrefix "_order_by_radiogroup"}}>
       {{#each-in orderingOptions as |label value|}}
         {{radio-button
           value=value currentValue=column.orderBy label=label
@@ -15,7 +15,7 @@
   {{#input-wrapper classNames=(if column.orderable "margin-top-xx-sm")}}
     <label>Filter</label>
 
-    <div class="btn-group upf-radio-group">
+    <div class="btn-group upf-radio-group" data-control-name={{concat _controlNamePrefix "_filter_by_radiogroup"}}>
       {{#each-in filteringOptions as |label value|}}
         {{radio-button
           value=value currentValue=filterOption label=label
@@ -23,7 +23,7 @@
       {{/each-in}}
     </div>
 
-    <div class="filters">
+    <div class="filters" data-control-name={{concat _controlNamePrefix "_date_range_inputs"}}>
       {{#if (eq filterOption "fixed")}}
         <label>Date Range</label>
         {{ember-flatpickr

@@ -32,7 +32,7 @@
     {{/if}}
   </div>
 
-  <div class="icon-commands">
+  <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" column.key}}>
     {{#if _supportsOrderingOrFiltering}}
       <i data-toggle="tooltip" data-title='Filters' data-placement="bottom" class="fa fa-filter" {{action "toggleFiltersPanel"}}></i>
     {{/if}}

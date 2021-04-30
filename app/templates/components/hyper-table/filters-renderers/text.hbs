@@ -1,7 +1,7 @@
 {{#if column.orderable}}
   {{#input-wrapper}}
     <label>Sort</label>
-    <div class="btn-group upf-radio-group">
+    <div class="btn-group upf-radio-group" data-control-name={{concat _controlNamePrefix "_sort_radiogroup"}}>
       {{#each-in orderingOptions as |label value|}}
         {{radio-button
           value=value currentValue=column.orderBy label=label
@@ -14,7 +14,9 @@
 {{#if column.filterable}}
   {{#input-wrapper classNames=(if column.orderable "margin-top-xx-sm")}}
     <label>Display</label>
-    <div class="btn-group upf-radio-group upf-radio-group--block">
+    <div
+      class="btn-group upf-radio-group upf-radio-group--block"
+      data-control-name={{concat _controlNamePrefix "_display_radiogroup"}}>
       {{#each-in existenceFilters as |label value|}}
         {{radio-button
           value=value currentValue=currentExistenceFilter label=label
@@ -26,9 +28,10 @@
   {{#input-wrapper}}
     <label>Search</label>
     <div>
-      {{input
-        type="text" placeholder="Search..." value=_searchQuery
-        class="form-control upf-input upf-input--textarea"}}
+      <Input
+        type="text" placeholder="Search..." @value={{_searchQuery}}
+        data-control-name={{concat _controlNamePrefix "_search_input"}}
+        class="form-control upf-input upf-input--textarea"/>
     </div>
   {{/input-wrapper}}
 
