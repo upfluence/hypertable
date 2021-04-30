@@ -7,7 +7,7 @@
   {{/each}}
 {{else}}
   {{#each facets as |facet|}}
-    <div class="hypertable__facetting-item">
+    <div class="hypertable__facetting-item" data-control-name={{concat "table_column_filter_sort_facet_" facet.identifier "_toggle"}}>
       <div class="item">
         {{upf-checkbox
           value=facet.applied size="sm" onValueChange=(action "toggleAppliedFacet" facet)}}
