@@ -37,7 +37,8 @@ export default EmberObject.extend({
       selection: false,
       search: false,
       ordering: false,
-      filtering: false
+      filtering: false,
+      tableViews: false
     },
   },
   options: or('_options', '_defaultOptions'),
