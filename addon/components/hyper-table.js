@@ -105,7 +105,7 @@ export default Component.extend({
         );
       }, 3000)
     }
-  ),
+  ).on('init'),
 
   _selectAllObserver: observer('_allRowsSelected', function() {
     this.manager.set('_allRowsSelected', this._allRowsSelected);

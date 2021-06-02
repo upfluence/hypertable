@@ -138,9 +138,14 @@ export default EmberObject.extend({
     if (field.type === 'rating') field.set('autosave', true);
 
     if (!DEFAULT_RENDERERS.includes(field.type)) {
-      field.set('renderingComponent', `crm/column-renderers/${dasherize(field.type)}`);
+      field.renderingComponent =
+        field.renderingComponent ||
+        `crm/column-renderers/${dasherize(field.type)}`;
+
       if (field.filterable) {
-        field.filtersRenderingComponent = `crm/filters-renderers/${dasherize(field.type)}`;
+        field.filtersRenderingComponent =
+          field.filtersRenderingComponent ||
+          `crm/filters-renderers/${dasherize(field.type)}`;
       }
     }
   },
