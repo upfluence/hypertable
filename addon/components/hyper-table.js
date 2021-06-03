@@ -145,11 +145,11 @@ export default Component.extend({
 
   _resizeInnerTable() {
     this.set(
-      '_innerTableHeight', window.innerHeight - this._innerTable.offsetTop - 90
+      '_innerTableHeight', window.innerHeight - this._innerTable.offsetTop - 10
     );
 
     if (this.footer) {
-      this.set('_innerTableHeight', this._innerTableHeight - 20); // Footer Height + Margin
+      this.set('_innerTableHeight', this._innerTableHeight - (20 + 80)); // Footer Height + Margin
     }
 
     this._innerTable.setAttribute(
