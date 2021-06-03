@@ -233,6 +233,30 @@
     }
   }
 
+  .link__value {
+    background-color: @field-background-color;
+    padding: 4px @spacing-xx-sm;
+    color: @text-color;
+    border-radius: @default-radius;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 5px;
+    white-space: nowrap;
+  }
+
+  .link__copy {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: @upf-gray-light;
+    height: 30px;
+    padding: 0.5em;
+
+    &:hover {
+      background-color: @upf-gray;
+    }
+  }
+
   .upf-icon--check {
     background-color: white;
     animation: fadeIn 1.5s ease forwards;
