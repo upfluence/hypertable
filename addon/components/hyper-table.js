@@ -28,7 +28,7 @@ export default Component.extend({
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
 
-  _searchQuery: computed('_columns.firstObject', function() {
+  _searchQuery: computed('_columns.firstObject.filters.[]', '_columns.firstObject.filters.@each.value', function() {
     if (isEmpty(this._columns)) return;
 
     let searchTerm = this._columns.firstObject.filters.findBy('key', 'value');
