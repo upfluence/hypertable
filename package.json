@@ -1,11 +1,14 @@
 {
   "name": "@upfluence/hypertable",
   "version": "0.0.2",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Datatable under steroïds.",
   "keywords": [
     "ember-addon"
   ],
-  "repository": "",
+  "repository": "https://github.com/upfluence/hypertable",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "license": "MIT",
   "author": "",
   "directories": {
