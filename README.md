@@ -20,18 +20,10 @@ ember install hypertable
 ```
 
 
-Documentation
+Usage
 ------------------------------------------------------------------------------
 
 [Longer description of how to use the addon in apps.]
-
-### Event Hooks
-
-Hooks are actions to be called to react to various events happening on the datatable.
-
-| Name | Arguments | Description   |
-| ---- | ----- | ----------------- |
-| 
 
 
 Contributing
