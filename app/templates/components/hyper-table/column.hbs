@@ -1,8 +1,7 @@
 <header>
-  <div class="cell-header" {{action "orderColumn"}}>
-
+  <div class="cell-header" {{action "orderColumn" bubbles=false}}>
     <div class="header-title-container">
-      <span class="field-title" data-toggle="tooltip" data-title={{column.field.name}} data-placement="bottom">
+      <span class="field-title" {{enable-tooltip title=this.column.field.name}}>
         {{#if column.field.title}}
           <span>{{column.field.title}}</span>
         {{else}}
@@ -34,14 +33,16 @@
 
   <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" column.key}}>
     {{#if _supportsOrderingOrFiltering}}
-      <i data-toggle="tooltip" data-title='Filters' data-placement="bottom" class="fa fa-filter" {{action "toggleFiltersPanel"}}></i>
+      <i class="fa fa-filter" {{enable-tooltip title="Filters"}} {{action "toggleFiltersPanel" bubbles=false}}></i>
     {{/if}}
 
     <i class="fa fa-bars fa-rotate-90"></i>
   </div>
 
   {{#if (and _supportsOrderingOrFiltering (eq manager.tetherOn column.key))}}
-    {{component _filtersRenderingComponent column=column manager=manager}}
+    <div {{on-click-outside (action "toggleFiltersPanel" bubbles=false)}}>
+      {{component _filtersRenderingComponent column=column manager=manager}}
+    </div>
   {{/if}}
 </header>
 
