@@ -29,10 +29,10 @@
     {{#if isSaving}}
       {{loading-state}}
     {{else if isSuccess}}
-      <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
+      <i class="fa fa-pencil cell-edition delayed" onclick={{action "toggleEditing"}}></i>
       <span class="text-color-success upf-icon upf-icon--check text-size-6"></span>
     {{else if (not editStatus.status)}}
-      <i class="fa fa-pencil delayed" onclick={{action "toggleEditing"}}></i>
+      <i class="fa fa-pencil cell-edition delayed" onclick={{action "toggleEditing"}}></i>
     {{/if}}
   </div>
 {{/if}}

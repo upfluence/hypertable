@@ -15,7 +15,7 @@
         getFlatpickrRef=(action (mut flatpickrRef))}}
 
     {{#unless (or isEditing (not column.upsertable))}}
-      <i class="fa fa-pencil margin-left-xxx-sm" {{action "toggleEditing"}}></i>
+      <i class="fa fa-pencil cell-edition margin-left-xxx-sm" {{action "toggleEditing"}}></i>
     {{/unless}}
   </div>
 {{/if}}
