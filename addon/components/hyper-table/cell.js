@@ -23,7 +23,7 @@ export default Component.extend({
 
     if (this.manager.hooks.onRowClicked && !editStatus && !this.selection && !isAutosave)
       this.manager.hooks.onRowClicked(
-        this.item.influencer_id, (this.column || {}).key
+        this.item, (this.column || {}).key
       );
 
       if (this.manager.availableFieldsPanel) {

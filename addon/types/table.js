@@ -7,7 +7,7 @@ import { dasherize } from '@ember/string';
 import Column from '@upfluence/hypertable/types/column';
 
 const DEFAULT_RENDERERS = [
-  'text', 'numeric', 'money', 'date', 'image'
+  'text', 'numeric', 'money', 'date', 'image', 'link'
 ];
 
 export default EmberObject.extend({
@@ -37,7 +37,8 @@ export default EmberObject.extend({
       selection: false,
       search: false,
       ordering: false,
-      filtering: false
+      filtering: false,
+      tableViews: false
     },
   },
   options: or('_options', '_defaultOptions'),
@@ -137,9 +138,14 @@ export default EmberObject.extend({
     if (field.type === 'rating') field.set('autosave', true);
 
     if (!DEFAULT_RENDERERS.includes(field.type)) {
-      field.set('renderingComponent', `crm/column-renderers/${dasherize(field.type)}`);
+      field.renderingComponent =
+        field.renderingComponent ||
+        `crm/column-renderers/${dasherize(field.type)}`;
+
       if (field.filterable) {
-        field.filtersRenderingComponent = `crm/filters-renderers/${dasherize(field.type)}`;
+        field.filtersRenderingComponent =
+          field.filtersRenderingComponent ||
+          `crm/filters-renderers/${dasherize(field.type)}`;
       }
     }
   },

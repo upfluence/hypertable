@@ -34,15 +34,17 @@
       Reset Filters
     </button>
 
-    <button
-      class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
-      data-control-name="table_toggle_views"
-      {{action "openAvailableViews" bubbles=false}}>
-      <i class="fa fa-eye"></i>
-      <span>
-        &nbsp; Table Views
-      </span>
-    </button>
+    {{#if manager.options.features.tableViews}}
+      <button
+        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
+        data-control-name="table_toggle_views"
+        {{action "openAvailableViews" bubbles=false}}>
+        <i class="fa fa-eye"></i>
+        <span>
+          &nbsp; Table Views
+        </span>
+      </button>
+    {{/if}}
 
     <button
       class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive"

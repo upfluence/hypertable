@@ -1,0 +1,10 @@
+{{#if this.emptyValue}}
+  —
+{{else}}
+  <a href={{this.value}} target="_blank" rel="noopener" class="upf-link--reset link__value" onclick="event.stopPropagation();">
+    {{value}}
+  </a>
+
+  <i class="link__copy upf-btn fa fa-copy success-tooltip" {{action "copy" bubbles=false}}
+     {{enable-tooltip title="Copy" placement="top"}}></i>
+{{/if}}

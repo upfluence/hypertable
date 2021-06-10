@@ -28,7 +28,7 @@ export default Component.extend({
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
 
-  _searchQuery: computed('_columns.firstObject', function() {
+  _searchQuery: computed('_columns.firstObject.filters.[]', '_columns.firstObject.filters.@each.value', function() {
     if (isEmpty(this._columns)) return;
 
     let searchTerm = this._columns.firstObject.filters.findBy('key', 'value');
@@ -105,7 +105,7 @@ export default Component.extend({
         );
       }, 3000)
     }
-  ),
+  ).on('init'),
 
   _selectAllObserver: observer('_allRowsSelected', function() {
     this.manager.set('_allRowsSelected', this._allRowsSelected);
@@ -145,11 +145,11 @@ export default Component.extend({
 
   _resizeInnerTable() {
     this.set(
-      '_innerTableHeight', window.innerHeight - this._innerTable.offsetTop - 90
+      '_innerTableHeight', window.innerHeight - this._innerTable.offsetTop - 10
     );
 
     if (this.footer) {
-      this.set('_innerTableHeight', this._innerTableHeight - 20); // Footer Height + Margin
+      this.set('_innerTableHeight', this._innerTableHeight - (20 + 80)); // Footer Height + Margin
     }
 
     this._innerTable.setAttribute(

@@ -190,13 +190,14 @@
     cursor: pointer;
   }
 
-  .fa-pencil {
+  .fa-pencil.cell-edition {
     opacity: 0;
   }
 
   &:hover {
-    .fa-pencil {
+    .fa-pencil.cell-edition {
       opacity: 1;
+
       &.delayed {
         visibility: hidden;
       }
@@ -230,6 +231,30 @@
           height: 6px;
         }
       }
+    }
+  }
+
+  .link__value {
+    background-color: @field-background-color;
+    padding: 4px @spacing-xx-sm;
+    color: @text-color;
+    border-radius: @default-radius;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 5px;
+    white-space: nowrap;
+  }
+
+  .link__copy {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: @upf-gray-light;
+    height: 30px;
+    padding: @spacing-xxx-sm;
+
+    &:hover {
+      background-color: @upf-gray;
     }
   }
 
