@@ -101,7 +101,7 @@ export default Component.extend({
 
         this.set(
           '_displayInfinityLoader',
-          _hasInfinity && !_loadingSmthn && this._collection.length > 0
+          _hasInfinity && !_loadingSmthn && (this._collection || []).length > 0
         );
       }, 3000)
     }
