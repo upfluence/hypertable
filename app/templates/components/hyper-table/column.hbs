@@ -40,7 +40,7 @@
   </div>
 
   {{#if (and _supportsOrderingOrFiltering (eq manager.tetherOn column.key))}}
-    <div {{on-click-outside (action "toggleFiltersPanel" bubbles=false)}}>
+    <div class="available-filters" {{on-click-outside (action "toggleFiltersPanel" bubbles=false)}}>
       {{component _filtersRenderingComponent column=column manager=manager}}
     </div>
   {{/if}}
