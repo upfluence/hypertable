@@ -1,20 +1,35 @@
+'use strict';
+
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2017,
-    sourceType: 'module'
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    ecmaFeatures: {
+      legacyDecorators: true
+    }
   },
-  plugins: [
-    'ember'
-  ],
-  extends: [
-    'eslint:recommended',
-    'plugin:ember/recommended'
-  ],
+  plugins: ['ember'],
+  extends: ['eslint:recommended', 'plugin:ember/recommended', 'plugin:prettier/recommended'],
   env: {
     browser: true
   },
   rules: {
+    'no-multiple-empty-lines': [2, { max: 1 }],
+    'ember/no-jquery': 'off',
+    'ember/no-observers': 'off',
+    'ember/no-new-mixins': 'off',
+    'ember/no-mixins': 'off',
+    'ember/no-get': 'off',
+    'ember/avoid-leaking-state-in-ember-objects': 'off',
+    'ember/closure-actions': 'off',
+    'ember/no-global-jquery': 'off',
+    'ember/no-classic-classes': 'off',
+    'ember/no-classic-components': 'off',
+    'ember/require-tagless-components': 'off',
+    'ember/no-actions-hash': 'off',
+    'ember/no-component-lifecycle-hooks': 'off'
   },
   overrides: [
     // node files
@@ -29,24 +44,16 @@ module.exports = {
         'config/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
-      excludedFiles: [
-        'addon/**',
-        'addon-test-support/**',
-        'app/**',
-        'tests/dummy/app/**'
-      ],
+      excludedFiles: ['addon/**', 'addon-test-support/**', 'app/**', 'tests/dummy/app/**'],
       parserOptions: {
-        sourceType: 'script',
-        ecmaVersion: 2015
+        sourceType: 'script'
       },
       env: {
         browser: false,
         node: true
       },
       plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
-      })
+      rules: {}
     }
   ]
 };
