@@ -13,37 +13,33 @@ export default Component.extend(FiltersRendererMixin, {
     'Without Value': 'without'
   },
 
-  orderingOptions: computed('column.orderKey', function() {
+  orderingOptions: computed('column.orderKey', function () {
     return {
       '0 — 9': `${this.column.orderKey}:asc`,
       '9 — 0': `${this.column.orderKey}:desc`
-    }
+    };
   }),
 
-  currentExistenceFilter: computed(
-    'column.filters.[]',
-    'lowerBoundFilter',
-    'upperBoundFilter', function() {
-      let _existenceFilter = this.column.filters.findBy('key', 'existence');
+  currentExistenceFilter: computed('column.filters.[]', 'lowerBoundFilter', 'upperBoundFilter', function () {
+    let _existenceFilter = this.column.filters.findBy('key', 'existence');
 
-      if (_existenceFilter) {
-        return _existenceFilter.value;
-      }
-
-      return (this.lowerBoundFilter && this.upperBoundFilter) ? 'with' : null;
+    if (_existenceFilter) {
+      return _existenceFilter.value;
     }
-  ),
 
-  _: observer('lowerBoundFilter', 'upperBoundFilter', function() {
-    if (this.lowerBoundFilter && this.upperBoundFilter) {
+    return this.lowerBoundFilter || this.upperBoundFilter ? 'with' : null;
+  }),
+
+  _: observer('lowerBoundFilter', 'upperBoundFilter', function () {
+    if (this.lowerBoundFilter || this.upperBoundFilter) {
       run.debounce(this, this._addRangeFilter, 1000);
     }
   }),
 
   _addRangeFilter() {
     this.column.set('filters', [
-      { key: 'lower_bound', value: this.lowerBoundFilter },
-      { key: 'upper_bound', value: this.upperBoundFilter }
+      ...(this.lowerBoundFilter ? [{ key: 'lower_bound', value: this.lowerBoundFilter }] : []),
+      ...(this.upperBoundFilter ? [{ key: 'upper_bound', value: this.upperBoundFilter }] : [])
     ]);
     this.manager.hooks.onColumnsChange('columns:change');
   },
@@ -53,12 +49,10 @@ export default Component.extend(FiltersRendererMixin, {
       let lowerBound = this.column.filters.findBy('key', 'lower_bound');
       let upperBound = this.column.filters.findBy('key', 'upper_bound');
 
-      if (lowerBound && upperBound) {
-        this.setProperties({
-          lowerBoundFilter: lowerBound.value,
-          upperBoundFilter: upperBound.value
-        })
-      }
+      this.setProperties({
+        lowerBoundFilter: lowerBound?.value,
+        upperBoundFilter: upperBound?.value
+      });
     }
   },
 
