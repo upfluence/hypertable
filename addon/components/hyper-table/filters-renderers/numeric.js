@@ -1,64 +1,67 @@
-import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
-import { run } from '@ember/runloop';
+import Component from "@ember/component";
+import { computed, observer } from "@ember/object";
+import { run } from "@ember/runloop";
 
-import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
+import FiltersRendererMixin from "@upfluence/hypertable/mixins/filters-renderer";
 
 export default Component.extend(FiltersRendererMixin, {
   lowerBoundFilter: null,
   upperBoundFilter: null,
 
   existenceFilters: {
-    'With Value': 'with',
-    'Without Value': 'without'
+    "With Value": "with",
+    "Without Value": "without",
   },
 
-  orderingOptions: computed('column.orderKey', function() {
+  orderingOptions: computed("column.orderKey", function () {
     return {
-      '0 — 9': `${this.column.orderKey}:asc`,
-      '9 — 0': `${this.column.orderKey}:desc`
-    }
+      "0 — 9": `${this.column.orderKey}:asc`,
+      "9 — 0": `${this.column.orderKey}:desc`,
+    };
   }),
 
   currentExistenceFilter: computed(
-    'column.filters.[]',
-    'lowerBoundFilter',
-    'upperBoundFilter', function() {
-      let _existenceFilter = this.column.filters.findBy('key', 'existence');
+    "column.filters.[]",
+    "lowerBoundFilter",
+    "upperBoundFilter",
+    function () {
+      let _existenceFilter = this.column.filters.findBy("key", "existence");
 
       if (_existenceFilter) {
         return _existenceFilter.value;
       }
 
-      return (this.lowerBoundFilter && this.upperBoundFilter) ? 'with' : null;
+      return this.lowerBoundFilter || this.upperBoundFilter ? "with" : null;
     }
   ),
 
-  _: observer('lowerBoundFilter', 'upperBoundFilter', function() {
-    if (this.lowerBoundFilter && this.upperBoundFilter) {
+  _: observer("lowerBoundFilter", "upperBoundFilter", function () {
+    if (this.lowerBoundFilter || this.upperBoundFilter) {
       run.debounce(this, this._addRangeFilter, 1000);
     }
   }),
 
   _addRangeFilter() {
-    this.column.set('filters', [
-      { key: 'lower_bound', value: this.lowerBoundFilter },
-      { key: 'upper_bound', value: this.upperBoundFilter }
+    this.column.set("filters", [
+      ...(this.lowerBoundFilter
+        ? [{ key: "lower_bound", value: this.lowerBoundFilter }]
+        : []),
+      ...(this.upperBoundFilter
+        ? [{ key: "upper_bound", value: this.upperBoundFilter }]
+        : []),
     ]);
-    this.manager.hooks.onColumnsChange('columns:change');
+    this.manager.hooks.onColumnsChange("columns:change");
   },
 
   didReceiveAttrs() {
     if (this.column) {
-      let lowerBound = this.column.filters.findBy('key', 'lower_bound');
-      let upperBound = this.column.filters.findBy('key', 'upper_bound');
+      let lowerBound = this.column.filters.findBy("key", "lower_bound");
+      let upperBound = this.column.filters.findBy("key", "upper_bound");
 
-      if (lowerBound && upperBound) {
-        this.setProperties({
-          lowerBoundFilter: lowerBound.value,
-          upperBoundFilter: upperBound.value
-        })
-      }
+      this.setProperties({
+        lowerBoundFilter: lowerBound?.value,
+        upperBoundFilter: upperBound?.value,
+      });
     }
   },
 
@@ -68,16 +71,16 @@ export default Component.extend(FiltersRendererMixin, {
     },
 
     existenceFilterChanged(value) {
-      this.set('currentExistenceFilter', value);
+      this.set("currentExistenceFilter", value);
 
-      this.column.set('filters', [{ key: 'existence', value }]);
-      this.manager.hooks.onColumnsChange('columns:change');
+      this.column.set("filters", [{ key: "existence", value }]);
+      this.manager.hooks.onColumnsChange("columns:change");
     },
 
     reset() {
       this._super();
       this.manager.updateOrdering(this.column, null);
       this.setProperties({ lowerBoundFilter: null, upperBoundFilter: null });
-    }
-  }
+    },
+  },
 });
