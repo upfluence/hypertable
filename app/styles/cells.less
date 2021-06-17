@@ -399,3 +399,13 @@
 .tether-out-of-bounds {
   display: none;
 }
+
+.success-tooltip + .tooltip {
+  & > .tooltip-inner {
+    background-color: @upf-feedback-success;
+  }
+
+  & > .tooltip-arrow {
+    border-top-color: @upf-feedback-success;
+  }
+}
