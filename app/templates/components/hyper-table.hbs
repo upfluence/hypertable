@@ -27,12 +27,14 @@
   </div>
 
   <div class="right-side">
-    <button
-      class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small"
-      data-control-name="table_reset_filters"
-      {{action "resetAllFilters"}}>
-      Reset Filters
-    </button>
+    {{#if manager.options.features.filtering}}
+      <button
+        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small"
+        data-control-name="table_reset_filters"
+        {{action "resetAllFilters"}}>
+        Reset Filters
+      </button>
+    {{/if}}
 
     {{#if manager.options.features.tableViews}}
       <button
