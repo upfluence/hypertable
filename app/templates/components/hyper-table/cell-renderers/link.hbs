@@ -5,6 +5,9 @@
     {{value}}
   </a>
 
-  <i class="link__copy upf-btn fa fa-copy success-tooltip" {{action "copy" bubbles=false}}
-     {{enable-tooltip title="Copy" placement="top"}}></i>
+  {{#if isCopied}}
+    <i class="link__copy upf-btn fa fa-copy success-tooltip" {{action "copy" bubbles=false}} {{enable-tooltip title="Copied" placement="top"}}></i>
+  {{else}}
+    <i class="link__copy upf-btn fa fa-copy" {{action "copy" bubbles=false}} {{enable-tooltip title="Copy" placement="top"}}></i>
+  {{/if}}
 {{/if}}
