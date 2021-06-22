@@ -28,13 +28,29 @@ export default Component.extend({
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
 
-  _searchQuery: computed('_columns.firstObject.filters.[]', '_columns.firstObject.filters.@each.value', function() {
-    if (isEmpty(this._columns)) return;
+  _searchQuery: computed(
+    '_columns.firstObject.filters.[]', '_columns.firstObject.filters.@each.value',
+    {
+      get: function() {
+        if (isEmpty(this._columns)) return;
 
-    let searchTerm = this._columns.firstObject.filters.findBy('key', 'value');
+        let searchTerm = this._columns.firstObject.filters.findBy('key', 'value');
 
-    return searchTerm ? searchTerm.value : null;
-  }),
+        return searchTerm ? searchTerm.value : null;
+      },
+      set: function(k, v) {
+        this._columns.firstObject.set('filters', isEmpty(v) ? [] : [{ key: 'value', value: v }]);
+        run.debounce(this, this._doSearch, 1000);
+        return v;
+      }
+    }
+  ),
+
+  _doSearch: function() {
+    if (this.manager.hooks.onSearchQueryChange && this._searchQuery !== null) {
+       this.manager.hooks.onSearchQueryChange(this._searchQuery);
+    }
+  },
 
   _loadingCollection: new Array(20),
   _collection: alias('manager.data'),
@@ -133,14 +149,6 @@ export default Component.extend({
         }
       }
     }
-  }),
-
-  _searchQueryObserver: observer('_searchQuery', function() {
-    run.debounce(this, () => {
-      if (this.manager.hooks.onSearchQueryChange && this._searchQuery !== null) {
-        this.manager.hooks.onSearchQueryChange(this._searchQuery);
-      }
-    }, 1000);
   }),
 
   _resizeInnerTable() {
