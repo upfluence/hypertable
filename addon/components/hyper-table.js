@@ -270,7 +270,6 @@ export default Component.extend({
     },
 
     fieldVisibilityUpdated(field) {
-      console.log("here");
       if(this.manager.updatingTableView) {
         return;
       }
