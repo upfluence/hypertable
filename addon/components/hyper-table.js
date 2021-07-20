@@ -270,13 +270,14 @@ export default Component.extend({
     },
 
     fieldVisibilityUpdated(field) {
+      console.log("here");
       if(this.manager.updatingTableView) {
         return;
       }
 
       this.manager.toggleColumnVisibility(field).then((action) => {
         if (this.manager.hooks.onColumnsChange) {
-          this.manager.hooks.onColumnsChange('columns:change');
+          this.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
         }
 
         if (action === 'addition') {
