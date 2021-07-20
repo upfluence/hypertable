@@ -276,7 +276,7 @@ export default Component.extend({
 
       this.manager.toggleColumnVisibility(field).then((action) => {
         if (this.manager.hooks.onColumnsChange) {
-          this.manager.hooks.onColumnsChange('columns:change');
+          this.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
         }
 
         if (action === 'addition') {
