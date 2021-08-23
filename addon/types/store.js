@@ -5,11 +5,8 @@ class LocalStorageStore {
   }
 
   getState() {
-    if (window.localStorage.getItem(this.key)) {
-      return JSON.parse(window.localStorage.getItem(this.key));
-    } else {
-      return null;
-    }
+    const state = window.localStorage.getItem(this.key);
+    return state ? JSON.parse(state) : null;
   }
 
   update() {
