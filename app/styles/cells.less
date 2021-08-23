@@ -48,8 +48,8 @@
 
   .cell-container {
     width: 100%;
-    display:flex;
-    align-items:center;
+    display: flex;
+    align-items: center;
     &.editing {
       .editing-input {
         width: 70%;
@@ -62,9 +62,9 @@
         &:hover {
           color: @color-text;
           + .status-container {
-            color: @color-text
+            color: @color-text;
           }
-        };
+        }
       }
     }
   }
@@ -100,7 +100,8 @@
         }
       }
 
-      &.editing, &.error{
+      &.editing,
+      &.error {
         .text-value {
           display: none;
         }
@@ -118,7 +119,8 @@
           display: block;
         }
       }
-      &.editing, &.error {
+      &.editing,
+      &.error {
         span:first-child {
           display: none;
         }
@@ -218,7 +220,7 @@
       padding: @spacing-xxx-sm;
       top: 50%;
       left: 50%;
-      transform: translate(-50% , -50%);
+      transform: translate(-50%, -50%);
       -webkit-transform: translate(-50%, -50%);
     }
     .upf-loading {
@@ -264,20 +266,24 @@
   }
 
   @keyframes fadeIn {
-    0% { opacity: 0; }
-    20% { opacity: 1; }
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
     80% {
-      transform: translate(-50% , -50%) scale(1);
+      transform: translate(-50%, -50%) scale(1);
     }
     100% {
       transform: translate(-50%, -50%) scale(0);
       visibility: hidden;
-     }
+    }
   }
 
   @keyframes scaleIn {
     from {
-      transform: translate(-50% , -50%) scale(0);
+      transform: translate(-50%, -50%) scale(0);
       visibility: visible;
     }
     to {
@@ -332,7 +338,7 @@
   background-color: white;
   padding-top: @spacing-xx-sm;
   padding-bottom: @spacing-xx-sm;
-  box-shadow: 0px 0.6rem 1.2rem rgba(0,0,0,0.1);
+  box-shadow: 0px 0.6rem 1.2rem rgba(0, 0, 0, 0.1);
   border-bottom-left-radius: @default-radius;
   border-bottom-right-radius: @default-radius;
   opacity: 0;

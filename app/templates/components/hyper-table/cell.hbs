@@ -1,14 +1,13 @@
 {{#if loading}}
-  <div class="skeleton-placeholder"></div>
+  <div class='skeleton-placeholder'></div>
 {{else if (has-block)}}
   {{yield}}
 {{else}}
   {{#if loading}}
-    <div class="skeleton-placeholder"></div>
+    <div class='skeleton-placeholder'></div>
   {{else if (has-block)}}
     {{yield}}
   {{else}}
-    {{component
-      renderingComponent item=item column=column manager=manager}}
+    {{component renderingComponent item=item column=column manager=manager}}
   {{/if}}
 {{/if}}

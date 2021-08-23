@@ -2,7 +2,7 @@ import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 
 export default Mixin.create({
-  _controlNamePrefix: computed('column.key', function() {
+  _controlNamePrefix: computed('column.key', function () {
     return `table_column_filter_sort_${this.column.key}`;
   }),
 

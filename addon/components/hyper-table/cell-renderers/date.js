@@ -9,7 +9,7 @@ export default Component.extend({
   classNameBindings: ['emptyValue'],
   classNames: ['cell-container'],
 
-  value: computed('item', 'column.key', function() {
+  value: computed('item', 'column.key', function () {
     return this.item.get(this.column.key);
   }),
 
@@ -18,13 +18,13 @@ export default Component.extend({
   _defaultDateFormat: 'YYYY-MM-DD',
   _dateFormat: or('column.date_format', '_defaultDateFormat'),
 
-  _formattedDate: computed('value', '_dateFormat', function() {
+  _formattedDate: computed('value', '_dateFormat', function () {
     let _date;
 
     if (typeOf(this.value) === 'date') {
       _date = moment(this.value);
     } else {
-      _date = moment.unix(this.value)
+      _date = moment.unix(this.value);
     }
 
     return _date.format(this._dateFormat);
@@ -33,16 +33,16 @@ export default Component.extend({
 
   actions: {
     toggleEditing() {
-      this.set("isEditing", true);
+      this.set('isEditing', true);
       this.flatpickrRef.open();
     },
     onCalendarClose() {
-      this.set("isEditing", false);
+      this.set('isEditing', false);
     },
     updateDate(date) {
-      this.item.set(this.column.property, +date[0]/1000);
+      this.item.set(this.column.property, +date[0] / 1000);
       this.set('_formattedDate', date);
-      this.set("isEditing", false);
+      this.set('isEditing', false);
     }
   }
 });

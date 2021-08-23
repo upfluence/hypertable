@@ -1,47 +1,49 @@
-<div class="hypertable__upper-header">
-  <div class="left-side">
+<div class='hypertable__upper-header'>
+  <div class='left-side'>
     {{#if manager.options.features.selection}}
-      <div class="selected-count">
+      <div class='selected-count'>
         {{format-number _selectedCount}}
       </div>
     {{/if}}
 
     {{#if manager.options.features.search}}
       <Input
-        @type="text"
+        @type='text'
         @placeholder={{placeholder}}
         @value={{_searchQuery}}
-        data-control-name="table_search_input"
-        class="form-control upf-input upf-input--small"
-        />
+        data-control-name='table_search_input'
+        class='form-control upf-input upf-input--small'
+      />
     {{/if}}
 
     {{#if (and contextualActions (gt _collection.length 0))}}
-      <div class="contextual-actions contextual-actions--no-animation
-                  {{unless manager.options.features.search 'contextual-actions--no-search-sibling'}}">
-        {{component
-          contextualActions selectedItems=_selectedItems collection=_collection
-          manager=manager meta=meta}}
+      <div
+        class='contextual-actions contextual-actions--no-animation
+          {{unless manager.options.features.search 'contextual-actions--no-search-sibling'}}'
+      >
+        {{component contextualActions selectedItems=_selectedItems collection=_collection manager=manager meta=meta}}
       </div>
     {{/if}}
   </div>
 
-  <div class="right-side">
+  <div class='right-side'>
     {{#if manager.options.features.filtering}}
       <button
-        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small"
-        data-control-name="table_reset_filters"
-        {{action "resetAllFilters"}}>
+        class='margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small'
+        data-control-name='table_reset_filters'
+        {{action 'resetAllFilters'}}
+      >
         Reset Filters
       </button>
     {{/if}}
 
     {{#if manager.options.features.tableViews}}
       <button
-        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
-        data-control-name="table_toggle_views"
-        {{action "openAvailableViews" bubbles=false}}>
-        <i class="fa fa-eye"></i>
+        class='margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive'
+        data-control-name='table_toggle_views'
+        {{action 'openAvailableViews' bubbles=false}}
+      >
+        <i class='fa fa-eye'></i>
         <span>
           &nbsp; Table Views
         </span>
@@ -49,55 +51,69 @@
     {{/if}}
 
     <button
-      class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive"
-      data-control-name="table_toggle_fields"
-      {{action "openAvailableFields" bubbles=false}}>
-      <i class="fa fa-columns"></i>
+      class='margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive'
+      data-control-name='table_toggle_fields'
+      {{action 'openAvailableFields' bubbles=false}}
+    >
+      <i class='fa fa-columns'></i>
       <span>
         &nbsp; Manage Fields
       </span>
     </button>
 
-    {{hyper-table/views manager=this.manager closeAvailableViews=(action "closeAvailableViews")}}
+    {{hyper-table/views manager=this.manager closeAvailableViews=(action 'closeAvailableViews')}}
 
-    <div class="available-fields-wrapper {{if manager.availableFieldsPanel 'visible' 'invisible'}}" {{on-click-outside (action "closeAvailableFields")}}>
-      <div class="available-fields-wrapper__categories">
-        <div class="field-category {{if (not _activeFieldCategory) 'field-category--active'}}" {{action "setFieldCategory"}}>
+    <div
+      class='available-fields-wrapper {{if manager.availableFieldsPanel 'visible' 'invisible'}}'
+      {{on-click-outside (action 'closeAvailableFields')}}
+    >
+      <div class='available-fields-wrapper__categories'>
+        <div
+          class='field-category {{if (not _activeFieldCategory) 'field-category--active'}}'
+          {{action 'setFieldCategory'}}
+        >
           <div>All Fields</div>
-          <div><i class="fa fa-caret-right"></i></div>
+          <div><i class='fa fa-caret-right'></i></div>
         </div>
         {{#each _fieldCategories as |category|}}
-          <div class="field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}"
-               data-control-name={{concat "field_category_toggle_" category.key}} {{action "setFieldCategory" category.key}}>
+          <div
+            class='field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}'
+            data-control-name={{concat 'field_category_toggle_' category.key}}
+            {{action 'setFieldCategory' category.key}}
+          >
             <div>{{category.label}}</div>
-            <div><i class="fa fa-caret-right"></i></div>
+            <div><i class='fa fa-caret-right'></i></div>
           </div>
         {{/each}}
       </div>
 
-      <div class="available-fields-wrapper__fields">
-        <div class="search">
+      <div class='available-fields-wrapper__fields'>
+        <div class='search'>
           <Input
-            @type="text"
+            @type='text'
             @value={{_availableFieldsKeyword}}
-            data-control-name="field_search_input"
-            class="upf-input upf-input--small" placeholder="Search Fields"/>
+            data-control-name='field_search_input'
+            class='upf-input upf-input--small'
+            placeholder='Search Fields'
+          />
         </div>
 
-        <div class="fields-list">
+        <div class='fields-list'>
           {{#each-in _orderedFilteredClusters as |clusterName fields|}}
             {{#if clusterName}}
-              <p class="cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
+              <p class='cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm'>
                 {{clusterName}}
               </p>
             {{/if}}
             {{#each fields as |field|}}
-              <div class="field {{if field.visible 'field--visible'}}" {{action "updateFieldVisibility" field}}>
+              <div class='field {{if field.visible 'field--visible'}}' {{action 'updateFieldVisibility' field}}>
                 {{upf-checkbox
-                  value=field.visible size="sm"
-                  data-control-name=(concat "field_toggle_checkbox_" field.key)
-                  onValueChange=(action "fieldVisibilityUpdated" field)}}
-                <div class="margin-left-xxx-sm">
+                  value=field.visible
+                  size='sm'
+                  data-control-name=(concat 'field_toggle_checkbox_' field.key)
+                  onValueChange=(action 'fieldVisibilityUpdated' field)
+                }}
+                <div class='margin-left-xxx-sm'>
                   {{#if field.title}}
                     {{field.title}}
                   {{else}}
@@ -107,7 +123,7 @@
               </div>
             {{/each}}
           {{else}}
-            <div class="field margin-top-md">
+            <div class='field margin-top-md'>
               No columns found
             </div>
           {{/each-in}}
@@ -117,31 +133,32 @@
   </div>
 </div>
 
-<div class="hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}">
+<div class='hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}'>
   {{#if (and manager.tetherInstance manager.tetherBackdrop)}}
-    <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
+    <div class='hypertable__backdrop' {{action 'onBackdropClick'}}></div>
   {{/if}}
 
   {{#if (and (eq _collection.length 0) (not loadingData))}}
-    <div class="hypertable__state hypertable__state--empty">
-      {{#if (has-block "inverse")}}
-        {{yield to="inverse"}}
+    <div class='hypertable__state hypertable__state--empty'>
+      {{#if (has-block 'inverse')}}
+        {{yield to='inverse'}}
       {{else}}
         No Data
       {{/if}}
     </div>
   {{/if}}
 
-  {{#sortable-group
-    direction="x" model=_columns onChange=(action "reorderColumns")
-    classNames="hypertable" as |group|}}
+  {{#sortable-group direction='x' model=_columns onChange=(action 'reorderColumns') classNames='hypertable' as |group|}}
     {{#each _columns as |column index|}}
       {{#if (eq index 0)}}
-        <div class="hypertable__sticky-columns">
+        <div class='hypertable__sticky-columns'>
           {{#if manager.options.features.selection}}
-            <div class="hypertable__column hypertable__column--selection {{concat "hypertable__column--size-" column.size}}">
+            <div
+              class='hypertable__column hypertable__column--selection
+                {{concat 'hypertable__column--size-' column.size}}'
+            >
               <header>
-                {{upf-checkbox value=_allRowsSelected size="sm" data-control-name="row_select_all_toggle_checkbox"}}
+                {{upf-checkbox value=_allRowsSelected size='sm' data-control-name='row_select_all_toggle_checkbox'}}
               </header>
 
               {{#if loadingData}}
@@ -152,9 +169,11 @@
                 {{#each _collection as |item|}}
                   {{#hyper-table/cell item=item manager=manager selection=true}}
                     {{upf-checkbox
-                      value=item.selected size="sm"
-                      data-control-name="row_select_toggle_checkbox"
-                      disabled=(and selectAllIncludesHidden _allRowsSelected)}}
+                      value=item.selected
+                      size='sm'
+                      data-control-name='row_select_toggle_checkbox'
+                      disabled=(and selectAllIncludesHidden _allRowsSelected)
+                    }}
                   {{/hyper-table/cell}}
                 {{/each}}
 
@@ -167,9 +186,9 @@
             </div>
           {{/if}}
 
-          <div class="hypertable__column {{concat "hypertable__column--size-" column.size}}">
+          <div class='hypertable__column {{concat 'hypertable__column--size-' column.size}}'>
             <header>
-              <div class="cell-header">
+              <div class='cell-header'>
                 {{column.field.name}}
               </div>
             </header>
@@ -180,11 +199,13 @@
               {{/each}}
             {{else}}
               {{#each _collection as |item|}}
-                <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
+                <div onmouseover={{action 'toggleHover' item true}} onmouseout={{action 'toggleHover' item false}}>
                   {{hyper-table/cell
-                    item=item column=column
+                    item=item
+                    column=column
                     manager=manager
-                    renderingComponent=(cell-rendering-inferer column)}}
+                    renderingComponent=(cell-rendering-inferer column)
+                  }}
                 </div>
               {{/each}}
 
@@ -195,8 +216,7 @@
               {{/if}}
 
               {{#if _displayInfinityLoader}}
-                {{hyper-table/infinity-loader
-                  onBottomReached=manager.hooks.onBottomReached}}
+                {{hyper-table/infinity-loader onBottomReached=manager.hooks.onBottomReached}}
               {{/if}}
             {{/if}}
           </div>
@@ -207,20 +227,27 @@
     {{#each _columns as |column index|}}
       {{#if (gt index 0)}}
         {{#hyper-table/column
-          model=column item=item column=column group=group manager=manager
-          onDragStart=(action "dragStarted")
-          handle="header"}}
+          model=column
+          item=item
+          column=column
+          group=group
+          manager=manager
+          onDragStart=(action 'dragStarted')
+          handle='header'
+        }}
           {{#if loadingData}}
             {{#each _loadingCollection}}
               {{hyper-table/cell loading=true}}
             {{/each}}
           {{else}}
             {{#each _collection as |item|}}
-              <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
+              <div onmouseover={{action 'toggleHover' item true}} onmouseout={{action 'toggleHover' item false}}>
                 {{hyper-table/cell
-                  item=item column=column
+                  item=item
+                  column=column
                   manager=manager
-                  renderingComponent=(cell-rendering-inferer column)}}
+                  renderingComponent=(cell-rendering-inferer column)
+                }}
               </div>
             {{/each}}
 
@@ -235,17 +262,20 @@
     {{/each}}
   {{/sortable-group}}
 
-  <div class="scroll-button-container {{if manager.isScrollable 'is-visible'}}">
-    <button class="upf-btn upf-btn--small scroll-button {{if manager.isScrollable 'is-visible'}}" {{action "scrollToEnd"}}>
+  <div class='scroll-button-container {{if manager.isScrollable 'is-visible'}}'>
+    <button
+      class='upf-btn upf-btn--small scroll-button {{if manager.isScrollable 'is-visible'}}'
+      {{action 'scrollToEnd'}}
+    >
       More &nbsp;
-      <i class="fa fa-chevron-right"></i>
+      <i class='fa fa-chevron-right'></i>
     </button>
   </div>
 </div>
 
 {{#if footer}}
-  <div class="hypertable-footer">
-    {{#if (eq _footerType "string")}}
+  <div class='hypertable-footer'>
+    {{#if (eq _footerType 'string')}}
       {{component footer collection=_collection}}
     {{else}}
       {{footer}}

@@ -1,32 +1,38 @@
 {{#if loading}}
   {{#each loadingFacetsRange}}
-    <div class="hypertable__facetting-item">
-      <div class="item"></div>
-      <div class="count"></div>
+    <div class='hypertable__facetting-item'>
+      <div class='item'></div>
+      <div class='count'></div>
     </div>
   {{/each}}
 {{else}}
   {{#each facets as |facet|}}
-    <div class="hypertable__facetting-item" data-control-name={{concat "table_column_filter_sort_facet_" facet.identifier "_toggle"}}>
-      <div class="item">
-        {{upf-checkbox
-          value=facet.applied size="sm" onValueChange=(action "toggleAppliedFacet" facet)}}
+    <div
+      class='hypertable__facetting-item'
+      data-control-name={{concat 'table_column_filter_sort_facet_' facet.identifier '_toggle'}}
+    >
+      <div class='item'>
+        {{upf-checkbox value=facet.applied size='sm' onValueChange=(action 'toggleAppliedFacet' facet)}}
 
         {{#if facet.facetRenderer}}
           {{facet.facetRenderer}}
         {{else}}
-          <span class={{if facet.applied "text-style-bold"}}>
+          <span class={{if facet.applied 'text-style-bold'}}>
             {{facet.formattedIdentifier}}
             {{#if facet.infoBubble}}
-              &nbsp; &nbsp; <i class="fa fa-info-circle text-color-blue-gray"
-                               data-toggle="tooltip" data-placemment="bottom"
-                               title={{facet.infoBubble}}></i>
-             {{/if}}
+              &nbsp; &nbsp;
+              <i
+                class='fa fa-info-circle text-color-blue-gray'
+                data-toggle='tooltip'
+                data-placemment='bottom'
+                title={{facet.infoBubble}}
+              ></i>
+            {{/if}}
           </span>
         {{/if}}
       </div>
 
-      <div class="count">
+      <div class='count'>
         {{facet.count}}
       </div>
     </div>

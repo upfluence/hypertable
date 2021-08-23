@@ -16,7 +16,7 @@ export default Component.extend(InViewportMixin, {
         right: 0,
         bottom: this.triggerOffset,
         left: 0
-      },
+      }
     });
   },
 

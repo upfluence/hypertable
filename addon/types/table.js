@@ -1,3 +1,4 @@
+/* global Tether */
 import EmberObject, { computed } from '@ember/object';
 import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
@@ -6,9 +7,7 @@ import { dasherize } from '@ember/string';
 
 import Column from '@upfluence/hypertable/types/column';
 
-const DEFAULT_RENDERERS = [
-  'text', 'numeric', 'money', 'date', 'image', 'link'
-];
+const DEFAULT_RENDERERS = ['text', 'numeric', 'money', 'date', 'image', 'link'];
 
 export default EmberObject.extend({
   columns: [],
@@ -39,32 +38,34 @@ export default EmberObject.extend({
       ordering: false,
       filtering: false,
       tableViews: false
-    },
+    }
   },
   options: or('_options', '_defaultOptions'),
 
   /*
-  * Event Hooks
-  * ===========
-  *
-  * Actions to be called to react to various events happening on the datatable
-  *
-  * Available Hooks:
-  *   onColumnsChange, onBottomReached,
-  *   onSearchQueryChange, onRowClicked,
-  *   onLiveEdit
-  */
+   * Event Hooks
+   * ===========
+   *
+   * Actions to be called to react to various events happening on the datatable
+   *
+   * Available Hooks:
+   *   onColumnsChange, onBottomReached,
+   *   onSearchQueryChange, onRowClicked,
+   *   onLiveEdit
+   */
   hooks: {},
 
 
-  appliedFilters: computed('columns.@each.filters.[]', function() {
-    return this.columns.map((column) => {
-      if (!isEmpty(column.filters)) {
-        let _c = {}
-        _c[column.key] = column.filters;
-        return _c;
-      }
-    }).compact();
+  appliedFilters: computed('columns.@each.filters.[]', function () {
+    return this.columns
+      .map((column) => {
+        if (!isEmpty(column.filters)) {
+          let _c = {};
+          _c[column.key] = column.filters;
+          return _c;
+        }
+      })
+      .compact();
   }),
 
   updateFields(fields) {
@@ -72,38 +73,43 @@ export default EmberObject.extend({
   },
 
   updateColumns(columns) {
-    this.set('columns', columns.filter((column) => this.fields.findBy('key', column.key)).map((column, index) => {
-      if (typeOf(column) !== 'instance') {
-        column = Column.create(column);
-      }
+    this.set(
+      'columns',
+      columns
+        .filter((column) => this.fields.findBy('key', column.key))
+        .map((column, index) => {
+          if (typeOf(column) !== 'instance') {
+            column = Column.create(column);
+          }
 
-      let field = this.fields.findBy('key', column.key);
+          let field = this.fields.findBy('key', column.key);
 
-      column.setProperties({
-        manager: this,
-        orderBy: column.orderBy || null,
-        orderKey: column.orderKey || column.key,
-        size: column.size || 'M',
-        filters: (column.filters || []).map((x) => EmberObject.create(x)),
+          column.setProperties({
+            manager: this,
+            orderBy: column.orderBy || null,
+            orderKey: column.orderKey || column.key,
+            size: column.size || 'M',
+            filters: (column.filters || []).map((x) => EmberObject.create(x)),
 
-        type: column.type || 'text',
-        orderable: index !== 0 && column.orderable,
-        filterable: index !== 0 && column.filterable,
-        upsertable: column.upsertable || false,
-        field
-      });
+            type: column.type || 'text',
+            orderable: index !== 0 && column.orderable,
+            filterable: index !== 0 && column.filterable,
+            upsertable: column.upsertable || false,
+            field
+          });
 
-      field.setProperties({
-        visible: true,
-        toggleable: index !== 0
-      });
+          field.setProperties({
+            visible: true,
+            toggleable: index !== 0
+          });
 
-      return column;
-    }));
+          return column;
+        })
+    );
   },
 
   updateData(data) {
-    if(this._allRowsSelected) {
+    if (this._allRowsSelected) {
       data.setEach('selected', this._allRowsSelected);
     }
 
@@ -113,10 +119,10 @@ export default EmberObject.extend({
   updateViews(views, predefinedViews) {
     this.set('views', views);
 
-    if(predefinedViews) {
-      predefinedViews = predefinedViews.filter((view)=> {
+    if (predefinedViews) {
+      predefinedViews = predefinedViews.filter((view) => {
         return views.filterBy('name', view.name).length === 0;
-      })
+      });
       this.set('predefinedViews', predefinedViews);
     }
   },
@@ -127,7 +133,7 @@ export default EmberObject.extend({
     this.hooks.onColumnsChange('columns:change');
   },
 
-  updateFieldCategories(categories){
+  updateFieldCategories(categories) {
     this.set('fieldCategories', categories);
   },
 
@@ -138,20 +144,17 @@ export default EmberObject.extend({
     if (field.type === 'rating') field.set('autosave', true);
 
     if (!DEFAULT_RENDERERS.includes(field.type)) {
-      field.renderingComponent =
-        field.renderingComponent ||
-        `crm/column-renderers/${dasherize(field.type)}`;
+      field.renderingComponent = field.renderingComponent || `crm/column-renderers/${dasherize(field.type)}`;
 
       if (field.filterable) {
         field.filtersRenderingComponent =
-          field.filtersRenderingComponent ||
-          `crm/filters-renderers/${dasherize(field.type)}`;
+          field.filtersRenderingComponent || `crm/filters-renderers/${dasherize(field.type)}`;
       }
     }
   },
 
   toggleColumnVisibility(field, column) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       let _c = this.columns.findBy('key', field.key);
       let _action = null;
 
@@ -171,16 +174,16 @@ export default EmberObject.extend({
           upsertable: field.upsertable,
           orderable: field.orderable,
           filterable: field.filterable,
-          orderKey: field.orderKey || field.key,
+          orderKey: field.orderKey || field.key,
           manager: this,
           field
         });
 
-        if(column && column.order) {
+        if (column && column.order) {
           newColumn.orderBy = `${column.order.key}:${column.order.direction}`;
         }
 
-        if(column && column.filters) {
+        if (column && column.filters) {
           newColumn.filters = column.filters;
         }
 
@@ -205,7 +208,7 @@ export default EmberObject.extend({
       scheduleOnce('afterRender', this, () => {
         var expandableList = document.querySelector(`.${elementClass}`);
 
-        if(width) {
+        if (width) {
           expandableList.style.width = `${width}px`;
         }
 
@@ -216,9 +219,7 @@ export default EmberObject.extend({
         }
 
         setTimeout(() => {
-          expandableList.classList.add(
-            `${elementClass}--visible`
-          );
+          expandableList.classList.add(`${elementClass}--visible`);
         }, 200);
 
         this.setProperties({
@@ -237,7 +238,7 @@ export default EmberObject.extend({
 
   destroyTetherInstance() {
     if (this.tetherInstance) {
-      this.tetherInstance.element.remove()
+      this.tetherInstance.element.remove();
       this.tetherInstance.destroy();
       this.set('tetherInstance', null);
       this.set('tetherOn', null);

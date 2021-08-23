@@ -12,47 +12,49 @@ export default Component.extend({
   filteredViews: null,
 
   _searchQuery: '',
-  
 
-  _searchQueryObserver: observer('_searchQuery', function() {
+  _searchQueryObserver: observer('_searchQuery', function () {
     run.debounce(this, this.searchView, 500);
   }),
 
   searchView() {
     if (!isEmpty(this._searchQuery)) {
-      this.set('filteredViews', this.manager.views.filter((view) => {
-        return view.name.toLowerCase().includes(this._searchQuery.toLowerCase());
-      }));
+      this.set(
+        'filteredViews',
+        this.manager.views.filter((view) => {
+          return view.name.toLowerCase().includes(this._searchQuery.toLowerCase());
+        })
+      );
       return;
-    };
+    }
 
     this.set('filteredViews', null);
   },
 
   actions: {
     addPredefinedView(view) {
-      if(this.manager.hooks.onAddView) {
+      if (this.manager.hooks.onAddView) {
         this.manager.hooks.onAddView(view.name, view.table);
         this.manager.predefinedViews.removeObject(view);
       }
     },
 
     addView() {
-      if(this.manager.hooks.onAddView && isPresent(this.newViewName)) {
+      if (this.manager.hooks.onAddView && isPresent(this.newViewName)) {
         this.manager.hooks.onAddView(this.newViewName);
         this.toggleProperty('isHiddenAddViewModal');
       }
     },
 
     updateView() {
-      if(this.manager.hooks.onUpdateView && this.selectedView) {
+      if (this.manager.hooks.onUpdateView && this.selectedView) {
         this.manager.hooks.onUpdateView(this.selectedView);
-        this.toggleProperty('isHiddenUpdateViewModal')
+        this.toggleProperty('isHiddenUpdateViewModal');
       }
     },
 
     deleteView(_, defer) {
-      if(this.manager.hooks.onDeleteView && this.selectedView) {
+      if (this.manager.hooks.onDeleteView && this.selectedView) {
         this.manager.hooks.onDeleteView(this.selectedView).then(() => {
           this.toggleProperty('isHiddenDeleteViewModal');
           defer.resolve();
@@ -61,7 +63,7 @@ export default Component.extend({
     },
 
     selectView(view) {
-      if(this.manager.hooks.onSelectView) {
+      if (this.manager.hooks.onSelectView) {
         this.set('selectedView', view);
         this.manager.hooks.onSelectView(view);
       }
