@@ -1,7 +1,6 @@
 class LocalStorageStore {
-  constructor(table, key) {
-    this.table = table;
-    this.key = key;
+  constructor(storageKey) {
+    this.key = storageKey;
   }
 
   getState() {
@@ -9,11 +8,11 @@ class LocalStorageStore {
     return state ? JSON.parse(state) : null;
   }
 
-  update() {
+  update(columns) {
     window.localStorage.setItem(
       this.key,
       JSON.stringify(
-        this.table.columns.map((x) => {
+        columns.map((x) => {
           delete x.manager;
           return x;
         })

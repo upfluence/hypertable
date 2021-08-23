@@ -69,7 +69,7 @@ export default EmberObject.extend({
         );
       }
 
-      this.set('store', new LocalStorageStore(this, this.options.name));
+      this.set('store', new LocalStorageStore(this.options.name));
     }
   },
 
