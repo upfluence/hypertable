@@ -1,7 +1,7 @@
 <header>
-  <div class="cell-header" {{action "orderColumn" bubbles=false}}>
-    <div class="header-title-container">
-      <span class="field-title" {{enable-tooltip title=this.column.field.name}}>
+  <div class='cell-header' {{action 'orderColumn' bubbles=false}}>
+    <div class='header-title-container'>
+      <span class='field-title' {{enable-tooltip title=this.column.field.name}}>
         {{#if column.field.title}}
           <span>{{column.field.title}}</span>
         {{else}}
@@ -10,37 +10,43 @@
       </span>
 
       {{#if column.field.tooltip}}
-        <i data-toggle="tooltip" data-title={{column.field.tooltip}} data-html="true" data-placement="bottom" class="fa fa-info-circle header-tooltip"></i>
+        <i
+          data-toggle='tooltip'
+          data-title={{column.field.tooltip}}
+          data-html='true'
+          data-placement='bottom'
+          class='fa fa-info-circle header-tooltip'
+        ></i>
       {{/if}}
 
-      {{#if (eq column.orderDirection "asc") }}
-        &nbsp;<span class="order-direction">&uarr;</span>
-      {{else if (eq column.orderDirection "desc")}}
-        &nbsp;<span class="order-direction">&darr;</span>
+      {{#if (eq column.orderDirection 'asc')}}
+        &nbsp;<span class='order-direction'>&uarr;</span>
+      {{else if (eq column.orderDirection 'desc')}}
+        &nbsp;<span class='order-direction'>&darr;</span>
       {{/if}}
     </div>
 
     {{#if column.field.clustering_key}}
-      <div class="subtitle text-size-4">
+      <div class='subtitle text-size-4'>
         {{column.field.clustering_key}}
       </div>
     {{else if column.field.subtitle}}
-      <div class="subtitle text-size-4">
+      <div class='subtitle text-size-4'>
         {{column.field.subtitle}}
       </div>
     {{/if}}
   </div>
 
-  <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" column.key}}>
+  <div class='icon-commands' data-control-name={{concat 'table_column_filter_sort_toggle_' column.key}}>
     {{#if _supportsOrderingOrFiltering}}
-      <i class="fa fa-filter" {{enable-tooltip title="Filters"}} {{action "toggleFiltersPanel" bubbles=false}}></i>
+      <i class='fa fa-filter' {{enable-tooltip title='Filters'}} {{action 'toggleFiltersPanel' bubbles=false}}></i>
     {{/if}}
 
-    <i class="fa fa-bars fa-rotate-90"></i>
+    <i class='fa fa-bars fa-rotate-90'></i>
   </div>
 
   {{#if (and _supportsOrderingOrFiltering (eq manager.tetherOn column.key))}}
-    <div class="available-filters" {{on-click-outside (action "toggleFiltersPanel" bubbles=false)}}>
+    <div class='available-filters' {{on-click-outside (action 'toggleFiltersPanel' bubbles=false)}}>
       {{component _filtersRenderingComponent column=column manager=manager}}
     </div>
   {{/if}}

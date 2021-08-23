@@ -3,14 +3,14 @@ import { computed } from '@ember/object';
 import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
 
 export default Component.extend(CellRendererMixin, {
-  length: computed('value', function() {
+  length: computed('value', function () {
     return this.value.length - 1;
   }),
 
   isEditing: false,
 
-  formattedList: computed('value', function() {
-    if(this.value.firstObject.name) {
+  formattedList: computed('value', function () {
+    if (this.value.firstObject.name) {
       return this.value.mapBy('name').join('<br>');
     }
     return this.value.slice().join('<br>');
@@ -18,11 +18,11 @@ export default Component.extend(CellRendererMixin, {
 
   actions: {
     goToUrl(url) {
-      window.open(url, '_blank')
+      window.open(url, '_blank');
     },
 
     toggleList() {
-      if(this.manager.tetherOn !== this.elementId) {
+      if (this.manager.tetherOn !== this.elementId) {
         this.manager.destroyTetherInstance();
       }
 
@@ -36,7 +36,7 @@ export default Component.extend(CellRendererMixin, {
           targetAttachment: 'bottom center',
           constraints: [
             {
-              to: 'scrollParent',
+              to: 'scrollParent'
             }
           ]
         },

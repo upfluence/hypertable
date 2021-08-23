@@ -25,11 +25,12 @@ export default Component.extend({
 
       run.later(() => {
         this.column.applyFacets(
-          this.filteringKey, this.facets.filter((f) => {
+          this.filteringKey,
+          this.facets.filter((f) => {
             return f.applied && !isEmpty(f.identifier);
           })
         );
-      }, 500)
+      }, 500);
     }
   }
 });

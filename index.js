@@ -26,12 +26,9 @@ module.exports = {
     }
 
     trees.push(
-      writeFile(
-        '@upfluence/hypertable/register-version.js',
-        `Ember.libraries.register('${name}', '${version}');`
-      )
+      writeFile('@upfluence/hypertable/register-version.js', `Ember.libraries.register('${name}', '${version}');`)
     );
 
     return new MergeTrees(trees);
-  },
+  }
 };

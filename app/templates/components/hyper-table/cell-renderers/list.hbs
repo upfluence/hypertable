@@ -1,31 +1,38 @@
 {{#if emptyValue}}
   —
 {{else}}
-  <div class="list-container" {{action "toggleList" bubbles=false}}>
+  <div class='list-container' {{action 'toggleList' bubbles=false}}>
     {{#if value.firstObject.name}}
       <div>
         {{value.firstObject.name}}
       </div>
       {{#if (eq manager.tetherOn elementId)}}
-        <div class="expandable-list">
+        <div class='expandable-list'>
           {{#each value as |item|}}
-            <div class="expandable-list__item" {{action "goToUrl" (concat url item.id) bubbles=false}}>
+            <div class='expandable-list__item' {{action 'goToUrl' (concat url item.id) bubbles=false}}>
               {{item.name}}
             </div>
           {{/each}}
         </div>
       {{/if}}
     {{else}}
-      <div data-toggle="tooltip" data-html="true" data-title={{get value '0'}} data-placement="bottom">
+      <div data-toggle='tooltip' data-html='true' data-title={{get value '0'}} data-placement='bottom'>
         {{get value '0'}}
       </div>
     {{/if}}
 
-    <div class="margin-left-xxx-sm list-elements" data-toggle="tooltip" data-html="true" data-title={{formattedList}} data-placement="bottom">
+    <div
+      class='margin-left-xxx-sm list-elements'
+      data-toggle='tooltip'
+      data-html='true'
+      data-title={{formattedList}}
+      data-placement='bottom'
+    >
       {{#if length}}
-        +{{length}} more
+        +{{length}}
+        more
       {{/if}}
-      <i class="fa {{if (eq manager.tetherOn elementId) 'fa-caret-up' 'fa-caret-down' }}  padding-left-xxx-sm"></i>
+      <i class='fa {{if (eq manager.tetherOn elementId) 'fa-caret-up' 'fa-caret-down'}} padding-left-xxx-sm'></i>
     </div>
   </div>
 {{/if}}

@@ -8,11 +8,11 @@ import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer'
 export default Component.extend(FiltersRendererMixin, {
   _searchQuery: null,
 
-  orderingOptions: computed('column.orderKey', function() {
+  orderingOptions: computed('column.orderKey', function () {
     return {
       'A — Z': `${this.column.orderKey}:asc`,
       'Z — A': `${this.column.orderKey}:desc`
-    }
+    };
   }),
 
   existenceFilters: {
@@ -20,7 +20,7 @@ export default Component.extend(FiltersRendererMixin, {
     'Without Value': 'without'
   },
 
-  currentExistenceFilter: computed('column.filters.[]', '_searchQuery', function() {
+  currentExistenceFilter: computed('column.filters.[]', '_searchQuery', function () {
     let _existenceFilter = this.column.filters.findBy('key', 'existence');
 
     if (_existenceFilter) {
@@ -31,7 +31,7 @@ export default Component.extend(FiltersRendererMixin, {
   }),
 
   _addSearchFilter() {
-    if(this._searchQuery !== null) {
+    if (this._searchQuery !== null) {
       this.column.set(
         'filters',
         isEmpty(this._searchQuery) ? [] : [{ key: this.searchKey || 'value', value: this._searchQuery }]
@@ -40,7 +40,7 @@ export default Component.extend(FiltersRendererMixin, {
     }
   },
 
-  _searchQueryObserver: observer('_searchQuery', function() {
+  _searchQueryObserver: observer('_searchQuery', function () {
     run.debounce(this, this._addSearchFilter, 1000);
   }),
 
@@ -66,7 +66,7 @@ export default Component.extend(FiltersRendererMixin, {
     reset() {
       this._super();
       this.manager.updateOrdering(this.column, null);
-      this.set('_searchQuery', null)
+      this.set('_searchQuery', null);
     }
   }
 });

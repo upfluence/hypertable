@@ -1,5 +1,3 @@
-import Component from '@ember/component';
-
 import NumericFilterRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers/numeric';
 
 export default NumericFilterRenderer.extend({
@@ -20,7 +18,7 @@ export default NumericFilterRenderer.extend({
         this.setProperties({
           lowerBoundFilter: lowerBound.value / 100,
           upperBoundFilter: upperBound.value / 100
-        })
+        });
       }
     }
   },

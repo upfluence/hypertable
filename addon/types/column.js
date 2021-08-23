@@ -1,4 +1,4 @@
-import EmberObject, { computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 
 export default EmberObject.extend({
@@ -14,7 +14,7 @@ export default EmberObject.extend({
   orderable: false,
   upsertable: false,
 
-  orderDirection: computed('orderBy', function() {
+  orderDirection: computed('orderBy', function () {
     if (!this.orderBy) return;
 
     return this.orderBy.split(':').slice(-1)[0];
@@ -22,25 +22,25 @@ export default EmberObject.extend({
 
   addFilters(type, value) {
     if (isEmpty(this.filters)) {
-      let f = EmberObject.create({ type, value })
+      let f = EmberObject.create({ type, value });
       this.set('filters', [f]);
     } else {
-      this.set('filters', this.filters.map((f) => {
-        if (f.type === type) {
-          f.set('value', value);
-        }
+      this.set(
+        'filters',
+        this.filters.map((f) => {
+          if (f.type === type) {
+            f.set('value', value);
+          }
 
-        return f;
-      }));
+          return f;
+        })
+      );
     }
     this.manager.hooks.onColumnsChange('columns:change');
   },
 
   applyFacets(key, facets) {
-    this.set(
-      'filters',
-      isEmpty(facets) ? [] : [{ key, value: facets.mapBy('identifier').join(',')}]
-    );
+    this.set('filters', isEmpty(facets) ? [] : [{ key, value: facets.mapBy('identifier').join(',') }]);
     this.manager.hooks.onColumnsChange('columns:change');
   },
 

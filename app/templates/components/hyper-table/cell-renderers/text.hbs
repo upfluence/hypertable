@@ -1,36 +1,39 @@
 {{#if isUpsertable}}
-  <span {{action "toggleEditing"}}>
-    {{or column.field.emptyPlaceholder "Add value"}}
+  <span {{action 'toggleEditing'}}>
+    {{or column.field.emptyPlaceholder 'Add value'}}
   </span>
 {{else}}
-  <div data-toggle="tooltip" class="text-value" data-title={{value}} data-placement="bottom">
+  <div data-toggle='tooltip' class='text-value' data-title={{value}} data-placement='bottom'>
     {{if emptyValue '—' value}}
   </div>
 {{/if}}
 
 {{#if isUpsertable}}
-  <div class="editing-input">
-      <div class={{if isError 'is-invalid'}}>
-        {{input
-          type="text" value=editableValue class="editing-input__field form-control upf-input"
-          focus-out=(action "toggleEditing" editableValue)
-          insert-newline=(action "toggleEditing" editableValue) }}
-      </div>
-      <div data-toggle="tooltip" class="text-value" data-title={{editableValue}} data-placement="bottom">
-        {{editableValue}}
-      </div>
+  <div class='editing-input'>
+    <div class={{if isError 'is-invalid'}}>
+      {{input
+        type='text'
+        value=editableValue
+        class='editing-input__field form-control upf-input'
+        focus-out=(action 'toggleEditing' editableValue)
+        insert-newline=(action 'toggleEditing' editableValue)
+      }}
+    </div>
+    <div data-toggle='tooltip' class='text-value' data-title={{editableValue}} data-placement='bottom'>
+      {{editableValue}}
+    </div>
   </div>
 {{/if}}
-{{!-- TODO: Extract to component --}}
+{{! TODO: Extract to component }}
 {{#if isUpsertable}}
-  <div class="status-container margin-left-x-sm text-color-default-lighter">
+  <div class='status-container margin-left-x-sm text-color-default-lighter'>
     {{#if isSaving}}
       {{loading-state}}
     {{else if isSuccess}}
-      <i class="fa fa-pencil cell-edition delayed" onclick={{action "toggleEditing"}}></i>
-      <span class="text-color-success upf-icon upf-icon--check text-size-6"></span>
+      <i class='fa fa-pencil cell-edition delayed' onclick={{action 'toggleEditing'}}></i>
+      <span class='text-color-success upf-icon upf-icon--check text-size-6'></span>
     {{else if (not editStatus.status)}}
-      <i class="fa fa-pencil cell-edition delayed" onclick={{action "toggleEditing"}}></i>
+      <i class='fa fa-pencil cell-edition delayed' onclick={{action 'toggleEditing'}}></i>
     {{/if}}
   </div>
 {{/if}}
