@@ -35,5 +35,25 @@ module('Integration | Component | hyper-table/localstorage', function (hooks) {
       assert.equal(this.table.store.constructor, LocalStorageStore);
       assert.equal(this.table.store.key, 'foo');
     });
+
+    test('it correctly updates the localStorage', async function (assert) {
+      this.table = this.owner
+        .lookup('service:hypertable-manager')
+        .createTable({ name: 'foo', features: { localStorage: true } });
+
+      this.table.store.update([{ key: 'foo' }]);
+      assert.deepEqual(JSON.parse(window.localStorage.getItem('foo')), [{ key: 'foo' }]);
+      window.localStorage.removeItem('foo');
+    });
+
+    test('it correctly reads from the localStorage', async function (assert) {
+      this.table = this.owner
+        .lookup('service:hypertable-manager')
+        .createTable({ name: 'foo', features: { localStorage: true } });
+
+      window.localStorage.setItem('foo', JSON.stringify([{ key: 'bar' }]));
+      assert.deepEqual(this.table.store.getState(), [{ key: 'bar' }]);
+      window.localStorage.removeItem('foo');
+    });
   });
 });
