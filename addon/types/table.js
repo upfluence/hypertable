@@ -32,13 +32,15 @@ export default EmberObject.extend({
    *
    */
   _defaultOptions: {
+    name: null,
     features: {
       selection: false,
       search: false,
       ordering: false,
       filtering: false,
-      tableViews: false
-    }
+      tableViews: false,
+      localStorage: false
+    },
   },
   options: or('_options', '_defaultOptions'),
 
@@ -242,6 +244,37 @@ export default EmberObject.extend({
       this.tetherInstance.destroy();
       this.set('tetherInstance', null);
       this.set('tetherOn', null);
+    }
+  },
+
+  storeLocalState() {
+    if (!this.options.features.localStorage) {
+      throw new Error('[Hypertable] Trying to use localStorage without the feature being enabled.');
+    }
+
+    if (!this.options.name) {
+      throw new Error('[Hypertable] Trying to use localStorage without options.name being set.');
+    }
+
+    window.localStorage.setItem(
+      this.options.name, JSON.stringify(this.columns.map((x) => { delete x.manager; return x }))
+    );
+  },
+
+  retrieveLocalState() {
+    if (!this.options.features.localStorage) {
+      throw new Error('[Hypertable] Trying to use localStorage without the feature being enabled.');
+    }
+
+    if (!this.options.name) {
+      throw new Error('[Hypertable] Trying to use localStorage without options.name being set.');
+    }
+
+    console.log(this.options.name);
+    if (window.localStorage.getItem(this.options.name)) {
+      return JSON.parse(window.localStorage.getItem(this.options.name));
+    } else {
+      return null;
     }
   }
 });
