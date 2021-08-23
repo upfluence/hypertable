@@ -6,7 +6,7 @@ import { isEmpty, typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 
 import Column from '@upfluence/hypertable/types/column';
-import { LocalStorageStore } from '@upfluence/hypertable/types/store';
+import { LocalStorageStore } from '@upfluence/hypertable/types/store';
 
 const DEFAULT_RENDERERS = ['text', 'numeric', 'money', 'date', 'image', 'link'];
 
@@ -24,6 +24,7 @@ export default EmberObject.extend({
   availableTableViews: false,
   updatingTableView: false,
   _allRowsSelected: false,
+  store: null,
 
   /*
    * Configuration
@@ -41,7 +42,7 @@ export default EmberObject.extend({
       filtering: false,
       tableViews: false,
       localStorage: false
-    },
+    }
   },
   options: or('_options', '_defaultOptions'),
 
@@ -61,7 +62,7 @@ export default EmberObject.extend({
   init() {
     this._super(...arguments);
 
-    if(this.options.features.localStorage) {
+    if (this.options?.features?.localStorage) {
       if (!this.options.name) {
         throw new Error(
           '[Hypertable] Trying to use localStorage store without a store name. Please set "options.name".'
