@@ -6,6 +6,7 @@ import { isEmpty, typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 
 import Column from '@upfluence/hypertable/types/column';
+import { LocalStorageStore } from '@upfluence/hypertable/types/store';
 
 const DEFAULT_RENDERERS = ['text', 'numeric', 'money', 'date', 'image', 'link'];
 
@@ -57,6 +58,19 @@ export default EmberObject.extend({
    */
   hooks: {},
 
+  init() {
+    this._super(...arguments);
+
+    if(this.options.features.localStorage) {
+      if (!this.options.name) {
+        throw new Error(
+          '[Hypertable] Trying to use localStorage store without a store name. Please set "options.name".'
+        );
+      }
+
+      this.set('store', new LocalStorageStore(this, this.options.name));
+    }
+  },
 
   appliedFilters: computed('columns.@each.filters.[]', function () {
     return this.columns
@@ -244,37 +258,6 @@ export default EmberObject.extend({
       this.tetherInstance.destroy();
       this.set('tetherInstance', null);
       this.set('tetherOn', null);
-    }
-  },
-
-  storeLocalState() {
-    if (!this.options.features.localStorage) {
-      throw new Error('[Hypertable] Trying to use localStorage without the feature being enabled.');
-    }
-
-    if (!this.options.name) {
-      throw new Error('[Hypertable] Trying to use localStorage without options.name being set.');
-    }
-
-    window.localStorage.setItem(
-      this.options.name, JSON.stringify(this.columns.map((x) => { delete x.manager; return x }))
-    );
-  },
-
-  retrieveLocalState() {
-    if (!this.options.features.localStorage) {
-      throw new Error('[Hypertable] Trying to use localStorage without the feature being enabled.');
-    }
-
-    if (!this.options.name) {
-      throw new Error('[Hypertable] Trying to use localStorage without options.name being set.');
-    }
-
-    console.log(this.options.name);
-    if (window.localStorage.getItem(this.options.name)) {
-      return JSON.parse(window.localStorage.getItem(this.options.name));
-    } else {
-      return null;
     }
   }
 });
