@@ -260,5 +260,13 @@ export default EmberObject.extend({
       this.set('tetherInstance', null);
       this.set('tetherOn', null);
     }
+  },
+
+  getStoreState() {
+    this.store?.getState();
+  },
+
+  updateStoreState() {
+    this.store?.update(this.columns);
   }
 });
