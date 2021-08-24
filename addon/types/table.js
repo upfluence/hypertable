@@ -263,7 +263,7 @@ export default EmberObject.extend({
   },
 
   getStoreState() {
-    this.store?.getState();
+    return this.store?.getState();
   },
 
   updateStoreState() {
