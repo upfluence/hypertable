@@ -6,7 +6,7 @@ import { isEmpty, typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 
 import Column from '@upfluence/hypertable/types/column';
-import { LocalStorageStore } from '@upfluence/hypertable/types/store';
+import { NoOpStore } from '@upfluence/hypertable/types/store';
 
 const DEFAULT_RENDERERS = ['text', 'numeric', 'money', 'date', 'image', 'link'];
 
@@ -24,7 +24,6 @@ export default EmberObject.extend({
   availableTableViews: false,
   updatingTableView: false,
   _allRowsSelected: false,
-  store: null,
 
   /*
    * Configuration
@@ -34,14 +33,13 @@ export default EmberObject.extend({
    *
    */
   _defaultOptions: {
-    name: null,
+    store: new NoOpStore(),
     features: {
       selection: false,
       search: false,
       ordering: false,
       filtering: false,
-      tableViews: false,
-      localStorage: false
+      tableViews: false
     }
   },
   options: or('_options', '_defaultOptions'),
@@ -62,15 +60,12 @@ export default EmberObject.extend({
   init() {
     this._super(...arguments);
 
-    if (this.options?.features?.localStorage) {
-      if (!this.options.name) {
-        throw new Error(
-          '[Hypertable] Trying to use localStorage store without a store name. Please set "options.name".'
-        );
-      }
+    const originalColumnsChangeHook = this.hooks.onColumnsChange;
 
-      this.set('store', new LocalStorageStore(this.options.name));
-    }
+    this.hooks.onColumnsChange = () => {
+      this.options.store.updateState(this.columns);
+      originalColumnsChangeHook.apply(...arguments);
+    };
   },
 
   appliedFilters: computed('columns.@each.filters.[]', function () {
@@ -263,10 +258,6 @@ export default EmberObject.extend({
   },
 
   getStoreState() {
-    return this.store?.getState();
-  },
-
-  updateStoreState() {
-    this.store?.update(this.columns);
+    return this.options.store.getState();
   }
 });
