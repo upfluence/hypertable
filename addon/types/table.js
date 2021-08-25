@@ -1,6 +1,5 @@
 /* global Tether */
 import EmberObject, { computed } from '@ember/object';
-import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
 import { isEmpty, typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
@@ -42,7 +41,12 @@ export default EmberObject.extend({
       tableViews: false
     }
   },
-  options: or('_options', '_defaultOptions'),
+  options: computed('_options', '_defaultOptions', function () {
+    return {
+      ...this._defaultOptions,
+      ...(this._options || {})
+    };
+  }),
 
   /*
    * Event Hooks

@@ -30,15 +30,7 @@ class LocalStorageStore implements Store {
   }
 
   updateState(columns: Array<Column>) {
-    window.localStorage.setItem(
-      this.key,
-      JSON.stringify(
-        columns.map((x) => {
-          delete x.manager;
-          return x;
-        })
-      )
-    );
+    window.localStorage.setItem(this.key, JSON.stringify(columns));
     return Promise.resolve(null);
   }
 }
