@@ -16,18 +16,12 @@
         </div>
       {{/if}}
     {{else}}
-      <div data-toggle='tooltip' data-html='true' data-title={{get value '0'}} data-placement='bottom'>
+      <div {{enable-tooltip title=(get value "0") html=true placement="bottom"}}>
         {{get value '0'}}
       </div>
     {{/if}}
 
-    <div
-      class='margin-left-xxx-sm list-elements'
-      data-toggle='tooltip'
-      data-html='true'
-      data-title={{formattedList}}
-      data-placement='bottom'
-    >
+    <div class='margin-left-xxx-sm list-elements' {{enable-tooltip title=formattedList placement="bottom" html=true}}>
       {{#if length}}
         +{{length}}
         more

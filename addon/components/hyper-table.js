@@ -181,7 +181,6 @@ export default Component.extend({
 
   didRender() {
     this._super();
-    this.$('[data-toggle="tooltip"]').tooltip();
 
     once(() => {
       this.set('_innerTable', document.querySelector('.hypertable__table'));

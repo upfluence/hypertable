@@ -28,12 +28,7 @@
         }}
       </div>
     {{else}}
-      <div
-        data-toggle='tooltip'
-        class='text-value'
-        data-title={{format-money amount item.currency}}
-        data-placement='bottom'
-      >
+      <div class="text-value" {{enable-tooltip title=(format-money amount item.currency) placement="bottom"}}>
         {{if emptyValue (or column.field.emptyState '—') (format-money amount currency)}}
       </div>
     {{/if}}
