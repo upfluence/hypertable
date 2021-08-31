@@ -12,11 +12,6 @@ export default Component.extend({
 
   loadingFacetsRange: new Array(8),
 
-  didRender() {
-    this._super();
-    this.$('[data-toggle="tooltip"]').tooltip();
-  },
-
   actions: {
     toggleAppliedFacet(facet) {
       if (this.onToggleAppliedFacet) {

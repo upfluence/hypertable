@@ -21,12 +21,7 @@
             {{facet.formattedIdentifier}}
             {{#if facet.infoBubble}}
               &nbsp; &nbsp;
-              <i
-                class='fa fa-info-circle text-color-blue-gray'
-                data-toggle='tooltip'
-                data-placemment='bottom'
-                title={{facet.infoBubble}}
-              ></i>
+              <i class="fa fa-info-circle text-color-blue-gray" {{enable-tooltip title=facet.infoBubble placement="bottom"}} />
             {{/if}}
           </span>
         {{/if}}

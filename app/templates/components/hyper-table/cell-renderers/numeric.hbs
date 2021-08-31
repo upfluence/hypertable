@@ -19,7 +19,7 @@
         }}
       </div>
     {{else}}
-      <div data-toggle='tooltip' class='text-value' data-title={{format-numeric value}} data-placement='bottom'>
+      <div class="text-value" {{enable-tooltip title=(format-numeric value) placement="bottom"}}>
         {{format-number value}}
       </div>
     {{/if}}

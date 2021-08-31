@@ -10,13 +10,7 @@
       </span>
 
       {{#if column.field.tooltip}}
-        <i
-          data-toggle='tooltip'
-          data-title={{column.field.tooltip}}
-          data-html='true'
-          data-placement='bottom'
-          class='fa fa-info-circle header-tooltip'
-        ></i>
+        <i class="fa fa-info-circle header-tooltip" {{enable-tooltip title=column.field.tooltip html=true placement="bottom"}} />
       {{/if}}
 
       {{#if (eq column.orderDirection 'asc')}}

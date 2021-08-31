@@ -3,7 +3,7 @@
     {{or column.field.emptyPlaceholder 'Add value'}}
   </span>
 {{else}}
-  <div data-toggle='tooltip' class='text-value' data-title={{value}} data-placement='bottom'>
+  <div class="text-value" {{enable-tooltip data-title=value placement="bottom"}}>
     {{if emptyValue '—' value}}
   </div>
 {{/if}}
@@ -19,7 +19,7 @@
         insert-newline=(action 'toggleEditing' editableValue)
       }}
     </div>
-    <div data-toggle='tooltip' class='text-value' data-title={{editableValue}} data-placement='bottom'>
+    <div class="text-value" {{enable-tooltip title=editableValue placement="bottom"}}>
       {{editableValue}}
     </div>
   </div>
