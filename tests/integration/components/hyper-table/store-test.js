@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 
 import { LocalStorageStore } from '@upfluence/hypertable/types/store';
 
-module('Integration | Component | hyper-table/store', function (hooks) {
+module('Integration | Component | hyper-table/localstorage', function (hooks) {
   setupRenderingTest(hooks);
 
   module('feature is not enabled', function () {
