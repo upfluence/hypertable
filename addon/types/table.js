@@ -105,7 +105,7 @@ export default EmberObject.extend({
             manager: this,
             orderBy: column.orderBy || null,
             orderKey: column.orderKey || column.key,
-            size: column.size || 'M',
+            size: field.size || 'M',
             filters: (column.filters || []).map((x) => EmberObject.create(x)),
 
             type: column.type || 'text',
@@ -267,6 +267,6 @@ export default EmberObject.extend({
   },
 
   updateStoreState() {
-    this.store?.update(this.columns);
+    this.store?.update(this.columns, this.fields);
   }
 });
