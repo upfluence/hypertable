@@ -48,7 +48,7 @@ export default EmberObject.extend({
     this.set('filters', []);
   },
 
-  serialize() {
+  toJSON() {
     return {
       key: this.key,
       orderBy: this.orderBy,

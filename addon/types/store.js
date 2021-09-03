@@ -12,7 +12,7 @@ class LocalStorageStore {
     window.localStorage.setItem(
       this.key,
       JSON.stringify({
-        columns: columns.map((x) => x.serialize())
+        columns
       })
     );
   }
