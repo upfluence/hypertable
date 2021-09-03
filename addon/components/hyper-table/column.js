@@ -24,7 +24,7 @@ export default SortableItem.extend({
   _filtered: notEmpty('column.filters'),
 
   _columnSize: computed('column.{field.size,size}', function () {
-    return `hypertable__column--size-${this.column.field.size || 'M'}`;
+    return `hypertable__column--size-${this.column?.field?.size || 'M'}`;
   }),
 
   _orderingClass: computed('_ordered', 'column.orderDirection', function () {
