@@ -267,6 +267,6 @@ export default EmberObject.extend({
   },
 
   updateStoreState() {
-    this.store?.update(this.columns, this.fields);
+    this.store?.update(this.columns);
   }
 });

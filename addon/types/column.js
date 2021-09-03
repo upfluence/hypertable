@@ -46,5 +46,13 @@ export default EmberObject.extend({
 
   reset() {
     this.set('filters', []);
+  },
+
+  toJSON() {
+    return {
+      key: this.key,
+      orderBy: this.orderBy,
+      filters: this.filters
+    };
   }
 });

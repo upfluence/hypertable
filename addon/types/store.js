@@ -8,21 +8,13 @@ class LocalStorageStore {
     return state ? JSON.parse(state) : null;
   }
 
-  update(columns, fields) {
+  update(columns) {
     window.localStorage.setItem(
       this.key,
       JSON.stringify({
-        columns: this._removeManager(columns),
-        fields: this._removeManager(fields)
+        columns
       })
     );
-  }
-
-  _removeManager(collection) {
-    return collection.map((x) => {
-      delete x.manager;
-      return x;
-    });
   }
 }
 
