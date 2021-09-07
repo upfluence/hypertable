@@ -7,13 +7,18 @@
     {{/if}}
 
     {{#if manager.options.features.search}}
-      <Input
-        @type='text'
-        @placeholder={{placeholder}}
-        @value={{_searchQuery}}
-        data-control-name='table_search_input'
-        class='form-control upf-input upf-input--small'
-      />
+      {{#if this.searchComponent}}
+        {{#if (eq this._searchComponentType "string")}}
+          {{component this.searchComponent manager=this.manager}}
+        {{else}}
+          {{searchComponent}}
+        {{/if}}
+      {{else}}
+        <Input
+          @type="text" @placeholder={{placeholder}} @value={{_searchQuery}}
+          data-control-name="table_search_input"
+          class="form-control upf-input upf-input--small" />
+      {{/if}}
     {{/if}}
 
     {{#if (and contextualActions (gt _collection.length 0))}}
