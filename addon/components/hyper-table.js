@@ -9,6 +9,7 @@ import $ from 'jquery';
 export default Component.extend({
   classNames: ['hypertable-container'],
 
+  searchComponent: null,
   contextualActions: null,
   footer: null,
   bottomReachedOffset: 0,
@@ -70,6 +71,10 @@ export default Component.extend({
 
   _footerType: computed('footer', function () {
     return typeOf(this.footer);
+  }),
+
+  _searchComponentType: computed('searchComponent', function () {
+    return typeOf(this.searchComponent);
   }),
 
   _orderedFilteredClusters: computed('manager.fields', '_availableFieldsKeyword', '_activeFieldCategory', function () {
