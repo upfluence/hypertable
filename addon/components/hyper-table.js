@@ -73,7 +73,7 @@ export default Component.extend({
     return typeOf(this.footer);
   }),
 
-  _searchComponentType: computed('searchComponent', function() {
+  _searchComponentType: computed('searchComponent', function () {
     return typeOf(this.searchComponent);
   }),
 
