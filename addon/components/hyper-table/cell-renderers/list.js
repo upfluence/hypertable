@@ -3,13 +3,13 @@ import { computed } from '@ember/object';
 import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
 
 export default Component.extend(CellRendererMixin, {
-  length: computed('value', function () {
+  length: computed('value.length', function () {
     return this.value.length - 1;
   }),
 
   isEditing: false,
 
-  formattedList: computed('value', function () {
+  formattedList: computed('value', 'value.firstObject.name', function () {
     if (this.value.firstObject.name) {
       return this.value.mapBy('name').join('<br>');
     }

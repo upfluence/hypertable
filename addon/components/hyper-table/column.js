@@ -31,6 +31,8 @@ export default SortableItem.extend({
     if (this._ordered) {
       return `hypertable__column--ordered-${this.column.orderDirection}`;
     }
+
+    return;
   }),
 
   _orderable: and('manager.options.features.ordering', 'column.orderable'),
@@ -41,6 +43,8 @@ export default SortableItem.extend({
     if (AVAILABLE_RENDERERS.includes(this.column.type)) {
       return `hyper-table/filters-renderers/${this.column.type}`;
     }
+
+    return;
   }),
 
   _filtersRenderingComponent: or('column.filtersRenderingComponent', '_typeInferredFiltersRenderingComponent'),
