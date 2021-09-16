@@ -32,7 +32,7 @@
     "ember-sortable": "^1.12.9",
     "ember-truth-helpers": "^2.1.0",
     "tether": "^1.4.7",
-    "upfluence-oss-components": "^2.x"
+    "@upfluence/oss-components": "^3.x"
   },
   "devDependencies": {
     "@ember/jquery": "^2.0.0",

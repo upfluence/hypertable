@@ -10,6 +10,7 @@ on:
 
 env:
   NODE_VERSION: '12'
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   test:
