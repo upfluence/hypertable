@@ -59,13 +59,19 @@ export default Component.extend({
   }),
 
   _selectedItems: filterBy('_collection', 'selected', true),
-  _selectedCount: computed('selectAllIncludesHidden', '_allRowsSelected', '_selectedItems', function () {
-    if (this.selectAllIncludesHidden && this._allRowsSelected) {
-      return this.meta.total;
-    }
+  _selectedCount: computed(
+    'selectAllIncludesHidden',
+    '_allRowsSelected',
+    '_selectedItems.length',
+    'meta.total',
+    function () {
+      if (this.selectAllIncludesHidden && this._allRowsSelected) {
+        return this.meta.total;
+      }
 
-    return this._selectedItems.length;
-  }),
+      return this._selectedItems.length;
+    }
+  ),
 
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -94,11 +100,10 @@ export default Component.extend({
     return this.groupByClusteringKey(fields);
   }),
 
-  _loadingMore: computed('onBottomReached', 'loadingMore', function () {
-    return this.manager.hooks.onBottomReached && this.loadingMore;
-  }),
+  _loadingMore: computed.and('manager.hooks.onBottomReached', 'loadingMore'),
 
   _infinityLoaderToggler: observer('loadingData', 'loadingMore', '_collection.length', function () {
+    /* eslint-disable ember/no-incorrect-calls-with-inline-anonymous-functions */
     run.debounce(
       this,
       () => {
@@ -109,6 +114,7 @@ export default Component.extend({
       },
       3000
     );
+    /* eslint-enable ember/no-incorrect-calls-with-inline-anonymous-functions */
   }).on('init'),
 
   _selectAllObserver: observer('_allRowsSelected', function () {
@@ -170,6 +176,7 @@ export default Component.extend({
 
     $(window).on('resize', this._resizeInnerTable.bind(this));
 
+    // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
     run.scheduleOnce('afterRender', this, () => {
       let table = document.querySelector('.hypertable');
       $(table).scroll(() => {
@@ -187,6 +194,7 @@ export default Component.extend({
   didRender() {
     this._super();
 
+    // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
     once(() => {
       this.set('_innerTable', document.querySelector('.hypertable__table'));
       this._resizeInnerTable();

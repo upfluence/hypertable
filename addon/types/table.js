@@ -73,6 +73,7 @@ export default EmberObject.extend({
     }
   },
 
+  // eslint-disable-next-line ember/no-deeply-nested-dependent-keys-with-each
   appliedFilters: computed('columns.@each.filters.[]', function () {
     return this.columns
       .map((column) => {
@@ -222,6 +223,7 @@ export default EmberObject.extend({
     if (this.tetherOn !== on) {
       this.set('tetherOn', on);
 
+      // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
       scheduleOnce('afterRender', this, () => {
         var expandableList = document.querySelector(`.${elementClass}`);
 

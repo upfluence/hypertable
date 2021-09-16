@@ -5,7 +5,7 @@ import { run } from '@ember/runloop';
 export default Mixin.create({
   classNameBindings: ['editStatus.status', 'isUpsertable'],
 
-  editStatus: computed('manager.{editStatus.[],editStatus.@each.status}', function () {
+  editStatus: computed('manager.{editStatus.[],editStatus.@each.status}', 'element.id', function () {
     return this.manager.get('editStatus').findBy('id', this.element.id);
   }),
 
@@ -71,6 +71,7 @@ export default Mixin.create({
       }
 
       // automatically focuses the input
+      // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
       run.scheduleOnce('afterRender', this, () => {
         this.$('.editing-input__field').focus();
       });
