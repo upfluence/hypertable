@@ -33,8 +33,6 @@ jobs:
           ${{ runner.os }}-yarn-
     - name: Install Dependencies
       run: yarn --prefer-offline --frozen-lockfile
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
     - name: Lint
       run: yarn lint:js
     - name: Run Tests
