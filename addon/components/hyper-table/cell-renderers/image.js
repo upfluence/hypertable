@@ -1,10 +1,8 @@
-import Component from '@ember/component';
-import { computed } from '@ember/object';
+import Component from '@glimmer/component';
+import { get } from '@ember/object';
 
-export default Component.extend({
-  tagName: '',
-
-  imageURL: computed('item', 'column.key', function () {
-    return this.item.get(this.column.key);
-  })
-});
+export default class ImageCellRenderer extends Component {
+  get imageURL() {
+    return get(this.args.item, this.args.column.key);
+  }
+}
