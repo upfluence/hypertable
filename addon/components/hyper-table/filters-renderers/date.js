@@ -50,7 +50,19 @@ export default Component.extend(FiltersRendererMixin, {
     'This Year': 'this_year'
   },
 
+  _handleFlatpickrClick(e) {
+    e.stopPropagation();
+  },
+
   actions: {
+    openedFlatpickr() {
+      document.querySelectorAll('.flatpickr-calendar').forEach((fc) => {
+        fc.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+      });
+    },
+
     orderingOptionChanged(value) {
       this.manager.updateOrdering(this.column, value);
     },

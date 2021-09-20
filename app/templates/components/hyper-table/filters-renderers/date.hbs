@@ -43,6 +43,7 @@
           altInput=true
           altInputClass='upf-input upf-input--textarea'
           getFlatpickrRef=(action (mut flatpickrRef))
+          onOpen=(action "openedFlatpickr")
         }}
       {{else}}
         {{#each-in movingDateOptions as |label value|}}
