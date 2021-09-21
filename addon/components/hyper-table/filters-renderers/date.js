@@ -1,108 +1,110 @@
-import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import moment from 'moment';
 
-import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
+import FiltersRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers';
 
-export default Component.extend(FiltersRendererMixin, {
-  orderingOptions: computed('column.orderKey', function () {
+export default class DateFiltersRenderer extends FiltersRenderer {
+  @tracked flatpickrRef = null;
+  @tracked filterOption;
+  @tracked _currentMovingDateOption;
+  @tracked _currentDateValue;
+
+  constructor(owner, args) {
+    super(owner, args);
+
+    let filter = this.args.column.filters.find((f) => f.key === 'value');
+    this._currentMovingDateOption = filter ? filter.value : null;
+    this.filterOption = this._currentMovingDateOption ? 'moving' : 'fixed';
+
+    let lowerBoundFilter = this.args.column.filters.findBy('key', 'lower_bound');
+    let upperBoundFilter = this.args.column.filters.findBy('key', 'upper_bound');
+    if (lowerBoundFilter && upperBoundFilter) {
+      this._currentDateValue = [
+        moment.unix(lowerBoundFilter.value).toDate(),
+        moment.unix(upperBoundFilter.value).toDate()
+      ];
+    } else {
+      this._currentDateValue = [];
+    }
+  }
+
+  get orderingOptions() {
     return {
-      'Oldest — Newest': `${this.column.orderKey}:asc`,
-      'Newest — Oldest': `${this.column.orderKey}:desc`
+      'Oldest — Newest': `${this.args.column.orderKey}:asc`,
+      'Newest — Oldest': `${this.args.column.orderKey}:desc`
     };
-  }),
+  }
 
-  filteringOptions: {
+  filteringOptions = Object.freeze({
     Moving: 'moving',
     Fixed: 'fixed'
-  },
+  });
 
-  filterOption: computed('currentMovingDateOption', function () {
-    if (!this.currentMovingDateOption) {
-      return 'fixed';
-    }
-
-    return 'moving';
-  }),
-
-  currentMovingDateOption: computed('column.filters', function () {
-    let filter = this.column.filters.find((f) => f.key === 'value');
-    return filter ? filter.value : null;
-  }),
-
-  _currentDateValue: computed('column.filters', function () {
-    let lowerBound = this.column.filters.findBy('key', 'lower_bound');
-    let upperBound = this.column.filters.findBy('key', 'upper_bound');
-
-    if (lowerBound && upperBound) {
-      return [moment.unix(lowerBound.value).toDate(), moment.unix(upperBound.value).toDate()];
-    }
-
-    return [];
-  }),
-
-  movingDateOptions: {
+  movingDateOptions = Object.freeze({
     Today: 'today',
     Yesterday: 'yesterday',
     'This Week': 'this_week',
     'Last Week': 'last_week',
     'This Month': 'this_month',
     'This Year': 'this_year'
-  },
+  });
 
   _handleFlatpickrClick(e) {
     e.stopPropagation();
-  },
+  }
 
-  actions: {
-    openedFlatpickr() {
-      document.querySelectorAll('.flatpickr-calendar').forEach((fc) => {
-        fc.addEventListener('click', (e) => {
-          e.stopPropagation();
-        });
-      });
-    },
+  @action
+  openedFlatpickr(...args) {
+    this.calendarContainer = args[2].calendarContainer;
+    this.calendarContainer.addEventListener('click', this._handleFlatpickrClick);
+  }
 
-    orderingOptionChanged(value) {
-      this.manager.updateOrdering(this.column, value);
-    },
+  @action
+  closedFlatpickr() {
+    this.calendarContainer.removeEventListener('click', this._handleFlatpickrClick);
+  }
 
-    filterOptionChanged(value) {
-      this.set('filterOption', value);
-    },
+  @action
+  orderingOptionChanged(value) {
+    this.args.manager.updateOrdering(this.args.column, value);
+  }
 
-    selectMovingDate(value) {
-      this.set('column.filters', [
-        {
-          key: 'value',
-          value: value
-        }
+  @action
+  filterOptionChanged(value) {
+    this.filterOption = value;
+  }
+
+  @action
+  selectMovingDate(value) {
+    this.args.column.set('filters', [{ key: 'value', value: value }]);
+    this._currentMovingDateOption = value;
+    this.args.manager.hooks.onColumnsChange('columns:change');
+  }
+
+  @action
+  selectFixedDate(value) {
+    let [fromDate, toDate] = value;
+
+    if (fromDate && toDate) {
+      this.args.column.set('filters', [
+        { key: 'lower_bound', value: (+fromDate / 1000).toString() },
+        { key: 'upper_bound', value: (+toDate / 1000).toString() }
       ]);
-      this.set('currentMovingDateOption', value);
-      this.manager.hooks.onColumnsChange('columns:change');
-    },
 
-    selectFixedDate(value) {
-      let [fromDate, toDate] = value;
-
-      if (fromDate && toDate) {
-        this.column.set('filters', [
-          { key: 'lower_bound', value: (+fromDate / 1000).toString() },
-          { key: 'upper_bound', value: (+toDate / 1000).toString() }
-        ]);
-
-        this.manager.hooks.onColumnsChange('columns:change');
-      }
-    },
-
-    // Mixin Candidate
-    reset() {
-      this._super();
-      this.manager.updateOrdering(this.column, null);
-
-      if (this.flatpickrRef) {
-        this.flatpickrRef.clear();
-      }
+      this.args.manager.hooks.onColumnsChange('columns:change');
     }
   }
-});
+
+  @action
+  reset() {
+    super.reset();
+
+    this._currentDateValue = [];
+    this._currentMovingDateOption = [];
+
+    if (this.flatpickrRef) {
+      this.flatpickrRef.clear();
+    }
+  }
+}

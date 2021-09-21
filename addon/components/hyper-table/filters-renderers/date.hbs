@@ -1,0 +1,51 @@
+{{#if @column.orderable}}
+  {{#input-wrapper}}
+    <label>Order By</label>
+    <div class="btn-group upf-radio-group" data-control-name={{concat this._controlNamePrefix "_order_by_radiogroup"}}>
+      {{#each-in this.orderingOptions as |label value|}}
+        {{radio-button
+          value=value currentValue=@column.orderBy label=label options=this.orderingOptions onCheck="orderingOptionChanged"}}
+      {{/each-in}}
+    </div>
+  {{/input-wrapper}}
+{{/if}}
+
+{{#if @column.filterable}}
+  {{#input-wrapper classNames=(if @column.orderable "margin-top-xx-sm")}}
+    <label>Filter</label>
+
+    <div class="btn-group upf-radio-group" data-control-name={{concat this._controlNamePrefix "_filter_by_radiogroup"}}>
+      {{#each-in this.filteringOptions as |label value|}}
+        {{radio-button
+          value=value currentValue=this.filterOption label=label options=this.filteringOptions onCheck="filterOptionChanged"}}
+      {{/each-in}}
+    </div>
+
+    <div class="filters" data-control-name={{concat this._controlNamePrefix "_date_range_inputs"}}>
+      {{#if (eq this.filterOption 'fixed')}}
+        <label>Date Range</label>
+        {{ember-flatpickr
+          onChange=this.selectFixedDate dateFormat="M/D/Y" placeholder="Date Range" mode="range"
+          date=(readonly this._currentDateValue) altInput=true altInputClass="upf-input upf-input--textarea"
+          getFlatpickrRef=(fn (mut this.flatpickrRef)) onOpen=this.openedFlatpickr onClose=this.closedFlatpickr}}
+      {{else}}
+        {{#each-in this.movingDateOptions as |label value|}}
+          <div class="filters__option {{if (eq this._currentMovingDateOption value) 'filters__option--active'}}" role="button"
+               {{on "click" (fn this.selectMovingDate value)}}>
+            {{label}}
+          </div>
+        {{/each-in}}
+      {{/if}}
+    </div>
+  {{/input-wrapper}}
+
+  <div class="margin-top-xx-sm buttons-container">
+    <button class="upf-btn upf-btn--destructive upf-btn--small" type="button" {{on "click" this.removeColumn}}>
+      Remove Field
+    </button>
+
+    <button class="upf-btn upf-btn--default upf-btn--small" type="button" {{on "click" this.reset}}>
+      Clear Filters
+    </button>
+  </div>
+{{/if}}
