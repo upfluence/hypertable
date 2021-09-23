@@ -1,124 +1,106 @@
-<div class='hypertable__upper-header'>
-  <div class='left-side'>
-    {{#if manager.options.features.selection}}
-      <div class='selected-count'>
-        {{format-number _selectedCount}}
+<div class="hypertable__upper-header">
+  <div class="left-side">
+    {{#if this.manager.options.features.selection}}
+      <div class="selected-count">
+        {{format-number this._selectedCount}}
       </div>
     {{/if}}
 
-    {{#if manager.options.features.search}}
+    {{#if this.manager.options.features.search}}
       {{#if this.searchComponent}}
         {{#if (eq this._searchComponentType "string")}}
           {{component this.searchComponent manager=this.manager}}
         {{else}}
-          {{searchComponent}}
+          {{this.searchComponent}}
         {{/if}}
       {{else}}
         <Input
-          @type="text" @placeholder={{placeholder}} @value={{_searchQuery}}
-          data-control-name="table_search_input"
-          class="form-control upf-input upf-input--small" />
+          @type="text" @placeholder={{this.placeholder}} @value={{this._searchQuery}}
+          data-control-name="table_search_input" class="form-control upf-input upf-input--small" />
       {{/if}}
     {{/if}}
 
-    {{#if (and contextualActions (gt _collection.length 0))}}
+    {{#if (and this.contextualActions (gt this._collection.length 0))}}
       <div
-        class='contextual-actions contextual-actions--no-animation
-          {{unless manager.options.features.search 'contextual-actions--no-search-sibling'}}'
-      >
-        {{component contextualActions selectedItems=_selectedItems collection=_collection manager=manager meta=meta}}
+        class="contextual-actions contextual-actions--no-animation {{unless this.manager.options.features.search 'contextual-actions--no-search-sibling'}}">
+        {{component
+          this.contextualActions selectedItems=this._selectedItems
+          collection=this._collection manager=this.manager meta=this.meta}}
       </div>
     {{/if}}
   </div>
 
-  <div class='right-side'>
-    {{#if manager.options.features.filtering}}
+  <div class="right-side">
+    {{#if this.manager.options.features.filtering}}
       <button
-        class='margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small'
-        data-control-name='table_reset_filters'
-        {{action 'resetAllFilters'}}
-      >
-        Reset Filters
+        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small"
+        data-control-name="table_reset_filters" {{action "resetAllFilters"}}
+        type="button">
+        {{t "hypertable.features.filtering.reset_all"}}
       </button>
     {{/if}}
 
-    {{#if manager.options.features.tableViews}}
+    {{#if this.manager.options.features.tableViews}}
       <button
-        class='margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive'
-        data-control-name='table_toggle_views'
-        {{action 'openAvailableViews' bubbles=false}}
-      >
-        <i class='fa fa-eye'></i>
-        <span>
-          &nbsp; Table Views
-        </span>
+        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
+        data-control-name="table_toggle_views" type="button" {{action "openAvailableViews" bubbles=false}}>
+        <i class="fa fa-eye margin-right-xxx-sm"></i> {{t "hypertable.features.table_views.title"}}
       </button>
     {{/if}}
 
     <button
-      class='margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive'
-      data-control-name='table_toggle_fields'
-      {{action 'openAvailableFields' bubbles=false}}
-    >
-      <i class='fa fa-columns'></i>
-      <span>
-        &nbsp; Manage Fields
-      </span>
+      class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive"
+      data-control-name="table_toggle_fields" type="button" {{action "openAvailableFields" bubbles=false}}>
+      <i class="fa fa-columns margin-right-xxx-sm"></i> {{t "hypertable.features.manage_fields.title"}}
     </button>
 
-    {{hyper-table/views manager=this.manager closeAvailableViews=(action 'closeAvailableViews')}}
+    <HyperTable::Views
+      @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
 
     <div
-      class='available-fields-wrapper {{if manager.availableFieldsPanel 'visible' 'invisible'}}'
-      {{on-click-outside (action 'closeAvailableFields')}}
-    >
-      <div class='available-fields-wrapper__categories'>
+      class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
+      {{on-click-outside (action "closeAvailableFields")}}>
+      <div class="available-fields-wrapper__categories">
         <div
-          class='field-category {{if (not _activeFieldCategory) 'field-category--active'}}'
-          {{action 'setFieldCategory'}}
-        >
-          <div>All Fields</div>
-          <div><i class='fa fa-caret-right'></i></div>
+          class="field-category {{unless this._activeFieldCategory 'field-category--active'}}"
+          {{action "setFieldCategory"}}>
+          <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
+          <div><i class="fa fa-caret-right"></i></div>
         </div>
-        {{#each _fieldCategories as |category|}}
+        {{#each this._fieldCategories as |category|}}
           <div
-            class='field-category {{if (eq _activeFieldCategory category.key) 'field-category--active'}}'
-            data-control-name={{concat 'field_category_toggle_' category.key}}
-            {{action 'setFieldCategory' category.key}}
-          >
+            class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
+            data-control-name={{concat "field_category_toggle_" category.key}}
+            {{action "setFieldCategory" category.key}}>
             <div>{{category.label}}</div>
-            <div><i class='fa fa-caret-right'></i></div>
+            <div><i class="fa fa-caret-right"></i></div>
           </div>
         {{/each}}
       </div>
 
-      <div class='available-fields-wrapper__fields'>
-        <div class='search'>
+      <div class="available-fields-wrapper__fields">
+        <div class="search">
           <Input
-            @type='text'
-            @value={{_availableFieldsKeyword}}
-            data-control-name='field_search_input'
-            class='upf-input upf-input--small'
-            placeholder='Search Fields'
+            @type="text" @value={{this._availableFieldsKeyword}}
+            data-control-name="field_search_input" class="upf-input upf-input--small"
+            placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
           />
         </div>
 
-        <div class='fields-list'>
-          {{#each-in _orderedFilteredClusters as |clusterName fields|}}
+        <div class="fields-list">
+          {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
             {{#if clusterName}}
-              <p class='cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm'>
+              <p class="cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
                 {{clusterName}}
               </p>
             {{/if}}
             {{#each fields as |field|}}
-              <div class='field {{if field.visible 'field--visible'}}' {{action 'updateFieldVisibility' field}}>
-                {{upf-checkbox
-                  value=field.visible
-                  size='sm'
-                  data-control-name=(concat 'field_toggle_checkbox_' field.key)
-                  onValueChange=(action 'fieldVisibilityUpdated' field)
-                }}
-                <div class='margin-left-xxx-sm'>
+              <div class="field {{if field.visible 'field--visible'}}" {{action "updateFieldVisibility" field}}>
+                <UpfCheckbox
+                  @value={{field.visible}} @size="sm"
+                  @onValueChange={{action "fieldVisibilityUpdated" field}}
+                  data-control-name={{concat "field_toggle_checkbox_" field.key}} />
+                <div class="margin-left-xxx-sm">
                   {{#if field.title}}
                     {{field.title}}
                   {{else}}
@@ -128,8 +110,8 @@
               </div>
             {{/each}}
           {{else}}
-            <div class='field margin-top-md'>
-              No columns found
+            <div class="field margin-top-md">
+              {{t "hypertable.features.manage_fields.no_columns"}}
             </div>
           {{/each-in}}
         </div>
@@ -138,90 +120,90 @@
   </div>
 </div>
 
-<div class='hypertable__table {{if (eq _collection.length 0) 'hypertable__table--empty'}}'>
-  {{#if (and manager.tetherInstance manager.tetherBackdrop)}}
-    <div class='hypertable__backdrop' {{action 'onBackdropClick'}}></div>
+<div class="hypertable__table {{if (eq this._collection.length 0) 'hypertable__table--empty'}}">
+  {{#if (and this.manager.tetherInstance this.manager.tetherBackdrop)}}
+    <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
   {{/if}}
 
-  {{#if (and (eq _collection.length 0) (not loadingData))}}
-    <div class='hypertable__state hypertable__state--empty'>
-      {{#if (has-block 'inverse')}}
-        {{yield to='inverse'}}
+  {{#if (and (eq this._collection.length 0) (not this.loadingData))}}
+    <div class="hypertable__state hypertable__state--empty">
+      {{#if (has-block "inverse")}}
+        {{yield to="inverse"}}
       {{else}}
-        No Data
+        {{t "hypertable.data.empty_state.default"}}
       {{/if}}
     </div>
   {{/if}}
 
-  {{#sortable-group direction='x' model=_columns onChange=(action 'reorderColumns') classNames='hypertable' as |group|}}
-    {{#each _columns as |column index|}}
+  <SortableGroup
+    @direction="x" @model={{this._columns}} @onChange={{action "reorderColumns"}}
+    @classNames="hypertable" as |group|>
+    {{#each this._columns as |column index|}}
       {{#if (eq index 0)}}
-        <div class='hypertable__sticky-columns'>
-          {{#if manager.options.features.selection}}
-            <div
-              class='hypertable__column hypertable__column--selection
-                {{concat 'hypertable__column--size-' column.size}}'
-            >
+        <div class="hypertable__sticky-columns">
+          {{#if this.manager.options.features.selection}}
+            <div class="hypertable__column hypertable__column--selection {{concat 'hypertable__column--size-' column.size}}">
               <header>
-                {{upf-checkbox value=_allRowsSelected size='sm' data-control-name='row_select_all_toggle_checkbox'}}
+                <UpfCheckbox
+                  @value={{this._allRowsSelected}} @size="sm"
+                  data-control-name="row_select_all_toggle_checkbox" />
               </header>
 
-              {{#if loadingData}}
-                {{#each _loadingCollection}}
-                  {{hyper-table/cell loading=true}}
+              {{#if this.loadingData}}
+                {{#each this._loadingCollection}}
+                  <HyperTable::Cell @loading={{true}} />
                 {{/each}}
               {{else}}
-                {{#each _collection as |item|}}
-                  {{#hyper-table/cell item=item manager=manager selection=true}}
-                    {{upf-checkbox
-                      value=item.selected
-                      size='sm'
-                      data-control-name='row_select_toggle_checkbox'
-                      disabled=(and selectAllIncludesHidden _allRowsSelected)
-                    }}
-                  {{/hyper-table/cell}}
+                {{#each this._collection as |item|}}
+                  <HyperTable::Cell
+                    @item={{item}} @manager={{this.manager}} selection={{true}}>
+                    <UpfCheckbox
+                      @value={{item.selected}}
+                      @size="sm"
+                      @disabled={{and this.selectAllIncludesHidden this._allRowsSelected}}
+                      data-control-name="row_select_toggle_checkbox" />
+                  </HyperTable::Cell>
                 {{/each}}
 
-                {{#if _loadingMore}}
-                  {{hyper-table/cell loading=true}}
-                  {{hyper-table/cell loading=true}}
-                  {{hyper-table/cell loading=true}}
+                {{#if this._loadingMore}}
+                  <HyperTable::Cell @loading={{true}} />
+                  <HyperTable::Cell @loading={{true}} />
+                  <HyperTable::Cell @loading={{true}} />
                 {{/if}}
               {{/if}}
             </div>
           {{/if}}
 
-          <div class='hypertable__column {{concat 'hypertable__column--size-' column.size}}'>
+          <div class="hypertable__column {{concat 'hypertable__column--size-' column.size}}">
             <header>
-              <div class='cell-header'>
+              <div class="cell-header">
                 {{column.field.name}}
               </div>
             </header>
 
-            {{#if loadingData}}
-              {{#each _loadingCollection}}
-                {{hyper-table/cell loading=true}}
+            {{#if this.loadingData}}
+              {{#each this._loadingCollection}}
+                <HyperTable::Cell @loading={{true}} />
               {{/each}}
             {{else}}
-              {{#each _collection as |item|}}
-                <div onmouseover={{action 'toggleHover' item true}} onmouseout={{action 'toggleHover' item false}}>
-                  {{hyper-table/cell
-                    item=item
-                    column=column
-                    manager=manager
-                    renderingComponent=(cell-rendering-inferer column)
-                  }}
+              {{#each this._collection as |item|}}
+                <div onmouseover={{action "toggleHover" item true}}
+                     onmouseout={{action "toggleHover" item false}}>
+                  <HyperTable::Cell
+                    @item={{item}} @column={{column}} @manager={{this.manager}}
+                    @renderingComponent={{cell-rendering-inferer column}} />
                 </div>
               {{/each}}
 
-              {{#if _loadingMore}}
-                {{hyper-table/cell loading=true}}
-                {{hyper-table/cell loading=true}}
-                {{hyper-table/cell loading=true}}
+              {{#if this._loadingMore}}
+                <HyperTable::Cell @loading={{true}} />
+                <HyperTable::Cell @loading={{true}} />
+                <HyperTable::Cell @loading={{true}} />
               {{/if}}
 
-              {{#if _displayInfinityLoader}}
-                {{hyper-table/infinity-loader onBottomReached=manager.hooks.onBottomReached}}
+              {{#if this._displayInfinityLoader}}
+                <HyperTable::InfinityLoader
+                  @onBottomReached={{this.manager.hooks.onBottomReached}} />
               {{/if}}
             {{/if}}
           </div>
@@ -229,61 +211,51 @@
       {{/if}}
     {{/each}}
 
-    {{#each _columns as |column index|}}
+    {{#each this._columns as |column index|}}
       {{#if (gt index 0)}}
-        {{#hyper-table/column
-          model=column
-          item=item
-          column=column
-          group=group
-          manager=manager
-          onDragStart=(action 'dragStarted')
-          handle='header'
-        }}
-          {{#if loadingData}}
-            {{#each _loadingCollection}}
-              {{hyper-table/cell loading=true}}
+        <HyperTable::Column
+          @model={{column}} @column={{column}} @group={{group}} @manager={{this.manager}}
+          @onDragStart={{action "dragStarted"}} @handle="header">
+          {{#if this.loadingData}}
+            {{#each this._loadingCollection}}
+              <HyperTable::Cell @loading={{true}} />
             {{/each}}
           {{else}}
-            {{#each _collection as |item|}}
-              <div onmouseover={{action 'toggleHover' item true}} onmouseout={{action 'toggleHover' item false}}>
-                {{hyper-table/cell
-                  item=item
-                  column=column
-                  manager=manager
-                  renderingComponent=(cell-rendering-inferer column)
-                }}
+            {{#each this._collection as |item|}}
+              <div onmouseover={{action "toggleHover" item true}}
+                   onmouseout={{action "toggleHover" item false}}>
+                <HyperTable::Cell
+                  @item={{item}} @column={{column}} @manager={{this.manager}}
+                  @renderingComponent={{cell-rendering-inferer column}} />
               </div>
             {{/each}}
 
-            {{#if _loadingMore}}
-              {{hyper-table/cell loading=true}}
-              {{hyper-table/cell loading=true}}
-              {{hyper-table/cell loading=true}}
+            {{#if this._loadingMore}}
+              <HyperTable::Cell @loading={{true}} />
+              <HyperTable::Cell @loading={{true}} />
+              <HyperTable::Cell @loading={{true}} />
             {{/if}}
           {{/if}}
-        {{/hyper-table/column}}
+        </HyperTable::Column>
       {{/if}}
     {{/each}}
-  {{/sortable-group}}
+  </SortableGroup>
 
-  <div class='scroll-button-container {{if manager.isScrollable 'is-visible'}}'>
+  <div class="scroll-button-container {{if this.manager.isScrollable 'is-visible'}}">
     <button
-      class='upf-btn upf-btn--small scroll-button {{if manager.isScrollable 'is-visible'}}'
-      {{action 'scrollToEnd'}}
-    >
-      More &nbsp;
-      <i class='fa fa-chevron-right'></i>
+      class="upf-btn upf-btn--small scroll-button {{if this.manager.isScrollable 'is-visible'}}"
+      {{action "scrollToEnd"}} type="button">
+      {{t "hypertable.column.scroll_to_end"}} <i class='fa fa-chevron-right margin-left-xxx-sm'></i>
     </button>
   </div>
 </div>
 
-{{#if footer}}
-  <div class='hypertable-footer'>
-    {{#if (eq _footerType 'string')}}
-      {{component footer collection=_collection}}
+{{#if this.footer}}
+  <div class="hypertable-footer">
+    {{#if (eq this._footerType "string")}}
+      {{component this.footer collection=this._collection}}
     {{else}}
-      {{footer}}
+      {{this.footer}}
     {{/if}}
   </div>
 {{/if}}
