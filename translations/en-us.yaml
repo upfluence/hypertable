@@ -6,3 +6,7 @@ hypertable:
     filtering:
       label: Filter
       clear: Clear Filters
+      date:
+        range:
+          label: Date Range
+          placeholder: Date Range
