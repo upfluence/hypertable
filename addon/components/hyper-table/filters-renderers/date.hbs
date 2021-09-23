@@ -1,0 +1,52 @@
+{{#if @column.orderable}}
+  <label>{{t "hypertable.column.ordering.label"}}</label>
+  <div class="btn-group upf-radio-group" data-control-name={{concat this._controlNamePrefix "_order_by_radiogroup"}}>
+    {{#each-in this.orderingOptions as |label value|}}
+      <RadioButton
+        @value={{value}} @currentValue={{@column.orderBy}} @label={{label}}
+        @options={{this.orderingOptions}} @onCheck="orderingOptionChanged" />
+    {{/each-in}}
+  </div>
+{{/if}}
+
+{{#if @column.filterable}}
+  <div class={{if @column.orderable "margin-top-xx-sm"}}>
+    <label>{{t "hypertable.column.filtering.label"}}</label>
+
+    <div class="btn-group upf-radio-group" data-control-name={{concat this._controlNamePrefix "_filter_by_radiogroup"}}>
+      {{#each-in this.filteringOptions as |label value|}}
+        <RadioButton
+          @value={{value}} @currentValue={{this.filterOption}} @label={{label}}
+          @options={{this.filteringOptions}} @onCheck="filterOptionChanged" />
+      {{/each-in}}
+    </div>
+
+    <div class="filters" data-control-name={{concat this._controlNamePrefix "_date_range_inputs"}}>
+      {{#if (eq this.filterOption "fixed")}}
+        <label>{{t "hypertable.column.filtering.date.range.label"}}</label>
+        <EmberFlatpickr
+          @onChange={{this.selectFixedDate}} @dateFormat="M/D/Y" @placeholder={{t "hypertable.column.filtering.date.range.label"}}
+          @mode="range" @date={{readonly this._currentDateValue}} @altInput={{true}}
+          @altInputClass="upf-input upf-input--textarea" @getFlatpickrRef={{fn (mut this.flatpickrRef)}}
+          @onOpen={{this.openedFlatpickr}} @onClose={{this.closedFlatpickr}} />
+      {{else}}
+        {{#each-in this.movingDateOptions as |label value|}}
+          <div class="filters__option {{if (eq this._currentMovingDateOption value) 'filters__option--active'}}" role="button"
+               {{on "click" (fn this.selectMovingDate value)}}>
+            {{label}}
+          </div>
+        {{/each-in}}
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="margin-top-xx-sm buttons-container">
+    <button class="upf-btn upf-btn--destructive upf-btn--small" type="button" {{on "click" this.removeColumn}}>
+      {{t "hypertable.column.remove"}}
+    </button>
+
+    <button class="upf-btn upf-btn--default upf-btn--small" type="button" {{on "click" this.reset}}>
+      {{t "hypertable.column.filtering.clear"}}
+    </button>
+  </div>
+{{/if}}

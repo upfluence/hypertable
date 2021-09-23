@@ -1,0 +1,12 @@
+hypertable:
+  column:
+    remove: Remove Field
+    ordering:
+      label: Order By
+    filtering:
+      label: Filter
+      clear: Clear Filters
+      date:
+        range:
+          label: Date Range
+          placeholder: Date Range
