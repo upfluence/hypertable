@@ -1,6 +1,17 @@
 hypertable:
+  features:
+    filtering:
+      reset_all: Reset Filters
+    table_views:
+      title: Table Views
+    manage_fields:
+      title: Manage Fields
+      all_fields: All Fields
+      search_placeholder: Search Fields
+      no_columns: No columns found
   column:
     remove: Remove Field
+    scroll_to_end: More
     ordering:
       label: Order By
     filtering:
@@ -10,3 +21,6 @@ hypertable:
         range:
           label: Date Range
           placeholder: Date Range
+  data:
+    empty_state:
+      default: No data
