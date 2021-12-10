@@ -26,7 +26,6 @@
     "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
-    "@upfluence/oss-components": "^3.x",
     "ember-cli-babel": "^7.19.0",
     "ember-cli-htmlbars": "^4.3.1",
     "ember-cli-shims": "^1.2.0",
@@ -36,8 +35,12 @@
     "ember-truth-helpers": "^2.1.0",
     "tether": "^1.4.7"
   },
+  "peerDependencies": {
+    "@upfluence/oss-components": "^3.x"
+  },
   "devDependencies": {
     "@ember/jquery": "^2.0.0",
+    "@upfluence/oss-components": "^3.x",
     "@ember/optional-features": "^1.3.0",
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",
