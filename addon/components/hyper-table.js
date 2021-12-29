@@ -102,21 +102,6 @@ export default Component.extend({
 
   _loadingMore: computed.and('manager.hooks.onBottomReached', 'loadingMore'),
 
-  _infinityLoaderToggler: observer('loadingData', 'loadingMore', '_collection.length', function () {
-    /* eslint-disable ember/no-incorrect-calls-with-inline-anonymous-functions */
-    run.debounce(
-      this,
-      () => {
-        let _loadingSmthn = this.loadingData || this.loadingMore;
-        let _hasInfinity = this.manager.hooks.onBottomReached;
-
-        this.set('_displayInfinityLoader', _hasInfinity && !_loadingSmthn && (this._collection || []).length > 0);
-      },
-      3000
-    );
-    /* eslint-enable ember/no-incorrect-calls-with-inline-anonymous-functions */
-  }).on('init'),
-
   _selectAllObserver: observer('_allRowsSelected', function () {
     this.manager.set('_allRowsSelected', this._allRowsSelected);
 

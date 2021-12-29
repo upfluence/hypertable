@@ -11,6 +11,7 @@ on:
 env:
   NODE_VERSION: '12'
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
 
 jobs:
   test:
