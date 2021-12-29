@@ -137,7 +137,8 @@
 
   <SortableGroup
     @direction="x" @model={{this._columns}} @onChange={{action "reorderColumns"}}
-    @classNames="hypertable" as |group|>
+    @classNames="hypertable"
+    {{on-bottom-reached this.manager.hooks.onBottomReached}} as |group|>
     {{#each this._columns as |column index|}}
       {{#if (eq index 0)}}
         <div class="hypertable__sticky-columns">
@@ -199,11 +200,6 @@
                 <HyperTable::Cell @loading={{true}} />
                 <HyperTable::Cell @loading={{true}} />
                 <HyperTable::Cell @loading={{true}} />
-              {{/if}}
-
-              {{#if this._displayInfinityLoader}}
-                <HyperTable::InfinityLoader
-                  @onBottomReached={{this.manager.hooks.onBottomReached}} />
               {{/if}}
             {{/if}}
           </div>
