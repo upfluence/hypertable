@@ -13,6 +13,7 @@
   display: flex;
   justify-content: space-between;
   position: relative;
+  z-index: 2;
 
   button.icon-responsive {
     @media screen and (max-width: 1430px) {
@@ -73,7 +74,7 @@
     margin-left: @spacing-sm;
     padding: 0 @spacing-sm;
 
-    &--no-search-sibling  {
+    &--no-search-sibling {
       border-left: 0;
       margin-left: 0;
       padding: 0;
