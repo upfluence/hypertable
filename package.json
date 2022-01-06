@@ -33,7 +33,7 @@
     "ember-cli-shims": "^1.2.0",
     "ember-cli-typescript": "^4.2.1",
     "ember-flatpickr": "^2.14.3",
-    "ember-sortable": "^1.12.9",
+    "ember-sortable": "3.0.0",
     "ember-truth-helpers": "^2.1.0",
     "tether": "^1.4.7"
   },
