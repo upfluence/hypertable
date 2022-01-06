@@ -64,9 +64,12 @@ class TableHandler {
   fetchColumns() {
     return this.tableManager.fetchColumns().then((columns) => {
       this.columns = columns;
-      this.rowsFetcher.fetch().then((resp) => {
-        this.rows = resp.rows;
-      });
+    });
+  }
+
+  fetchRows() {
+    this.rowsFetcher.fetch().then((resp) => {
+      this.rows = resp.rows;
     });
   }
 }
