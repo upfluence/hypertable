@@ -1,0 +1,17 @@
+<h1>VGTable</h1> <br />
+
+<table class="tftable" border="1">
+  <tr>
+    {{#each @handler.columns as |column| }}
+      <th>{{column.definition.name}} (key: {{column.definition.key}})</th>
+    {{/each}}
+  </tr>
+
+  {{#each @handler.rows as |row|}}
+    <tr>
+      {{#each @handler.columns as |column| }}
+        <td>{{get row column.definition.key}}</td>
+      {{/each}}
+    </tr>
+  {{/each}}
+</table>
