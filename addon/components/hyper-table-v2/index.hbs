@@ -1,32 +1,10 @@
-<div class="padding-lg">
-  <div class="hypertable-container">
-    <div class="hypertable__table hypertable__table--v2">
-      <div class="hypertable" {{sortable-group direction="x" onChange=this.reorderColumns}}>
-        {{#each @handler.columns as |column index|}}
-          {{#if (eq index 0)}}
-            <div class="hypertable__sticky-columns">
-              <div class="hypertable__column hypertable__column--size-M">
-                <header>
-                  {{column.definition.name}} (key: {{column.definition.key}})
-                </header>
-
-                {{#each @handler.rows as |row|}}
-                  <div class="hypertable__cell">{{get row column.definition.key}}</div>
-                {{/each}}
-
-                {{#if @handler.loadingRows}}
-                  {{#each this.loadingSkeletons}}
-                    <div class="hypertable__cell hypertable__cell--loading">
-                      <div class="skeleton-placeholder"></div>
-                    </div>
-                  {{/each}}
-                {{/if}}
-              </div>
-            </div>
-          {{/if}}
-
-          {{#if (gt index 0)}}
-            <div class="hypertable__column hypertable__column--size-M" {{sortable-item model=column}}>
+<div class="hypertable-container">
+  <div class="hypertable__table hypertable__table--v2">
+    <div class="hypertable" {{sortable-group direction="x" onChange=this.reorderColumns}}>
+      {{#each @handler.columns as |column index|}}
+        {{#if (eq index 0)}}
+          <div class="hypertable__sticky-columns">
+            <div class="hypertable__column hypertable__column--size-M">
               <header>
                 {{column.definition.name}} (key: {{column.definition.key}})
               </header>
@@ -43,9 +21,29 @@
                 {{/each}}
               {{/if}}
             </div>
-          {{/if}}
-        {{/each}}
-      </div>
+          </div>
+        {{/if}}
+
+        {{#if (gt index 0)}}
+          <div class="hypertable__column hypertable__column--size-M" {{sortable-item model=column}}>
+            <header>
+              {{column.definition.name}} (key: {{column.definition.key}})
+            </header>
+
+            {{#each @handler.rows as |row|}}
+              <div class="hypertable__cell">{{get row column.definition.key}}</div>
+            {{/each}}
+
+            {{#if @handler.loadingRows}}
+              {{#each this.loadingSkeletons}}
+                <div class="hypertable__cell hypertable__cell--loading">
+                  <div class="skeleton-placeholder"></div>
+                </div>
+              {{/each}}
+            {{/if}}
+          </div>
+        {{/if}}
+      {{/each}}
     </div>
   </div>
 </div>

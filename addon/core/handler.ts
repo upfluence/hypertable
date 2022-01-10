@@ -13,7 +13,7 @@ export default class TableHandler {
   @tracked loadingColumns: boolean = false;
   @tracked loadingRows: boolean = false;
 
-  nextPage: number = 1;
+  currentPage: number = 1;
 
   constructor(manager: TableManager, rowsFetcher: RowsFetcher, renderingResolver = null) {
     this.tableManager = manager;
@@ -31,7 +31,7 @@ export default class TableHandler {
         return columns;
       })
       .finally(() => {
-        this.loadingColumns = true;
+        this.loadingColumns = false;
       });
   }
 
@@ -39,10 +39,10 @@ export default class TableHandler {
     this.loadingRows = true;
 
     return this.rowsFetcher
-      .fetch(this.nextPage, 20)
+      .fetch(this.currentPage, 20)
       .then((resp) => {
         this.rows = resp.rows;
-        this.nextPage += 1;
+        this.currentPage += 1;
         return resp.rows;
       })
       .finally(() => {
