@@ -3,6 +3,7 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
+import { TableManager }from '@upfluence/hypertable/core/interfaces'
 
 const buildColumn = (key) => {
   const def = {
@@ -20,12 +21,14 @@ const buildColumn = (key) => {
   };
 };
 
-class Manager {
+class Manager implements TableManager {
   fetchColumnDefinitions(): Promise<ColumnDefinitionResponse>;
   fetchColumns() {
     return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar')] });
   }
-  upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse>;
+  upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
+    return Promise.resolve({ columns: request.columns });
+  }
 }
 
 class RowsFetcher {
