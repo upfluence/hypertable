@@ -23,7 +23,7 @@ export default class TableHandler {
     });
   }
 
-  async fetchRows() {
+  async fetchRows(): Row[] {
     this.rowsFetcher.fetch(1, 20).then((resp) => {
       this.rows = resp.rows;
       return resp.rows;
