@@ -2,6 +2,8 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 
+import TableHandler from '@upfluence/hypertable/core/handler';
+
 const buildColumn = (key) => {
   const def = {
     key,
@@ -21,7 +23,7 @@ const buildColumn = (key) => {
 class Manager {
   fetchColumnDefinitions(): Promise<ColumnDefinitionResponse>;
   fetchColumns() {
-    return Promise.resolve([buildColumn('foo'), buildColumn('bar')]);
+    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar')] });
   }
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse>;
 }
@@ -48,28 +50,6 @@ class RowsFetcher {
         }
       ],
       meta: { total: 12 }
-    });
-  }
-}
-
-class TableHandler {
-  @tracked columns = [];
-  @tracked rows = [];
-
-  constructor(manager, rowsFetcher) {
-    this.tableManager = manager;
-    this.rowsFetcher = rowsFetcher;
-  }
-
-  fetchColumns() {
-    return this.tableManager.fetchColumns().then((columns) => {
-      this.columns = columns;
-    });
-  }
-
-  fetchRows() {
-    this.rowsFetcher.fetch().then((resp) => {
-      this.rows = resp.rows;
     });
   }
 }

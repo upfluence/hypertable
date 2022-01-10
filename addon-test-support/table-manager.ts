@@ -12,7 +12,7 @@ const buildColumn = (key: string): Column => {
   const def = {
     key,
     type: 'text',
-    name: `${key}_name`,
+    name: `Name: ${key}`,
     clustering_key: '',
     category: '',
     size: FieldSize.Medium,
