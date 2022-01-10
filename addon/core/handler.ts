@@ -52,6 +52,7 @@ export default class TableHandler {
 
   reorderColumns(columns: Column[]) {
     this.columns = columns;
+    this.tableManager.upsertColumns({ columns: this.columns });
   }
 
   // @ts-ignore
