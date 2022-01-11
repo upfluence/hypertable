@@ -7,6 +7,7 @@ import {
   TableManager
 } from './manager';
 import { Row, RowsFetcherMetadata, RowsFetcherResponse, RowsFetcher } from './rows-fetcher';
+import { ResolvedRenderingComponent, RendererResolver } from './rendering-resolver';
 
 export {
   FieldSize,
@@ -22,5 +23,7 @@ export {
   Row,
   RowsFetcherMetadata,
   RowsFetcherResponse,
-  RowsFetcher
+  RowsFetcher,
+  ResolvedRenderingComponent,
+  RendererResolver
 };
