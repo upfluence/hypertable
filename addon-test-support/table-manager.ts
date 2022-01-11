@@ -8,23 +8,23 @@ import {
   TableColumnUpsertResponse
 } from '@upfluence/hypertable/core/interfaces';
 
-export const buildColumnDefinition = (key: string) => {
+export const buildColumnDefinition = (key: string, size = FieldSize.Medium) => {
   return {
     key,
     type: 'text',
     name: `Name: ${key}`,
     clustering_key: '',
     category: '',
-    size: FieldSize.Medium,
+    size: size,
     orderable: false,
     filterable: false,
     facetable: false
   };
 };
 
-export const buildColumn = (key: string): Column => {
+export const buildColumn = (key: string, size = FieldSize.Medium): Column => {
   return {
-    definition: buildColumnDefinition(key),
+    definition: buildColumnDefinition(key, size),
     filters: []
   };
 };
@@ -35,11 +35,11 @@ export default class TableManager implements ITableManager {
   }
 
   fetchColumns(): Promise<TableColumnsResponse> {
-    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar')] });
+    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar', FieldSize.Large)] });
   }
 
   // @ts-ignore
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
-    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar')] });
+    return Promise.resolve({ columns: request.columns });
   }
 }

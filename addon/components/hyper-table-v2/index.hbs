@@ -4,11 +4,7 @@
       {{#each @handler.columns as |column index|}}
         {{#if (eq index 0)}}
           <div class="hypertable__sticky-columns">
-            <div class="hypertable__column hypertable__column--size-M">
-              <header>
-                {{column.definition.name}} (key: {{column.definition.key}})
-              </header>
-
+            <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
               {{#each @handler.rows as |row|}}
                 <div class="hypertable__cell">{{get row column.definition.key}}</div>
               {{/each}}
@@ -20,16 +16,12 @@
                   </div>
                 {{/each}}
               {{/if}}
-            </div>
+            </HyperTableV2::Column>
           </div>
         {{/if}}
 
         {{#if (gt index 0)}}
-          <div class="hypertable__column hypertable__column--size-M" {{sortable-item model=column}}>
-            <header>
-              {{column.definition.name}} (key: {{column.definition.key}})
-            </header>
-
+          <HyperTableV2::Column @handler={{@handler}} @column={{column}}  {{sortable-item model=column}}>
             {{#each @handler.rows as |row|}}
               <div class="hypertable__cell">{{get row column.definition.key}}</div>
             {{/each}}
@@ -41,7 +33,7 @@
                 </div>
               {{/each}}
             {{/if}}
-          </div>
+          </HyperTableV2::Column>
         {{/if}}
       {{/each}}
     </div>
