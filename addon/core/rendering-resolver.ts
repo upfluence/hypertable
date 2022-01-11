@@ -6,21 +6,21 @@ import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/
 import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
 
 export default class implements RendererResolver {
-  private context;
+  private _context;
 
   constructor(emberContext: unknown) {
-    this.context = emberContext;
+    this._context = emberContext;
   }
 
   lookupHeaderComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
     return Promise.resolve({
-      component: ensureSafeComponent(BaseHeaderRenderer, this.context) as GlimmerComponent
+      component: ensureSafeComponent(BaseHeaderRenderer, this._context) as GlimmerComponent
     });
   }
 
   lookupCellComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
     return Promise.resolve({
-      component: ensureSafeComponent(TextCellRenderer, this.context) as GlimmerComponent
+      component: ensureSafeComponent(TextCellRenderer, this._context) as GlimmerComponent
     });
   }
 }
