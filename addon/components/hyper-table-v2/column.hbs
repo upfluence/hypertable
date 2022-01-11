@@ -1,0 +1,12 @@
+{{! template-lint-disable no-inline-styles }}
+<div class={{this.computedClasses}} ...attributes>
+  <header>
+    {{#if this.loadingHeaderComponent}}
+      <i class="fa fa-circle-o-notch fa-spin"></i>
+    {{else if this.headerComponent}}
+      <this.headerComponent.component @handler={{@handler}} @column={{@column}} @extra={{this.headerComponent.args}} />
+    {{/if}}
+  </header>
+
+  {{yield}}
+</div>
