@@ -29,7 +29,7 @@ export default class TableHandler {
     this._renderingResolver = renderingResolver
   }
 
-  get renderingResolver() {
+  get renderingResolver(): RendererResolver {
     if (this._renderingResolver) {
       return this._renderingResolver;
     }
@@ -56,10 +56,10 @@ export default class TableHandler {
 
     return this.rowsFetcher
       .fetch(this.currentPage, 20)
-      .then((resp) => {
-        this.rows = resp.rows;
+      .then(({ rows }) => {
+        this.rows = rows;
         this.currentPage += 1;
-        return resp.rows;
+        return rows;
       })
       .finally(() => {
         this.loadingRows = false;
