@@ -11,6 +11,6 @@ export type ResolvedRenderingComponent = {
 
 export interface RendererResolver {
   lookupHeaderComponent(definition: ColumnDefinition): Promise<ResolvedRenderingComponent>;
+  lookupCellComponent(definition: ColumnDefinition): Promise<ResolvedRenderingComponent>;
   //lookupFilteringComponent(definition: ColumnDefinition): Promise<ResolvedRenderingComponent>;
-  //lookupCellComponent(definition: ColumnDefinition): Promise<ResolvedRenderingComponent>;
 }
