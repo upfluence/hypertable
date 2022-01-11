@@ -1,36 +1,46 @@
 import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import { getContext } from '@ember/test-helpers';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
+import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 
 module('Unit | core/handler', function (hooks) {
+  setupApplicationTest(hooks);
+
   hooks.beforeEach(function () {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
   });
 
   test('it works', function (assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.ok(handler);
   });
 
+  test('it uses the base rendering resolver when non is passed', function (assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    assert.ok(handler.renderingResolver instanceof BaseRenderingResolver);
+  });
+
   test('Handler#fetchColumns', async function (assert: Assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.equal(handler.columns.length, 0);
     await handler.fetchColumns();
     assert.equal(handler.columns.length, 2);
   });
 
   test('Handler#fetchRows', async function (assert: Assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.equal(handler.rows.length, 0);
     await handler.fetchRows();
     assert.equal(handler.rows.length, 2);
   });
 
   test('Handler#addColumn', function (assert: Assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     try {
       handler.addColumn({
         key: 'foo',
@@ -49,7 +59,7 @@ module('Unit | core/handler', function (hooks) {
   });
 
   test('Handler#removeColumn', function (assert: Assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     try {
       handler.removeColumn({
         key: 'foo',
@@ -68,7 +78,7 @@ module('Unit | core/handler', function (hooks) {
   });
 
   test('Handler#applyFilter', async function (assert: Assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     await handler.fetchColumns();
 
     try {
@@ -79,7 +89,7 @@ module('Unit | core/handler', function (hooks) {
   });
 
   test('Handler#applyOrder', async function (assert: Assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     await handler.fetchColumns();
 
     try {
@@ -90,7 +100,7 @@ module('Unit | core/handler', function (hooks) {
   });
 
   test('Handler#onBottomReached', async function (assert: Assert) {
-    const handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     try {
       handler.onBottomReached();
     } catch (err) {

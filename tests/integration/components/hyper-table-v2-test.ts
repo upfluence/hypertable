@@ -13,7 +13,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   hooks.beforeEach(function () {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
-    this.handler = new TableHandler(this.tableManager, this.rowsFetcher);
+    this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
   });
 
   test('it fetches the columns and rows as expected', async function (assert) {

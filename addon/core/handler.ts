@@ -1,10 +1,12 @@
 import { tracked } from '@glimmer/tracking';
-import { TableManager, RowsFetcher, Column, Row, Order, ColumnDefinition } from './interfaces';
+import { TableManager, RowsFetcher, Column, Row, Order, ColumnDefinition, RendererResolver } from './interfaces';
+import BaseRenderingResolver from './rendering-resolver';
 
 export default class TableHandler {
+  private _context: unknown;
+  private _renderingResolver?: RendererResolver;
   tableManager: TableManager;
   rowsFetcher: RowsFetcher;
-  renderingResolver? = null;
 
   @tracked columnDefinitions: ColumnDefinition[] = [];
   @tracked columns: Column[] = [];
@@ -15,10 +17,24 @@ export default class TableHandler {
 
   currentPage: number = 1;
 
-  constructor(manager: TableManager, rowsFetcher: RowsFetcher, renderingResolver = null) {
+  constructor(
+    emberContext: unknown,
+    manager: TableManager,
+    rowsFetcher: RowsFetcher,
+    renderingResolver = undefined
+  ) {
+    this._context = emberContext;
     this.tableManager = manager;
     this.rowsFetcher = rowsFetcher;
-    this.renderingResolver = renderingResolver;
+    this._renderingResolver = renderingResolver
+  }
+
+  get renderingResolver() {
+    if (this._renderingResolver) {
+      return this._renderingResolver;
+    }
+
+    return (this._renderingResolver = new BaseRenderingResolver(this._context))
   }
 
   async fetchColumns(): Promise<Column[]> {

@@ -61,11 +61,10 @@ export default class Application extends Controller {
   tableManager = new Manager();
   rowsFetcher = new RowsFetcher();
   handler = new TableHandler(
+    this,
     this.tableManager,
     this.rowsFetcher
-    // A custom renderingResolver implementation could be passed too.
   );
-  // normal class body definition here
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

@@ -8,8 +8,8 @@ import {
   TableColumnUpsertResponse
 } from '@upfluence/hypertable/core/interfaces';
 
-const buildColumn = (key: string): Column => {
-  const def = {
+export const buildColumnDefinition = (key: string) => {
+  return {
     key,
     type: 'text',
     name: `Name: ${key}`,
@@ -20,9 +20,11 @@ const buildColumn = (key: string): Column => {
     filterable: false,
     facetable: false
   };
+};
 
+export const buildColumn = (key: string): Column => {
   return {
-    definition: def,
+    definition: buildColumnDefinition(key),
     filters: []
   };
 };
