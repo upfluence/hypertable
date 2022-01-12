@@ -46,7 +46,6 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
       </HyperTableV2::Column>
     `);
 
-    assert.dom('.hypertable__column div.yielded').hasText('foobar')
     assert.dom('.hypertable__column div.yielded').hasText('foobar');
   });
 });
