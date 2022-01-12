@@ -25,8 +25,6 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
     assert.dom('.hypertable__column').exists();
   });
 
-  // test it displays the loading state
-
   test('it has the right size class', async function (assert: Assert) {
     await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
 
