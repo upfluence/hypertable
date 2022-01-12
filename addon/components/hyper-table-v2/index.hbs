@@ -6,14 +6,13 @@
           <div class="hypertable__sticky-columns">
             <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
               {{#each @handler.rows as |row|}}
-                <div class="hypertable__cell">{{get row column.definition.key}}</div>
+                <HyperTableV2::Cell
+                  @handler={{@handler}} @column={{column}} @row={{row}} />
               {{/each}}
 
               {{#if @handler.loadingRows}}
                 {{#each this.loadingSkeletons}}
-                  <div class="hypertable__cell hypertable__cell--loading">
-                    <div class="skeleton-placeholder"></div>
-                  </div>
+                  <HyperTableV2::Cell @loading={{true}} />
                 {{/each}}
               {{/if}}
             </HyperTableV2::Column>
@@ -21,16 +20,15 @@
         {{/if}}
 
         {{#if (gt index 0)}}
-          <HyperTableV2::Column @handler={{@handler}} @column={{column}}  {{sortable-item model=column}}>
+          <HyperTableV2::Column @handler={{@handler}} @column={{column}} {{sortable-item model=column}}>
             {{#each @handler.rows as |row|}}
-              <div class="hypertable__cell">{{get row column.definition.key}}</div>
+              <HyperTableV2::Cell
+                @handler={{@handler}} @column={{column}} @row={{row}} />
             {{/each}}
 
             {{#if @handler.loadingRows}}
               {{#each this.loadingSkeletons}}
-                <div class="hypertable__cell hypertable__cell--loading">
-                  <div class="skeleton-placeholder"></div>
-                </div>
+                <HyperTableV2::Cell @loading={{true}} />
               {{/each}}
             {{/if}}
           </HyperTableV2::Column>
