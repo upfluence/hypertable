@@ -10,13 +10,12 @@ interface HyperTableV2ColumnArgs {
 }
 
 export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs> {
-  @tracked loadingHeaderComponent: boolean = false;
+  @tracked loadingHeaderComponent: boolean = true;
   @tracked headerComponent?: ResolvedRenderingComponent;
 
   constructor(owner: unknown, args: HyperTableV2ColumnArgs) {
     super(owner, args);
 
-    this.loadingHeaderComponent = true;
     args.handler.renderingResolver
       .lookupHeaderComponent(args.column.definition)
       .then((resolution) => {
