@@ -71,6 +71,7 @@
     "@types/qunit": "^2.11.3",
     "@types/rsvp": "^4.0.4",
     "@types/sinon": "^10.0.6",
+    "@typescript-eslint/parser": "^5.9.1",
     "@upfluence/oss-components": "^3.x",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
