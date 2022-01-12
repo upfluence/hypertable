@@ -92,12 +92,13 @@ module('Unit | core/handler', function (hooks) {
   test('Handler#applyOrder', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const tableManagerSpy = sinon.spy(this.tableManager);
-    await handler.fetchColumns();
 
+    await handler.fetchColumns();
     handler.applyOrder(handler.columns[0], 'asc');
 
     // @ts-ignore
     assert.ok(tableManagerSpy.upsertColumns.calledOnceWithExactly({ columns: handler.columns }));
+    assert.equal(handler.currentPage, 1);
   });
 
   test('Handler#onBottomReached', async function (assert: Assert) {

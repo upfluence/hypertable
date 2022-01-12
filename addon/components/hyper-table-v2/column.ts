@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, FieldSize, ResolvedRenderingComponent } from '@upfluence/hypertable/core/interfaces';
+import { guidFor } from '@ember/object/internals';
 
 interface HyperTableV2ColumnArgs {
   handler: TableHandler;
@@ -11,8 +12,13 @@ interface HyperTableV2ColumnArgs {
 }
 
 export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs> {
+  @tracked elementId: string = '';
+
   @tracked loadingHeaderComponent: boolean = true;
+  @tracked loadingFilteringComponent: boolean = true;
   @tracked headerComponent?: ResolvedRenderingComponent;
+  @tracked filteringComponent?: ResolvedRenderingComponent;
+  @tracked displayFilteringComponent: boolean = false;
 
   constructor(owner: unknown, args: HyperTableV2ColumnArgs) {
     super(owner, args);
@@ -25,6 +31,17 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
       .finally(() => {
         this.loadingHeaderComponent = false;
       });
+
+    args.handler.renderingResolver
+      .lookupFilteringComponent(args.column.definition)
+      .then((resolution) => {
+        this.filteringComponent = resolution;
+      })
+      .finally(() => {
+        this.loadingFilteringComponent = false;
+      });
+
+    this.elementId = guidFor(args.column.definition.key);
   }
 
   get computedClasses(): string {
@@ -35,6 +52,10 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     if (this.args.column.order) {
       classes.push('hypertable__column--ordered');
       classes.push(`hypertable__column--ordered-${this.args.column.order.direction}`);
+    }
+
+    if (this.args.column.filters.length > 0) {
+      classes.push('hypertable__column--filtered');
     }
 
     return classes.join(' ');
@@ -51,9 +72,27 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   }
 
   @action
-  orderColumn() {
+  orderColumn(e: MouseEvent) {
+    e.stopPropagation();
+
     if (!this.args.column.definition.orderable) return;
 
-    this.args.handler.applyOrder(this.args.column, this.args.column.order?.direction === 'desc' ? 'asc' : 'desc')
+    this.args.handler.applyOrder(this.args.column, this.args.column.order?.direction === 'desc' ? 'asc' : 'desc');
+  }
+
+  @action
+  toggleFilteringComponent(e: MouseEvent) {
+    e?.stopPropagation?.();
+
+    if (this.args.handler.tetherOn !== this.args.column.definition.key) {
+      this.args.handler.destroyTetherInstance();
+    }
+
+    this.args.handler.triggerTetherContainer(this.args.column.definition.key, {
+      element: `#${this.elementId} .available-filters`,
+      target: `#${this.elementId} header`,
+      attachment: 'top right',
+      targetAttachment: 'bottom right'
+    });
   }
 }

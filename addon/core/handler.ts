@@ -1,4 +1,7 @@
 import { tracked } from '@glimmer/tracking';
+import { scheduleOnce } from '@ember/runloop';
+import Tether from 'tether';
+
 import {
   TableManager,
   RowsFetcher,
@@ -13,9 +16,12 @@ import BaseRenderingResolver from './rendering-resolver';
 export default class TableHandler {
   private _context: unknown;
   private _renderingResolver?: RendererResolver;
+
   tableManager: TableManager;
   rowsFetcher: RowsFetcher;
+  tetherInstance?: Tether;
 
+  @tracked tetherOn?: string = '';
   @tracked columnDefinitions: ColumnDefinition[] = [];
   @tracked columns: Column[] = [];
   @tracked rows: Row[] = [];
@@ -107,6 +113,8 @@ export default class TableHandler {
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this.columns = columns;
+      this.currentPage = 1;
+      this.fetchRows();
     });
   }
 
@@ -118,5 +126,46 @@ export default class TableHandler {
   // @ts-ignore
   onBottomReached(): void {
     throw new Error('NotImplemented');
+  }
+
+  /**
+   * Toggles an instance of Tether for a given column.
+   *
+   * @param {string} on - The column we want to create a Tether instance for
+   * @param {Tether.ITetherOptions} options — Options that should be used for the Tether instance.
+   */
+  triggerTetherContainer(on: string, options: Tether.ITetherOptions) {
+    if (this.tetherOn !== on) {
+      this.tetherOn = on;
+
+      scheduleOnce('afterRender', this, () => {
+        if (this.tetherInstance) {
+          this.tetherInstance.setOptions(options);
+        } else {
+          this.tetherInstance = new Tether(options);
+        }
+
+        scheduleOnce('afterRender', this, () => {
+          // @ts-ignore
+          this.tetherInstance.element.classList.add(`js--visible`);
+        });
+      });
+    } else {
+      this.tetherOn = undefined;
+
+      if (this.tetherInstance) {
+        this.destroyTetherInstance();
+      }
+    }
+  }
+
+  destroyTetherInstance() {
+    if (this.tetherInstance) {
+      this.tetherInstance.destroy();
+      //@ts-ignore
+      this.tetherInstance.element.remove();
+      this.tetherInstance = undefined;
+      this.tetherOn = undefined;
+    }
   }
 }

@@ -4,6 +4,7 @@ import { RendererResolver, ResolvedRenderingComponent, ColumnDefinition } from '
 
 import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
 import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
+import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
 
 export default class implements RendererResolver {
   private _context;
@@ -21,6 +22,13 @@ export default class implements RendererResolver {
   lookupCellComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
     return Promise.resolve({
       component: ensureSafeComponent(TextCellRenderer, this._context) as GlimmerComponent
+    });
+  }
+
+
+  lookupFilteringComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
+    return Promise.resolve({
+      component: ensureSafeComponent(TextFilteringRenderer, this._context) as GlimmerComponent
     });
   }
 }
