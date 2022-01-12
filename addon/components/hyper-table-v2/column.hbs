@@ -1,10 +1,20 @@
 <div class={{this.computedClasses}} ...attributes>
-  <header>
-    {{#if this.loadingHeaderComponent}}
-      <i class="fa fa-circle-o-notch fa-spin"></i>
-    {{else if this.headerComponent}}
-      <this.headerComponent.component @handler={{@handler}} @column={{@column}} @extra={{this.headerComponent.args}} />
-    {{/if}}
+  <header class="fx-row fx-malign-space-between">
+    <div class="cell-header" role="button" {{on "click" this.orderColumn}}>
+      <div class='header-title-container'>
+        {{#if this.loadingHeaderComponent}}
+          <i class="fa fa-circle-o-notch fa-spin"></i>
+        {{else if this.headerComponent}}
+          <this.headerComponent.component @handler={{@handler}} @column={{@column}} @extra={{this.headerComponent.args}} />
+        {{/if}}
+
+        {{#if (eq @column.order.direction "asc")}}
+          &nbsp;<span class="margin-left-xxx-sm text-color-default">&uarr;</span>
+        {{else if (eq @column.order.direction 'desc')}}
+          &nbsp;<span class="margin-left-xxx-sm text-color-default">&darr;</span>
+        {{/if}}
+      </div>
+    </div>
   </header>
 
   {{yield}}

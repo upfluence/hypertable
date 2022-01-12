@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import { getContext } from '@ember/test-helpers';
+import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { FieldSize } from '@upfluence/hypertable/core/interfaces';
@@ -90,13 +91,13 @@ module('Unit | core/handler', function (hooks) {
 
   test('Handler#applyOrder', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const tableManagerSpy = sinon.spy(this.tableManager);
     await handler.fetchColumns();
 
-    try {
-      handler.applyOrder(handler.columns[0], { key: handler.columns[0].definition.key, direction: 'asc' });
-    } catch (err) {
-      assert.equal(err.message, 'NotImplemented');
-    }
+    handler.applyOrder(handler.columns[0], 'asc');
+
+    // @ts-ignore
+    assert.ok(tableManagerSpy.upsertColumns.calledOnceWithExactly({ columns: handler.columns }));
   });
 
   test('Handler#onBottomReached', async function (assert: Assert) {

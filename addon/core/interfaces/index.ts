@@ -1,4 +1,4 @@
-import { FieldSize, ColumnDefinition, Filter, Order, Column } from './column';
+import { FieldSize, ColumnDefinition, Filter, Order, OrderDirection, Column } from './column';
 import {
   ColumnDefinitionResponse,
   TableColumnsResponse,
@@ -14,6 +14,7 @@ export {
   ColumnDefinition,
   Filter,
   Order,
+  OrderDirection,
   Column,
   ColumnDefinitionResponse,
   TableColumnsResponse,

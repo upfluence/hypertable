@@ -1,5 +1,13 @@
 import { tracked } from '@glimmer/tracking';
-import { TableManager, RowsFetcher, Column, Row, Order, ColumnDefinition, RendererResolver } from './interfaces';
+import {
+  TableManager,
+  RowsFetcher,
+  Column,
+  Row,
+  OrderDirection,
+  ColumnDefinition,
+  RendererResolver
+} from './interfaces';
 import BaseRenderingResolver from './rendering-resolver';
 
 export default class TableHandler {
@@ -17,16 +25,11 @@ export default class TableHandler {
 
   currentPage: number = 1;
 
-  constructor(
-    emberContext: unknown,
-    manager: TableManager,
-    rowsFetcher: RowsFetcher,
-    renderingResolver = undefined
-  ) {
+  constructor(emberContext: unknown, manager: TableManager, rowsFetcher: RowsFetcher, renderingResolver = undefined) {
     this._context = emberContext;
     this.tableManager = manager;
     this.rowsFetcher = rowsFetcher;
-    this._renderingResolver = renderingResolver
+    this._renderingResolver = renderingResolver;
   }
 
   get renderingResolver(): RendererResolver {
@@ -34,7 +37,7 @@ export default class TableHandler {
       return this._renderingResolver;
     }
 
-    return (this._renderingResolver = new BaseRenderingResolver(this._context))
+    return (this._renderingResolver = new BaseRenderingResolver(this._context));
   }
 
   async fetchColumns(): Promise<Column[]> {
@@ -86,9 +89,25 @@ export default class TableHandler {
     throw new Error('NotImplemented');
   }
 
-  // @ts-ignore
-  applyOrder(column: Column, order: Order): Promise<any> {
-    throw new Error('NotImplemented');
+  /**
+   * Apply ordering to a column
+   *
+   * @param {Column} column — The column we want to order by
+   * @param {OrderDirection} direction — The direction we want to order the column in
+   * @returns {Promise<any>}
+   */
+  async applyOrder(column: Column, direction: OrderDirection): Promise<any> {
+    const orderedColumn = this.columns.find((column) => column.order);
+
+    if (orderedColumn) {
+      orderedColumn.order = undefined;
+    }
+
+    column.order = { key: column.definition.key, direction };
+
+    return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
+      this.columns = columns;
+    });
   }
 
   // @ts-ignore

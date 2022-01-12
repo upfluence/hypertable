@@ -1,17 +1,26 @@
-// @ts-nocheck
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { TableManager }from '@upfluence/hypertable/core/interfaces'
+import {
+  Column,
+  ColumnDefinition,
+  ColumnDefinitionResponse,
+  TableColumnUpsertRequest,
+  TableColumnUpsertResponse,
+  FieldSize,
+  TableManager
+} from '@upfluence/hypertable/core/interfaces';
 
-const buildColumn = (key) => {
-  const def = {
+const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, orderable = false): Column => {
+  const def: ColumnDefinition = {
     key,
     type: 'text',
     name: `${key}_name`,
-    orderable: false,
-    filterable: false,
+    size: size,
+    clustering_key: '',
+    category: '',
+    orderable: orderable,
+    filterable: filterable,
     facetable: false
   };
 
@@ -22,9 +31,13 @@ const buildColumn = (key) => {
 };
 
 class Manager implements TableManager {
-  fetchColumnDefinitions(): Promise<ColumnDefinitionResponse>;
+  fetchColumnDefinitions(): Promise<ColumnDefinitionResponse> {
+    return Promise.resolve({ column_definitions: [] });
+  }
   fetchColumns() {
-    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar')] });
+    return Promise.resolve({
+      columns: [buildColumn('foo', FieldSize.Medium, true), buildColumn('bar', FieldSize.Medium, false, true)]
+    });
   }
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
     return Promise.resolve({ columns: request.columns });
@@ -33,6 +46,7 @@ class Manager implements TableManager {
 
 class RowsFetcher {
   fetch(page: number, perPage: number) {
+    console.log(page, perPage);
     return Promise.resolve({
       rows: [
         {
@@ -60,11 +74,7 @@ class RowsFetcher {
 export default class Application extends Controller {
   tableManager = new Manager();
   rowsFetcher = new RowsFetcher();
-  handler = new TableHandler(
-    this,
-    this.tableManager,
-    this.rowsFetcher
-  );
+  handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

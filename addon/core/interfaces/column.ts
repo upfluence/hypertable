@@ -22,9 +22,11 @@ export type Filter = {
   value: string;
 };
 
+export type OrderDirection = 'asc' | 'desc';
+
 export type Order = {
   key: string;
-  direction: string;
+  direction: OrderDirection;
 };
 
 export type Column = {

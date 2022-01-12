@@ -5,10 +5,11 @@ import {
   TableColumnsResponse,
   TableManager as ITableManager,
   TableColumnUpsertRequest,
-  TableColumnUpsertResponse
+  TableColumnUpsertResponse,
+  ColumnDefinition
 } from '@upfluence/hypertable/core/interfaces';
 
-export const buildColumnDefinition = (key: string, size = FieldSize.Medium) => {
+export const buildColumnDefinition = (key: string, size = FieldSize.Medium): ColumnDefinition => {
   return {
     key,
     type: 'text',
