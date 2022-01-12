@@ -31,7 +31,7 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
     }
   }
 
-  get loading() {
+  get loading(): boolean {
     return this.args.loading || this.loadingCellComponent;
   }
 }
