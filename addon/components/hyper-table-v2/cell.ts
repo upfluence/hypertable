@@ -11,13 +11,11 @@ interface HyperTableV2CellArgs {
 }
 
 export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
-  @tracked loadingCellComponent: boolean = false;
+  @tracked loadingCellComponent: boolean = true;
   @tracked cellComponent?: ResolvedRenderingComponent;
 
   constructor(owner: unknown, args: HyperTableV2CellArgs) {
     super(owner, args);
-
-    this.loadingCellComponent = true;
 
     if (!args.loading) {
       args.handler.renderingResolver
