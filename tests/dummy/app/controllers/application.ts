@@ -24,7 +24,9 @@ const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, o
     filterable: filterable,
     facetable: false
   };
+};
 
+const buildColumn = (key, category, clusteringKey) => {
   return {
     definition: def,
     filters: [
@@ -37,6 +39,27 @@ const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, o
 };
 
 class Manager implements TableManager {
+  fetchColumnDefinitions() {
+    return Promise.resolve({
+      column_definitions: columnDefinitions.reduce(
+        (columnDefinitions, column) => [
+          ...columnDefinitions,
+          ...[buildColumnDefinition(column.key, column.category, column.clusteringKey)]
+        ],
+        []
+      )
+    });
+  }
+  fetchColumns() {
+    return Promise.resolve({
+      columns: columns.reduce(
+        (columnDefinitions, column) => [
+          ...columnDefinitions,
+          ...[buildColumn(column.key, column.category, column.clusteringKey)]
+        ],
+        []
+      )
+    });
   fetchColumnDefinitions(): Promise<ColumnDefinitionResponse> {
     return Promise.resolve({ column_definitions: [] });
   }

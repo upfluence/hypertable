@@ -32,6 +32,7 @@ export default class TableHandler {
 
   @tracked loadingColumns: boolean = false;
   @tracked loadingRows: boolean = false;
+  @tracked loadingColumnDefinition: boolean = false;
 
   rowsMeta?: RowsFetcherMetadata;
   currentPage: number = 1;
@@ -61,6 +62,20 @@ export default class TableHandler {
       })
       .finally(() => {
         this.loadingColumns = false;
+      });
+  }
+
+  async fetchColumnDefinitions(): Promise<ColumnDefinition[]> {
+    this.loadingColumnDefinition = true;
+
+    return this.tableManager
+      .fetchColumnDefinitions()
+      .then(({ column_definitions }) => {
+        this.columnDefinitions = column_definitions;
+        return column_definitions;
+      })
+      .finally(() => {
+        this.loadingColumnDefinition = false;
       });
   }
 

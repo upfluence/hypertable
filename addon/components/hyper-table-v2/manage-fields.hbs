@@ -1,0 +1,37 @@
+<div class="hypertable__manage-fields" {{on-click-outside this.closeAvailableFields}}>
+  <OSS::Button @skin="primary" @icon="fas fa-columns" @label="Manage Fields" {{on "click" this.openAvailableFields}} />
+  <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
+    <div class="available-fields-wrapper__categories">
+      <div
+        class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
+        {{on "click" (fn this.setFieldCategory null)}}>
+        <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
+        <div><i class="fas fa-caret-right"></i></div>
+      </div>
+      {{#each this._columnCategories as |category|}}
+        <div
+          class="field-category {{if (eq this._activeColumnCategory category) 'field-category--active'}}"
+          data-control-name={{concat "field_category_toggle_" category}}
+          {{on "click" (fn this.setFieldCategory category)}}>
+          <div>{{category}}</div>
+          <div><i class="fa fa-caret-right"></i></div>
+        </div>
+      {{/each}}
+    </div>
+    <div class="available-fields-wrapper__fields">
+      Search input
+      <div class="fields-list">
+        {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
+          {{#if clusterName}}
+            <p class="cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
+              {{clusterName}}
+            </p>
+          {{/if}}
+          {{#each fields as |field|}}
+            {{field.name}}
+          {{/each}}
+        {{/each-in}}
+      </div>
+    </div>
+  </div>
+</div>
