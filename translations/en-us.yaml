@@ -17,6 +17,11 @@ hypertable:
     filtering:
       label: Filter
       clear: Clear Filters
+      existence:
+        label: Display
+      search_term:
+        label: Search
+        placeholder: Search...
       date:
         range:
           label: Date Range
