@@ -30,11 +30,11 @@ export default class HyperTableV2FilteringRenderersText extends Component<HyperT
     this._searchQuery = searchTerm?.value || '';
   }
 
-  get currentOrderingDirection() {
+  get currentOrderingDirection(): OrderDirection | undefined {
     return this.args.column.order?.direction;
   }
 
-  get currentExistenceFilter() {
+  get currentExistenceFilter(): string | null {
     const _existenceFilter = this.args.column.filters.find((filter) => filter.key === 'existence');
 
     if (_existenceFilter) {
@@ -60,22 +60,23 @@ export default class HyperTableV2FilteringRenderersText extends Component<HyperT
   }
 
   @action
-  orderingDirectionChanged(direction: OrderDirection) {
+  orderingDirectionChanged(direction: OrderDirection): void {
     this.args.handler.applyOrder(this.args.column, direction);
   }
 
   @action
-  existenceFilterChanged(value: string) {
+  existenceFilterChanged(value: string): void {
     this.args.handler.applyFilters(this.args.column, [{ key: 'existence', value }]);
   }
 
   @action
-  reset() {
+  reset(): void {
+    this._searchQuery = '';
     this.args.handler.resetColumns([this.args.column]);
   }
 
   @action
-  removeColumn() {
+  removeColumn(): void {
     this.args.handler.destroyTetherInstance();
     this.args.handler.removeColumn(this.args.column.definition);
   }

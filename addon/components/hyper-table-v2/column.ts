@@ -32,14 +32,16 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
         this.loadingHeaderComponent = false;
       });
 
-    args.handler.renderingResolver
-      .lookupFilteringComponent(args.column.definition)
-      .then((resolution) => {
-        this.filteringComponent = resolution;
-      })
-      .finally(() => {
-        this.loadingFilteringComponent = false;
-      });
+    if (args.column.definition.orderable || args.column.definition.filterable) {
+      args.handler.renderingResolver
+        .lookupFilteringComponent(args.column.definition)
+        .then((resolution) => {
+          this.filteringComponent = resolution;
+        })
+        .finally(() => {
+          this.loadingFilteringComponent = false;
+        });
+    }
 
     this.elementId = guidFor(args.column.definition.key);
   }
@@ -72,7 +74,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   }
 
   @action
-  orderColumn(e: MouseEvent) {
+  orderColumn(e: MouseEvent): void {
     e.stopPropagation();
 
     if (!this.args.column.definition.orderable) return;
@@ -81,7 +83,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   }
 
   @action
-  toggleFilteringComponent(e: MouseEvent) {
+  toggleFilteringComponent(e: MouseEvent): void {
     e?.stopPropagation?.();
 
     if (this.args.handler.tetherOn !== this.args.column.definition.key) {

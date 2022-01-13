@@ -9,7 +9,12 @@ import {
   ColumnDefinition
 } from '@upfluence/hypertable/core/interfaces';
 
-export const buildColumnDefinition = (key: string, size = FieldSize.Medium): ColumnDefinition => {
+export const buildColumnDefinition = (
+  key: string,
+  size: FieldSize = FieldSize.Medium,
+  filterable: boolean = false,
+  orderable: boolean = false
+): ColumnDefinition => {
   return {
     key,
     type: 'text',
@@ -17,15 +22,21 @@ export const buildColumnDefinition = (key: string, size = FieldSize.Medium): Col
     clustering_key: '',
     category: '',
     size: size,
-    orderable: false,
-    filterable: false,
+    orderable: orderable,
+    filterable: filterable,
     facetable: false
   };
 };
 
-export const buildColumn = (key: string, size = FieldSize.Medium): Column => {
+export const buildColumn = (
+  key: string,
+  size: FieldSize = FieldSize.Medium,
+  filterable: boolean = false,
+  orderable: boolean = false
+): Column => {
+    console.log('=>') 
   return {
-    definition: buildColumnDefinition(key, size),
+    definition: buildColumnDefinition(key, size, filterable, orderable),
     filters: []
   };
 };
