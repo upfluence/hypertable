@@ -6,6 +6,7 @@ import {
   TableManager,
   RowsFetcher,
   Column,
+  Filter,
   Row,
   OrderDirection,
   ColumnDefinition,
@@ -90,9 +91,33 @@ export default class TableHandler {
     throw new Error('NotImplemented');
   }
 
-  // @ts-ignore
-  applyFilters(column: Column, filters: Filter[]): Promise<any> {
-    throw new Error('NotImplemented');
+  /**
+   * Set filters on a given column.
+   *
+   * @param {Column} column - The column on which to apply filters
+   * @param {Filter[]} filters - The array of filters to apply to the column
+   * @returns {Promise<any>}
+   */
+  async applyFilters(column: Column, filters: Filter[]): Promise<any> {
+    const _filters = filters.reduce((acc, v) => {
+      const filterWithSameKey = acc.find((filter) => filter.key === v.key)
+
+      if (filterWithSameKey) {
+        filterWithSameKey.value = v.value;
+      } else {
+        acc.push(v);
+      }
+
+      return acc;
+    }, [...column.filters])
+
+    column.filters = _filters;
+
+    return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
+      this.columns = columns;
+      this.currentPage = 1;
+      this.fetchRows();
+    });
   }
 
   /**
@@ -118,9 +143,23 @@ export default class TableHandler {
     });
   }
 
-  // @ts-ignore
-  resetColumns(): Promise<any> {
-    throw new Error('NotImplemented');
+  /**
+   * Reset columns' filters and order attributes
+   *
+   * @param {Column[]} columns — The columns we want to reset the state for.
+   * @returns {Promise<any>}
+   */
+  async resetColumns(columns: Column[]): Promise<any> {
+    columns.forEach((column) => {
+      column.filters = [];
+      column.order = undefined;
+    });
+
+    return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
+      this.columns = columns;
+      this.currentPage = 1;
+      this.fetchRows();
+    });
   }
 
   // @ts-ignore
@@ -134,7 +173,7 @@ export default class TableHandler {
    * @param {string} on - The column we want to create a Tether instance for
    * @param {Tether.ITetherOptions} options — Options that should be used for the Tether instance.
    */
-  triggerTetherContainer(on: string, options: Tether.ITetherOptions) {
+  triggerTetherContainer(on: string, options: Tether.ITetherOptions): void {
     if (this.tetherOn !== on) {
       this.tetherOn = on;
 
@@ -159,7 +198,10 @@ export default class TableHandler {
     }
   }
 
-  destroyTetherInstance() {
+  /**
+   * Destroy the current Tether instance if any.
+   */
+  destroyTetherInstance(): void {
     if (this.tetherInstance) {
       this.tetherInstance.destroy();
       //@ts-ignore

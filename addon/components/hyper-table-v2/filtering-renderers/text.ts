@@ -49,7 +49,6 @@ export default class HyperTableV2FilteringRenderersText extends Component<HyperT
   }
 
   set searchQuery(value: string) {
-    console.log('=>', value);
     this._searchQuery = value;
 
     this.args.handler.applyFilters(this.args.column, [
