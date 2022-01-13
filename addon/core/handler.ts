@@ -100,14 +100,26 @@ export default class TableHandler {
     this.tableManager.upsertColumns({ columns: this.columns });
   }
 
-  // @ts-ignore
-  addColumn(definition: ColumnDefinition): Promise<any> {
-    throw new Error('NotImplemented');
+  addColumn(definition: ColumnDefinition): Promise<TableColumnUpsertResponse> {
+    return this.tableManager
+      .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
+      .then((resp) => {
+        this.columns = resp.columns;
+        this.currentPage = 1;
+        this.fetchRows();
+        return resp;
+      });
   }
 
-  // @ts-ignore
-  removeColumn(definition: ColumnDefinition): Promise<any> {
-    throw new Error('NotImplemented');
+  removeColumn(definition: ColumnDefinition): Promise<TableColumnUpsertResponse> {
+    return this.tableManager
+      .upsertColumns({
+        columns: this.columns.filter((column) => column.definition.key !== definition.key)
+      })
+      .then((resp) => {
+        this.columns = resp.columns;
+        return resp;
+      });
   }
 
   /**

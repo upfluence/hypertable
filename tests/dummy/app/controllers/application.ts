@@ -12,8 +12,22 @@ import {
   TableColumnsResponse
 } from '@upfluence/hypertable/core/interfaces';
 
-const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, orderable = false): Column => {
-  const def: ColumnDefinition = {
+const columnDefinitions = [
+  { key: 'foo', category: 'influencer', clusteringKey: 'instagram' },
+  { key: 'bar', category: 'influencer', clusteringKey: 'youtube' },
+  { key: 'code', category: 'affiliation', clusteringKey: '' },
+  { key: 'toto', category: 'influencer', clusteringKey: 'tiktok' },
+  { key: 'test', category: 'other', clusteringKey: '' }
+];
+
+const columns = [
+  { key: 'foo', category: 'influencer', clusteringKey: 'instagram' },
+  { key: 'bar', category: 'influencer', clusteringKey: 'youtube' },
+  { key: 'code', category: 'affiliation', clusteringKey: '' }
+];
+
+const buildColumnDefinition = (key, category, clusteringKey) => {
+  return {
     key,
     type: 'text',
     name: `${key}_name`,
@@ -84,7 +98,10 @@ class RowsFetcher {
           holderId: 57,
           holderType: 'list',
           foo: 'ekip',
-          bar: 'hello'
+          bar: 'hello',
+          toto: 'toto',
+          code: 'code',
+          test: 'test'
         },
         {
           influencerId: Math.random(),

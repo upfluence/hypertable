@@ -5,6 +5,11 @@ import { action } from '@ember/object';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 
+type ManageColumn = {
+  definition: ColumnDefinition;
+  visible: boolean;
+};
+
 interface HyperTableV2ManageFieldsArgs {
   handler: TableHandler;
 }
@@ -12,6 +17,7 @@ interface HyperTableV2ManageFieldsArgs {
 export default class HyperTableV2ManageFields extends Component<HyperTableV2ManageFieldsArgs> {
   @tracked displayAvailableFields: boolean = false;
   @tracked _activeColumnCategory: null | string = null;
+  @tracked _searchColumnDefinitionKeyword: null | string = null;
 
   get _columnCategories(): string[] {
     return this.args.handler.columnDefinitions
@@ -27,7 +33,8 @@ export default class HyperTableV2ManageFields extends Component<HyperTableV2Mana
   get _orderedFilteredClusters() {
     let fields = A(
       this.args.handler.columnDefinitions.filter((columnDefinition) => {
-        const hasActiveGroup = columnDefinition.category === this._activeColumnCategory;
+        //search condition
+        const hasActiveGroup = !this._activeColumnCategory || columnDefinition.category === this._activeColumnCategory;
         return hasActiveGroup;
       })
     ).sortBy('name');
@@ -35,19 +42,32 @@ export default class HyperTableV2ManageFields extends Component<HyperTableV2Mana
   }
 
   groupByClusteringKey(columnDefinitions: ColumnDefinition[]) {
-    const map = new Map();
+    const map = new Map().set('', []);
 
     columnDefinitions.forEach((columnDefinition) => {
       const cluster = map.get(columnDefinition.clustering_key);
+      const manageColumn: ManageColumn = {
+        definition: columnDefinition,
+        visible: !!this.args.handler.columns.find((column) => column.definition.key === columnDefinition.key)
+      };
 
       if (!cluster) {
-        map.set(columnDefinition.clustering_key, [columnDefinition]);
+        map.set(columnDefinition.clustering_key, [manageColumn]);
       } else {
-        cluster.push(columnDefinition);
+        cluster.push(manageColumn);
       }
     });
 
     return map;
+  }
+
+  @action
+  columnVisibilityUpdate(column: ManageColumn) {
+    if (column.visible) {
+      this.args.handler.removeColumn(column.definition);
+    } else {
+      this.args.handler.addColumn(column.definition);
+    }
   }
 
   @action

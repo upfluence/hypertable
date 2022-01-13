@@ -19,7 +19,13 @@
       {{/each}}
     </div>
     <div class="available-fields-wrapper__fields">
-      Search input
+      <div class="search">
+        <Input
+          @type="text" @value={{this._searchColumnDefinitionKeyword}}
+          data-control-name="column_definitions_search_input" class="upf-input upf-input--small"
+          placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+        />
+      </div>
       <div class="fields-list">
         {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
           {{#if clusterName}}
@@ -28,7 +34,15 @@
             </p>
           {{/if}}
           {{#each fields as |field|}}
-            {{field.name}}
+            <div class='field'>
+              <UpfCheckbox
+                @value={{field.visible}} @size="sm"
+                @onValueChange={{fn this.columnVisibilityUpdate field}}
+                data-control-name={{concat "column_definition_toggle_checkbox_" field.definition.key}} />
+              <div class="margin-left-xxx-sm">
+                {{field.definition.name}}
+              </div>
+            </div>
           {{/each}}
         {{/each-in}}
       </div>
