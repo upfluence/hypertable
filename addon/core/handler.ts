@@ -100,25 +100,23 @@ export default class TableHandler {
     this.tableManager.upsertColumns({ columns: this.columns });
   }
 
-  addColumn(definition: ColumnDefinition): Promise<TableColumnUpsertResponse> {
+  addColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
       .then((resp) => {
         this.columns = resp.columns;
         this.currentPage = 1;
         this.fetchRows();
-        return resp;
       });
   }
 
-  removeColumn(definition: ColumnDefinition): Promise<TableColumnUpsertResponse> {
+  removeColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({
         columns: this.columns.filter((column) => column.definition.key !== definition.key)
       })
       .then((resp) => {
         this.columns = resp.columns;
-        return resp;
       });
   }
 

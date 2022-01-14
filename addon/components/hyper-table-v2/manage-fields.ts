@@ -62,7 +62,8 @@ export default class HyperTableV2ManageFields extends Component<HyperTableV2Mana
   }
 
   @action
-  columnVisibilityUpdate(column: ManageColumn) {
+  columnVisibilityUpdate(column: ManageColumn, event: PointerEvent) {
+    event.stopPropagation();
     if (column.visible) {
       this.args.handler.removeColumn(column.definition);
     } else {
