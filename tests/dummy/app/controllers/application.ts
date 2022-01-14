@@ -26,7 +26,12 @@ const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, o
 
   return {
     definition: def,
-    filters: []
+    filters: [
+      {
+        key: 'value',
+        value: 'hello'
+      }
+    ]
   };
 };
 
@@ -36,17 +41,18 @@ class Manager implements TableManager {
   }
   fetchColumns() {
     return Promise.resolve({
-      columns: [buildColumn('foo', FieldSize.Medium, true), buildColumn('bar', FieldSize.Medium, false, true)]
+      columns: [buildColumn('foo', FieldSize.Medium, false, true), buildColumn('bar', FieldSize.Medium, true, true)]
     });
   }
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
+    console.log(request)
     return Promise.resolve({ columns: request.columns });
   }
 }
 
 class RowsFetcher {
+  // @ts-ignore
   fetch(page: number, perPage: number) {
-    console.log(page, perPage);
     return Promise.resolve({
       rows: [
         {
@@ -64,7 +70,87 @@ class RowsFetcher {
           holderType: 'list',
           foo: 'second',
           bar: 'second bar'
-        }
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
       ],
       meta: { total: 12 }
     });

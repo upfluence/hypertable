@@ -1,6 +1,6 @@
 <div class="hypertable-container">
   <div class="hypertable__table hypertable__table--v2">
-    <div class="hypertable" {{sortable-group direction="x" onChange=this.reorderColumns}}>
+    <div class="hypertable" {{sortable-group direction="x" onChange=this.reorderColumns}} {{on-bottom-reached @handler.onBottomReached}}>
       {{#each @handler.columns as |column index|}}
         {{#if (eq index 0)}}
           <div class="hypertable__sticky-columns">

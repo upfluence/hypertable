@@ -18,11 +18,6 @@ export default class HyperTableV2FilteringRenderersText extends Component<HyperT
     'Z — A': 'desc'
   });
 
-  existenceFilters = Object.freeze({
-    'With Value': 'with',
-    'Without Value': 'without'
-  });
-
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersTextArgs) {
     super(owner, args);
 
@@ -30,18 +25,8 @@ export default class HyperTableV2FilteringRenderersText extends Component<HyperT
     this._searchQuery = searchTerm?.value || '';
   }
 
-  get currentOrderingDirection(): OrderDirection | undefined {
+  get currentOrderingDirection(): OrderDirection | undefined {
     return this.args.column.order?.direction;
-  }
-
-  get currentExistenceFilter(): string | null {
-    const _existenceFilter = this.args.column.filters.find((filter) => filter.key === 'existence');
-
-    if (_existenceFilter) {
-      return _existenceFilter.value;
-    }
-
-    return this._searchQuery ? 'with' : null;
   }
 
   get searchQuery(): string {
@@ -62,11 +47,6 @@ export default class HyperTableV2FilteringRenderersText extends Component<HyperT
   @action
   orderingDirectionChanged(direction: OrderDirection): void {
     this.args.handler.applyOrder(this.args.column, direction);
-  }
-
-  @action
-  existenceFilterChanged(value: string): void {
-    this.args.handler.applyFilters(this.args.column, [{ key: 'existence', value }]);
   }
 
   @action

@@ -14,21 +14,7 @@
   {{/if}}
 
   {{#if @column.definition.filterable}}
-    <div data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filters"}}>
-      <div class={{if @column.definition.orderable "margin-top-xx-sm"}}>
-        <label>{{t "hypertable.column.filtering.existence.label"}}</label>
-        <div class="btn-group upf-radio-group upf-radio-group--block">
-          {{#each-in this.existenceFilters as |label value|}}
-            <RadioButton
-              @value={{value}}
-              @currentValue={{this.currentExistenceFilter}}
-              @label={{label}}
-              @options={{this.existenceFilters}}
-              @onCheck={{this.existenceFilterChanged}} />
-          {{/each-in}}
-        </div>
-      </div>
-
+    <div class={{if @column.definition.orderable "margin-top-xx-sm"}} data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filters"}}>
       <div class="margin-top-xxx-sm">
         <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
         <OSS::InputContainer

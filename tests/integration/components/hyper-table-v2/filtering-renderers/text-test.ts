@@ -89,34 +89,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       assert.dom('div[data-control-name="hypertable__column_filtering_for_foo_filters"]').exists();
     });
 
-    test('it handles the existence filters correctly', async function (assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
-      await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
-
-      assert.deepEqual(this.column.filters, []);
-      await click('div[data-control-name="hypertable__column_filtering_for_foo_filters"] .upf-radio-btn:first-child');
-
-      //@ts-ignore
-      assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'with' }]));
-      assert.deepEqual(this.column.filters, [
-        {
-          key: 'existence',
-          value: 'with'
-        }
-      ]);
-
-      await click('div[data-control-name="hypertable__column_filtering_for_foo_filters"] .upf-radio-btn:last-child');
-
-      //@ts-ignore
-      assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
-      assert.deepEqual(this.column.filters, [
-        {
-          key: 'existence',
-          value: 'without'
-        }
-      ]);
-    });
-
     test('it handles search term filters correctly', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
