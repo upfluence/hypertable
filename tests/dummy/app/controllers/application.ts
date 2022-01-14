@@ -45,7 +45,6 @@ class Manager implements TableManager {
     });
   }
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
-    console.log(request)
     return Promise.resolve({ columns: request.columns });
   }
 }

@@ -1,10 +1,10 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { guidFor } from '@ember/object/internals';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, FieldSize, ResolvedRenderingComponent } from '@upfluence/hypertable/core/interfaces';
-import { guidFor } from '@ember/object/internals';
 
 interface HyperTableV2ColumnArgs {
   handler: TableHandler;
@@ -13,7 +13,6 @@ interface HyperTableV2ColumnArgs {
 
 export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs> {
   @tracked elementId: string = '';
-
   @tracked loadingHeaderComponent: boolean = true;
   @tracked loadingFilteringComponent: boolean = true;
   @tracked headerComponent?: ResolvedRenderingComponent;
@@ -52,8 +51,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     classes.push(this.sizeClass);
 
     if (this.args.column.order) {
-      classes.push('hypertable__column--ordered');
-      classes.push(`hypertable__column--ordered-${this.args.column.order.direction}`);
+      classes.push('hypertable__column--ordered', `hypertable__column--ordered-${this.args.column.order.direction}`);
     }
 
     if (this.args.column.filters.length > 0) {

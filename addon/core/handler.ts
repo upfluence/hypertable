@@ -17,12 +17,13 @@ import BaseRenderingResolver from './rendering-resolver';
 export default class TableHandler {
   private _context: unknown;
   private _renderingResolver?: RendererResolver;
+  private _lastOrderedColumn?: Column;
 
   tableManager: TableManager;
   rowsFetcher: RowsFetcher;
   tetherInstance?: Tether;
 
-  @tracked tetherOn?: string = '';
+  @tracked tetherOn: string = '';
   @tracked columnDefinitions: ColumnDefinition[] = [];
   @tracked columns: Column[] = [];
   @tracked rows: Row[] = [];
@@ -98,9 +99,9 @@ export default class TableHandler {
    * @param {Filter[]} filters - The array of filters to apply to the column
    * @returns {Promise<any>}
    */
-  async applyFilters(column: Column, filters: Filter[]): Promise<any> {
-    const _filters = filters.reduce((acc, v) => {
-      const filterWithSameKey = acc.find((filter) => filter.key === v.key)
+  async applyFilters(column: Column, filters: Filter[]): Promise<void> {
+    column.filters = filters.reduce((acc, v) => {
+      const filterWithSameKey = acc.find((filter) => filter.key === v.key);
 
       if (filterWithSameKey) {
         filterWithSameKey.value = v.value;
@@ -109,14 +110,10 @@ export default class TableHandler {
       }
 
       return acc;
-    }, [...column.filters])
-
-    column.filters = _filters;
+    }, column.filters);
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
-      this.columns = columns;
-      this.currentPage = 1;
-      this.fetchRows();
+      this._reinitColumnsAndRows(columns);
     });
   }
 
@@ -127,19 +124,16 @@ export default class TableHandler {
    * @param {OrderDirection} direction — The direction we want to order the column in
    * @returns {Promise<any>}
    */
-  async applyOrder(column: Column, direction: OrderDirection): Promise<any> {
-    const orderedColumn = this.columns.find((column) => column.order);
-
-    if (orderedColumn) {
-      orderedColumn.order = undefined;
+  async applyOrder(column: Column, direction: OrderDirection): Promise<void> {
+    if (this._lastOrderedColumn) {
+      this._lastOrderedColumn.order = undefined;
     }
 
     column.order = { key: column.definition.key, direction };
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
-      this.columns = columns;
-      this.currentPage = 1;
-      this.fetchRows();
+      this._lastOrderedColumn = column;
+      this._reinitColumnsAndRows(columns);
     });
   }
 
@@ -156,13 +150,10 @@ export default class TableHandler {
     });
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
-      this.columns = columns;
-      this.currentPage = 1;
-      this.fetchRows();
+      this._reinitColumnsAndRows(columns);
     });
   }
 
-  // @ts-ignore
   onBottomReached(): void {
     throw new Error('NotImplemented');
   }
@@ -186,15 +177,12 @@ export default class TableHandler {
 
         scheduleOnce('afterRender', this, () => {
           // @ts-ignore
-          this.tetherInstance.element.classList.add(`js--visible`);
+          this.tetherInstance!.element.classList.add(`js--visible`);
         });
       });
     } else {
-      this.tetherOn = undefined;
-
-      if (this.tetherInstance) {
-        this.destroyTetherInstance();
-      }
+      this.tetherOn = '';
+      this.destroyTetherInstance();
     }
   }
 
@@ -203,11 +191,17 @@ export default class TableHandler {
    */
   destroyTetherInstance(): void {
     if (this.tetherInstance) {
-      this.tetherInstance.destroy();
       //@ts-ignore
       this.tetherInstance.element.remove();
+      this.tetherInstance.destroy();
       this.tetherInstance = undefined;
-      this.tetherOn = undefined;
+      this.tetherOn = '';
     }
+  }
+
+  private _reinitColumnsAndRows(columns: Column[]) {
+    this.columns = columns;
+    this.currentPage = 1;
+    this.fetchRows();
   }
 }

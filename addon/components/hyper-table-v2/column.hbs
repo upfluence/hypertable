@@ -9,9 +9,9 @@
         {{/if}}
 
         {{#if (eq @column.order.direction "asc")}}
-          &nbsp;<span class="margin-left-xxx-sm text-color-default">&uarr;</span>
-        {{else if (eq @column.order.direction 'desc')}}
-          &nbsp;<span class="margin-left-xxx-sm text-color-default">&darr;</span>
+          <span class="margin-left-xxx-sm text-color-default"><i class="fas fa-long-arrow-up"></i></span>
+        {{else if (eq @column.order.direction "desc")}}
+          <span class="margin-left-xxx-sm text-color-default"><i class="fas fa-long-arrow-down"></i></span>
         {{/if}}
       </div>
     </div>
