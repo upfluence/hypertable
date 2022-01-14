@@ -68,7 +68,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-    name: Deploy demo app
+    name: Deploy preview app
     runs-on: ubuntu-20.04
     needs: [test]
     if: ${{ github.ref == 'refs/heads/pn/backlog-1263/filters-rendering' }}
