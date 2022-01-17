@@ -8,7 +8,8 @@ import {
   TableColumnUpsertRequest,
   TableColumnUpsertResponse,
   FieldSize,
-  TableManager
+  TableManager,
+  TableColumnsResponse
 } from '@upfluence/hypertable/core/interfaces';
 
 const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, orderable = false): Column => {
@@ -39,7 +40,7 @@ class Manager implements TableManager {
   fetchColumnDefinitions(): Promise<ColumnDefinitionResponse> {
     return Promise.resolve({ column_definitions: [] });
   }
-  fetchColumns() {
+  fetchColumns(): Promise<TableColumnsResponse> {
     return Promise.resolve({
       columns: [buildColumn('foo', FieldSize.Medium, false, true), buildColumn('bar', FieldSize.Medium, true, true)]
     });

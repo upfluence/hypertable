@@ -1,5 +1,5 @@
 import { tracked } from '@glimmer/tracking';
-import { set } from '@ember/object';
+import { set } from '@ember/object';
 import { scheduleOnce } from '@ember/runloop';
 import Tether from 'tether';
 
@@ -49,14 +49,13 @@ export default class TableHandler {
     return (this._renderingResolver = new BaseRenderingResolver(this._context));
   }
 
-  async fetchColumns(): Promise<Column[]> {
+  async fetchColumns(): Promise<void> {
     this.loadingColumns = true;
 
     return this.tableManager
       .fetchColumns()
       .then(({ columns }) => {
         this.columns = columns;
-        return columns;
       })
       .finally(() => {
         this.loadingColumns = false;
@@ -98,7 +97,7 @@ export default class TableHandler {
    *
    * @param {Column} column - The column on which to apply filters
    * @param {Filter[]} filters - The array of filters to apply to the column
-   * @returns {Promise<any>}
+   * @returns {Promise<void>}
    */
   async applyFilters(column: Column, filters: Filter[]): Promise<void> {
     column.filters = filters.reduce((acc, v) => {
@@ -123,7 +122,7 @@ export default class TableHandler {
    *
    * @param {Column} column — The column we want to order by
    * @param {OrderDirection} direction — The direction we want to order the column in
-   * @returns {Promise<any>}
+   * @returns {Promise<void>}
    */
   async applyOrder(column: Column, direction: OrderDirection): Promise<void> {
     if (this._lastOrderedColumn) {
@@ -142,9 +141,9 @@ export default class TableHandler {
    * Reset columns' filters and order attributes
    *
    * @param {Column[]} columns — The columns we want to reset the state for.
-   * @returns {Promise<any>}
+   * @returns {Promise<void>}
    */
-  async resetColumns(columns: Column[]): Promise<any> {
+  async resetColumns(columns: Column[]): Promise<void> {
     columns.forEach((column) => {
       column.filters = [];
       set(column, 'order', undefined);
@@ -177,8 +176,7 @@ export default class TableHandler {
         }
 
         scheduleOnce('afterRender', this, () => {
-          // @ts-ignore
-          this.tetherInstance!.element.classList.add(`js--visible`);
+          (<any>this.tetherInstance).element.classList.add(`js--visible`);
         });
       });
     } else {
@@ -200,7 +198,7 @@ export default class TableHandler {
     }
   }
 
-  private _reinitColumnsAndRows(columns: Column[]) {
+  private _reinitColumnsAndRows(columns: Column[]): void {
     this.columns = columns;
     this.currentPage = 1;
     this.fetchRows();
