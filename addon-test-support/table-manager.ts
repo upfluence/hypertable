@@ -34,7 +34,6 @@ export const buildColumn = (
   filterable: boolean = false,
   orderable: boolean = false
 ): Column => {
-    console.log('=>') 
   return {
     definition: buildColumnDefinition(key, size, filterable, orderable),
     filters: []
