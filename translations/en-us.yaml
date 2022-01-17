@@ -11,12 +11,18 @@ hypertable:
       no_columns: No columns found
   column:
     remove: Remove Field
+    clear_filters: Clear Filters
     scroll_to_end: More
     ordering:
       label: Order By
     filtering:
       label: Filter
       clear: Clear Filters
+      existence:
+        label: Display
+      search_term:
+        label: Search
+        placeholder: Search...
       date:
         range:
           label: Date Range

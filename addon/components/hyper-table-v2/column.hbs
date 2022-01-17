@@ -1,10 +1,37 @@
-<div class={{this.computedClasses}} ...attributes>
-  <header>
-    {{#if this.loadingHeaderComponent}}
-      <i class="fa fa-circle-o-notch fa-spin"></i>
-    {{else if this.headerComponent}}
-      <this.headerComponent.component @handler={{@handler}} @column={{@column}} @extra={{this.headerComponent.args}} />
-    {{/if}}
+<div id={{this.elementId}} class={{this.computedClasses}} ...attributes>
+  <header class="fx-row fx-malign-space-between">
+    <div class="cell-header" role="button" {{on "click" this.orderColumn}}>
+      <div class="header-title-container">
+        {{#if this.loadingHeaderComponent}}
+          <i class="fa fa-circle-o-notch fa-spin"></i>
+        {{else if this.headerComponent}}
+          <this.headerComponent.component @handler={{@handler}} @column={{@column}} @extra={{this.headerComponent.args}} />
+        {{/if}}
+
+        {{#if (eq @column.order.direction "asc")}}
+          <span class="margin-left-xxx-sm text-color-default"><i class="fas fa-long-arrow-up"></i></span>
+        {{else if (eq @column.order.direction "desc")}}
+          <span class="margin-left-xxx-sm text-color-default"><i class="fas fa-long-arrow-down"></i></span>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
+      {{#if (or @column.definition.filterable @column.definition.orderable)}}
+        <i class="fa fa-filter" role="button"
+          {{on "click" this.toggleFilteringComponent}}
+          {{enable-tooltip title=(t "hypertable.column.filtering.label")}}></i>
+      {{/if}}
+
+      {{#if (and this.filteringComponent (eq @handler.tetherOn @column.definition.key))}}
+        <div class="available-filters" {{on-click-outside this.toggleFilteringComponent}}>
+          <this.filteringComponent.component
+            @handler={{@handler}} @column={{@column}} @extra={{this.filteringComponent.args}} />
+        </div>
+      {{/if}}
+
+      <i class="fas fa-bars fa-rotate-90"></i>
+    </div>
   </header>
 
   {{yield}}

@@ -1,30 +1,49 @@
-// @ts-nocheck
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { TableManager }from '@upfluence/hypertable/core/interfaces'
+import {
+  Column,
+  ColumnDefinition,
+  ColumnDefinitionResponse,
+  TableColumnUpsertRequest,
+  TableColumnUpsertResponse,
+  FieldSize,
+  TableManager,
+  TableColumnsResponse
+} from '@upfluence/hypertable/core/interfaces';
 
-const buildColumn = (key) => {
-  const def = {
+const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, orderable = false): Column => {
+  const def: ColumnDefinition = {
     key,
     type: 'text',
     name: `${key}_name`,
-    orderable: false,
-    filterable: false,
+    size: size,
+    clustering_key: '',
+    category: '',
+    orderable: orderable,
+    filterable: filterable,
     facetable: false
   };
 
   return {
     definition: def,
-    filters: []
+    filters: [
+      {
+        key: 'value',
+        value: 'hello'
+      }
+    ]
   };
 };
 
 class Manager implements TableManager {
-  fetchColumnDefinitions(): Promise<ColumnDefinitionResponse>;
-  fetchColumns() {
-    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar')] });
+  fetchColumnDefinitions(): Promise<ColumnDefinitionResponse> {
+    return Promise.resolve({ column_definitions: [] });
+  }
+  fetchColumns(): Promise<TableColumnsResponse> {
+    return Promise.resolve({
+      columns: [buildColumn('foo', FieldSize.Medium, false, true), buildColumn('bar', FieldSize.Medium, true, true)]
+    });
   }
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
     return Promise.resolve({ columns: request.columns });
@@ -32,6 +51,7 @@ class Manager implements TableManager {
 }
 
 class RowsFetcher {
+  // @ts-ignore
   fetch(page: number, perPage: number) {
     return Promise.resolve({
       rows: [
@@ -50,7 +70,87 @@ class RowsFetcher {
           holderType: 'list',
           foo: 'second',
           bar: 'second bar'
-        }
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'ekip',
+          bar: 'hello'
+        },
+        {
+          influencerId: Math.random(),
+          recordId: 12,
+          holderId: 57,
+          holderType: 'list',
+          foo: 'second',
+          bar: 'second bar'
+        },
       ],
       meta: { total: 12 }
     });
@@ -60,11 +160,7 @@ class RowsFetcher {
 export default class Application extends Controller {
   tableManager = new Manager();
   rowsFetcher = new RowsFetcher();
-  handler = new TableHandler(
-    this,
-    this.tableManager,
-    this.rowsFetcher
-  );
+  handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

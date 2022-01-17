@@ -68,16 +68,12 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-    name: Deploy demo app
+    name: Deploy preview app
     runs-on: ubuntu-20.04
     needs: [test]
-    if: ${{ github.ref == 'refs/heads/pn/backlog-1263/filters-rendering' }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - uses: webfactory/ssh-agent@v0.5.0
-      with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - uses: actions/setup-node@v1
       with:
         node-version: '${{ env.NODE_VERSION }}'

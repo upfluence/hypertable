@@ -2267,6 +2267,11 @@
   resolved "https://registry.yarnpkg.com/@types/symlink-or-copy/-/symlink-or-copy-1.2.0.tgz#4151a81b4052c80bc2becbae09f3a9ec010a9c7a"
   integrity sha512-Lja2xYuuf2B3knEsga8ShbOdsfNOtzT73GyJmZyY7eGl2+ajOqrs8yM5ze0fsSoYwvA6bw7/Qr7OZ7PEEmYwWg==
 
+"@types/tether@^1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@types/tether/-/tether-1.4.6.tgz#ca5cbf37d6d0c8e1c22021a1c5c0f9abe0228319"
+  integrity sha512-9nHygDpiN1VPAkTXZyKOmdVK12EPp4KLgc7kj9ji0X6qsHzzQV8e7KYEh1afrF6TTVs5d9oRJXwkmjeSWc+5Cw==
+
 "@typescript-eslint/parser@^5.9.1":
   version "5.9.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.9.1.tgz#b114011010a87e17b3265ca715e16c76a9834cef"
