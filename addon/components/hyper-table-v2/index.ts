@@ -24,4 +24,9 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   reorderColumns(columns: Column[]): void {
     this.args.handler.reorderColumns([this.args.handler.columns[0]].concat(columns));
   }
+
+  @action
+  onBottomReached() {
+    this.args.handler.onBottomReached();
+  }
 }

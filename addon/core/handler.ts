@@ -11,7 +11,8 @@ import {
   Row,
   OrderDirection,
   ColumnDefinition,
-  RendererResolver
+  RendererResolver,
+  RowsFetcherMetadata
 } from './interfaces';
 import BaseRenderingResolver from './rendering-resolver';
 
@@ -32,6 +33,7 @@ export default class TableHandler {
   @tracked loadingColumns: boolean = false;
   @tracked loadingRows: boolean = false;
 
+  rowsMeta?: RowsFetcherMetadata;
   currentPage: number = 1;
 
   constructor(emberContext: unknown, manager: TableManager, rowsFetcher: RowsFetcher, renderingResolver = undefined) {
@@ -67,8 +69,9 @@ export default class TableHandler {
 
     return this.rowsFetcher
       .fetch(this.currentPage, 20)
-      .then(({ rows }) => {
-        this.rows = rows;
+      .then(({ rows, meta }) => {
+        this.rows = [...this.rows, ...rows];
+        this.rowsMeta = meta;
         this.currentPage += 1;
         return rows;
       })
@@ -154,8 +157,15 @@ export default class TableHandler {
     });
   }
 
+  /**
+   * Fetches more rows if there are any.
+   *
+   * @returns {void}
+   */
   onBottomReached(): void {
-    throw new Error('NotImplemented');
+    if (!this.rowsMeta || this.rowsMeta.total > this.rows.length) {
+      this.fetchRows();
+    }
   }
 
   /**

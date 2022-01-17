@@ -119,7 +119,7 @@ module('Unit | core/handler', function (hooks) {
     handler.applyFilters(handler.columns[0], [{ key: 'foo', value: 'bar' }]);
     handler.applyOrder(handler.columns[1], 'asc');
 
-    handler.resetColumns(handler.columns)
+    handler.resetColumns(handler.columns);
 
     assert.equal(handler.columns.filter((column) => column.filters.length > 0 || column.order).length, 0);
     assert.equal(handler.columns[0].filters.length, 0);
@@ -138,12 +138,28 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.currentPage, 1);
   });
 
-  test('Handler#onBottomReached', async function (assert: Assert) {
-    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    try {
+  module('Handler#onBottomReached', function () {
+    test('it does nothing if the maximum rows have been loaded already', async function (assert: Assert) {
+      sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {
+        return Promise.resolve({ rows: [], meta: { total: 0 } });
+      });
+
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const handlerSpy = sinon.spy(handler);
+      await handler.fetchRows();
+
       handler.onBottomReached();
-    } catch (err) {
-      assert.equal(err.message, 'NotImplemented');
-    }
+
+      assert.ok(handlerSpy.fetchRows.calledOnce);
+    });
+
+    test('it calls the Handler#fetchRows method if there are more rows to be fetched', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const handlerSpy = sinon.spy(handler);
+      await handler.fetchRows();
+      handler.onBottomReached();
+
+      assert.ok(handlerSpy.fetchRows.calledTwice);
+    });
   });
 });
