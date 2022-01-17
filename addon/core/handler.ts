@@ -1,4 +1,5 @@
 import { tracked } from '@glimmer/tracking';
+import { set } from '@ember/object';
 import { scheduleOnce } from '@ember/runloop';
 import Tether from 'tether';
 
@@ -129,7 +130,7 @@ export default class TableHandler {
       this._lastOrderedColumn.order = undefined;
     }
 
-    column.order = { key: column.definition.key, direction };
+    set(column, 'order', { key: column.definition.key, direction });
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._lastOrderedColumn = column;
@@ -146,7 +147,7 @@ export default class TableHandler {
   async resetColumns(columns: Column[]): Promise<any> {
     columns.forEach((column) => {
       column.filters = [];
-      column.order = undefined;
+      set(column, 'order', undefined);
     });
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
