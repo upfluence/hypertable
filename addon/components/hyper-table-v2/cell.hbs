@@ -4,6 +4,8 @@
      ...attributes>
   {{#if this.loading}}
     <div class="skeleton-placeholder"></div>
+  {{else if (has-block)}}
+    {{yield}}
   {{else if this.cellComponent}}
     <this.cellComponent.component
       @handler={{@handler}} @column={{@column}} @row={{@row}} @extra={{this.cellComponent.args}} />

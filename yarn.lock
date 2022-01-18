@@ -2316,10 +2316,9 @@
     "@typescript-eslint/types" "5.9.1"
     eslint-visitor-keys "^3.0.0"
 
-"@upfluence/oss-components@^3.x":
-  version "3.13.0"
-  resolved "https://npm.pkg.github.com/download/@upfluence/oss-components/3.13.0/156da9a8887bb657adb0e8a15fd187ba2082b7a41225daef9de3c1d6bd9bc69b#102636ce9c7e48c97c6d73ba8f7a4f19bcbb8acb"
-  integrity sha512-yVCJ0mb9eJPL2cHAUDAlXSu1puBJehh/RLeelcj1D7eBfGyycVjVRyGLIkNb5bz19f7aSgadAMBDBA2/6jMjSA==
+"@upfluence/oss-components@git+ssh://git@github.com/upfluence/oss-components.git#pn/feature/checkbox-component":
+  version "3.14.0"
+  resolved "git+ssh://git@github.com/upfluence/oss-components.git#90eee7adab55008d24d9242eb0d2f7cf956943d3"
   dependencies:
     "@embroider/macros" "^0.47.2"
     "@fortawesome/fontawesome-pro" "^5.15.4"
