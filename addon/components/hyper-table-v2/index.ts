@@ -2,10 +2,11 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { Column } from '@upfluence/hypertable/core/interfaces';
+import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2Args {
   handler: TableHandler;
+  onRowClick(row: Row): void;
 }
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {

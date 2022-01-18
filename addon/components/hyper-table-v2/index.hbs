@@ -17,7 +17,7 @@
             <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
               {{#each @handler.rows as |row|}}
                 <HyperTableV2::Cell
-                  @handler={{@handler}} @column={{column}} @row={{row}} />
+                  @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
               {{/each}}
 
               {{#if @handler.loadingRows}}
@@ -33,7 +33,7 @@
           <HyperTableV2::Column @handler={{@handler}} @column={{column}} {{sortable-item model=column}}>
             {{#each @handler.rows as |row|}}
               <HyperTableV2::Cell
-                @handler={{@handler}} @column={{column}} @row={{row}} />
+                @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
             {{/each}}
 
             {{#if @handler.loadingRows}}
