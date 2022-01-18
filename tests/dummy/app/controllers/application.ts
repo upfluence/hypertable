@@ -30,7 +30,7 @@ const buildColumnDefinition = (key: string, extra: { [key: string]: any }): Colu
   let defaultColumnDefinition = {
     key: key,
     type: 'text',
-    name: `${key}_name`,
+    name: `Name: ${key}`,
     clustering_key: '',
     category: '',
     size: FieldSize.Medium,

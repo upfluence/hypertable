@@ -13,7 +13,7 @@ export const buildColumnDefinition = (key: string, extra?: { [key: string]: any 
   let defaultColumnDefinition = {
     key: key,
     type: 'text',
-    name: `${key}_name`,
+    name: `Name: ${key}`,
     clustering_key: '',
     category: '',
     size: FieldSize.Medium,
@@ -28,12 +28,7 @@ export const buildColumnDefinition = (key: string, extra?: { [key: string]: any 
 export const buildColumn = (key: string, extra?: { [key: string]: any }): Column => {
   return {
     definition: buildColumnDefinition(key, extra || {}),
-    filters: [
-      {
-        key: 'value',
-        value: 'hello'
-      }
-    ]
+    filters: []
   };
 };
 

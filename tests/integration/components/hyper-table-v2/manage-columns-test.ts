@@ -174,7 +174,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               definition: {
                 key: 'code',
                 type: 'text',
-                name: 'code_name',
+                name: 'Name: code',
                 clustering_key: '',
                 category: 'affiliation',
                 size: 'M',
@@ -182,18 +182,13 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
                 filterable: false,
                 facetable: false
               },
-              filters: [
-                {
-                  key: 'value',
-                  value: 'hello'
-                }
-              ]
+              filters: []
             },
             {
               definition: {
                 key: 'bar',
                 type: 'text',
-                name: 'bar_name',
+                name: 'Name: bar',
                 clustering_key: 'youtube',
                 category: 'influencer',
                 size: 'M',

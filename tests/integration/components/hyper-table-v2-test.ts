@@ -34,8 +34,8 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     assert.dom('.hypertable__column').exists({ count: 2 });
 
     assert.dom('.hypertable__sticky-columns .hypertable__column').exists({ count: 1 });
-    assert.dom('.hypertable__sticky-columns .hypertable__column header').hasText('foo_name');
-    assert.dom('.hypertable__column:nth-child(2) header').hasText('bar_name');
+    assert.dom('.hypertable__sticky-columns .hypertable__column header').hasText('Name: foo');
+    assert.dom('.hypertable__column:nth-child(2) header').hasText('Name: bar');
   });
 
   test('it sets up the rows correctly', async function (assert: Assert) {
