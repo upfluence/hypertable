@@ -6,16 +6,15 @@ import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import sinon from 'sinon';
 import { buildColumn, buildColumnDefinition } from '@upfluence/hypertable/test-support/table-manager';
-import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 
 const COLUMN_DEFINITIONS = [
-  { key: 'alone', category: '', clusteringKey: '' },
-  { key: 'code', category: 'affiliation', clusteringKey: '' },
-  { key: 'foo', category: 'influencer', clusteringKey: 'instagram' },
-  { key: 'bar', category: 'influencer', clusteringKey: 'youtube' }
+  { key: 'alone', category: '', clustering_key: '' },
+  { key: 'code', category: 'affiliation', clustering_key: '' },
+  { key: 'foo', category: 'influencer', clustering_key: 'instagram' },
+  { key: 'bar', category: 'influencer', clustering_key: 'youtube' }
 ];
 
-const COLUMNS = [{ key: 'code', category: 'affiliation', clusteringKey: '' }];
+const COLUMNS = [{ key: 'code', category: 'affiliation', clustering_key: '' }];
 
 module('Integration | Component | hyper-table-v2/manage-columns', function (hooks) {
   setupRenderingTest(hooks);
@@ -30,7 +29,12 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         column_definitions: COLUMN_DEFINITIONS.reduce(
           (columnDefinitions, column) => [
             ...columnDefinitions,
-            ...[buildColumnDefinition(column.key, FieldSize.Medium, column.clusteringKey, column.category)]
+            ...[
+              buildColumnDefinition(column.key, {
+                clustering_key: column.clustering_key,
+                category: column.category
+              })
+            ]
           ],
           []
         )
@@ -42,7 +46,12 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         columns: COLUMNS.reduce(
           (columns, column) => [
             ...columns,
-            ...[buildColumn(column.key, FieldSize.Medium, column.clusteringKey, column.category)]
+            ...[
+              buildColumn(column.key, {
+                clustering_key: column.clustering_key,
+                category: column.category
+              })
+            ]
           ],
           []
         )
@@ -165,7 +174,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               definition: {
                 key: 'code',
                 type: 'text',
-                name: 'Name: code',
+                name: 'code_name',
                 clustering_key: '',
                 category: 'affiliation',
                 size: 'M',
@@ -173,13 +182,18 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
                 filterable: false,
                 facetable: false
               },
-              filters: []
+              filters: [
+                {
+                  key: 'value',
+                  value: 'hello'
+                }
+              ]
             },
             {
               definition: {
                 key: 'bar',
                 type: 'text',
-                name: 'Name: bar',
+                name: 'bar_name',
                 clustering_key: 'youtube',
                 category: 'influencer',
                 size: 'M',
@@ -196,7 +210,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
             columns: COLUMNS.reduce(
               (columns, column) => [
                 ...columns,
-                ...[buildColumn(column.key, FieldSize.Medium, column.clusteringKey, column.category)]
+                ...[buildColumn(column.key, { clustering_key: column.clustering_key, category: column.category })]
               ],
               []
             )

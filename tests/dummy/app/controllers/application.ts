@@ -13,36 +13,38 @@ import {
 } from '@upfluence/hypertable/core/interfaces';
 
 const columnDefinitions = [
-  { key: 'foo', category: 'influencer', clusteringKey: 'instagram' },
-  { key: 'bar', category: 'influencer', clusteringKey: 'youtube' },
-  { key: 'code', category: 'affiliation', clusteringKey: '' },
-  { key: 'toto', category: 'influencer', clusteringKey: 'tiktok' },
-  { key: 'test', category: 'other', clusteringKey: '' }
+  { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
+  { key: 'code', extra: { category: 'affiliation', clustering_key: '' } },
+  { key: 'toto', extra: { category: 'influencer', clustering_key: 'tiktok' } },
+  { key: 'test', extra: { category: 'other', clustering_key: '' } }
 ];
 
 const columns = [
-  { key: 'foo', category: 'influencer', clusteringKey: 'instagram' },
-  { key: 'bar', category: 'influencer', clusteringKey: 'youtube' },
-  { key: 'code', category: 'affiliation', clusteringKey: '' }
+  { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
+  { key: 'code', extra: { category: 'affiliation', clustering_key: '' } }
 ];
 
-const buildColumnDefinition = (key, category, clusteringKey) => {
-  return {
-    key,
+const buildColumnDefinition = (key: string, extra: { [key: string]: any }): ColumnDefinition => {
+  let defaultColumnDefinition = {
+    key: key,
     type: 'text',
     name: `${key}_name`,
-    size: size,
     clustering_key: '',
     category: '',
-    orderable: orderable,
-    filterable: filterable,
+    size: FieldSize.Medium,
+    orderable: false,
+    filterable: false,
     facetable: false
   };
+
+  return Object.assign(defaultColumnDefinition, extra);
 };
 
-const buildColumn = (key, category, clusteringKey) => {
+const buildColumn = (key: string, extra: { [key: string]: any }): Column => {
   return {
-    definition: def,
+    definition: buildColumnDefinition(key, extra),
     filters: [
       {
         key: 'value',
@@ -53,35 +55,23 @@ const buildColumn = (key, category, clusteringKey) => {
 };
 
 class Manager implements TableManager {
-  fetchColumnDefinitions() {
+  fetchColumnDefinitions(): Promise<ColumnDefinitionResponse> {
     return Promise.resolve({
       column_definitions: columnDefinitions.reduce(
-        (columnDefinitions, column) => [
-          ...columnDefinitions,
-          ...[buildColumnDefinition(column.key, column.category, column.clusteringKey)]
-        ],
+        (columnDefinitions, column) => [...columnDefinitions, ...[buildColumnDefinition(column.key, column.extra)]],
         []
       )
     });
-  }
-  fetchColumns() {
-    return Promise.resolve({
-      columns: columns.reduce(
-        (columnDefinitions, column) => [
-          ...columnDefinitions,
-          ...[buildColumn(column.key, column.category, column.clusteringKey)]
-        ],
-        []
-      )
-    });
-  fetchColumnDefinitions(): Promise<ColumnDefinitionResponse> {
-    return Promise.resolve({ column_definitions: [] });
   }
   fetchColumns(): Promise<TableColumnsResponse> {
     return Promise.resolve({
-      columns: [buildColumn('foo', FieldSize.Medium, false, true), buildColumn('bar', FieldSize.Medium, true, true)]
+      columns: columns.reduce(
+        (columnDefinitions, column) => [...columnDefinitions, ...[buildColumn(column.key, column.extra)]],
+        []
+      )
     });
   }
+
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
     return Promise.resolve({ columns: request.columns });
   }
@@ -190,7 +180,7 @@ class RowsFetcher {
           holderType: 'list',
           foo: 'second',
           bar: 'second bar'
-        },
+        }
       ],
       meta: { total: 12 }
     });

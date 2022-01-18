@@ -9,38 +9,31 @@ import {
   ColumnDefinition
 } from '@upfluence/hypertable/core/interfaces';
 
-export const buildColumnDefinition = (
-  key: string,
-  size = FieldSize.Medium,
-  clusteringKey: string = '',
-  category: string = ''
-  filterable: boolean = false,
-  orderable: boolean = false
-): ColumnDefinition => {
-  return {
-    key,
+export const buildColumnDefinition = (key: string, extra?: { [key: string]: any }): ColumnDefinition => {
+  let defaultColumnDefinition = {
+    key: key,
     type: 'text',
-    name: `Name: ${key}`,
-    clustering_key: clusteringKey,
-    category: category,
-    size: size,
-    orderable: orderable,
-    filterable: filterable,
+    name: `${key}_name`,
+    clustering_key: '',
+    category: '',
+    size: FieldSize.Medium,
+    orderable: false,
+    filterable: false,
     facetable: false
   };
+
+  return Object.assign(defaultColumnDefinition, extra || {});
 };
 
-export const buildColumn = (
-  key: string,
-  size = FieldSize.Medium,
-  clusteringKey: string = '',
-  category: string = ''
-  filterable: boolean = false,
-  orderable: boolean = false
-): Column => {
+export const buildColumn = (key: string, extra?: { [key: string]: any }): Column => {
   return {
-    definition: buildColumnDefinition(key, size, clusteringKey, category, filterable, orderable),
-    filters: []
+    definition: buildColumnDefinition(key, extra || {}),
+    filters: [
+      {
+        key: 'value',
+        value: 'hello'
+      }
+    ]
   };
 };
 
@@ -50,10 +43,9 @@ export default class TableManager implements ITableManager {
   }
 
   fetchColumns(): Promise<TableColumnsResponse> {
-    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar', FieldSize.Large)] });
+    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar', { size: FieldSize.Large })] });
   }
 
-  // @ts-ignore
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
     return Promise.resolve({ columns: request.columns });
   }

@@ -72,7 +72,7 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
     const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
     sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
       return Promise.resolve({
-        columns: [buildColumn('foo', FieldSize.Large, true)]
+        columns: [buildColumn('foo', { size: FieldSize.Large, filterable: true })]
       });
     });
     await this.handler.fetchColumns();

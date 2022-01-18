@@ -92,8 +92,12 @@ module('Unit | core/handler', function (hooks) {
     test('new filters are added to the column', async function (assert: Assert) {
       this.handler.applyFilters(this.handler.columns[0], [{ key: 'foo', value: 'bar' }]);
 
-      assert.equal(this.handler.columns[0].filters.length, 1);
+      assert.equal(this.handler.columns[0].filters.length, 2);
       assert.deepEqual(this.handler.columns[0].filters, [
+        {
+          key: 'value',
+          value: 'hello'
+        },
         {
           key: 'foo',
           value: 'bar'
