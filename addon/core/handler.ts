@@ -29,6 +29,7 @@ export default class TableHandler {
   @tracked columnDefinitions: ColumnDefinition[] = [];
   @tracked columns: Column[] = [];
   @tracked rows: Row[] = [];
+  @tracked selection: Row[] | 'all' = [];
 
   @tracked loadingColumns: boolean = false;
   @tracked loadingRows: boolean = false;
@@ -204,6 +205,30 @@ export default class TableHandler {
   }
 
   /**
+   * Toggle the selection state of all rows.
+   *
+   * @param {boolean} toggled
+   */
+  toggleSelectAll(toggled: boolean) {
+    this.selection = toggled ? 'all' : [];
+  }
+
+  /**
+   * Add or remove a row to the selected items depending on whether it's already present or not.
+   *
+   * @param {Row} row
+   */
+  updateSelection(row: Row) {
+    this.selection = this.selection instanceof Array ? this.selection : [];
+
+    if (this.selection.includes(row)) {
+      this.selection = this.selection.filter((x: Row) => x !== row);
+    } else {
+      this.selection = [...this.selection, ...[row]];
+    }
+  }
+
+  /**
    * Toggles an instance of Tether for a given column.
    *
    * @param {string} on - The column we want to create a Tether instance for
@@ -244,6 +269,7 @@ export default class TableHandler {
   }
 
   private _reinitColumnsAndRows(columns: Column[]): void {
+    this.rows = [];
     this.columns = columns;
     this.currentPage = 1;
     this.fetchRows();

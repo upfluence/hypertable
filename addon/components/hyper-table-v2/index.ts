@@ -39,4 +39,14 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       this.loadingResetFilters = false;
     });
   }
+
+  @action
+  toggleSelectAll(value: boolean) {
+    this.args.handler.toggleSelectAll(value);
+  }
+
+  @action
+  toggleRowSelection(row: Row) {
+    this.args.handler.updateSelection(row);
+  }
 }
