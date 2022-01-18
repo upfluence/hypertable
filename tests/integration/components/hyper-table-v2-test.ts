@@ -5,12 +5,12 @@ import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
+import { Row } from '@upfluence/hypertable/core/interfaces';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
 
 module('Integration | Component | hyper-table-v2', function (hooks) {
   setupRenderingTest(hooks);
-
   hooks.beforeEach(function () {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
@@ -67,5 +67,16 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     assert.deepEqual(this.handler.columns[0].filters, []);
     assert.deepEqual(this.handler.columns[1].filters, []);
+  });
+
+  test('it triggers the onRowClick action correctly', async function (assert: Assert) {
+    this.onRowClick = (row: Row) => {
+      assert.equal(row, this.handler.rows[0]);
+    };
+
+    await render(hbs`<HyperTableV2 @handler={{this.handler}} @onRowClick={{this.onRowClick}} />`);
+    await click('.hypertable__sticky-columns > .hypertable__column .hypertable__cell');
+
+    assert.expect(1);
   });
 });

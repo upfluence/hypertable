@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { click, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -36,5 +36,25 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
     // @ts-ignore
     assert.ok(renderingResolverSpy.lookupCellComponent.calledOnceWithExactly(this.column.definition));
     assert.dom('.hypertable__cell').hasText('ekip');
+  });
+
+  test('the onClick action is called when the cell is clicked', async function (assert: Assert) {
+    this.onClick = sinon.stub();
+    await render(hbs`
+      <HyperTableV2::Cell @handler={{this.handler}} @column={{this.column}} @row={{this.row}} @onClick={{this.onClick}} />
+    `);
+
+    await click('.hypertable__cell');
+
+    assert.ok(this.onClick.calledOnce);
+  });
+
+  test('the onClick action is called when the cell is clicked', async function (assert: Assert) {
+    this.onClick = sinon.stub();
+    await render(hbs`<HyperTableV2::Cell @loading={{true}} @onClick={{this.onClick}} />`);
+
+    await click('.hypertable__cell');
+
+    assert.ok(this.onClick.neverCalledWith());
   });
 });
