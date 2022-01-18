@@ -56,4 +56,36 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     assert.expect(1);
   });
+
+  module('empty state', function (hooks) {
+    hooks.beforeEach(function () {
+      sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {
+        return Promise.resolve({ rows: [], meta: { total: 0 } });
+      });
+    });
+
+    test('it displays the default empty state if there is no named block passed', async function (assert: Assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.hypertable__state.hypertable__state--empty').exists();
+      assert.dom('.hypertable__state.hypertable__state--empty img').exists();
+      assert
+        .dom('.hypertable__state.hypertable__state--empty img')
+        .hasAttribute('src', '/@upfluence/hypertable/assets/images/empty-state.png');
+    });
+
+    test('it displays the empty state named block if passed', async function (assert: Assert) {
+      await render(hbs`
+        <HyperTableV2 @handler={{this.handler}}>
+          <:empty-state>
+            <div class="custom-empty-state">foo</div>
+          </:empty-state>
+        </HyperTableV2>
+      `);
+
+      assert.dom('.hypertable__state.hypertable__state--empty').exists();
+      assert.dom('.hypertable__state.hypertable__state--empty .custom-empty-state').exists();
+      assert.dom('.hypertable__state.hypertable__state--empty .custom-empty-state').hasText('foo')
+    });
+  });
 });
