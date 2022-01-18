@@ -3,7 +3,7 @@
   <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
     <div class="available-fields-wrapper__categories">
       <div class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
-           role="button" {{on "click" (fn this.setFieldCategory null)}}>
+           role="button" {{on "click" (fn this.setFieldCategory null)}} data-control-name="field_category_toggle_all_fields">
         <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
         <div><i class="fas fa-caret-right"></i></div>
       </div>
@@ -41,6 +41,10 @@
               </div>
             </div>
           {{/each}}
+        {{else}}
+          <div class="field margin-top-md">
+            {{t "hypertable.features.manage_fields.no_columns"}}
+          </div>
         {{/each-in}}
       </div>
     </div>

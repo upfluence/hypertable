@@ -11,7 +11,9 @@ import {
 
 export const buildColumnDefinition = (
   key: string,
-  size: FieldSize = FieldSize.Medium,
+  size = FieldSize.Medium,
+  clusteringKey: string = '',
+  category: string = ''
   filterable: boolean = false,
   orderable: boolean = false
 ): ColumnDefinition => {
@@ -19,8 +21,8 @@ export const buildColumnDefinition = (
     key,
     type: 'text',
     name: `Name: ${key}`,
-    clustering_key: '',
-    category: '',
+    clustering_key: clusteringKey,
+    category: category,
     size: size,
     orderable: orderable,
     filterable: filterable,
@@ -30,12 +32,14 @@ export const buildColumnDefinition = (
 
 export const buildColumn = (
   key: string,
-  size: FieldSize = FieldSize.Medium,
+  size = FieldSize.Medium,
+  clusteringKey: string = '',
+  category: string = ''
   filterable: boolean = false,
   orderable: boolean = false
 ): Column => {
   return {
-    definition: buildColumnDefinition(key, size, filterable, orderable),
+    definition: buildColumnDefinition(key, size, clusteringKey, category, filterable, orderable),
     filters: []
   };
 };

@@ -10,11 +10,11 @@ type ManageColumn = {
   visible: boolean;
 };
 
-interface HyperTableV2ManageFieldsArgs {
+interface HyperTableV2ManageColumnsArgs {
   handler: TableHandler;
 }
 
-export default class HyperTableV2ManageFields extends Component<HyperTableV2ManageFieldsArgs> {
+export default class HyperTableV2ManageColumns extends Component<HyperTableV2ManageColumnsArgs> {
   @tracked displayAvailableFields: boolean = false;
   @tracked _activeColumnCategory: null | string = null;
   @tracked _searchColumnDefinitionKeyword: null | string = null;
@@ -33,22 +33,25 @@ export default class HyperTableV2ManageFields extends Component<HyperTableV2Mana
   get _orderedFilteredClusters() {
     let fields = A(
       this.args.handler.columnDefinitions.filter((columnDefinition) => {
-        //search condition
+        const search = (this._searchColumnDefinitionKeyword || '').toLowerCase();
+        const hasSearched =
+          !this._searchColumnDefinitionKeyword || columnDefinition.name.toLowerCase().indexOf(search) >= 0;
         const hasActiveGroup = !this._activeColumnCategory || columnDefinition.category === this._activeColumnCategory;
-        return hasActiveGroup;
+        return hasActiveGroup && hasSearched;
       })
     ).sortBy('name');
+
     return this.groupByClusteringKey(fields);
   }
 
   groupByClusteringKey(columnDefinitions: ColumnDefinition[]) {
-    const map = new Map().set('', []);
+    const map = new Map();
 
     columnDefinitions.forEach((columnDefinition) => {
       const cluster = map.get(columnDefinition.clustering_key);
       const manageColumn: ManageColumn = {
         definition: columnDefinition,
-        visible: !!this.args.handler.columns.find((column) => column.definition.key === columnDefinition.key)
+        visible: !!this.args.handler.columns.find((column) => column?.definition.key === columnDefinition.key)
       };
 
       if (!cluster) {
@@ -58,7 +61,7 @@ export default class HyperTableV2ManageFields extends Component<HyperTableV2Mana
       }
     });
 
-    return map;
+    return new Map([...map].sort((a, b) => a[0].localeCompare(b[0])));
   }
 
   @action

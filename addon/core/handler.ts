@@ -100,6 +100,12 @@ export default class TableHandler {
     this.tableManager.upsertColumns({ columns: this.columns });
   }
 
+  /**
+   * Add a column to the table.
+   *
+   * @param {ColumnDefinition} definition - The column definition we want to add to the table
+   * @returns {Promise<void>}
+   */
   addColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
@@ -110,6 +116,12 @@ export default class TableHandler {
       });
   }
 
+  /**
+   * Remove a column from the table.
+   *
+   * @param {ColumnDefinition} definition - The column definition we want to remove from the table
+   * @returns {Promise<void>}
+   */
   removeColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({
