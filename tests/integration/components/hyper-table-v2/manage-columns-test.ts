@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, render } from '@ember/test-helpers';
+import { click, fillIn, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -225,6 +225,14 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
           columnDefinitionsChecked[0].parentElement?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_code'
         );
+      });
+      test('it searches in column definitions', async function (assert) {
+        await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
+        await click('.upf-btn.upf-btn--primary');
+        await fillIn('.search input', 'alone');
+
+        assert.dom('.field').exists({ count: 1 });
+        assert.dom('[data-control-name="column_definition_toggle_checkbox_alone"]').exists({ count: 1 });
       });
     });
   });
