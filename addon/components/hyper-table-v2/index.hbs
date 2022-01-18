@@ -11,6 +11,20 @@
     </div>
   </div>
   <div class="hypertable__table hypertable__table--v2">
+    {{#if (and (eq @handler.rows.length 0) (not @handler.loadingRows))}}
+      <div class="hypertable__state hypertable__state--empty">
+        {{#if (has-block "empty-state")}}
+          {{yield to="empty-state"}}
+        {{else}}
+          <img src="/@upfluence/hypertable/assets/images/empty-state.png"
+               width="40%" alt={{t "hypertable.rows.empty_content"}} />
+          <p class="text-color-default-light text-size-6 margin-top-xx-sm">
+            {{t "hypertable.rows.empty_content"}}
+          </p>
+        {{/if}}
+      </div>
+    {{/if}}
+
     <div class="hypertable"
          {{sortable-group direction="x" onChange=this.reorderColumns}}
          {{on-bottom-reached this.onBottomReached}}>
