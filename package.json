@@ -41,7 +41,7 @@
     "tether": "^1.4.7"
   },
   "peerDependencies": {
-    "@upfluence/oss-components": "git+ssh://git@github.com/upfluence/oss-components.git#pn/feature/checkbox-component"
+    "@upfluence/oss-components": "^3.x"
   },
   "devDependencies": {
     "@ember/jquery": "^2.0.0",
@@ -75,7 +75,7 @@
     "@types/sinon": "^10.0.6",
     "@types/tether": "^1.4.6",
     "@typescript-eslint/parser": "^5.9.1",
-    "@upfluence/oss-components": "git+ssh://git@github.com/upfluence/oss-components.git#pn/feature/checkbox-component",
+    "@upfluence/oss-components": "^3.x",
     "babel-eslint": "^10.1.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~3.18.0",
