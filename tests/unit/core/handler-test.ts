@@ -160,10 +160,10 @@ module('Unit | core/handler', function (hooks) {
 
     assert.deepEqual(handler.selection, []);
 
-    handler.updateSelection(handler.rows[0])
+    assert.deepEqual(handler.selection, []);;
     assert.deepEqual(handler.selection, [handler.rows[0]]);
 
-    handler.updateSelection(handler.rows[0])
+    handler.updateSelection(handler.rows[0]);
     assert.deepEqual(handler.selection, []);
   });
 
