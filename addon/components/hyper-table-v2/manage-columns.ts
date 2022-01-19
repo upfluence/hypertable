@@ -21,7 +21,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   @tracked _searchColumnDefinitionKeyword: null | string = null;
 
   get _columnCategories(): string[] {
-    return this.args.handler.columnDefinitions
+    return (this.args.handler.columnDefinitions || [])
       .reduce((categories: string[], columnDefinition) => {
         if (!categories.includes(columnDefinition.category)) {
           categories.push(columnDefinition.category);
@@ -33,7 +33,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
 
   get _orderedFilteredClusters(): Map<string, ManagedColumn[]> {
     let fields = A(
-      this.args.handler.columnDefinitions.filter((columnDefinition) => {
+      (this.args.handler.columnDefinitions || []).filter((columnDefinition) => {
         const search = (this._searchColumnDefinitionKeyword || '').toLowerCase();
         const hasSearched =
           !this._searchColumnDefinitionKeyword || columnDefinition.name.toLowerCase().indexOf(search) >= 0;
