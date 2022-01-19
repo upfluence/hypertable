@@ -143,6 +143,30 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.currentPage, 1);
   });
 
+  test('Handler#toggleSelectAll', function (assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    assert.deepEqual(handler.selection, []);
+
+    handler.toggleSelectAll(true);
+    assert.deepEqual(handler.selection, 'all');
+
+    handler.toggleSelectAll(false);
+    assert.deepEqual(handler.selection, []);
+  });
+
+  test('Handler#updateSelection', async function (assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    await handler.fetchRows();
+
+    assert.deepEqual(handler.selection, []);
+
+    handler.updateSelection(handler.rows[0])
+    assert.deepEqual(handler.selection, [handler.rows[0]]);
+
+    handler.updateSelection(handler.rows[0])
+    assert.deepEqual(handler.selection, []);
+  });
+
   module('Handler#onBottomReached', function () {
     test('it does nothing if the maximum rows have been loaded already', async function (assert: Assert) {
       sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {

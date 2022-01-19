@@ -4,10 +4,17 @@ import { action } from '@ember/object';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
+type FeatureSet = {
+  selection: boolean;
+}
+
 interface HyperTableV2Args {
   handler: TableHandler;
+  features: FeatureSet;
   onRowClick(row: Row): void;
 }
+
+const DEFAULT_FEATURES_SET: FeatureSet = { selection : false };
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
@@ -18,6 +25,13 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     args.handler.fetchColumns().then(() => {
       args.handler.fetchRows();
     });
+  }
+
+  get features(): FeatureSet {
+    return {
+      ...DEFAULT_FEATURES_SET,
+      ...(this.args.features || {})
+    }
   }
 
   @action

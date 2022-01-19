@@ -28,38 +28,40 @@
       {{#each @handler.columns as |column index|}}
         {{#if (eq index 0)}}
           <div class="hypertable__sticky-columns">
-            <div class="hypertable__column hypertable__column--selection {{concat 'hypertable__column--size-' column.size}}">
-              <header>
-                <OSS::Checkbox
-                  @checked={{eq @handler.selection "all"}}
-                  @size="sm"
-                  @onChange={{this.toggleSelectAll}}
-                  @disabled={{false}} />
-              </header>
-
-              {{#if @handler.loadingRows}}
-                {{#each this.loadingSkeletons}}
-                  <HyperTableV2::Cell @loading={{true}} />
-                {{/each}}
-              {{else}}
-                {{#each @handler.rows as |row|}}
-                  <HyperTableV2::Cell
-                    @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}}>
-                    <OSS::Checkbox
-                      @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
-                      @size="sm"
-                      @onChange={{fn this.toggleRowSelection row}}
-                      @disabled={{eq @handler.selection "all"}} />
-                  </HyperTableV2::Cell>
-                {{/each}}
+            {{#if this.features.selection}}
+              <div class="hypertable__column hypertable__column--selection">
+                <header>
+                  <OSS::Checkbox
+                    @checked={{eq @handler.selection "all"}}
+                    @size="sm"
+                    @onChange={{this.toggleSelectAll}}
+                    @disabled={{false}} />
+                </header>
 
                 {{#if @handler.loadingRows}}
-                  <HyperTableV2::Cell @loading={{true}} />
-                  <HyperTableV2::Cell @loading={{true}} />
-                  <HyperTableV2::Cell @loading={{true}} />
+                  {{#each this.loadingSkeletons}}
+                    <HyperTableV2::Cell @loading={{true}} />
+                  {{/each}}
+                {{else}}
+                  {{#each @handler.rows as |row|}}
+                    <HyperTableV2::Cell
+                      @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}}>
+                      <OSS::Checkbox
+                        @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
+                        @size="sm"
+                        @onChange={{fn this.toggleRowSelection row}}
+                        @disabled={{eq @handler.selection "all"}} />
+                    </HyperTableV2::Cell>
+                  {{/each}}
+
+                  {{#if @handler.loadingRows}}
+                    <HyperTableV2::Cell @loading={{true}} />
+                    <HyperTableV2::Cell @loading={{true}} />
+                    <HyperTableV2::Cell @loading={{true}} />
+                  {{/if}}
                 {{/if}}
-              {{/if}}
-            </div>
+              </div>
+            {{/if}}
 
             <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
               {{#each @handler.rows as |row|}}
