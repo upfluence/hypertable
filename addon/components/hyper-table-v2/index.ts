@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -10,6 +11,7 @@ interface HyperTableV2Args {
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
+  @tracked loadingResetFilters = false;
 
   constructor(owner: unknown, args: HyperTableV2Args) {
     super(owner, args);
@@ -27,5 +29,13 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @action
   onBottomReached() {
     this.args.handler.onBottomReached();
+  }
+
+  @action
+  resetFilters() {
+    this.loadingResetFilters = true;
+    this.args.handler.resetColumns(this.args.handler.columns).finally(() => {
+      this.loadingResetFilters = false;
+    });
   }
 }

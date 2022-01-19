@@ -2,6 +2,7 @@ import {
   Column,
   ColumnDefinitionResponse,
   FieldSize,
+  Filter,
   TableColumnsResponse,
   TableManager as ITableManager,
   TableColumnUpsertRequest,
@@ -25,10 +26,10 @@ export const buildColumnDefinition = (key: string, extra?: { [key: string]: any 
   return Object.assign(defaultColumnDefinition, extra || {});
 };
 
-export const buildColumn = (key: string, extra?: { [key: string]: any }): Column => {
+export const buildColumn = (key: string, extra?: { [key: string]: any; filters?: Filter[] }): Column => {
   return {
     definition: buildColumnDefinition(key, extra || {}),
-    filters: []
+    filters: extra?.filters || []
   };
 };
 
