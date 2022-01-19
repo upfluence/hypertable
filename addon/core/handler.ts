@@ -65,21 +65,20 @@ export default class TableHandler {
       });
   }
 
-  async fetchColumnDefinitions(): Promise<ColumnDefinition[]> {
+  async fetchColumnDefinitions(): Promise<void> {
     this.loadingColumnDefinition = true;
 
     return this.tableManager
       .fetchColumnDefinitions()
       .then(({ column_definitions }) => {
         this.columnDefinitions = column_definitions;
-        return column_definitions;
       })
       .finally(() => {
         this.loadingColumnDefinition = false;
       });
   }
 
-  async fetchRows(): Promise<Row[]> {
+  async fetchRows(): Promise<void> {
     this.loadingRows = true;
 
     return this.rowsFetcher
@@ -88,7 +87,6 @@ export default class TableHandler {
         this.rows = [...this.rows, ...rows];
         this.rowsMeta = meta;
         this.currentPage += 1;
-        return rows;
       })
       .finally(() => {
         this.loadingRows = false;

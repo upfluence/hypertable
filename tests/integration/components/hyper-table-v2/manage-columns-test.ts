@@ -6,18 +6,26 @@ import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import sinon from 'sinon';
 import { buildColumn, buildColumnDefinition } from '@upfluence/hypertable/test-support/table-manager';
+import { Column, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 
 const COLUMN_DEFINITIONS = [
-  { key: 'alone', category: '', clustering_key: '' },
-  { key: 'code', category: 'affiliation', clustering_key: '' },
-  { key: 'foo', category: 'influencer', clustering_key: 'instagram' },
-  { key: 'bar', category: 'influencer', clustering_key: 'youtube' }
+  { key: 'alone', extra: { category: '', clustering_key: '' } },
+  { key: 'code', extra: { category: 'affiliation', clustering_key: '' } },
+  { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } }
 ];
 
-const COLUMNS = [{ key: 'code', category: 'affiliation', clustering_key: '' }];
+const COLUMNS = [{ key: 'code', extra: { category: 'affiliation', clustering_key: '' } }];
 
 module('Integration | Component | hyper-table-v2/manage-columns', function (hooks) {
   setupRenderingTest(hooks);
+
+  function builderHelper(
+    columnOptions: Array<{ key: string; extra: { [key: string]: string } }>,
+    buildMethod: (key: string, extra: { [key: string]: string }) => ColumnDefinition | Column
+  ): (ColumnDefinition | Column)[] {
+    return columnOptions.reduce((columns, column) => [...columns, ...[buildMethod(column.key, column.extra)]], []);
+  }
 
   hooks.beforeEach(async function () {
     this.tableManager = new TableManager();
@@ -26,35 +34,13 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
     sinon.stub(this.tableManager, 'fetchColumnDefinitions').callsFake(() => {
       return Promise.resolve({
-        column_definitions: COLUMN_DEFINITIONS.reduce(
-          (columnDefinitions, column) => [
-            ...columnDefinitions,
-            ...[
-              buildColumnDefinition(column.key, {
-                clustering_key: column.clustering_key,
-                category: column.category
-              })
-            ]
-          ],
-          []
-        )
+        column_definitions: builderHelper(COLUMN_DEFINITIONS, buildColumnDefinition)
       });
     });
 
     sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
       return Promise.resolve({
-        columns: COLUMNS.reduce(
-          (columns, column) => [
-            ...columns,
-            ...[
-              buildColumn(column.key, {
-                clustering_key: column.clustering_key,
-                category: column.category
-              })
-            ]
-          ],
-          []
-        )
+        columns: builderHelper(COLUMNS, buildColumn)
       });
     });
 
@@ -75,7 +61,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
       assert.dom('.available-fields-wrapper.visible').exists({ count: 1 });
     });
 
-    module('when user manage categories', function () {
+    module('when user manages categories', function () {
       test('it displays all categories', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--primary');
@@ -86,14 +72,14 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         assert.dom('[data-control-name="field_category_toggle_influencer"]').exists({ count: 1 });
       });
 
-      test('it displays default category as active', async function (assert) {
+      test('it displays the default category as active', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--primary');
 
         assert.dom('[data-control-name="field_category_toggle_all_fields"]').hasClass('field-category--active');
       });
 
-      test('it displays all column definitions for default category', async function (assert) {
+      test('it displays all the column definitions for default category', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--primary');
 
@@ -111,7 +97,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         assert.expect(6);
       });
 
-      test('it sets category as active when user select a category', async function (assert) {
+      test('it sets the category. as active when user select a category', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--primary');
         await click('[data-control-name="field_category_toggle_affiliation"]');
@@ -120,7 +106,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         assert.dom('[data-control-name="field_category_toggle_all_fields"]').doesNotHaveClass('field-category--active');
       });
 
-      test('it display column definitions of active category with clustering key', async function (assert) {
+      test('it displays the column definitions of active category with clustering key', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--primary');
         await click('[data-control-name="field_category_toggle_influencer"]');
@@ -153,78 +139,8 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
       });
     });
 
-    module('when user manage column definition', function () {
-      test('it removes column in table', async function (assert) {
-        let upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
-          assert.deepEqual(columns, []);
-          return Promise.resolve({ columns: [] });
-        });
-
-        await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--primary');
-        await click('[data-control-name="column_definition_toggle_checkbox_code"] input');
-
-        assert.ok(upsertColumnsMock.calledOnce);
-      });
-
-      test('it add column in table', async function (assert) {
-        const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
-          const updatedColumns = [
-            {
-              definition: {
-                key: 'code',
-                type: 'text',
-                name: 'Name: code',
-                clustering_key: '',
-                category: 'affiliation',
-                size: 'M',
-                orderable: false,
-                filterable: false,
-                facetable: false
-              },
-              filters: []
-            },
-            {
-              definition: {
-                key: 'bar',
-                type: 'text',
-                name: 'Name: bar',
-                clustering_key: 'youtube',
-                category: 'influencer',
-                size: 'M',
-                orderable: false,
-                filterable: false,
-                facetable: false
-              },
-              filters: []
-            }
-          ];
-
-          assert.deepEqual(columns, updatedColumns);
-          return Promise.resolve({
-            columns: COLUMNS.reduce(
-              (columns, column) => [
-                ...columns,
-                ...[buildColumn(column.key, { clustering_key: column.clustering_key, category: column.category })]
-              ],
-              []
-            )
-          });
-        });
-        const fetchRowsMock = sinon.stub(this.rowsFetcher, 'fetch').callsFake(() => {
-          return Promise.resolve({ rows: [] });
-        });
-
-        await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-
-        await click('.upf-btn.upf-btn--primary');
-        await click('[data-control-name="column_definition_toggle_checkbox_bar"] input');
-
-        assert.ok(upsertColumnsMock.calledOnce);
-        assert.ok(fetchRowsMock.calledOnce);
-      });
-
-      test('it display active columns', async function (assert) {
+    module('when user manages column definition', function () {
+      test('it displays the column in the table', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--primary');
 
@@ -235,6 +151,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
           'column_definition_toggle_checkbox_code'
         );
       });
+
       test('it searches in column definitions', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--primary');
@@ -243,6 +160,70 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         assert.dom('.field').exists({ count: 1 });
         assert.dom('[data-control-name="column_definition_toggle_checkbox_alone"]').exists({ count: 1 });
       });
+    });
+
+    test('it removes the column in the table', async function (assert) {
+      let upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
+        assert.deepEqual(columns, []);
+        return Promise.resolve({ columns: [] });
+      });
+
+      await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
+      await click('.upf-btn.upf-btn--primary');
+      await click('[data-control-name="column_definition_toggle_checkbox_code"] input');
+
+      assert.ok(upsertColumnsMock.calledOnce);
+    });
+
+    test('it adds the column in the table', async function (assert) {
+      const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
+        const updatedColumns = [
+          {
+            definition: {
+              key: 'code',
+              type: 'text',
+              name: 'Name: code',
+              clustering_key: '',
+              category: 'affiliation',
+              size: 'M',
+              orderable: false,
+              filterable: false,
+              facetable: false
+            },
+            filters: []
+          },
+          {
+            definition: {
+              key: 'bar',
+              type: 'text',
+              name: 'Name: bar',
+              clustering_key: 'youtube',
+              category: 'influencer',
+              size: 'M',
+              orderable: false,
+              filterable: false,
+              facetable: false
+            },
+            filters: []
+          }
+        ];
+
+        assert.deepEqual(columns, updatedColumns);
+        return Promise.resolve({
+          columns: builderHelper(COLUMNS, buildColumn)
+        });
+      });
+      const fetchRowsMock = sinon.stub(this.rowsFetcher, 'fetch').callsFake(() => {
+        return Promise.resolve({ rows: [] });
+      });
+
+      await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
+
+      await click('.upf-btn.upf-btn--primary');
+      await click('[data-control-name="column_definition_toggle_checkbox_bar"] input');
+
+      assert.ok(upsertColumnsMock.calledOnce);
+      assert.ok(fetchRowsMock.calledOnce);
     });
   });
 });

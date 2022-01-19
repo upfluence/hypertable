@@ -1,5 +1,6 @@
 <div class="hypertable__manage-fields" {{on-click-outside this.closeAvailableFields}}>
-  <OSS::Button @skin="primary" @icon="fas fa-columns" @label="Manage Fields" {{on "click" this.openAvailableFields}} />
+  <OSS::Button @skin="primary" @icon="fas fa-columns" @label={{t "hypertable.features.manage_fields.title"}}
+    {{on "click" this.openAvailableFields}} />
   <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
     <div class="available-fields-wrapper__categories">
       <div class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
@@ -21,15 +22,14 @@
         <Input
           @type="text" @value={{this._searchColumnDefinitionKeyword}}
           data-control-name="column_definitions_search_input" class="upf-input upf-input--small"
-          placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-        />
+          placeholder={{t "hypertable.features.manage_fields.search_placeholder"}} />
       </div>
       <div class="fields-list">
         {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
           {{#if clusterName}}
-            <p class="cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
+            <div class="cluster-name text-style-bold margin-top-xxx-sm">
               {{clusterName}}
-            </p>
+            </div>
           {{/if}}
           {{#each fields as |field|}}
             <div class="field" {{on "click" (fn this.columnVisibilityUpdate field)}}>

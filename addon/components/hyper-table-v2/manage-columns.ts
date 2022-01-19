@@ -2,10 +2,11 @@ import { A } from '@ember/array';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 
-type ManageColumn = {
+type ManagedColumn = {
   definition: ColumnDefinition;
   visible: boolean;
 };
@@ -30,7 +31,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
       .sort((a, b) => a.localeCompare(b));
   }
 
-  get _orderedFilteredClusters() {
+  get _orderedFilteredClusters(): Map<string, ManagedColumn[]> {
     let fields = A(
       this.args.handler.columnDefinitions.filter((columnDefinition) => {
         const search = (this._searchColumnDefinitionKeyword || '').toLowerCase();
@@ -44,14 +45,14 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
     return this.groupByClusteringKey(fields);
   }
 
-  groupByClusteringKey(columnDefinitions: ColumnDefinition[]) {
+  groupByClusteringKey(columnDefinitions: ColumnDefinition[]): Map<string, ManagedColumn[]> {
     const map = new Map();
 
     columnDefinitions.forEach((columnDefinition) => {
       const cluster = map.get(columnDefinition.clustering_key);
-      const manageColumn: ManageColumn = {
+      const manageColumn: ManagedColumn = {
         definition: columnDefinition,
-        visible: !!this.args.handler.columns.find((column) => column?.definition.key === columnDefinition.key)
+        visible: !isEmpty(this.args.handler.columns.find((column) => column?.definition.key === columnDefinition.key))
       };
 
       if (!cluster) {
@@ -65,7 +66,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   }
 
   @action
-  columnVisibilityUpdate(column: ManageColumn, event: PointerEvent) {
+  columnVisibilityUpdate(column: ManagedColumn, event: PointerEvent): void {
     event.stopPropagation();
     if (column.visible) {
       this.args.handler.removeColumn(column.definition);
