@@ -32,6 +32,7 @@ export default class TableHandler {
 
   @tracked loadingColumns: boolean = false;
   @tracked loadingRows: boolean = false;
+  @tracked loadingColumnDefinition: boolean = false;
 
   rowsMeta?: RowsFetcherMetadata;
   currentPage: number = 1;
@@ -64,7 +65,20 @@ export default class TableHandler {
       });
   }
 
-  async fetchRows(): Promise<Row[]> {
+  async fetchColumnDefinitions(): Promise<void> {
+    this.loadingColumnDefinition = true;
+
+    return this.tableManager
+      .fetchColumnDefinitions()
+      .then(({ column_definitions }) => {
+        this.columnDefinitions = column_definitions;
+      })
+      .finally(() => {
+        this.loadingColumnDefinition = false;
+      });
+  }
+
+  async fetchRows(): Promise<void> {
     this.loadingRows = true;
 
     return this.rowsFetcher
@@ -73,7 +87,6 @@ export default class TableHandler {
         this.rows = [...this.rows, ...rows];
         this.rowsMeta = meta;
         this.currentPage += 1;
-        return rows;
       })
       .finally(() => {
         this.loadingRows = false;
@@ -85,14 +98,36 @@ export default class TableHandler {
     this.tableManager.upsertColumns({ columns: this.columns });
   }
 
-  // @ts-ignore
-  addColumn(definition: ColumnDefinition): Promise<any> {
-    throw new Error('NotImplemented');
+  /**
+   * Add a column to the table.
+   *
+   * @param {ColumnDefinition} definition - The column definition we want to add to the table
+   * @returns {Promise<void>}
+   */
+  addColumn(definition: ColumnDefinition): Promise<void> {
+    return this.tableManager
+      .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
+      .then((resp) => {
+        this.columns = resp.columns;
+        this.currentPage = 1;
+        this.fetchRows();
+      });
   }
 
-  // @ts-ignore
-  removeColumn(definition: ColumnDefinition): Promise<any> {
-    throw new Error('NotImplemented');
+  /**
+   * Remove a column from the table.
+   *
+   * @param {ColumnDefinition} definition - The column definition we want to remove from the table
+   * @returns {Promise<void>}
+   */
+  removeColumn(definition: ColumnDefinition): Promise<void> {
+    return this.tableManager
+      .upsertColumns({
+        columns: this.columns.filter((column) => column.definition.key !== definition.key)
+      })
+      .then((resp) => {
+        this.columns = resp.columns;
+      });
   }
 
   /**

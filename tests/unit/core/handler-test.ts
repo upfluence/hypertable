@@ -40,42 +40,47 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.rows.length, 2);
   });
 
-  test('Handler#addColumn', function (assert: Assert) {
+  test('Handler#addColumn', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    try {
-      handler.addColumn({
-        key: 'foo',
-        type: 'text',
-        name: `foo`,
-        clustering_key: '',
-        category: '',
-        size: FieldSize.Medium,
-        orderable: false,
-        filterable: false,
-        facetable: false
-      });
-    } catch (err) {
-      assert.equal(err.message, 'NotImplemented');
-    }
+    assert.equal(handler.columns.length, 0);
+    await handler.addColumn({
+      key: 'foo',
+      type: 'text',
+      name: `foo`,
+      clustering_key: '',
+      category: '',
+      size: FieldSize.Medium,
+      orderable: false,
+      filterable: false,
+      facetable: false
+    });
+
+    assert.equal(handler.columns.length, 1);
+    assert.equal(handler.columns[0].definition.key, 'foo');
   });
 
-  test('Handler#removeColumn', function (assert: Assert) {
+  test('Handler#removeColumn', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    try {
-      handler.removeColumn({
-        key: 'foo',
-        type: 'text',
-        name: `foo`,
-        clustering_key: '',
-        category: '',
-        size: FieldSize.Medium,
-        orderable: false,
-        filterable: false,
-        facetable: false
-      });
-    } catch (err) {
-      assert.equal(err.message, 'NotImplemented');
-    }
+    handler.columns = [
+      {
+        definition: {
+          key: 'foo',
+          type: 'text',
+          name: `foo`,
+          clustering_key: '',
+          category: '',
+          size: FieldSize.Medium,
+          orderable: false,
+          filterable: false,
+          facetable: false
+        },
+        filters: []
+      }
+    ];
+
+    assert.equal(handler.columns.length, 1);
+    await handler.removeColumn(handler.columns[0].definition);
+    assert.equal(handler.columns.length, 0);
   });
 
   module('Handler#applyFilter', function (hooks) {

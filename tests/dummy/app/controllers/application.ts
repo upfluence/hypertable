@@ -12,21 +12,39 @@ import {
   TableColumnsResponse
 } from '@upfluence/hypertable/core/interfaces';
 
-const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, orderable = false): Column => {
-  const def: ColumnDefinition = {
-    key,
+const columnDefinitions = [
+  { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
+  { key: 'code', extra: { category: 'affiliation', clustering_key: '' } },
+  { key: 'toto', extra: { category: 'influencer', clustering_key: 'tiktok' } },
+  { key: 'test', extra: { category: 'other', clustering_key: '' } }
+];
+
+const columns = [
+  { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
+  { key: 'code', extra: { category: 'affiliation', clustering_key: '' } }
+];
+
+const buildColumnDefinition = (key: string, extra: { [key: string]: any }): ColumnDefinition => {
+  let defaultColumnDefinition = {
+    key: key,
     type: 'text',
-    name: `${key}_name`,
-    size: size,
+    name: `Name: ${key}`,
     clustering_key: '',
     category: '',
-    orderable: orderable,
-    filterable: filterable,
+    size: FieldSize.Medium,
+    orderable: false,
+    filterable: false,
     facetable: false
   };
 
+  return Object.assign(defaultColumnDefinition, extra);
+};
+
+const buildColumn = (key: string, extra: { [key: string]: any }): Column => {
   return {
-    definition: def,
+    definition: buildColumnDefinition(key, extra),
     filters: [
       {
         key: 'value',
@@ -38,13 +56,22 @@ const buildColumn = (key: string, size = FieldSize.Medium, filterable = false, o
 
 class Manager implements TableManager {
   fetchColumnDefinitions(): Promise<ColumnDefinitionResponse> {
-    return Promise.resolve({ column_definitions: [] });
+    return Promise.resolve({
+      column_definitions: columnDefinitions.reduce(
+        (columnDefinitions, column) => [...columnDefinitions, ...[buildColumnDefinition(column.key, column.extra)]],
+        []
+      )
+    });
   }
   fetchColumns(): Promise<TableColumnsResponse> {
     return Promise.resolve({
-      columns: [buildColumn('foo', FieldSize.Medium, false, true), buildColumn('bar', FieldSize.Medium, true, true)]
+      columns: columns.reduce(
+        (columnDefinitions, column) => [...columnDefinitions, ...[buildColumn(column.key, column.extra)]],
+        []
+      )
     });
   }
+
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
     return Promise.resolve({ columns: request.columns });
   }
@@ -61,7 +88,10 @@ class RowsFetcher {
           holderId: 57,
           holderType: 'list',
           foo: 'ekip',
-          bar: 'hello'
+          bar: 'hello',
+          toto: 'toto',
+          code: 'code',
+          test: 'test'
         },
         {
           influencerId: Math.random(),
@@ -150,7 +180,7 @@ class RowsFetcher {
           holderType: 'list',
           foo: 'second',
           bar: 'second bar'
-        },
+        }
       ],
       meta: { total: 12 }
     });

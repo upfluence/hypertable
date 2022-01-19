@@ -19,7 +19,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
 
     sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
       return Promise.resolve({
-        columns: [buildColumn('foo', FieldSize.Large, true, true)]
+        columns: [buildColumn('foo', { size: FieldSize.Large, filterable: true, orderable: true })]
       });
     });
 
@@ -93,7 +93,10 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
 
-      await fillIn('div[data-control-name="hypertable__column_filtering_for_foo_filters"] .oss-input-container input', 'bar');
+      await fillIn(
+        'div[data-control-name="hypertable__column_filtering_for_foo_filters"] .oss-input-container input',
+        'bar'
+      );
 
       //@ts-ignore
       assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'value', value: 'bar' }]));

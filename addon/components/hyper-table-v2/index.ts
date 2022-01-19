@@ -4,7 +4,6 @@ import { action } from '@ember/object';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';
 
-
 interface HyperTableV2Args {
   handler: TableHandler;
 }
@@ -14,7 +13,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   constructor(owner: unknown, args: HyperTableV2Args) {
     super(owner, args);
-
+    args.handler.fetchColumnDefinitions();
     args.handler.fetchColumns().then(() => {
       args.handler.fetchRows();
     });

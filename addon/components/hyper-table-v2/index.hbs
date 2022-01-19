@@ -1,4 +1,12 @@
 <div class="hypertable-container" ...attributes>
+  <div class="hypertable__upper-header">
+    <div class="left-side">
+      Search {{!--to do implemented--}}
+    </div>
+    <div class="right-side">
+      <HyperTableV2::ManageColumns @handler={{@handler}} />
+    </div>
+  </div>
   <div class="hypertable__table hypertable__table--v2">
     <div class="hypertable"
          {{sortable-group direction="x" onChange=this.reorderColumns}}
