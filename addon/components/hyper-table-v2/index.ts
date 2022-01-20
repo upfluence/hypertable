@@ -61,8 +61,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   get searchPlaceholder(): string {
-    if (this.args.handler.columnDefinitions[0]?.name)
-      return this.intl.t('hypertable.header.search_by') + ' ' + this.args.handler.columnDefinitions[0].name;
+    if (this.args.handler.columns[0].definition.name)
+      return this.intl.t('hypertable.header.search_by') + ' ' + this.args.handler.columns[0].definition.name;
     return this.intl.t('hypertable.header.search');
   }
 
