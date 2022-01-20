@@ -213,17 +213,22 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
           columns: builderHelper(COLUMNS, buildColumn)
         });
       });
+
       const fetchRowsMock = sinon.stub(this.rowsFetcher, 'fetch').callsFake(() => {
         return Promise.resolve({ rows: [] });
       });
+      this.didInsertColumn = sinon.stub();
 
-      await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
+      await render(
+        hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} @didInsertColumn={{this.didInsertColumn}} />`
+      );
 
       await click('.upf-btn.upf-btn--primary');
       await click('[data-control-name="column_definition_toggle_checkbox_bar"] input');
 
       assert.ok(upsertColumnsMock.calledOnce);
       assert.ok(fetchRowsMock.calledOnce);
+      assert.ok(this.didInsertColumn.calledOnce);
     });
   });
 });
