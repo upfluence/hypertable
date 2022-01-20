@@ -207,7 +207,7 @@ export default class TableHandler {
    *
    * @param {boolean} toggled
    */
-  toggleSelectAll(toggled: boolean) {
+  toggleSelectAll(toggled: boolean): void {
     this.selection = toggled ? 'all' : [];
   }
 
@@ -216,11 +216,11 @@ export default class TableHandler {
    *
    * @param {Row} row
    */
-  updateSelection(row: Row) {
+  updateSelection(row: Row): void {
     this.selection = this.selection instanceof Array ? this.selection : [];
 
     if (this.selection.includes(row)) {
-      this.selection = this.selection.filter((x: Row) => x !== row);
+      this.selection = this.selection.filter((_selectedRow: Row) => _selectedRow !== row);
     } else {
       this.selection = [...this.selection, ...[row]];
     }
