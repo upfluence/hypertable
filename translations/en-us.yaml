@@ -1,4 +1,7 @@
 hypertable:
+  header:
+    search_by: Search by
+    search: Search...
   features:
     filtering:
       reset_all: Reset Filters
