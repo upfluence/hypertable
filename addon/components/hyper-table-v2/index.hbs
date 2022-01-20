@@ -1,27 +1,31 @@
 <div class="hypertable-container" ...attributes>
-  <div class="hypertable__upper-header fx-row fx-malign-space-between">
-    {{#if this.features.searchable}}
-      {{#if (has-block "search")}}
-        {{yield to="search"}}
-      {{else if (not @handler.loadingColumns)}}
-        <div class="fx-basis-pc-30">
-          <OSS::InputContainer @value={{this.searchQuery}} @placeholder={{this.searchPlaceholder}}
-                               @onChange={{this.onSearchInput}} data-control-name="table_search_input">
-            <:suffix>
-              {{#if (gt this.searchQuery.length 0)}}
-                <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
-              {{/if}}
-            </:suffix>
-          </OSS::InputContainer>
-        </div>
-      {{/if}}
-    {{/if}}
-    <div class="fx1"></div>
+  <div class="hypertable__upper-header fx-row">
+    <div class="left-side">
+      <div>
+        {{#if this.features.searchable}}
+          {{#if (has-block "search")}}
+            {{yield to="search"}}
+          {{else if (not @handler.loadingColumns)}}
+            <OSS::InputContainer @value={{this.searchQuery}} @placeholder={{this.searchPlaceholder}}
+                                 @onChange={{this.onSearchInput}} data-control-name="table_search_input">
+              <:suffix>
+                {{#if (gt this.searchQuery.length 0)}}
+                  <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
+                {{/if}}
+              </:suffix>
+            </OSS::InputContainer>
 
-    <div class="fx-row">
+          {{/if}}
+        {{/if}}
+      </div>
+      {{#if (has-block "contextual-actions")}}
+        {{yield to="contextual-actions"}}
+      {{/if}}
+    </div>
+    <div class="right-side">
       <OSS::Button class="margin-right-xx-sm" @label={{t "hypertable.features.filtering.reset_all"}}
-                     {{on "click" this.resetFilters}} @loading={{this.loadingResetFilters}}
-                     data-control-name="hypertable_reset_filters_button"/>
+                   {{on "click" this.resetFilters}} @loading={{this.loadingResetFilters}}
+                   data-control-name="hypertable_reset_filters_button" />
       <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
     </div>
   </div>
@@ -116,8 +120,8 @@
 
     <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
       <OSS::Button
-        @size="sm" @icon="fa fa-chevron-right" class="scroll-button is-visible"
-        {{on "click" this.scrollToEnd}} />
+                   @size="sm" @icon="fa fa-chevron-right" class="scroll-button is-visible"
+                   {{on "click" this.scrollToEnd}} />
     </div>
   </div>
 </div>
