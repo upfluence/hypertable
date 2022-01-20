@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
-import { tracked } from '@glimmer/tracking';
 import { debounce } from '@ember/runloop';
 import { scheduleOnce } from '@ember/runloop';
 
