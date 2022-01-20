@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, findAll, render } from '@ember/test-helpers';
+import { click,  findAll, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -182,6 +182,15 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert
         .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input')
         .isNotChecked();
+    });
+  });
+
+  module('jumping to the last column', function () {
+    test('the button to jump to the last column is displayed if there is overflow', async function (assert: Assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.scroll-button-container').exists();
+      assert.dom('.scroll-button-container').hasClass('is-visible');
     });
   });
 });

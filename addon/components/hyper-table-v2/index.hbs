@@ -7,10 +7,10 @@
       <OSS::Button class="margin-right-xx-sm" @label={{t "hypertable.features.filtering.reset_all"}}
                    {{on "click" this.resetFilters}} @loading={{this.loadingResetFilters}}
                    data-control-name="hypertable_reset_filters_button"/>
-      <HyperTableV2::ManageColumns @handler={{@handler}} />
+      <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
     </div>
   </div>
-  <div class="hypertable__table hypertable__table--v2">
+  <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>
     {{#if (and (eq @handler.rows.length 0) (not @handler.loadingRows))}}
       <div class="hypertable__state hypertable__state--empty">
         {{#if (has-block "empty-state")}}
@@ -96,6 +96,12 @@
           </HyperTableV2::Column>
         {{/if}}
       {{/each}}
+    </div>
+
+    <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
+      <OSS::Button
+        @size="sm" @icon="fa fa-chevron-right" class="scroll-button is-visible"
+        {{on "click" this.scrollToEnd}} />
     </div>
   </div>
 </div>

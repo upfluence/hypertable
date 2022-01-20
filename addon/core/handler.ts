@@ -108,10 +108,8 @@ export default class TableHandler {
   addColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
-      .then((resp) => {
-        this.columns = resp.columns;
-        this.currentPage = 1;
-        this.fetchRows();
+      .then(({ columns }) => {
+        this._reinitColumnsAndRows(columns);
       });
   }
 

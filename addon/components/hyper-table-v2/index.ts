@@ -4,10 +4,11 @@ import { action } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
+import { scheduleOnce } from '@ember/runloop';
 
 type FeatureSet = {
   selection: boolean;
-}
+};
 
 interface HyperTableV2Args {
   handler: TableHandler;
@@ -15,24 +16,61 @@ interface HyperTableV2Args {
   onRowClick(row: Row): void;
 }
 
-const DEFAULT_FEATURES_SET: FeatureSet = { selection : false };
+const DEFAULT_FEATURES_SET: FeatureSet = { selection: false };
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
+  innerTableElement?: Element;
+
   @tracked loadingResetFilters = false;
+  @tracked scrollableTable: boolean = false;
 
   constructor(owner: unknown, args: HyperTableV2Args) {
     super(owner, args);
     args.handler.fetchColumnDefinitions();
     args.handler.fetchColumns().then(() => {
       args.handler.fetchRows();
+      this.computeScrollableTable();
     });
   }
 
   get features(): FeatureSet {
     return {
       ...DEFAULT_FEATURES_SET,
-      ...(this.args.features || {})
+      ...(this.args.features || {})
+    };
+  }
+
+  @action
+  computeScrollableTable(): void {
+    const table = this.innerTableElement?.querySelector('.hypertable');
+
+    if (table) {
+      this.scrollableTable = Math.ceil(table.scrollLeft) + table.clientWidth < table.scrollWidth;
+      return;
+    }
+
+    this.scrollableTable = false;
+  }
+
+  @action
+  setupInnerTableElement(element: Element): void {
+    this.innerTableElement = element;
+
+    const table = element.querySelector('.hypertable');
+
+    if (table) {
+      scheduleOnce('afterRender', this, () => {
+        table.addEventListener('scroll', () => {
+          if (table.scrollLeft === table.scrollWidth - table.clientWidth) {
+            this.scrollableTable = false;
+          } else if (!this.scrollableTable) {
+            this.scrollableTable = true;
+          }
+        });
+
+        this.computeScrollableTable();
+      });
     }
   }
 
@@ -42,7 +80,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  onBottomReached() {
+  onBottomReached(): void {
     this.args.handler.onBottomReached();
   }
 
@@ -55,12 +93,23 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  toggleSelectAll(value: boolean) {
+  toggleSelectAll(value: boolean): void {
     this.args.handler.toggleSelectAll(value);
   }
 
   @action
-  toggleRowSelection(row: Row) {
+  toggleRowSelection(row: Row): void {
     this.args.handler.updateSelection(row);
+  }
+
+  @action
+  scrollToEnd(): void {
+    const table = this.innerTableElement?.querySelector('.hypertable');
+
+    if (table) {
+      scheduleOnce('afterRender', this, () => {
+        table.scrollLeft = table.scrollWidth;
+      });
+    }
   }
 }
