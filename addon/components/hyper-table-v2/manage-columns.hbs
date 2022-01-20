@@ -1,6 +1,6 @@
 <div class="hypertable__manage-fields" {{on-click-outside this.closeAvailableFields}}>
   <OSS::Button @skin="primary" @icon="fas fa-columns" @label={{t "hypertable.features.manage_fields.title"}}
-    {{on "click" this.openAvailableFields}} />
+    {{on "click" this.toggleAvailableFields}} />
   <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
     <div class="available-fields-wrapper__categories">
       <div class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}

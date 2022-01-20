@@ -13,6 +13,7 @@ type ManagedColumn = {
 
 interface HyperTableV2ManageColumnsArgs {
   handler: TableHandler;
+  didInsertColumn(): void;
 }
 
 export default class HyperTableV2ManageColumns extends Component<HyperTableV2ManageColumnsArgs> {
@@ -21,9 +22,9 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   @tracked _searchColumnDefinitionKeyword: null | string = null;
 
   get _columnCategories(): string[] {
-    return this.args.handler.columnDefinitions
+    return (this.args.handler.columnDefinitions || [])
       .reduce((categories: string[], columnDefinition) => {
-        if (!categories.includes(columnDefinition.category)) {
+        if (!isEmpty(columnDefinition.category) && !categories.includes(columnDefinition.category)) {
           categories.push(columnDefinition.category);
         }
         return categories;
@@ -33,7 +34,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
 
   get _orderedFilteredClusters(): Map<string, ManagedColumn[]> {
     let fields = A(
-      this.args.handler.columnDefinitions.filter((columnDefinition) => {
+      (this.args.handler.columnDefinitions || []).filter((columnDefinition) => {
         const search = (this._searchColumnDefinitionKeyword || '').toLowerCase();
         const hasSearched =
           !this._searchColumnDefinitionKeyword || columnDefinition.name.toLowerCase().indexOf(search) >= 0;
@@ -71,7 +72,9 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
     if (column.visible) {
       this.args.handler.removeColumn(column.definition);
     } else {
-      this.args.handler.addColumn(column.definition);
+      this.args.handler.addColumn(column.definition).then(() => {
+        this.args.didInsertColumn?.();
+      });
     }
   }
 
@@ -81,8 +84,8 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   }
 
   @action
-  openAvailableFields(): void {
-    this.displayAvailableFields = true;
+  toggleAvailableFields(): void {
+    this.displayAvailableFields = !this.displayAvailableFields;
   }
 
   @action

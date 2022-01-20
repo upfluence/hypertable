@@ -15,6 +15,7 @@ import {
   RowsFetcherMetadata
 } from './interfaces';
 import BaseRenderingResolver from './rendering-resolver';
+import { isEmpty } from '@ember/utils';
 
 export default class TableHandler {
   private _context: unknown;
@@ -29,6 +30,7 @@ export default class TableHandler {
   @tracked columnDefinitions: ColumnDefinition[] = [];
   @tracked columns: Column[] = [];
   @tracked rows: Row[] = [];
+  @tracked selection: Row[] | 'all' = [];
 
   @tracked loadingColumns: boolean = false;
   @tracked loadingRows: boolean = false;
@@ -107,10 +109,8 @@ export default class TableHandler {
   addColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
-      .then((resp) => {
-        this.columns = resp.columns;
-        this.currentPage = 1;
-        this.fetchRows();
+      .then(({ columns }) => {
+        this._reinitColumnsAndRows(columns);
       });
   }
 
@@ -138,17 +138,19 @@ export default class TableHandler {
    * @returns {Promise<void>}
    */
   async applyFilters(column: Column, filters: Filter[]): Promise<void> {
-    column.filters = filters.reduce((acc, v) => {
-      const filterWithSameKey = acc.find((filter) => filter.key === v.key);
+    column.filters = filters
+      .reduce((acc, v) => {
+        const filterWithSameKey = acc.find((filter) => filter.key === v.key);
 
-      if (filterWithSameKey) {
-        filterWithSameKey.value = v.value;
-      } else {
-        acc.push(v);
-      }
+        if (filterWithSameKey) {
+          filterWithSameKey.value = v.value;
+        } else {
+          acc.push(v);
+        }
 
-      return acc;
-    }, column.filters);
+        return acc;
+      }, column.filters)
+      .filter((f) => !isEmpty(f.key) && !isEmpty(f.value));
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
@@ -204,6 +206,30 @@ export default class TableHandler {
   }
 
   /**
+   * Toggle the selection state of all rows.
+   *
+   * @param {boolean} toggled
+   */
+  toggleSelectAll(toggled: boolean): void {
+    this.selection = toggled ? 'all' : [];
+  }
+
+  /**
+   * Add or remove a row to the selected items depending on whether it's already present or not.
+   *
+   * @param {Row} row
+   */
+  updateSelection(row: Row): void {
+    this.selection = this.selection instanceof Array ? this.selection : [];
+
+    if (this.selection.includes(row)) {
+      this.selection = this.selection.filter((_selectedRow: Row) => _selectedRow !== row);
+    } else {
+      this.selection = [...this.selection, ...[row]];
+    }
+  }
+
+  /**
    * Toggles an instance of Tether for a given column.
    *
    * @param {string} on - The column we want to create a Tether instance for
@@ -244,6 +270,7 @@ export default class TableHandler {
   }
 
   private _reinitColumnsAndRows(columns: Column[]): void {
+    this.rows = [];
     this.columns = columns;
     this.currentPage = 1;
     this.fetchRows();

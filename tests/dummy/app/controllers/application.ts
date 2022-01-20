@@ -1,4 +1,6 @@
 import Controller from '@ember/controller';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import {
@@ -21,7 +23,7 @@ const columnDefinitions = [
 ];
 
 const columns = [
-  { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'foo', extra: { filterable: true, category: 'influencer', clustering_key: 'instagram' } },
   { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
   { key: 'code', extra: { category: 'affiliation', clustering_key: '' } }
 ];
@@ -188,9 +190,21 @@ class RowsFetcher {
 }
 
 export default class Application extends Controller {
+  @tracked searchQuery: string = '';
+
   tableManager = new Manager();
   rowsFetcher = new RowsFetcher();
   handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
+
+  @action
+  onCustomSearchInput() {
+    this.handler.applyFilters(this.handler.columns[0], [
+      {
+        key: 'value',
+        value: this.searchQuery
+      }
+    ]);
+  }
 }
 
 // DO NOT DELETE: this is how TypeScript knows how to look up your controllers.

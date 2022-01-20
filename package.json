@@ -22,21 +22,22 @@
     "lint:js": "eslint .",
     "start": "ember serve",
     "test": "npm-run-all lint:* test:*",
-    "test:ember": "ember test",
+    "test:ember": "ember test -r dot",
     "test:ember-compatibility": "ember try:each",
     "prepack": "ember ts:precompile",
     "postpack": "ember ts:clean"
   },
   "dependencies": {
     "@embroider/util": "^0.50.0",
+    "ember-auto-import": "^1.5.3",
     "ember-cli-babel": "^7.19.0",
     "ember-cli-htmlbars": "^4.3.1",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-typescript": "^4.2.1",
     "ember-flatpickr": "^2.14.3",
+    "ember-named-blocks-polyfill": "^0.2.5",
     "ember-sortable": "3.0.0",
     "ember-truth-helpers": "^2.1.0",
-    "ember-auto-import": "^1.5.3",
     "tether": "^1.4.7"
   },
   "peerDependencies": {

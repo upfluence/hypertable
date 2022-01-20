@@ -1,4 +1,7 @@
 hypertable:
+  header:
+    search_by: Search by
+    search: Search...
   features:
     filtering:
       reset_all: Reset Filters
@@ -27,6 +30,8 @@ hypertable:
         range:
           label: Date Range
           placeholder: Date Range
+  rows:
+    empty_content: Nothing here
   data:
     empty_state:
       default: No data
