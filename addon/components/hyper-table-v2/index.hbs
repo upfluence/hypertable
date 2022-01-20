@@ -3,7 +3,7 @@
     {{#if this.features.searchable}}
       {{#if (has-block "search")}}
         {{yield to="search"}}
-      {{else}}
+      {{else if (not @handler.loadingColumns)}}
         <div class="fx-basis-pc-30">
           <OSS::InputContainer @value={{this.searchQuery}} @placeholder={{this.searchPlaceholder}}
                                @onChange={{this.onSearchInput}} data-control-name="table_search_input">
