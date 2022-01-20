@@ -49,7 +49,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
     assert.ok(this.onClick.calledOnce);
   });
 
-  test('the onClick action is called when the cell is clicked', async function (assert: Assert) {
+  test('the onClick action is never called when a loading cell is clicked', async function (assert: Assert) {
     this.onClick = sinon.stub();
     await render(hbs`<HyperTableV2::Cell @loading={{true}} @onClick={{this.onClick}} />`);
 
