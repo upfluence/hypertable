@@ -17,6 +17,10 @@
       {{/if}}
     {{/if}}
     <div class="fx1"></div>
+
+    <OSS::Button class="margin-right-xx-sm" @label={{t "hypertable.features.filtering.reset_all"}}
+                   {{on "click" this.resetFilters}} @loading={{this.loadingResetFilters}}
+                   data-control-name="hypertable_reset_filters_button"/>
     <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
   </div>
 
