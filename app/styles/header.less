@@ -10,6 +10,8 @@
 .hypertable__upper-header {
   padding: @spacing-xx-sm;
   padding-left: 0;
+  display: flex;
+  justify-content: space-between;
   position: relative;
   z-index: 2;
 
@@ -19,6 +21,15 @@
         display: none;
       }
     }
+  }
+
+  .right-side {
+    display: flex;
+  }
+
+  .left-side {
+    display: flex;
+    flex-grow: 1;
   }
 
   /*
