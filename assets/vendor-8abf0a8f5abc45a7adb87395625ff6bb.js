@@ -6191,7 +6191,7 @@ return this.tableManager.upsertColumns({columns:[].concat(_(this.columns),[{defi
 t._reinitColumnsAndRows(n)}))}},{key:"removeColumn",value:function(e){var t=this
 return this.tableManager.upsertColumns({columns:this.columns.filter((function(t){return t.definition.key!==e.key}))}).then((function(e){t.columns=e.columns}))}},{key:"applyFilters",value:(l=O(regeneratorRuntime.mark((function e(t,n){var r=this
 return regeneratorRuntime.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return t.filters=n.reduce((function(e,t){var n=e.find((function(e){return e.key===t.key}))
-return n?n.value=t.value:e.push(t),e}),t.filters),e.abrupt("return",this.tableManager.upsertColumns({columns:this.columns}).then((function(e){var t=e.columns
+return n?n.value=t.value:e.push(t),e}),t.filters).filter((function(e){return!Ember.isEmpty(e.key)&&!Ember.isEmpty(e.value)})),e.abrupt("return",this.tableManager.upsertColumns({columns:this.columns}).then((function(e){var t=e.columns
 r._reinitColumnsAndRows(t)})))
 case 2:case"end":return e.stop()}}),e,this)}))),function(e,t){return l.apply(this,arguments)})},{key:"applyOrder",value:(s=O(regeneratorRuntime.mark((function e(t,n){var r=this
 return regeneratorRuntime.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return this._lastOrderedColumn&&(this._lastOrderedColumn.order=void 0),Ember.set(t,"order",{key:t.definition.key,direction:n}),e.abrupt("return",this.tableManager.upsertColumns({columns:this.columns}).then((function(e){var n=e.columns
