@@ -84,8 +84,8 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   }
 
   @action
-  openAvailableFields(): void {
-    this.displayAvailableFields = true;
+  toggleAvailableFields(): void {
+    this.displayAvailableFields = !this.displayAvailableFields;
   }
 
   @action
