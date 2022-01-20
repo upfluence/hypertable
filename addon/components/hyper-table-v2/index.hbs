@@ -1,11 +1,23 @@
 <div class="hypertable-container" ...attributes>
-  <div class="hypertable__upper-header">
-    <div class="left-side">
-      Search {{!--to do implemented--}}
-    </div>
-    <div class="right-side">
-      <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
-    </div>
+  <div class="hypertable__upper-header fx-row fx-malign-space-between">
+    {{#if this.features.searchable}}
+      {{#if (has-block "search")}}
+        {{yield to="search"}}
+      {{else}}
+        <div class="fx-basis-pc-30">
+          <OSS::InputContainer @value={{this.searchQuery}} @placeholder={{this.searchPlaceholder}}
+                               @onChange={{this.onSearchInput}} data-control-name="table_search_input">
+            <:suffix>
+              {{#if (gt this.searchQuery.length 0)}}
+                <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
+              {{/if}}
+            </:suffix>
+          </OSS::InputContainer>
+        </div>
+      {{/if}}
+    {{/if}}
+    <div class="fx1"></div>
+    <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
   </div>
   <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>
     {{#if (and (eq @handler.rows.length 0) (not @handler.loadingRows))}}
@@ -32,10 +44,10 @@
               <div class="hypertable__column hypertable__column--selection">
                 <header>
                   <OSS::Checkbox
-                    @checked={{eq @handler.selection "all"}}
-                    @size="sm"
-                    @onChange={{this.toggleSelectAll}}
-                    @disabled={{false}} />
+                                 @checked={{eq @handler.selection "all"}}
+                                 @size="sm"
+                                 @onChange={{this.toggleSelectAll}}
+                                 @disabled={{false}} />
                 </header>
 
                 {{#if @handler.loadingRows}}
@@ -45,12 +57,12 @@
                 {{else}}
                   {{#each @handler.rows as |row|}}
                     <HyperTableV2::Cell
-                      @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}}>
+                                        @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}}>
                       <OSS::Checkbox
-                        @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
-                        @size="sm"
-                        @onChange={{fn this.toggleRowSelection row}}
-                        @disabled={{eq @handler.selection "all"}} />
+                                     @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
+                                     @size="sm"
+                                     @onChange={{fn this.toggleRowSelection row}}
+                                     @disabled={{eq @handler.selection "all"}} />
                     </HyperTableV2::Cell>
                   {{/each}}
 
@@ -66,7 +78,7 @@
             <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
               {{#each @handler.rows as |row|}}
                 <HyperTableV2::Cell
-                  @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
+                                    @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
               {{/each}}
 
               {{#if @handler.loadingRows}}
@@ -82,7 +94,7 @@
           <HyperTableV2::Column @handler={{@handler}} @column={{column}} {{sortable-item model=column}}>
             {{#each @handler.rows as |row|}}
               <HyperTableV2::Cell
-                @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
+                                  @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
             {{/each}}
 
             {{#if @handler.loadingRows}}

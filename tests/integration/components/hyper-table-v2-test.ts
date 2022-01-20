@@ -89,7 +89,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
   });
 
-  module('selection', function () {
+  module('FeatureSet: selection', function () {
     test('the selection checkboxes are not present if the feature is not enabled', async function (assert: Assert) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=false}} />`);
 
@@ -168,6 +168,41 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       assert.dom('.scroll-button-container').exists();
       assert.dom('.scroll-button-container').hasClass('is-visible');
+    });
+  });
+
+  module('FeatureSet: searchable', () => {
+    test('if searchable is unset, the search input should be present', async function (assert: Assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('div[data-control-name="table_search_input"]').exists();
+    });
+
+    test('if searchable is enabled, the search input should be present', async function (assert: Assert) {
+      this.features = { searchable: true };
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+
+      assert.dom('div[data-control-name="table_search_input"]').exists();
+    });
+
+    test('if searchable is disabled, the search input should not be present', async function (assert: Assert) {
+      this.features = { searchable: false };
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+
+      assert.dom('div[data-control-name="table_search_input"]').doesNotExist();
+    });
+
+    test('if a <:search> named-block is passed to the component, then it should be visible in the table', async function (assert: Assert) {
+      await render(hbs`
+        <HyperTableV2 @handler={{this.handler}}>
+          <:search>
+            <div id="example-search-named-block"></div>
+          </:search>
+        </HyperTableV2>
+        `);
+
+      assert.dom('div[data-control-name="table_search_input"]').doesNotExist();
+      assert.dom('#example-search-named-block').exists();
     });
   });
 });
