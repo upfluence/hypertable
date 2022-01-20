@@ -15,6 +15,7 @@ import {
   RowsFetcherMetadata
 } from './interfaces';
 import BaseRenderingResolver from './rendering-resolver';
+import { isEmpty } from '@ember/utils';
 
 export default class TableHandler {
   private _context: unknown;
@@ -137,17 +138,19 @@ export default class TableHandler {
    * @returns {Promise<void>}
    */
   async applyFilters(column: Column, filters: Filter[]): Promise<void> {
-    column.filters = filters.reduce((acc, v) => {
-      const filterWithSameKey = acc.find((filter) => filter.key === v.key);
+    column.filters = filters
+      .reduce((acc, v) => {
+        const filterWithSameKey = acc.find((filter) => filter.key === v.key);
 
-      if (filterWithSameKey) {
-        filterWithSameKey.value = v.value;
-      } else {
-        acc.push(v);
-      }
+        if (filterWithSameKey) {
+          filterWithSameKey.value = v.value;
+        } else {
+          acc.push(v);
+        }
 
-      return acc;
-    }, column.filters);
+        return acc;
+      }, column.filters)
+      .filter((f) => !isEmpty(f.key) && !isEmpty(f.value));
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
