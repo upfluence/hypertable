@@ -1,11 +1,12 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { click, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
+import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
 
 module('Integration | Component | hyper-table-v2', function (hooks) {
   setupRenderingTest(hooks);
@@ -44,5 +45,27 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     assert.dom('.hypertable__cell').exists({ count: 4 });
     assert.dom('.hypertable__sticky-columns .hypertable__column .hypertable__cell').exists({ count: 2 });
     assert.dom('.hypertable__column:nth-child(2) .hypertable__cell').exists({ count: 2 });
+  });
+
+  test('it resets the filters', async function (assert: Assert) {
+    sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+      return Promise.resolve({
+        columns: [
+          buildColumn('foo', { filters: [{ key: 'filter1', value: 'toto' }] }),
+          buildColumn('foo', { filters: [{ key: 'filter2', value: 'foo' }] })
+        ]
+      });
+    });
+    await this.handler.fetchColumns();
+
+    await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+    assert.deepEqual(this.handler.columns[0].filters, [{ key: 'filter1', value: 'toto' }]);
+    assert.deepEqual(this.handler.columns[1].filters, [{ key: 'filter2', value: 'foo' }]);
+
+    await click('[data-control-name="hypertable_reset_filters_button"]');
+
+    assert.deepEqual(this.handler.columns[0].filters, []);
+    assert.deepEqual(this.handler.columns[1].filters, []);
   });
 });
