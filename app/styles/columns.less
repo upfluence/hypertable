@@ -24,8 +24,7 @@
 
   &:first-child,
   &:nth-child(2) {
-    .hypertable__cell,
-    header {
+    .hypertable__cell {
       border-left: none;
     }
   }
@@ -49,7 +48,9 @@
 
   header {
     border-left: 1px solid darken(@upf-gray-light, 10%);
-    border-right: 1px solid darken(@upf-gray-light, 10%);
+  }
+  &:nth-child(2) header {
+    border-left: none;
   }
 }
 
@@ -61,7 +62,7 @@
   height: @cell-height;
   max-height: @cell-height;
   padding: @spacing-xx-sm;
-  width: calc(100% + 2px);
+  width: 100%;
 
   background-color: @field-background-color;
   cursor: pointer;
@@ -170,6 +171,14 @@
   width: 40px;
   min-width: 40px;
   flex-grow: 0;
+
+  header {
+    border-right: none;
+  }
+
+  .hypertable__cell {
+    border-right: none;
+  }
 }
 
 .hypertable__column--ordered {
