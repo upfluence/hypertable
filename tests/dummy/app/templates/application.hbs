@@ -1,1 +1,17 @@
-{{outlet}}
+<div class="padding-sm">
+  <HyperTableV2 @handler={{this.handler}}>
+    {{!-- <:search>
+      <OSS::InputContainer style="width: 200px" @value={{this.searchQuery}}
+                           @placeholder="Custom Search Block" @onChange={{this.onCustomSearchInput}} />
+    </:search> --}}
+    <:contextual-actions>
+      {{!-- To do : move contextual-actions CSS to the target component --}}
+      <div class="contextual-actions contextual-actions--visible">
+        <div class="fx-row fx-row fx-gap-px-10">
+          <OSS::Badge @icon="fas fa-box-open" />
+          <OSS::Badge @size="md" @icon="fas fa-box-open" />
+        </div>
+      </div>
+    </:contextual-actions>
+  </HyperTableV2>
+</div>

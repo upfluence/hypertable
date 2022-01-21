@@ -1,4 +1,7 @@
 hypertable:
+  header:
+    search_by: Search by
+    search: Search...
   features:
     filtering:
       reset_all: Reset Filters
@@ -11,16 +14,24 @@ hypertable:
       no_columns: No columns found
   column:
     remove: Remove Field
+    clear_filters: Clear Filters
     scroll_to_end: More
     ordering:
       label: Order By
     filtering:
       label: Filter
       clear: Clear Filters
+      existence:
+        label: Display
+      search_term:
+        label: Search
+        placeholder: Search...
       date:
         range:
           label: Date Range
           placeholder: Date Range
+  rows:
+    empty_content: Nothing here
   data:
     empty_state:
       default: No data

@@ -135,10 +135,9 @@
     </div>
   {{/if}}
 
-  <SortableGroup
-    @direction="x" @model={{this._columns}} @onChange={{action "reorderColumns"}}
-    @classNames="hypertable"
-    {{on-bottom-reached this.manager.hooks.onBottomReached}} as |group|>
+  <div class="hypertable"
+       {{sortable-group direction="x" onChange=(action "reorderColumns")}}
+       {{on-bottom-reached this.manager.hooks.onBottomReached}}>
     {{#each this._columns as |column index|}}
       {{#if (eq index 0)}}
         <div class="hypertable__sticky-columns">
@@ -210,8 +209,7 @@
     {{#each this._columns as |column index|}}
       {{#if (gt index 0)}}
         <HyperTable::Column
-          @model={{column}} @column={{column}} @group={{group}} @manager={{this.manager}}
-          @onDragStart={{action "dragStarted"}} @handle="header">
+          @column={{column}} @manager={{this.manager}} {{sortable-item model=column onDragStart=(action "dragStarted")}}>
           {{#if this.loadingData}}
             {{#each this._loadingCollection}}
               <HyperTable::Cell @loading={{true}} />
@@ -235,7 +233,7 @@
         </HyperTable::Column>
       {{/if}}
     {{/each}}
-  </SortableGroup>
+  </div>
 
   <div class="scroll-button-container {{if this.manager.isScrollable 'is-visible'}}">
     <button

@@ -1,0 +1,52 @@
+<div class="hypertable__manage-fields" {{on-click-outside this.closeAvailableFields}}>
+  <OSS::Button @skin="primary" @icon="fas fa-columns" @label={{t "hypertable.features.manage_fields.title"}}
+    {{on "click" this.toggleAvailableFields}} />
+  <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
+    <div class="available-fields-wrapper__categories">
+      <div class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
+           role="button" {{on "click" (fn this.setFieldCategory null)}} data-control-name="field_category_toggle_all_fields">
+        <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
+        <div><i class="fas fa-caret-right"></i></div>
+      </div>
+      {{#each this._columnCategories as |category|}}
+        <div class={{concat "field-category" (if (eq this._activeColumnCategory category) " field-category--active")}}
+             role="button" data-control-name={{concat "field_category_toggle_" category}}
+             {{on "click" (fn this.setFieldCategory category)}}>
+          <div>{{category}}</div>
+          <div><i class="fa fa-caret-right"></i></div>
+        </div>
+      {{/each}}
+    </div>
+    <div class="available-fields-wrapper__fields">
+      <div class="search">
+        <Input
+          @type="text" @value={{this._searchColumnDefinitionKeyword}}
+          data-control-name="column_definitions_search_input" class="upf-input upf-input--small"
+          placeholder={{t "hypertable.features.manage_fields.search_placeholder"}} />
+      </div>
+      <div class="fields-list">
+        {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
+          {{#if clusterName}}
+            <div class="cluster-name text-style-bold margin-top-xxx-sm">
+              {{clusterName}}
+            </div>
+          {{/if}}
+          {{#each fields as |field|}}
+            <div class="field" {{on "click" (fn this.columnVisibilityUpdate field)}}>
+              <UpfCheckbox
+                @value={{field.visible}} @size="sm"
+                data-control-name={{concat "column_definition_toggle_checkbox_" field.definition.key}} />
+              <div class="margin-left-xxx-sm">
+                {{field.definition.name}}
+              </div>
+            </div>
+          {{/each}}
+        {{else}}
+          <div class="field margin-top-md">
+            {{t "hypertable.features.manage_fields.no_columns"}}
+          </div>
+        {{/each-in}}
+      </div>
+    </div>
+  </div>
+</div>

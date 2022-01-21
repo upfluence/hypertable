@@ -1,11 +1,11 @@
-import SortableItem from 'ember-sortable/components/sortable-item';
+import Component from '@ember/component';
 import { computed, defineProperty } from '@ember/object';
 import { and, notEmpty, or } from '@ember/object/computed';
 import { capitalize } from '@ember/string';
 
 const AVAILABLE_RENDERERS = ['text', 'numeric', 'money', 'date', 'image', 'list'];
 
-export default SortableItem.extend({
+export default Component.extend({
   classNames: ['hypertable__column'],
   classNameBindings: [
     '_columnSize',

@@ -1,0 +1,13 @@
+<div class="hypertable__cell {{if this.loading 'hypertable__cell--loading'}}"
+     role="button"
+     {{on "click" this.clickedCell}}
+     ...attributes>
+  {{#if this.loading}}
+    <div class="skeleton-placeholder"></div>
+  {{else if (has-block)}}
+    {{yield}}
+  {{else if this.cellComponent}}
+    <this.cellComponent.component
+      @handler={{@handler}} @column={{@column}} @row={{@row}} @extra={{this.cellComponent.args}} />
+  {{/if}}
+</div>
