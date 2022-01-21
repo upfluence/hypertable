@@ -187,6 +187,17 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
   module('jumping to the last column', function () {
     test('the button to jump to the last column is displayed if there is overflow', async function (assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+        return Promise.resolve({
+          columns: [
+            buildColumn('foo', { filters: [{ key: 'filter1', value: 'toto' }] }),
+            buildColumn('foo', { filters: [{ key: 'filter2', value: 'foo' }] }),
+            buildColumn('foo', { filters: [{ key: 'filter2', value: 'foo' }] }),
+            buildColumn('foo', { filters: [{ key: 'filter2', value: 'foo' }] }),
+            buildColumn('foo', { filters: [{ key: 'filter2', value: 'foo' }] })
+          ]
+        });
+      });
       await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
       assert.dom('.scroll-button-container').exists();
