@@ -1,0 +1,8 @@
+<OSS::InputContainer @value={{this.searchQuery}} @placeholder={{this.searchPlaceholder}}
+                     @onChange={{this.onSearchInput}} data-control-name="table_search_input">
+  <:suffix>
+    {{#if (gt this.searchQuery.length 0)}}
+      <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
+    {{/if}}
+  </:suffix>
+</OSS::InputContainer>

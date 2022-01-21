@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click,  findAll, render } from '@ember/test-helpers';
+import { click, findAll, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -226,6 +226,20 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       assert.dom('div[data-control-name="table_search_input"]').doesNotExist();
       assert.dom('#example-search-named-block').exists();
+    });
+  });
+
+  module('Contextual Actions named-block is displayed if defined', () => {
+    test('if a <:contextual-actions> named-block is passed to the component, then it should be visible in the table', async function (assert: Assert) {
+      await render(hbs`
+        <HyperTableV2 @handler={{this.handler}}>
+          <:contextual-actions>
+            <div id="example-contextual-action-named-block"></div>
+          </:contextual-actions>
+        </HyperTableV2>
+      `);
+
+      assert.dom('#example-contextual-action-named-block').exists();
     });
   });
 });
