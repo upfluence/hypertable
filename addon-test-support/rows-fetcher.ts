@@ -1,3 +1,5 @@
+import { RowsFetcherResponse } from '@upfluence/hypertable/core/interfaces';
+
 export default class RowsFetcher {
   // @ts-ignore
   fetch(page: number, perPage: number): Promise<RowsFetcherResponse> {
