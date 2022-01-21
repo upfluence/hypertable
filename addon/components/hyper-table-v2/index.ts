@@ -105,6 +105,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     });
   }
 
+  @action
   onSearchInput(): void {
     debounce(this, this._applySearchFilter, SEARCH_DEBOUNCE_TIME);
   }
