@@ -29,6 +29,19 @@
   header {
     border-right: 1px solid lighten(@upf-gray, 15%);
   }
+
+  header {
+    border-right: 1px solid darken(@upf-gray-light, 10%);
+  }
+
+  &:nth-child(2) header {
+    border-right: none;
+  }
+  &:first-child {
+    header {
+      border-left: none;
+    }
+  }
 }
 
 .hypertable__backdrop {
