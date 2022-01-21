@@ -1,11 +1,9 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
-import { debounce } from '@ember/runloop';
 import { scheduleOnce } from '@ember/runloop';
 
 type FeatureSet = {
@@ -20,12 +18,8 @@ interface HyperTableV2Args {
 }
 
 const DEFAULT_FEATURES_SET: FeatureSet = { selection: false, searchable: true };
-const SEARCH_DEBOUNCE_TIME = 300;
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
-  @service declare intl: any;
-  @tracked searchQuery: string = '';
-
   loadingSkeletons = new Array(3);
   innerTableElement?: Element;
 
@@ -58,12 +52,6 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     }
 
     this.scrollableTable = false;
-  }
-
-  get searchPlaceholder(): string {
-    if (this.args.handler.columns[0].definition.name)
-      return this.intl.t('hypertable.header.search_by') + ' ' + this.args.handler.columns[0].definition.name;
-    return this.intl.t('hypertable.header.search');
   }
 
   @action
@@ -106,17 +94,6 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  onSearchInput(): void {
-    debounce(this, this._applySearchFilter, SEARCH_DEBOUNCE_TIME);
-  }
-
-  @action
-  onClearSearch(): void {
-    this.searchQuery = '';
-    this._applySearchFilter();
-  }
-
-  @action
   toggleSelectAll(value: boolean) {
     this.args.handler.toggleSelectAll(value);
   }
@@ -135,14 +112,5 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
         table.scrollLeft = table.scrollWidth;
       });
     }
-  }
-
-  private _applySearchFilter(): void {
-    this.args.handler.applyFilters(this.args.handler.columns[0], [
-      {
-        key: 'value',
-        value: this.searchQuery
-      }
-    ]);
   }
 }

@@ -1,21 +1,11 @@
 <div class="hypertable-container" ...attributes>
   <div class="hypertable__upper-header fx-row">
     <div class="left-side">
-      <div>
-        {{#if this.features.searchable}}
-          {{#if (has-block "search")}}
-            {{yield to="search"}}
-          {{else if (not @handler.loadingColumns)}}
-            <OSS::InputContainer @value={{this.searchQuery}} @placeholder={{this.searchPlaceholder}}
-                                 @onChange={{this.onSearchInput}} data-control-name="table_search_input">
-              <:suffix>
-                {{#if (gt this.searchQuery.length 0)}}
-                  <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
-                {{/if}}
-              </:suffix>
-            </OSS::InputContainer>
-
-          {{/if}}
+      <div class="search">
+        {{#if (has-block "search")}}
+          {{yield to="search"}}
+        {{else if this.features.searchable}}
+          <HyperTableV2::Search @handler={{@handler}} />
         {{/if}}
       </div>
       {{#if (has-block "contextual-actions")}}
