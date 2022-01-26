@@ -12,7 +12,8 @@ import {
   OrderDirection,
   ColumnDefinition,
   RendererResolver,
-  RowsFetcherMetadata
+  RowsFetcherMetadata,
+  FacetsResponse
 } from './interfaces';
 import BaseRenderingResolver from './rendering-resolver';
 import { isEmpty } from '@ember/utils';
@@ -106,7 +107,7 @@ export default class TableHandler {
    * @param {ColumnDefinition} definition - The column definition we want to add to the table
    * @returns {Promise<void>}
    */
-  addColumn(definition: ColumnDefinition): Promise<void> {
+  async addColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
       .then(({ columns }) => {
@@ -120,7 +121,7 @@ export default class TableHandler {
    * @param {ColumnDefinition} definition - The column definition we want to remove from the table
    * @returns {Promise<void>}
    */
-  removeColumn(definition: ColumnDefinition): Promise<void> {
+  async removeColumn(definition: ColumnDefinition): Promise<void> {
     return this.tableManager
       .upsertColumns({
         columns: this.columns.filter((column) => column.definition.key !== definition.key)
@@ -128,6 +129,21 @@ export default class TableHandler {
       .then((resp) => {
         this.columns = resp.columns;
       });
+  }
+
+  /**
+   * Fetch facets for a given columns to hint filtering.
+   *
+   * @param {string} columnKey — The key of the column to fetch facets for.
+   * @param {string} filteringKey — The attribute by which we want to hint by.
+   * @returns {Promise<FacetsResponse>}
+   */
+  async fetchFacets(columnKey: string, filteringKey: string): Promise<FacetsResponse> {
+    if (!this.tableManager.fetchFacets) {
+      throw new Error('[Hypertable/Handler] The TableManager in use does not support facetting.');
+    }
+
+    return this.tableManager.fetchFacets(columnKey, filteringKey);
   }
 
   /**

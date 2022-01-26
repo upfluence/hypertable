@@ -4,6 +4,7 @@ import {
   FieldSize,
   Filter,
   TableColumnsResponse,
+  FacetsResponse,
   TableManager as ITableManager,
   TableColumnUpsertRequest,
   TableColumnUpsertResponse,
@@ -44,5 +45,18 @@ export default class TableManager implements ITableManager {
 
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {
     return Promise.resolve({ columns: request.columns });
+  }
+
+  fetchFacets(_key: string, filteringKey: string): Promise<FacetsResponse> {
+    return Promise.resolve({
+      facets: [{
+        identifier: 'band:1',
+        payload: {
+          name: 'The Foo Fighters'
+        },
+        count: 4
+      }],
+      filtering_key: filteringKey
+    })
   }
 }
