@@ -4,7 +4,7 @@ import { getContext } from '@ember/test-helpers';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { FieldSize } from '@upfluence/hypertable/core/interfaces';
+import { FieldSize, Row } from '@upfluence/hypertable/core/interfaces';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 
@@ -212,6 +212,19 @@ module('Unit | core/handler', function (hooks) {
         ],
         filtering_key: 'id'
       });
+    });
+  });
+
+  module('Events', function () {
+    test('callbacks are called properly when an event is subscribed to', function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+
+      handler.on('row-click', (row: Row) => {
+        assert.equal(row, handler.rows[0]);
+      });
+
+      handler.triggerEvent('row-click', handler.rows[0]);
+      assert.expect(1);
     });
   });
 });

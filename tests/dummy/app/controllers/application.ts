@@ -196,6 +196,14 @@ export default class Application extends Controller {
   rowsFetcher = new RowsFetcher();
   handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
 
+  init() {
+    super.init();
+
+    this.handler.on('row-click', (row) => {
+      console.log(row);
+    });
+  }
+
   @action
   onCustomSearchInput() {
     this.handler.applyFilters(this.handler.columns[0], [

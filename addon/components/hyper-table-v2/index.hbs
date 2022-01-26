@@ -58,7 +58,7 @@
                 {{else}}
                   {{#each @handler.rows as |row|}}
                     <HyperTableV2::Cell
-                                        @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}}>
+                                        @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}}>
                       <OSS::Checkbox
                                      @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
                                      @size="sm"
@@ -79,7 +79,7 @@
             <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
               {{#each @handler.rows as |row|}}
                 <HyperTableV2::Cell
-                                    @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
+                                    @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}} />
               {{/each}}
 
               {{#if @handler.loadingRows}}
@@ -95,7 +95,7 @@
           <HyperTableV2::Column @handler={{@handler}} @column={{column}} {{sortable-item model=column}}>
             {{#each @handler.rows as |row|}}
               <HyperTableV2::Cell
-                                  @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{@onRowClick}} />
+                                  @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}} />
             {{/each}}
 
             {{#if @handler.loadingRows}}
