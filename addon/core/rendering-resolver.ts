@@ -5,6 +5,7 @@ import { RendererResolver, ResolvedRenderingComponent, ColumnDefinition } from '
 import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
 import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
 import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
+import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
 
 import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
 
@@ -18,7 +19,7 @@ const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
   integer: {
     cell: NumericCellRenderer,
     header: BaseHeaderRenderer,
-    filter: TextFilteringRenderer
+    filter: NumericFilteringRenderer
   }
 };
 
@@ -29,7 +30,7 @@ export default class implements RendererResolver {
     this._context = emberContext;
   }
 
-  lookupComponent(
+  private _lookupComponent(
     columnDef: ColumnDefinition,
     rendererType: 'header' | 'cell' | 'filter'
   ): Promise<ResolvedRenderingComponent> {
@@ -42,14 +43,14 @@ export default class implements RendererResolver {
   }
 
   lookupHeaderComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return this.lookupComponent(columnDef, 'header');
+    return this._lookupComponent(columnDef, 'header');
   }
 
   lookupCellComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return this.lookupComponent(columnDef, 'cell');
+    return this._lookupComponent(columnDef, 'cell');
   }
 
   lookupFilteringComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return this.lookupComponent(columnDef, 'filter');
+    return this._lookupComponent(columnDef, 'filter');
   }
 }
