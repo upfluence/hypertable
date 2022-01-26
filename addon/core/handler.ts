@@ -101,10 +101,6 @@ export default class TableHandler {
     this.tableManager.upsertColumns({ columns: this.columns });
   }
 
-  triggerEvent(event: string, ...args: any[]) {
-    sendEvent(this, event, args);
-  }
-
   /**
    * Add a column to the table.
    *
