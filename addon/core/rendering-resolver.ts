@@ -6,6 +6,20 @@ import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/
 import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
 import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
 
+import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
+
+type RendererDictionaryItem = { cell: any; header: any };
+const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
+  default: {
+    cell: TextCellRenderer,
+    header: BaseHeaderRenderer
+  },
+  integer: {
+    cell: NumericCellRenderer,
+    header: BaseHeaderRenderer
+  }
+};
+
 export default class implements RendererResolver {
   private _context;
 
@@ -19,12 +33,14 @@ export default class implements RendererResolver {
     });
   }
 
-  lookupCellComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
+  lookupCellComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
     return Promise.resolve({
-      component: ensureSafeComponent(TextCellRenderer, this._context) as GlimmerComponent
+      component: ensureSafeComponent(
+        (rendererMatchers[columnDef.type] || rendererMatchers.default).cell,
+        this._context
+      ) as GlimmerComponent
     });
   }
-
 
   lookupFilteringComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
     return Promise.resolve({

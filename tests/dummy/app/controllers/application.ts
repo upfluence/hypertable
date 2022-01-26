@@ -24,6 +24,7 @@ const columnDefinitions = [
 
 const columns = [
   { key: 'foo', extra: { filterable: true, category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'total', extra: { filterable: true, category: 'influencer', type: 'integer' } },
   { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
   { key: 'code', extra: { category: 'affiliation', clustering_key: '' } }
 ];
@@ -93,7 +94,8 @@ class RowsFetcher {
           bar: 'hello',
           toto: 'toto',
           code: 'code',
-          test: 'test'
+          test: 'test',
+          total: 123
         },
         {
           influencerId: Math.random(),
@@ -101,7 +103,8 @@ class RowsFetcher {
           holderId: 57,
           holderType: 'list',
           foo: 'second',
-          bar: 'second bar'
+          bar: 'second bar',
+          total: 123.393
         },
         {
           influencerId: Math.random(),
@@ -109,7 +112,8 @@ class RowsFetcher {
           holderId: 57,
           holderType: 'list',
           foo: 'ekip',
-          bar: 'hello'
+          bar: 'hello',
+          total: 123
         },
         {
           influencerId: Math.random(),
@@ -117,7 +121,8 @@ class RowsFetcher {
           holderId: 57,
           holderType: 'list',
           foo: 'second',
-          bar: 'second bar'
+          bar: 'second bar',
+          total: 123123321123
         },
         {
           influencerId: Math.random(),
