@@ -24,7 +24,7 @@ const columnDefinitions = [
 
 const columns = [
   { key: 'foo', extra: { filterable: true, category: 'influencer', clustering_key: 'instagram' } },
-  { key: 'total', extra: { filterable: true, category: 'influencer', type: 'integer' } },
+  { key: 'total', extra: { orderable: true, filterable: true, category: 'influencer', type: 'integer' } },
   { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
   { key: 'code', extra: { category: 'affiliation', clustering_key: '' } }
 ];
@@ -37,7 +37,7 @@ const buildColumnDefinition = (key: string, extra: { [key: string]: any }): Colu
     clustering_key: '',
     category: '',
     size: FieldSize.Medium,
-    orderable: false,
+    orderable: true,
     filterable: false,
     facetable: false
   };
@@ -122,7 +122,7 @@ class RowsFetcher {
           holderType: 'list',
           foo: 'second',
           bar: 'second bar',
-          total: 123123321123
+          total: 123000
         },
         {
           influencerId: Math.random(),
