@@ -4,6 +4,8 @@ import {
   TableColumnsResponse,
   TableColumnUpsertRequest,
   TableColumnUpsertResponse,
+  Facet,
+  FacetsResponse,
   TableManager
 } from './manager';
 import { Row, RowsFetcherMetadata, RowsFetcherResponse, RowsFetcher } from './rows-fetcher';
@@ -20,6 +22,8 @@ export {
   TableColumnsResponse,
   TableColumnUpsertRequest,
   TableColumnUpsertResponse,
+  Facet,
+  FacetsResponse,
   TableManager,
   Row,
   RowsFetcherMetadata,
