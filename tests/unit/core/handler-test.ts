@@ -193,7 +193,7 @@ module('Unit | core/handler', function (hooks) {
   });
 
   module('Handler#fetchFacets', function () {
-    test('it throws an error if the table manager does not implement a fetchFacets method', async function (assert: Assert) {
+    test('it calls the fetchFacets method of the manager correctly', async function (assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       const tableManagerSpy = sinon.spy(this.tableManager);
       const resp = await handler.fetchFacets('foo', 'id');
