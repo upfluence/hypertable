@@ -1,5 +1,6 @@
 import { tracked } from '@glimmer/tracking';
 import { set } from '@ember/object';
+import { addListener, sendEvent } from '@ember/object/events';
 import { scheduleOnce } from '@ember/runloop';
 import Tether from 'tether';
 
@@ -99,6 +100,29 @@ export default class TableHandler {
   reorderColumns(columns: Column[]) {
     this.columns = columns;
     this.tableManager.upsertColumns({ columns: this.columns });
+  }
+
+  /**
+   * Trigger an event
+   *
+   * @param {string} event
+   * @param {any[]} args
+   */
+  triggerEvent(event: string, ...args: any[]) {
+    sendEvent(this, event, args);
+  }
+
+  /**
+   * Attach a handler to a specific event in the handler's lifecycle.
+   *
+   * @param {string} event — The event to subscribe to.
+   * @param {Function} handler - A callback function to be called when the subscribed event is triggered.
+   * @returns {TableHandler}
+   */
+  on(event: string, handler: (...args: any[]) => any): TableHandler {
+    addListener(this, event, handler);
+
+    return this;
   }
 
   /**

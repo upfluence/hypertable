@@ -14,7 +14,6 @@ type FeatureSet = {
 interface HyperTableV2Args {
   handler: TableHandler;
   features: FeatureSet;
-  onRowClick(row: Row): void;
 }
 
 const DEFAULT_FEATURES_SET: FeatureSet = { selection: false, searchable: true };
@@ -112,5 +111,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
         table.scrollLeft = table.scrollWidth;
       });
     }
+  }
+
+  @action
+  onRowClick(row: Row) {
+    this.args.handler.triggerEvent('row-click', row);
   }
 }
