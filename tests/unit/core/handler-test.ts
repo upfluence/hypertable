@@ -160,10 +160,10 @@ module('Unit | core/handler', function (hooks) {
 
     assert.deepEqual(handler.selection, []);
 
-    handler.updateSelection(handler.rows[0])
+    handler.updateSelection(handler.rows[0]);
     assert.deepEqual(handler.selection, [handler.rows[0]]);
 
-    handler.updateSelection(handler.rows[0])
+    handler.updateSelection(handler.rows[0]);
     assert.deepEqual(handler.selection, []);
   });
 
@@ -189,6 +189,29 @@ module('Unit | core/handler', function (hooks) {
       handler.onBottomReached();
 
       assert.ok(handlerSpy.fetchRows.calledTwice);
+    });
+  });
+
+  module('Handler#fetchFacets', function () {
+    test('it throws an error if the table manager does not implement a fetchFacets method', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const tableManagerSpy = sinon.spy(this.tableManager);
+      const resp = await handler.fetchFacets('foo', 'id');
+
+      // @ts-ignore
+      assert.ok(tableManagerSpy.fetchFacets.calledOnceWithExactly('foo', 'id'));
+      assert.deepEqual(resp, {
+        facets: [
+          {
+            identifier: 'band:1',
+            payload: {
+              name: 'The Foo Fighters'
+            },
+            count: 4
+          }
+        ],
+        filtering_key: 'id'
+      });
     });
   });
 });
