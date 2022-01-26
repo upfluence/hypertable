@@ -8,15 +8,17 @@ import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-
 
 import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
 
-type RendererDictionaryItem = { cell: any; header: any };
+type RendererDictionaryItem = { cell: any; header: any; filter: any };
 const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
   default: {
     cell: TextCellRenderer,
-    header: BaseHeaderRenderer
+    header: BaseHeaderRenderer,
+    filter: TextFilteringRenderer
   },
   integer: {
     cell: NumericCellRenderer,
-    header: BaseHeaderRenderer
+    header: BaseHeaderRenderer,
+    filter: TextFilteringRenderer
   }
 };
 
@@ -27,24 +29,27 @@ export default class implements RendererResolver {
     this._context = emberContext;
   }
 
-  lookupHeaderComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return Promise.resolve({
-      component: ensureSafeComponent(BaseHeaderRenderer, this._context) as GlimmerComponent
-    });
-  }
-
-  lookupCellComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
+  lookupComponent(
+    columnDef: ColumnDefinition,
+    rendererType: 'header' | 'cell' | 'filter'
+  ): Promise<ResolvedRenderingComponent> {
     return Promise.resolve({
       component: ensureSafeComponent(
-        (rendererMatchers[columnDef.type] || rendererMatchers.default).cell,
+        (rendererMatchers[columnDef.type] || rendererMatchers.default)[rendererType],
         this._context
       ) as GlimmerComponent
     });
   }
 
-  lookupFilteringComponent(_: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return Promise.resolve({
-      component: ensureSafeComponent(TextFilteringRenderer, this._context) as GlimmerComponent
-    });
+  lookupHeaderComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
+    return this.lookupComponent(columnDef, 'header');
+  }
+
+  lookupCellComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
+    return this.lookupComponent(columnDef, 'cell');
+  }
+
+  lookupFilteringComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
+    return this.lookupComponent(columnDef, 'filter');
   }
 }
