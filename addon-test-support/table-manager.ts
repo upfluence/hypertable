@@ -39,7 +39,13 @@ export default class TableManager implements ITableManager {
   }
 
   fetchColumns(): Promise<TableColumnsResponse> {
-    return Promise.resolve({ columns: [buildColumn('foo'), buildColumn('bar', { size: FieldSize.Large })] });
+    return Promise.resolve({
+      columns: [
+        buildColumn('foo'),
+        buildColumn('bar', { size: FieldSize.Large }),
+        buildColumn('total', { type: 'integer' })
+      ]
+    });
   }
 
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse> {

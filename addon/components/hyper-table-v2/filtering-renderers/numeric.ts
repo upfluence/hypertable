@@ -11,6 +11,8 @@ interface HyperTableV2FilteringRenderersNumericArgs {
   column: Column;
 }
 
+const RANGE_DEBOUNCE_TIME = 500;
+
 export default class HyperTableV2FilteringRenderersNumeric extends Component<HyperTableV2FilteringRenderersNumericArgs> {
   @tracked lowerBoundFilter = '';
   @tracked upperBoundFilter = '';
@@ -48,19 +50,17 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
 
   @action
   addRangeFilter(): void {
-    run.debounce(this, this._addRangeFilter, 1000);
+    run.debounce(this, this._addRangeFilter, RANGE_DEBOUNCE_TIME);
   }
 
   @action
   orderingDirectionChanged(direction: OrderDirection): void {
-    console.log('orderingDirectionChanged', direction);
     // Triggers twice on click, why ? Probably the same in the other filter renderers, needs checking
     this.args.handler.applyOrder(this.args.column, direction);
   }
 
   @action
   existenceFilterChanged(value: string): void {
-    console.log('existenceFilterChanged', value);
     // Triggers twice on click, why ? Probably the same in the other filter renderers, needs checking
     this.args.handler.applyFilters(this.args.column, [{ key: 'existence', value }]);
   }

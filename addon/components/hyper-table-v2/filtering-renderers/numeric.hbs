@@ -1,4 +1,5 @@
-<div class="fx-col fx-gap-px-20" data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
+<div class="fx-col fx-gap-px-20"
+     data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
   {{#if @column.definition.orderable}}
     <div class="fx-col">
       <label>{{t "hypertable.column.ordering.label"}}</label>
@@ -20,7 +21,7 @@
     <div class="fx-col">
       <label>{{t "hypertable.column.filtering.existence.label"}}</label>
       <div class="btn-group upf-radio-group upf-radio-group--block"
-           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "existence_selector"}}>
+           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}}>
         {{#each-in this.existenceFilters as |label value|}}
           <RadioButton
                        @value={{value}}
@@ -32,14 +33,14 @@
       </div>
     </div>
 
-    <div class="fx-row fx-gap-px-30"
-         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "range_inputs"}}>
+    <div class="fx-row fx-gap-px-30">
       <div class="fx-col">
         <label>{{t "hypertable.column.filtering.from"}}</label>
         <OSS::InputContainer>
           <:input>
             <Input type="number" @placeholder={{t "hypertable.column.filtering.from"}} @value={{this.lowerBoundFilter}}
-                   autocomplete="off" {{on "keydown" this.addRangeFilter}} />
+                   autocomplete="off" {{on "keydown" this.addRangeFilter}}
+                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_from"}} />
           </:input>
         </OSS::InputContainer>
       </div>
@@ -48,7 +49,8 @@
         <OSS::InputContainer>
           <:input>
             <Input type="number" @placeholder={{t "hypertable.column.filtering.to"}} @value={{this.upperBoundFilter}}
-                   autocomplete="off" {{on "keydown" this.addRangeFilter}} />
+                   autocomplete="off" {{on "keydown" this.addRangeFilter}}
+                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_to"}} />
           </:input>
         </OSS::InputContainer>
       </div>
@@ -56,10 +58,12 @@
 
     <div class="fx-row fx-malign-space-between">
       <OSS::Button @skin="destructive" @label={{t "hypertable.column.remove"}} @size="md"
-                   {{on "click" this.removeColumn}} />
+                   {{on "click" this.removeColumn}}
+                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_remove_column"}} />
 
       <OSS::Button @skin="default" @label={{t "hypertable.column.clear_filters"}} @size="md"
-                   {{on "click" this.reset}} />
+                   {{on "click" this.reset}}
+                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_clear_filters"}} />
     </div>
   {{/if}}
 
