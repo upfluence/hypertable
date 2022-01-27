@@ -55,13 +55,11 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
 
   @action
   orderingDirectionChanged(direction: OrderDirection): void {
-    // Triggers twice on click, why ? Probably the same in the other filter renderers, needs checking
     this.args.handler.applyOrder(this.args.column, direction);
   }
 
   @action
   existenceFilterChanged(value: string): void {
-    // Triggers twice on click, why ? Probably the same in the other filter renderers, needs checking
     this.args.handler.applyFilters(this.args.column, [{ key: 'existence', value }]);
   }
 

@@ -6,8 +6,7 @@
       <div class="btn-group upf-radio-group"
            data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_ordering"}}>
         {{#each-in this.orderingDirections as |label value|}}
-          <RadioButton
-                       @value={{value}}
+          <RadioButton @value={{value}}
                        @currentValue={{this.currentOrderingDirection}}
                        @label={{label}}
                        @options={{this.orderingDirections}}
@@ -23,8 +22,7 @@
       <div class="btn-group upf-radio-group upf-radio-group--block"
            data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}}>
         {{#each-in this.existenceFilters as |label value|}}
-          <RadioButton
-                       @value={{value}}
+          <RadioButton @value={{value}}
                        @currentValue={{this.currentExistenceFilter}}
                        @label={{label}}
                        @options={{this.existenceFilters}}
