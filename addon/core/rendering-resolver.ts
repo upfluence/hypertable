@@ -3,13 +3,14 @@ import { ensureSafeComponent } from '@embroider/util';
 import { RendererResolver, ResolvedRenderingComponent, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 
 import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
+
 import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
 import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
-import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
 
+import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
 import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
 
-type RendererDictionaryItem = { cell: any; header: any; filter: any };
+type RendererDictionaryItem = { cell: any; header?: any; filter: any };
 const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
   default: {
     cell: TextCellRenderer,
@@ -18,7 +19,6 @@ const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
   },
   integer: {
     cell: NumericCellRenderer,
-    header: BaseHeaderRenderer,
     filter: NumericFilteringRenderer
   }
 };
@@ -36,7 +36,8 @@ export default class implements RendererResolver {
   ): Promise<ResolvedRenderingComponent> {
     return Promise.resolve({
       component: ensureSafeComponent(
-        (rendererMatchers[columnDef.type] || rendererMatchers.default)[rendererType],
+        (rendererMatchers[columnDef.type] || rendererMatchers.default)[rendererType] ||
+          rendererMatchers.default[rendererType],
         this._context
       ) as GlimmerComponent
     });
