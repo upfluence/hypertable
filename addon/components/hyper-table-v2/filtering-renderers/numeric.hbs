@@ -39,7 +39,7 @@
         <OSS::InputContainer>
           <:input>
             <Input type="number" @placeholder={{t "hypertable.column.filtering.from"}} @value={{this.lowerBoundFilter}}
-                   autocomplete="off" />
+                   autocomplete="off" {{on "keydown" this.addRangeFilter}} />
           </:input>
         </OSS::InputContainer>
       </div>
@@ -48,7 +48,7 @@
         <OSS::InputContainer>
           <:input>
             <Input type="number" @placeholder={{t "hypertable.column.filtering.to"}} @value={{this.upperBoundFilter}}
-                   autocomplete="off" />
+                   autocomplete="off" {{on "keydown" this.addRangeFilter}} />
           </:input>
         </OSS::InputContainer>
       </div>
