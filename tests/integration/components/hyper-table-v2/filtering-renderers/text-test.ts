@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
-import { ColumnDefinition, FieldSize } from '@upfluence/hypertable/core/interfaces';
+import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 
 module('Integration | Component | hyper-table-v2/filtering-renderers/text', function (hooks) {
   setupRenderingTest(hooks);
@@ -75,7 +75,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
   });
 
   module('filtering', function () {
-    test('it does not render the section if the column is not orderable', async function (assert: Assert) {
+    test('it does not render the section if the column is not filterable', async function (assert: Assert) {
       this.column.definition.filterable = false;
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
@@ -83,7 +83,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       assert.dom('div[data-control-name="hypertable__column_filtering_for_foo_filters"]').doesNotExist();
     });
 
-    test('it renders if the column is orderable', async function (assert) {
+    test('it renders if the column is filterable', async function (assert) {
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
 
       assert.dom('div[data-control-name="hypertable__column_filtering_for_foo_filters"]').exists();
@@ -127,7 +127,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
 
   module('remove column', function () {
     test('it calls the Handler#removeColumn with the column when the dedicated button is clicked', async function (assert: Assert) {
-      this.handler.removeColumn = (_: ColumnDefinition) => {}; // TODO: Remove when there is a proper implementation.
       const handlerSpy = sinon.spy(this.handler);
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);

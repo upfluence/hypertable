@@ -19,6 +19,8 @@ hypertable:
     ordering:
       label: Order By
     filtering:
+      from: From
+      to: To
       label: Filter
       clear: Clear Filters
       existence:

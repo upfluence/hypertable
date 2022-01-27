@@ -1,0 +1,11 @@
+{{#if this.value}}
+  <div class="fx-row fx-1 fx-malign-end text-value">
+    <span {{enable-tooltip title=(format-numeric this.value) placement="bottom"}}>
+      {{custom-format-number this.value}}
+    </span>
+  </div>
+{{else}}
+  <div class="fx-row fx-1 fx-malign-start">
+    —
+  </div>
+{{/if}}

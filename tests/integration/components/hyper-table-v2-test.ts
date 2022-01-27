@@ -31,7 +31,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
     assert.dom('.hypertable').exists();
-    assert.dom('.hypertable__column').exists({ count: 2 });
+    assert.dom('.hypertable__column').exists({ count: 3 });
 
     assert.dom('.hypertable__sticky-columns .hypertable__column').exists({ count: 1 });
     assert.dom('.hypertable__sticky-columns .hypertable__column header').hasText('Name: foo');
@@ -41,7 +41,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   test('it sets up the rows correctly', async function (assert: Assert) {
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
-    assert.dom('.hypertable__cell').exists({ count: 4 });
+    assert.dom('.hypertable__cell').exists({ count: 6 });
     assert.dom('.hypertable__sticky-columns .hypertable__column .hypertable__cell').exists({ count: 2 });
     assert.dom('.hypertable__column:nth-child(2) .hypertable__cell').exists({ count: 2 });
   });

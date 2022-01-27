@@ -30,7 +30,7 @@ module('Unit | core/handler', function (hooks) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.equal(handler.columns.length, 0);
     await handler.fetchColumns();
-    assert.equal(handler.columns.length, 2);
+    assert.equal(handler.columns.length, 3);
   });
 
   test('Handler#fetchRows', async function (assert: Assert) {
