@@ -206,8 +206,8 @@ export default class TableHandler {
    * @returns {Promise<void>}
    */
   async applyOrder(column: Column, direction: OrderDirection): Promise<void> {
-    if (this._lastOrderedColumn) {
-      this._lastOrderedColumn.order = undefined;
+    if (this._lastOrderedColumn && this._lastOrderedColumn !== column) {
+      set(this._lastOrderedColumn, 'order', undefined);
     }
 
     set(column, 'order', { key: column.definition.key, direction });
