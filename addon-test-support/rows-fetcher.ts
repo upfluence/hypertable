@@ -13,7 +13,7 @@ export default class RowsFetcher {
           foo: 'ekip',
           bar: 'hello',
           total: 123,
-          date: 1344549600
+          date: 1643386394
         },
         {
           influencerId: Math.random(),
