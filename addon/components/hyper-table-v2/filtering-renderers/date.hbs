@@ -1,9 +1,10 @@
-<div class="fx-col fx-gap-px-20">
+<div class="fx-col fx-gap-px-20"
+     data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
   {{#if @column.definition.orderable}}
     <div class="fx-col">
       <label>{{t "hypertable.column.ordering.label"}}</label>
       <div class="btn-group upf-radio-group"
-           data-control-name={{concat this._controlNamePrefix "_order_by_radiogroup"}}>
+           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_order_by_radiogroup"}}>
         {{#each-in this.orderingOptions as |label value|}}
           <RadioButton @value={{value}} @currentValue={{this.currentOrderingDirection}} @label={{label}}
                        @options={{this.orderingOptions}} @onCheck={{this.orderingOptionChanged}} />
@@ -17,13 +18,14 @@
       <label>{{t "hypertable.column.filtering.label"}}</label>
 
       <div class="btn-group upf-radio-group"
-           data-control-name={{concat this._controlNamePrefix "_filter_by_radiogroup"}}>
+           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filter_by_radiogroup"}}>
         {{#each-in this.filteringOptions as |label value|}}
           <RadioButton @value={{value}} @currentValue={{this.filterOption}} @label={{label}}
                        @options={{this.filteringOptions}} @onCheck="filterOptionChanged" />
         {{/each-in}}
       </div>
-      <div class="filters" data-control-name={{concat this._controlNamePrefix "_date_range_inputs"}}>
+      <div class="filters"
+           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_date_range_inputs"}}>
         {{#if (eq this.filterOption "fixed")}}
           <label>{{t "hypertable.column.filtering.date.range.label"}}</label>
           <EmberFlatpickr @onChange={{this.selectFixedDate}} @dateFormat="M/D/Y"
