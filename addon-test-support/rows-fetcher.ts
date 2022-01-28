@@ -12,7 +12,8 @@ export default class RowsFetcher {
           holderType: 'list',
           foo: 'ekip',
           bar: 'hello',
-          total: 123
+          total: 123,
+          date: 1344549600
         },
         {
           influencerId: Math.random(),
@@ -21,7 +22,8 @@ export default class RowsFetcher {
           holderType: 'list',
           foo: 'second',
           bar: 'second bar',
-          total: 123123
+          total: 123123,
+          date: 0
         }
       ],
       meta: { total: 12 }

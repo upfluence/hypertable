@@ -44,7 +44,8 @@ export default class TableManager implements ITableManager {
       columns: [
         buildColumn('foo'),
         buildColumn('bar', { size: FieldSize.Large }),
-        buildColumn('total', { type: 'integer' })
+        buildColumn('total', { type: 'integer' }),
+        buildColumn('date', { type: 'timestamp' })
       ]
     });
   }
@@ -55,14 +56,16 @@ export default class TableManager implements ITableManager {
 
   fetchFacets(_key: string, filteringKey: string): Promise<FacetsResponse> {
     return Promise.resolve({
-      facets: [{
-        identifier: 'band:1',
-        payload: {
-          name: 'The Foo Fighters'
-        },
-        count: 4
-      }],
+      facets: [
+        {
+          identifier: 'band:1',
+          payload: {
+            name: 'The Foo Fighters'
+          },
+          count: 4
+        }
+      ],
       filtering_key: filteringKey
-    })
+    });
   }
 }
