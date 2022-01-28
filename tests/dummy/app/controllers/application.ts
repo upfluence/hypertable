@@ -24,6 +24,7 @@ const columnDefinitions = [
 
 const columns = [
   { key: 'foo', extra: { filterable: true, category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'time', extra: { orderable: true, filterable: true, category: 'influencer', type: 'timestamp' } },
   { key: 'total', extra: { orderable: true, filterable: true, category: 'influencer', type: 'integer' } },
   { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
   { key: 'code', extra: { category: 'affiliation', clustering_key: '' } }
@@ -95,7 +96,8 @@ class RowsFetcher {
           toto: 'toto',
           code: 'code',
           test: 'test',
-          total: 123
+          total: 123,
+          time: 1344549600 // should be 2012.08.10
         },
         {
           influencerId: Math.random(),
@@ -104,7 +106,8 @@ class RowsFetcher {
           holderType: 'list',
           foo: 'second',
           bar: 'second bar',
-          total: 123.393
+          total: 123.393,
+          time: 1643289899
         },
         {
           influencerId: Math.random(),
