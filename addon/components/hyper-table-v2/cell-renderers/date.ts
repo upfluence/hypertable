@@ -12,7 +12,7 @@ interface HyperTableV2RenderersDateArgs {
   extra?: { [key: string]: any };
 }
 
-const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
+const DEFAULT_DATE_FORMAT = 'MMMM D, YYYY';
 
 export default class HyperTableV2CellRenderersDate extends Component<HyperTableV2RenderersDateArgs> {
   get value() {
@@ -20,9 +20,7 @@ export default class HyperTableV2CellRenderersDate extends Component<HyperTableV
   }
 
   get dateFormat() {
-    // There used to be this feature in V1 , do we need it ?
-    // @ts-ignore
-    return this.args.column?.dateFormat || DEFAULT_DATE_FORMAT;
+    return DEFAULT_DATE_FORMAT;
   }
 
   get formattedDate() {
