@@ -35,7 +35,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     assert.dom('.btn-group').exists();
   });
 
-  test('it uses the default orderingOptions when no @customOrderingOptions are passed', async function (assert: Assert) {
+  test('it uses the default orderingOptions when no @orderingOptions are passed', async function (assert: Assert) {
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Ordering @handler={{this.handler}} @column={{this.column}} />`
     );
@@ -46,14 +46,14 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     assert.dom('.btn-group .btn:nth-child(2)').hasText('Z — A');
   });
 
-  test('it properly displays @customOrderingOptions when they are passed', async function (assert: Assert) {
-    this.customOrderingOptions = {
+  test('it properly displays @orderingOptions when they are passed', async function (assert: Assert) {
+    this.orderingOptions = {
       'Oldest — Newest': 'asc',
       'Newest — Oldest': 'desc'
     };
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Ordering @handler={{this.handler}} @column={{this.column}}
-                                                              @customOrderingOptions={{this.customOrderingOptions}} />`
+                                                              @orderingOptions={{this.orderingOptions}} />`
     );
 
     assert.dom('.btn-group').exists();

@@ -3,7 +3,7 @@
   {{#if @column.definition.orderable}}
     <HyperTableV2::FilteringRenderers::Common::Ordering @handler={{@handler}} @column={{@column}}
                                                         @label={{t "hypertable.column.ordering.label"}}
-                                                        @customOrderingOptions={{this.orderingDirections}}
+                                                        @orderingOptions={{this.orderingDirections}}
                                                         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_ordering"}} />
   {{/if}}
 

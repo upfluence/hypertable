@@ -10,20 +10,17 @@
          data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filters"}}>
       <div class="margin-top-xxx-sm">
         <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
-        <OSS::InputContainer
-                             @value={{this.searchQuery}}
+        <OSS::InputContainer @value={{this.searchQuery}}
                              @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}} />
       </div>
     </div>
   {{/if}}
 
   <div class="margin-top-xx-sm fx-row fx-malign-space-between">
-    <OSS::Button
-                 @skin="destructive" @size="sm" @label={{t "hypertable.column.remove"}} {{on "click" this.removeColumn}}
+    <OSS::Button @skin="destructive" @size="sm" @label={{t "hypertable.column.remove"}} {{on "click" this.removeColumn}}
                  data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_remove_column"}} />
 
-    <OSS::Button
-                 @size="sm" @label={{t "hypertable.column.clear_filters"}} {{on "click" this.reset}}
+    <OSS::Button @size="sm" @label={{t "hypertable.column.clear_filters"}} {{on "click" this.reset}}
                  data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_clear_filters"}} />
   </div>
 </div>

@@ -7,7 +7,7 @@ import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
 interface HyperTableV2FilteringRenderersOrderingArgs {
   handler: TableHandler;
   column: Column;
-  customOrderingOptions: { [key: string]: OrderDirection };
+  orderingOptions: { [key: string]: OrderDirection };
 }
 
 const defaultOrderingDirections: { [key: string]: OrderDirection } = {
@@ -17,7 +17,7 @@ const defaultOrderingDirections: { [key: string]: OrderDirection } = {
 
 export default class HyperTableV2FilteringRenderersOrdering extends Component<HyperTableV2FilteringRenderersOrderingArgs> {
   get orderingOptions() {
-    return this.args?.customOrderingOptions || defaultOrderingDirections;
+    return this.args?.orderingOptions || defaultOrderingDirections;
   }
 
   get currentOrderingDirection(): OrderDirection | undefined {
