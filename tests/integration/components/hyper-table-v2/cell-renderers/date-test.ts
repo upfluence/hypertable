@@ -27,7 +27,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/date', function 
 
     assert.equal(this.column.definition.key, 'date');
     assert.equal(this.row[this.column.definition.key], '1643386394');
-    assert.dom().hasText('2022-01-28');
+    assert.dom().hasText('January 28, 2022');
   });
 
   test('it renders a default - when the value is null', async function (assert) {
