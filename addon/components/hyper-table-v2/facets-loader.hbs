@@ -1,0 +1,22 @@
+<div class="hypertable__facetting">
+  {{#if this.loading}}
+    {{#each this.loadingFacetsRange}}
+      <div class="upf-skeleton-content" style="width: 100%; height: 10px"></div>
+    {{/each}}
+  {{else}}
+    {{#each this.facets as |facet|}}
+      <div class="fx-row fx-malign-space-between fx-xalign-center padding-xxx-sm" {{on "click" (fn this.toggleFacet facet)}}>
+        <div class="fx-row item">
+          <OSS::Checkbox
+            @checked={{false}} @size="sm" @onChange={{fn this.toggleFacet facet}} class="margin-right-xx-sm" />
+
+          {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
+        </div>
+
+        <div class="count">
+          {{facet.count}}
+        </div>
+      </div>
+    {{/each}}
+  {{/if}}
+</div>
