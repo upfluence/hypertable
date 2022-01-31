@@ -1,0 +1,58 @@
+<div class="fx-col fx-gap-px-20"
+     data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
+  {{#if @column.definition.orderable}}
+    <div class="fx-col">
+      <label>{{t "hypertable.column.ordering.label"}}</label>
+      <div class="btn-group upf-radio-group"
+           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_order_by_radiogroup"}}>
+        {{#each-in this.orderingOptions as |label value|}}
+          <RadioButton @value={{value}} @currentValue={{this.currentOrderingDirection}} @label={{label}}
+                       @options={{this.orderingOptions}} @onCheck={{this.orderingOptionChanged}} />
+        {{/each-in}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#if @column.definition.filterable}}
+    <div class="fx-col">
+      <label>{{t "hypertable.column.filtering.label"}}</label>
+
+      <div class="btn-group upf-radio-group"
+           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filter_by_radiogroup"}}>
+        {{#each-in this.filteringOptions as |label value|}}
+          <RadioButton @value={{value}} @currentValue={{this.filterOption}} @label={{label}}
+                       @options={{this.filteringOptions}} @onCheck="filterOptionChanged" />
+        {{/each-in}}
+      </div>
+      <div class="filters"
+           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_date_range_inputs"}}>
+        {{#if (eq this.filterOption "fixed")}}
+          <label>{{t "hypertable.column.filtering.date.range.label"}}</label>
+          <EmberFlatpickr @onChange={{this.selectFixedDate}} @dateFormat="M/D/Y"
+                          @placeholder={{t "hypertable.column.filtering.date.range.label"}}
+                          @mode="range" @date={{readonly this._currentDateValue}} @altInput={{true}}
+                          @altInputClass="upf-input upf-input--textarea" @getFlatpickrRef={{fn (mut this.flatpickrRef)}}
+                          @onOpen={{this.openedFlatpickr}} @onClose={{this.closedFlatpickr}} />
+        {{else}}
+          {{#each-in this.movingDateOptions as |label value|}}
+            <div class="filters__option {{if (eq this._currentMovingDateOption value) 'filters__option--active'}}"
+                 role="button"
+                 {{on "click" (fn this.selectMovingDate value)}}>
+              {{label}}
+            </div>
+          {{/each-in}}
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="buttons-container">
+      <OSS::Button @skin="destructive" @label={{t "hypertable.column.remove"}} @size="md"
+                   {{on "click" this.removeColumn}}
+                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_remove_column"}} />
+
+      <OSS::Button @skin="default" @label={{t "hypertable.column.clear_filters"}} @size="md"
+                   {{on "click" this.reset}}
+                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_clear_filters"}} />
+    </div>
+  {{/if}}
+</div>

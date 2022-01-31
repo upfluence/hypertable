@@ -25,7 +25,9 @@
     "test:ember": "ember test -r dot",
     "test:ember-compatibility": "ember try:each",
     "prepack": "ember ts:precompile",
-    "postpack": "ember ts:clean"
+    "postpack": "ember ts:clean",
+    "install-pre-push-hook": "cp ./scripts/pre-push ./.git/hooks/pre-push",
+    "remove-pre-push-hook": "rm -rf ./.git/hooks/pre-push"
   },
   "dependencies": {
     "@embroider/util": "^0.50.0",

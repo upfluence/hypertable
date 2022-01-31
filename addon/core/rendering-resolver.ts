@@ -7,8 +7,11 @@ import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/
 import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
 import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
 
-import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
 import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
+import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
+
+import DateCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/date';
+import DateFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/date';
 
 type RendererDictionaryItem = { cell: any; header?: any; filter: any };
 const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
@@ -20,6 +23,10 @@ const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
   integer: {
     cell: NumericCellRenderer,
     filter: NumericFilteringRenderer
+  },
+  timestamp: {
+    cell: DateCellRenderer,
+    filter: DateFilteringRenderer
   }
 };
 
