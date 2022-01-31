@@ -15,7 +15,7 @@ type FilterOption = 'moving' | 'fixed';
 
 export default class HyperTableV2FilteringRenderersDate extends Component<HyperTableV2FilteringRenderersDateArgs> {
   @tracked flatpickrRef: any;
-  @tracked _currentDateValue: Date[]= [];
+  @tracked _currentDateValue: Date[] = [];
   @tracked _currentMovingDateOption: any;
   @tracked filterOption: FilterOption;
 
@@ -27,8 +27,8 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   });
 
   movingDateOptions = Object.freeze({
-    'Today': 'today',
-    'Yesterday': 'yesterday',
+    Today: 'today',
+    Yesterday: 'yesterday',
     'This Week': 'this_week',
     'Last Week': 'last_week',
     'This Month': 'this_month',
@@ -99,7 +99,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   }
 
   @action
-  selectFixedDate(value: any) {
+  selectFixedDate(value: any): void {
     let [fromDate, toDate] = value;
 
     if (fromDate && toDate) {

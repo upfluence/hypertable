@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-// import { render, , triggerKeyEvent, fillIn } from '@ember/test-helpers';
 import { render, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
@@ -45,7 +44,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       assert.dom('div[data-control-name="hypertable__column_filtering_for_date_order_by_radiogroup"]').doesNotExist();
     });
 
-    test('it renders if the column is orderable', async function (assert) {
+    test('it renders if the column is orderable', async function (assert: Assert) {
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
 
       assert.dom('div[data-control-name="hypertable__column_filtering_for_date_order_by_radiogroup"]').exists();
