@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { typeOf } from '@ember/utils';
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -24,10 +23,6 @@ export default class HyperTableV2CellRenderersDate extends Component<HyperTableV
   }
 
   get formattedDate() {
-    if (typeOf(this.value) === 'date') {
-      return moment(this.value).format(this.dateFormat);
-    } else {
-      return moment.unix(this.value).format(this.dateFormat);
-    }
+    return moment.unix(this.value).format(this.dateFormat);
   }
 }
