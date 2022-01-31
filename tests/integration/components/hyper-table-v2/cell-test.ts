@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, render } from '@ember/test-helpers';
+import { click, render, triggerEvent } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -47,6 +47,31 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
     await click('.hypertable__cell');
 
     assert.ok(this.onClick.calledOnce);
+  });
+
+  test('the onHover action is called when the cell is hovered with right params', async function (assert: Assert) {
+    this.onHover = sinon.stub();
+
+    await render(hbs`
+      <HyperTableV2::Cell @handler={{this.handler}} @column={{this.column}} @row={{this.row}} @onHover={{this.onHover}} />
+    `);
+
+    await triggerEvent('.hypertable__cell', 'mouseenter');
+    assert.ok(this.onHover.calledOnceWithExactly(this.row, true));
+
+    await triggerEvent('.hypertable__cell', 'mouseleave');
+    assert.ok(this.onHover.calledTwice);
+  });
+
+  test('the onHover action is called when the cell is unhovered with right params', async function (assert: Assert) {
+    this.onHover = sinon.stub();
+
+    await render(hbs`
+      <HyperTableV2::Cell @handler={{this.handler}} @column={{this.column}} @row={{this.row}} @onHover={{this.onHover}} />
+    `);
+
+    await triggerEvent('.hypertable__cell', 'mouseleave');
+    assert.ok(this.onHover.calledOnceWithExactly(this.row, false));
   });
 
   test('the onClick action is never called when a loading cell is clicked', async function (assert: Assert) {

@@ -10,7 +10,8 @@ interface HyperTableV2CellArgs {
   column: Column;
   row: Row;
   loading: boolean;
-  onClick(row: Row): void;
+  onClick?(row: Row): void;
+  onHover?(row: Row, hovered: boolean): void;
 }
 
 export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
@@ -43,5 +44,10 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
     if (!this.args.loading) {
       this.args.onClick?.(this.args.row);
     }
+  }
+
+  @action
+  toggleHover(row: Row, hovered: boolean) {
+    this.args.onHover?.(row, hovered);
   }
 }

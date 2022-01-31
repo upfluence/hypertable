@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
@@ -114,7 +114,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  onRowClick(row: Row) {
-    this.args.handler.triggerEvent('row-click', row);
+  onRowHover(row: Row, hovered: boolean) {
+    set(this.args.handler.rows[this.args.handler.rows.indexOf(row)], 'hovered', hovered);
   }
 }
