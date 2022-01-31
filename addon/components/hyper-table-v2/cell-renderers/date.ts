@@ -18,11 +18,7 @@ export default class HyperTableV2CellRenderersDate extends Component<HyperTableV
     return this.args.row[this.args.column.definition.key];
   }
 
-  get dateFormat() {
-    return DEFAULT_DATE_FORMAT;
-  }
-
   get formattedDate() {
-    return moment.unix(this.value).format(this.dateFormat);
+    return moment.unix(this.value).format(DEFAULT_DATE_FORMAT);
   }
 }
