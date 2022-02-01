@@ -1,0 +1,13 @@
+<div class="fx-col">
+  <label>{{this.label}}</label>
+  <div class="btn-group upf-radio-group upf-radio-group--block"
+       ...attributes>
+    {{#each-in this.existenceFilters as |label value|}}
+      <RadioButton @value={{value}}
+                   @currentValue={{this.currentExistenceFilter}}
+                   @label={{label}}
+                   @options={{this.existenceFilters}}
+                   @onCheck={{this.existenceFilterChanged}} />
+    {{/each-in}}
+  </div>
+</div>
