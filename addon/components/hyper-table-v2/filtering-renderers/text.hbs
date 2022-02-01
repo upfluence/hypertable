@@ -6,14 +6,8 @@
   {{/if}}
 
   {{#if @column.definition.filterable}}
-    <div class={{if @column.definition.orderable "margin-top-xx-sm"}}
-         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filters"}}>
-      <div class="margin-top-xxx-sm">
-        <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
-        <OSS::InputContainer @value={{this.searchQuery}}
-                             @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}} />
-      </div>
-    </div>
+    <HyperTableV2::FilteringRenderers::Common::Search @handler={{@handler}} @column={{@column}}
+                                                      @registerResetCallback={{this.registerResetCallback}} />
   {{/if}}
 
   <div class="margin-top-xx-sm fx-row fx-malign-space-between">
