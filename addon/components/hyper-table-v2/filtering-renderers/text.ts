@@ -12,15 +12,14 @@ interface HyperTableV2FilteringRenderersTextArgs {
 export default class HyperTableV2FilteringRenderersText extends Component<HyperTableV2FilteringRenderersTextArgs> {
   _childResetCallback: any;
 
-  @action registerResetCallback(childResetMethod: () => {}): void {
+  @action
+  registerResetCallback(childResetMethod: () => {}): void {
     this._childResetCallback = childResetMethod;
   }
 
   @action
   reset(): void {
-    if (this._childResetCallback) {
-      this._childResetCallback();
-    }
+    this._childResetCallback?.();
     this.args.handler.resetColumns([this.args.column]);
   }
 

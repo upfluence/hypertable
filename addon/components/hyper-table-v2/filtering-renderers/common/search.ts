@@ -9,7 +9,7 @@ import { Column } from '@upfluence/hypertable/core/interfaces';
 interface HyperTableV2FilteringRenderersSearchArgs {
   handler: TableHandler;
   column: Column;
-  registerResetCallback: any;
+  registerResetCallback(any: (...args: any[]) => void): void;
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
