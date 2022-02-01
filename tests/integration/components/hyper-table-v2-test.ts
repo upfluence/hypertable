@@ -71,7 +71,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   test('it triggers the row-click event correctly', async function (assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
 
-    await render(hbs`<HyperTableV2 @handler={{this.handler}} @onRowClick={{this.onRowClick}} />`);
+    await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
     await click('.hypertable__sticky-columns > .hypertable__column .hypertable__cell');
 
     // @ts-ignore

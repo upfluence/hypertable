@@ -44,10 +44,7 @@
             {{#if this.features.selection}}
               <div class="hypertable__column hypertable__column--selection">
                 <header>
-                  <OSS::Checkbox
-                                 @checked={{eq @handler.selection "all"}}
-                                 @size="sm"
-                                 @onChange={{this.toggleSelectAll}}
+                  <OSS::Checkbox @checked={{eq @handler.selection "all"}} @size="sm" @onChange={{this.toggleSelectAll}}
                                  @disabled={{false}} />
                 </header>
 
@@ -57,12 +54,10 @@
                   {{/each}}
                 {{else}}
                   {{#each @handler.rows as |row|}}
-                    <HyperTableV2::Cell
-                                        @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}}>
-                      <OSS::Checkbox
-                                     @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
-                                     @size="sm"
-                                     @onChange={{fn this.toggleRowSelection row}}
+                    <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
+                                        @onClick={{this.onRowClick}} @onHover={{this.onRowHover}}>
+                      <OSS::Checkbox @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
+                                     @size="sm" @onChange={{fn this.toggleRowSelection row}}
                                      @disabled={{eq @handler.selection "all"}} />
                     </HyperTableV2::Cell>
                   {{/each}}
@@ -78,8 +73,8 @@
 
             <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
               {{#each @handler.rows as |row|}}
-                <HyperTableV2::Cell
-                                    @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}} />
+                <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
+                                    @onClick={{this.onRowClick}} @onHover={{this.onRowHover}} />
               {{/each}}
 
               {{#if @handler.loadingRows}}
@@ -94,8 +89,8 @@
         {{#if (gt index 0)}}
           <HyperTableV2::Column @handler={{@handler}} @column={{column}} {{sortable-item model=column}}>
             {{#each @handler.rows as |row|}}
-              <HyperTableV2::Cell
-                                  @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}} />
+              <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}}
+                                  @onHover={{this.onRowHover}} />
             {{/each}}
 
             {{#if @handler.loadingRows}}
@@ -109,8 +104,7 @@
     </div>
 
     <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
-      <OSS::Button
-                   @size="sm" @icon="fa fa-chevron-right" class="scroll-button is-visible"
+      <OSS::Button @size="sm" @icon="fa fa-chevron-right" class="scroll-button is-visible"
                    {{on "click" this.scrollToEnd}} />
     </div>
   </div>

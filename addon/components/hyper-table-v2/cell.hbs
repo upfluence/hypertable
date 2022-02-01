@@ -1,6 +1,8 @@
-<div class="hypertable__cell {{if this.loading 'hypertable__cell--loading'}}"
+<div class={{concat "hypertable__cell" (if this.loading " hypertable__cell--loading") (if @row.hovered " hypertable__cell--hovered")}}
      role="button"
      {{on "click" this.clickedCell}}
+     {{on "mouseenter" (fn this.toggleHover @row true)}}
+     {{on "mouseleave" (fn this.toggleHover @row false)}}
      ...attributes>
   {{#if this.loading}}
     <div class="skeleton-placeholder"></div>
