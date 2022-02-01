@@ -36,6 +36,22 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       })
       .finally(() => {
         this.loading = false;
+        this.facets = [
+          {
+            identifier: 'mailing:2132',
+            payload: {
+              name: 'MEILLEUR MAILING AU MONDE'
+            },
+            count: 32
+          },
+          {
+            identifier: 'mailing:14',
+            payload: {
+              name: 'dawda'
+            },
+            count: 16
+          }
+        ];
       });
   }
 

@@ -95,4 +95,10 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
       targetAttachment: 'bottom right'
     });
   }
+
+  willDestroy() {
+    if (this.args.handler.tetherOn !== this.args.column.definition.key) {
+      this.args.handler.destroyTetherInstance();
+    }
+  }
 }
