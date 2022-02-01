@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
+import { Column } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2FilteringRenderersTextArgs {
   handler: TableHandler;
@@ -13,20 +13,11 @@ interface HyperTableV2FilteringRenderersTextArgs {
 export default class HyperTableV2FilteringRenderersText extends Component<HyperTableV2FilteringRenderersTextArgs> {
   @tracked _searchQuery: string = '';
 
-  orderingDirections: { [key: string]: OrderDirection } = Object.freeze({
-    'A — Z': 'asc',
-    'Z — A': 'desc'
-  });
-
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersTextArgs) {
     super(owner, args);
 
     const searchTerm = this.args.column.filters.find((filter) => filter.key === 'value');
     this._searchQuery = searchTerm?.value || '';
-  }
-
-  get currentOrderingDirection(): OrderDirection | undefined {
-    return this.args.column.order?.direction;
   }
 
   get searchQuery(): string {
@@ -42,11 +33,6 @@ export default class HyperTableV2FilteringRenderersText extends Component<HyperT
         value
       }
     ]);
-  }
-
-  @action
-  orderingDirectionChanged(direction: OrderDirection): void {
-    this.args.handler.applyOrder(this.args.column, direction);
   }
 
   @action

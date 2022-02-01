@@ -27,10 +27,6 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
     'Without Value': 'without'
   };
 
-  get currentOrderingDirection(): OrderDirection | undefined {
-    return this.args.column.order?.direction;
-  }
-
   get currentExistenceFilter(): string | null {
     const _existenceFilter = this.args.column.filters.find((filter) => filter.key === 'existence');
 
@@ -51,11 +47,6 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
   @action
   addRangeFilter(): void {
     run.debounce(this, this._addRangeFilter, RANGE_DEBOUNCE_TIME);
-  }
-
-  @action
-  orderingDirectionChanged(direction: OrderDirection): void {
-    this.args.handler.applyOrder(this.args.column, direction);
   }
 
   @action

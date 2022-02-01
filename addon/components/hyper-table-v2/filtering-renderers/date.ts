@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
+import { Column } from '@upfluence/hypertable/core/interfaces';
 import { action } from '@ember/object';
 
 interface HyperTableV2FilteringRenderersDateArgs {
@@ -39,10 +39,6 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     'Oldest — Newest': 'asc',
     'Newest — Oldest': 'desc'
   };
-
-  get currentOrderingDirection(): OrderDirection | undefined {
-    return this.args.column.order?.direction;
-  }
 
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersDateArgs) {
     super(owner, args);
@@ -80,11 +76,6 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   @action
   closedFlatpickr(): void {
     this._calendarContainer.removeEventListener('click', this._handleFlatpickrClick);
-  }
-
-  @action
-  orderingOptionChanged(direction: OrderDirection): void {
-    this.args.handler.applyOrder(this.args.column, direction);
   }
 
   @action
