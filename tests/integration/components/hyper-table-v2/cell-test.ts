@@ -61,17 +61,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
 
     await triggerEvent('.hypertable__cell', 'mouseleave');
     assert.ok(this.onHover.calledTwice);
-  });
-
-  test('the onHover action is called when the cell is unhovered with right params', async function (assert: Assert) {
-    this.onHover = sinon.stub();
-
-    await render(hbs`
-      <HyperTableV2::Cell @handler={{this.handler}} @column={{this.column}} @row={{this.row}} @onHover={{this.onHover}} />
-    `);
-
-    await triggerEvent('.hypertable__cell', 'mouseleave');
-    assert.ok(this.onHover.calledOnceWithExactly(this.row, false));
+    assert.ok(this.onHover.calledWithExactly(this.row, false));
   });
 
   test('the onClick action is never called when a loading cell is clicked', async function (assert: Assert) {

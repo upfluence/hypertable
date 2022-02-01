@@ -114,6 +114,11 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
+  onRowClick(row: Row) {
+    this.args.handler.triggerEvent('row-click', row);
+  }
+
+  @action
   onRowHover(row: Row, hovered: boolean) {
     set(this.args.handler.rows[this.args.handler.rows.indexOf(row)], 'hovered', hovered);
   }
