@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Facet, FacetsResponse, Filter } from '@upfluence/hypertable/core/interfaces';
@@ -14,45 +15,37 @@ interface FacetsLoaderArgs {
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
   @tracked loading = false;
   @tracked facets: Facet[] = [];
+  @tracked appliedFacets: string[] = [];
 
   loadingFacetsRange = new Array(8);
-  appliedFacets: Facet[] = [];
 
   constructor(owner: unknown, args: FacetsLoaderArgs) {
     super(owner, args);
 
     this.loading = true;
     args.handler
-      .fetchFacets(args.column.definition.key, args.filteringKey)
-      .then(({ facets, filtering_key }: FacetsResponse) => {
-        console.log(facets, filtering_key);
-        //this.facets = facets;
-        //this.filteringKey = filtering_key;
+      .fetchFacets('thread_holder', 'id')
+      .then(({ facets }: FacetsResponse) => {
+        this.facets = facets;
+
+        if (isEmpty(args.column.filters.find((v) => v.key === 'id')?.value)) {
+          this.appliedFacets = [];
+        } else {
+          this.appliedFacets = args.column.filters.find((v) => v.key === 'id')!.value.split(',');
+        }
       })
       .finally(() => {
         this.loading = false;
-        this.facets = [
-          {
-            identifier: 'replied',
-            payload: {
-              status: 'replied'
-            },
-            count: 40
-          },
-          {
-            identifier: 'sent',
-            payload: {
-              status: 'sent'
-            },
-            count: 27
-          }
-        ];
       });
   }
 
   @action
-  toggleFacet(facet: Facet) {
-    this.appliedFacets.includes(facet) ? this.removeFacet(facet) : this.addFacet(facet);
+  toggleFacet(facet: Facet): void {
+    if (this.appliedFacets.includes(facet.identifier)) {
+      this.removeFacet(facet);
+    } else {
+      this.addFacet(facet);
+    }
   }
 
   private addFacet(facet: Facet) {
@@ -63,46 +56,27 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       facetFilter = { key: this.args.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
 
-    this.args.handler.applyFilters(this.args.column, [facetFilter]);
+    this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
+      this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
+    });
   }
 
-  private removeFacet(facet: Facet) {
-/*    let facetFilter;*/
-    /*const existingFilter = this.args.column.filters.find((filter) => filter.key === this.args.filteringKey);*/
+  private removeFacet(facet: Facet): void {
+    const existingFilter = this.args.column.filters.find((filter) => filter.key === this.args.filteringKey);
 
-    /*if (existingFilter) {*/
-    /*//existingFilter.value.spit(',')*/
-      /*facetFilter = { key: this.args.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };*/
-    /*}*/
+    if (existingFilter) {
+      let facetFilter;
+      const applied = existingFilter.value.split(',');
 
-    /*this.args.handler.applyFilters(this.args.column, [facetFilter]);*/
+      if (applied.length > 1) {
+        facetFilter = { key: this.args.filteringKey, value: applied.filter((v) => v !== facet.identifier).join(',') };
+      } else {
+        facetFilter = { key: this.args.filteringKey, value: '' };
+      }
+
+      this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
+        this.appliedFacets = this.appliedFacets.filter((x) => x !== facet.identifier);
+      });
+    }
   }
 }
-
-//export default Component.extend({
-//classNames: ['hypertable__facetting'],
-//classNameBindings: ['loading:hypertable__facetting--loading'],
-
-//column: null,
-//filteringKey: null,
-//facets: [],
-
-//loadingFacetsRange: new Array(8),
-
-//actions: {
-//toggleAppliedFacet(facet) {
-//if (this.onToggleAppliedFacet) {
-//this.onToggleAppliedFacet(facet);
-//}
-
-//run.later(() => {
-//this.column.applyFacets(
-//this.filteringKey,
-//this.facets.filter((f) => {
-//return f.applied && !isEmpty(f.identifier);
-//})
-//);
-//}, 500);
-//}
-//}
-//});
