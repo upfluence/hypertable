@@ -52,6 +52,12 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
             count: 16
           }
         ];
+
+        if (isEmpty(args.column.filters.find((v) => v.key === 'id')?.value)) {
+          this.appliedFacets = [];
+        } else {
+          this.appliedFacets = args.column.filters.find((v) => v.key === 'id')!.value.split(',');
+        }
       });
   }
 

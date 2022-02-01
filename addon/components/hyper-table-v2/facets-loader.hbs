@@ -9,7 +9,7 @@
            role="button" {{on "click" (fn this.toggleFacet facet)}}>
         <div class="fx-row item">
           <OSS::Checkbox
-            @checked={{array-includes this.appliedFacets facet.applied}} @size="sm" @onChange={{fn this.toggleFacet facet}}
+            @checked={{array-includes this.appliedFacets facet.identifier}} @size="sm" @onChange={{fn this.toggleFacet facet}}
             class="margin-right-xx-sm" />
 
           {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
