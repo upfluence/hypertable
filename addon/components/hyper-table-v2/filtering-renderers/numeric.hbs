@@ -8,20 +8,9 @@
   {{/if}}
 
   {{#if @column.definition.filterable}}
-    <div class="fx-col">
-      <label>{{t "hypertable.column.filtering.existence.label"}}</label>
-      <div class="btn-group upf-radio-group upf-radio-group--block"
-           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}}>
-        {{#each-in this.existenceFilters as |label value|}}
-          <RadioButton @value={{value}}
-                       @currentValue={{this.currentExistenceFilter}}
-                       @label={{label}}
-                       @options={{this.existenceFilters}}
-                       @onCheck={{this.existenceFilterChanged}} />
-        {{/each-in}}
-      </div>
-    </div>
-
+    <HyperTableV2::FilteringRenderers::Common::Existence @handler={{@handler}} @column={{@column}}
+                                                         @activateWithValue={{this.hasBoundFiltersDefined}}
+                                                         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}} />
     <div class="fx-row fx-gap-px-30">
       <div class="fx-col">
         <label>{{t "hypertable.column.filtering.from"}}</label>

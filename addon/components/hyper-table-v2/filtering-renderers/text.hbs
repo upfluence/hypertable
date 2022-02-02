@@ -1,4 +1,4 @@
-<div data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
+<div class="fx-col fx-gap-px-20" data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
   {{#if @column.definition.orderable}}
     <HyperTableV2::FilteringRenderers::Common::Ordering @handler={{@handler}} @column={{@column}}
                                                         @label={{t "hypertable.column.ordering.label"}}
@@ -10,7 +10,7 @@
                                                       @registerResetCallback={{this.registerResetCallback}} />
   {{/if}}
 
-  <div class="margin-top-xx-sm fx-row fx-malign-space-between">
+  <div class="fx-row fx-malign-space-between">
     <OSS::Button @skin="destructive" @size="sm" @label={{t "hypertable.column.remove"}} {{on "click" this.removeColumn}}
                  data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_remove_column"}} />
 

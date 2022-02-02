@@ -1,10 +1,12 @@
-<label>{{@label}}</label>
-<div class="btn-group upf-radio-group" ...attributes>
-  {{#each-in this.orderingOptions as |label value|}}
-    <RadioButton @value={{value}}
-                 @currentValue={{this.currentOrderingDirection}}
-                 @label={{label}}
-                 @options={{this.orderingOptions}}
-                 @onCheck={{this.orderingDirectionChanged}} />
-  {{/each-in}}
+<div class="fx-col">
+  <label>{{@label}}</label>
+  <div class="btn-group upf-radio-group" ...attributes>
+    {{#each-in this.orderingOptions as |label value|}}
+      <RadioButton @value={{value}}
+                   @currentValue={{this.currentOrderingDirection}}
+                   @label={{label}}
+                   @options={{this.orderingOptions}}
+                   @onCheck={{this.orderingDirectionChanged}} />
+    {{/each-in}}
+  </div>
 </div>

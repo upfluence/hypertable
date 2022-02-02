@@ -22,19 +22,8 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
     '9 — 0': 'desc'
   });
 
-  existenceFilters = {
-    'With Value': 'with',
-    'Without Value': 'without'
-  };
-
-  get currentExistenceFilter(): string | null {
-    const _existenceFilter = this.args.column.filters.find((filter) => filter.key === 'existence');
-
-    if (_existenceFilter) {
-      return _existenceFilter.value;
-    }
-
-    return this.lowerBoundFilter || this.upperBoundFilter ? 'with' : null;
+  get hasBoundFiltersDefined(): boolean {
+    return this.lowerBoundFilter || this.upperBoundFilter ? true : false;
   }
 
   private _addRangeFilter(): void {
@@ -47,11 +36,6 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
   @action
   addRangeFilter(): void {
     run.debounce(this, this._addRangeFilter, RANGE_DEBOUNCE_TIME);
-  }
-
-  @action
-  existenceFilterChanged(value: string): void {
-    this.args.handler.applyFilters(this.args.column, [{ key: 'existence', value }]);
   }
 
   @action
