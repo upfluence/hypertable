@@ -36,28 +36,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       })
       .finally(() => {
         this.loading = false;
-        this.facets = [
-          {
-            identifier: 'mailing:2132',
-            payload: {
-              name: 'MEILLEUR MAILING AU MONDE'
-            },
-            count: 32
-          },
-          {
-            identifier: 'mailing:14',
-            payload: {
-              name: 'dawda'
-            },
-            count: 16
-          }
-        ];
-
-        if (isEmpty(args.column.filters.find((v) => v.key === 'id')?.value)) {
-          this.appliedFacets = [];
-        } else {
-          this.appliedFacets = args.column.filters.find((v) => v.key === 'id')!.value.split(',');
-        }
       });
   }
 
