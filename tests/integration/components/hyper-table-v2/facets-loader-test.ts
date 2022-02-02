@@ -24,7 +24,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
     test('the facets are displayed correctly using the dedicated named block', async function (assert: Assert) {
       await render(
         hbs`
-          <HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{false}}>
+          <HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}>
             <:facet-item as |facetting|>
               {{facetting.facet.payload.name}}
             </:facet-item>
@@ -41,7 +41,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
-        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
       );
 
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isNotChecked();
@@ -56,7 +56,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
-        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
       );
 
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
@@ -69,7 +69,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       this.column.filters = [{ key: 'foo', value: 'band:1' }];
 
       await render(
-        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
       );
 
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
@@ -79,7 +79,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
   module('facets search', function () {
     test('the search is not displayed when the searchEnabled argument is falsy', async function (assert: Assert) {
       await render(
-        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
       );
 
       assert.dom('.oss-input-container').doesNotExist();
@@ -87,7 +87,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
 
     test('the search is displayed when the searchEnabled argument is truthy', async function (assert: Assert) {
       await render(
-        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{true}}/>`
+        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{true}}/>`
       );
 
       assert.dom('.oss-input-container').exists();
@@ -97,7 +97,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
-        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{true}}/>`
+        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{true}}/>`
       );
 
       await fillIn('.oss-input-container input', 'test');
@@ -124,7 +124,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       });
 
       await render(
-        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{true}}/>`
+        hbs`<HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{true}}/>`
       );
 
       assert
@@ -145,7 +145,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
 
       await render(
         hbs`
-          <HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @filteringKey="foo" @searchEnabled={{false}}>
+          <HyperTableV2::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}>
             <:facet-item as |facetting|>
               {{facetting.facet.payload.name}}
             </:facet-item>

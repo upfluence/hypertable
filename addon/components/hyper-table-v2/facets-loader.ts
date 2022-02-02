@@ -10,7 +10,7 @@ import { Column, Facet, FacetsResponse, Filter } from '@upfluence/hypertable/cor
 interface FacetsLoaderArgs {
   handler: TableHandler;
   column: Column;
-  filteringKey: string;
+  facettingKey: string;
   searchEnabled: boolean;
 }
 
@@ -21,6 +21,8 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   @tracked facets: Facet[] = [];
   @tracked appliedFacets: string[] = [];
   @tracked searchQuery: string = '';
+
+  declare filteringKey: string;
 
   loadingFacetsRange = new Array(8);
 
@@ -57,13 +59,12 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   }
 
   private addFacet(facet: Facet): void {
-    let facetFilter: Filter = { key: this.args.filteringKey, value: facet.identifier };
-    const existingFilter = this.args.column.filters.find((filter) => filter.key === this.args.filteringKey);
+    let facetFilter: Filter = { key: this.filteringKey, value: facet.identifier };
+    const existingFilter = this.args.column.filters.find((filter) => filter.key === this.filteringKey);
 
     if (existingFilter) {
-      facetFilter = { key: this.args.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
+      facetFilter = { key: this.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
-
 
     this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
       this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
@@ -71,16 +72,16 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   }
 
   private removeFacet(facet: Facet): void {
-    const existingFilter = this.args.column.filters.find((filter) => filter.key === this.args.filteringKey);
+    const existingFilter = this.args.column.filters.find((filter) => filter.key === this.filteringKey);
 
     if (existingFilter) {
       let facetFilter;
       const applied = existingFilter.value.split(',');
 
       if (applied.length > 1) {
-        facetFilter = { key: this.args.filteringKey, value: applied.filter((v) => v !== facet.identifier).join(',') };
+        facetFilter = { key: this.filteringKey, value: applied.filter((v) => v !== facet.identifier).join(',') };
       } else {
-        facetFilter = { key: this.args.filteringKey, value: '' };
+        facetFilter = { key: this.filteringKey, value: '' };
       }
 
       this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
@@ -92,11 +93,12 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   private fetchFacets(): void {
     this.loading = true;
     this.args.handler
-      .fetchFacets(this.args.column.definition.key, this.args.filteringKey, this.searchQuery)
-      .then(({ facets }: FacetsResponse) => {
+      .fetchFacets(this.args.column.definition.key, this.args.facettingKey, this.searchQuery)
+      .then(({ facets, filtering_key }: FacetsResponse) => {
         this.facets = facets;
+        this.filteringKey = filtering_key;
 
-        const filterForKey = this.args.column.filters.find((v) => v.key === this.args.filteringKey);
+        const filterForKey = this.args.column.filters.find((v) => v.key === this.args.facettingKey);
 
         if (filterForKey && !isEmpty(filterForKey.value)) {
           this.appliedFacets = filterForKey.value.split(',');
