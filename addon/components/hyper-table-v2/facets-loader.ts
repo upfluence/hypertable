@@ -56,13 +56,14 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
   }
 
-  private addFacet(facet: Facet) {
+  private addFacet(facet: Facet): void {
     let facetFilter: Filter = { key: this.args.filteringKey, value: facet.identifier };
     const existingFilter = this.args.column.filters.find((filter) => filter.key === this.args.filteringKey);
 
     if (existingFilter) {
       facetFilter = { key: this.args.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
+
 
     this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
       this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
@@ -88,17 +89,19 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     }
   }
 
-  private fetchFacets() {
+  private fetchFacets(): void {
     this.loading = true;
     this.args.handler
-      .fetchFacets('thread_holder', 'id', this.searchQuery)
+      .fetchFacets(this.args.column.definition.key, this.args.filteringKey, this.searchQuery)
       .then(({ facets }: FacetsResponse) => {
         this.facets = facets;
 
-        if (isEmpty(this.args.column.filters.find((v) => v.key === 'id')?.value)) {
-          this.appliedFacets = [];
+        const filterForKey = this.args.column.filters.find((v) => v.key === this.args.filteringKey);
+
+        if (filterForKey && !isEmpty(filterForKey.value)) {
+          this.appliedFacets = filterForKey.value.split(',');
         } else {
-          this.appliedFacets = this.args.column.filters.find((v) => v.key === 'id')!.value.split(',');
+          this.appliedFacets = [];
         }
       })
       .finally(() => {

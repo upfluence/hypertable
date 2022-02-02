@@ -26,7 +26,6 @@
           <OSS::Checkbox
             @checked={{array-includes this.appliedFacets facet.identifier}} @size="sm" @onChange={{fn this.toggleFacet facet}}
             class="margin-right-xx-sm" />
-
           {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
         </div>
 
@@ -39,8 +38,8 @@
         {{yield to="empty-state"}}
       {{else}}
         <div class="fx-col fx-1 fx-malign-center upf-align--center">
-          <p class="text-color-default">There are no result for your current search.</p>
-          <p class="text-color-default-light">Please update your filters.</p>
+          <p class="text-color-default">{{t "hypertable.column.facetting.empty_state.tagline"}}</p>
+          <p class="text-color-default-light">{{t "hypertable.column.facetting.empty_state.tagline_1"}}</p>
         </div>
       {{/if}}
     {{/each}}
