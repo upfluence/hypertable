@@ -10,6 +10,7 @@ interface FacetsLoaderArgs {
   handler: TableHandler;
   column: Column;
   filteringKey: string;
+  searchEnabled: boolean;
 }
 
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
@@ -21,31 +22,16 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   constructor(owner: unknown, args: FacetsLoaderArgs) {
     super(owner, args);
+    this.fetchFacets();
+  }
 
-    this.loading = true;
-    args.handler
-      .fetchFacets('thread_holder', 'id')
-      .then(({ facets }: FacetsResponse) => {
-        this.facets = facets;
-
-        if (isEmpty(args.column.filters.find((v) => v.key === 'id')?.value)) {
-          this.appliedFacets = [];
-        } else {
-          this.appliedFacets = args.column.filters.find((v) => v.key === 'id')!.value.split(',');
-        }
-      })
-      .finally(() => {
-        this.loading = false;
-      });
+  get searchEnabled(): boolean {
+    return this.args.searchEnabled ?? false;
   }
 
   @action
   toggleFacet(facet: Facet): void {
-    if (this.appliedFacets.includes(facet.identifier)) {
-      this.removeFacet(facet);
-    } else {
-      this.addFacet(facet);
-    }
+    this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
   }
 
   private addFacet(facet: Facet) {
@@ -78,5 +64,23 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         this.appliedFacets = this.appliedFacets.filter((x) => x !== facet.identifier);
       });
     }
+  }
+
+  private fetchFacets() {
+    this.loading = true;
+    this.args.handler
+      .fetchFacets('thread_holder', 'id')
+      .then(({ facets }: FacetsResponse) => {
+        this.facets = facets;
+
+        if (isEmpty(this.args.column.filters.find((v) => v.key === 'id')?.value)) {
+          this.appliedFacets = [];
+        } else {
+          this.appliedFacets = this.args.column.filters.find((v) => v.key === 'id')!.value.split(',');
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      });
   }
 }

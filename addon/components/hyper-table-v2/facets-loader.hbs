@@ -1,4 +1,8 @@
 <div class="hypertable__facetting fx-1">
+  {{#if this.searchEnabled}}
+    hello
+  {{/if}}
+
   {{#if this.loading}}
     {{#each this.loadingFacetsRange}}
       <div class="upf-skeleton-effect" style="width: 100%; height: 10px"></div>
