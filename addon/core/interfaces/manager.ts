@@ -31,5 +31,5 @@ export interface TableManager {
   fetchColumnDefinitions(): Promise<ColumnDefinitionResponse>;
   fetchColumns(): Promise<TableColumnsResponse>;
   upsertColumns(request: TableColumnUpsertRequest): Promise<TableColumnUpsertResponse>;
-  fetchFacets?(column_key: string, filtering_key: string): Promise<FacetsResponse>;
+  fetchFacets?(column_key: string, filtering_key: string, searchValue?: string): Promise<FacetsResponse>;
 }

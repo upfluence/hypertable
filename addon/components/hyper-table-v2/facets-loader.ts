@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { debounce } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -13,10 +14,13 @@ interface FacetsLoaderArgs {
   searchEnabled: boolean;
 }
 
+const SEARCH_DEBOUNCE_TIME: number = 300;
+
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
   @tracked loading = false;
   @tracked facets: Facet[] = [];
   @tracked appliedFacets: string[] = [];
+  @tracked searchQuery: string = '';
 
   loadingFacetsRange = new Array(8);
 
@@ -27,6 +31,18 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   get searchEnabled(): boolean {
     return this.args.searchEnabled ?? false;
+  }
+
+  @action
+  onInputChanged(): void {
+    debounce(this, this.fetchFacets, SEARCH_DEBOUNCE_TIME);
+  }
+
+  @action
+  onClearSearch(event: MouseEvent): void {
+    event.stopPropagation();
+    this.searchQuery = '';
+    this.fetchFacets();
   }
 
   @action
@@ -69,7 +85,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   private fetchFacets() {
     this.loading = true;
     this.args.handler
-      .fetchFacets('thread_holder', 'id')
+      .fetchFacets('thread_holder', 'id', this.searchQuery)
       .then(({ facets }: FacetsResponse) => {
         this.facets = facets;
 

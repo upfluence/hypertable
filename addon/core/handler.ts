@@ -163,12 +163,12 @@ export default class TableHandler {
    * @param {string} filteringKey — The attribute by which we want to hint by.
    * @returns {Promise<FacetsResponse>}
    */
-  async fetchFacets(columnKey: string, filteringKey: string): Promise<FacetsResponse> {
+  async fetchFacets(columnKey: string, filteringKey: string, searchValue?: string): Promise<FacetsResponse> {
     if (!this.tableManager.fetchFacets) {
       throw new Error('[Hypertable/Handler] The TableManager in use does not support facetting.');
     }
 
-    return this.tableManager.fetchFacets(columnKey, filteringKey);
+    return this.tableManager.fetchFacets(columnKey, filteringKey, searchValue);
   }
 
   /**
