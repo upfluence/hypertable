@@ -228,14 +228,15 @@ export default class TableHandler {
    * @param {Column[]} columns — The columns we want to reset the state for.
    * @returns {Promise<void>}
    */
-  async resetColumns(columns: Column[]): Promise<void> {
-    columns.forEach((column) => {
+  async resetColumns(columnsToReset: Column[]): Promise<void> {
+    columnsToReset.forEach((column) => {
       set(column, 'filters',  []);
       set(column, 'order', undefined);
     });
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
+      this.triggerEvent('reset-columns', columnsToReset);
     });
   }
 

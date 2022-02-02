@@ -27,6 +27,12 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   constructor(owner: unknown, args: FacetsLoaderArgs) {
     super(owner, args);
     this.fetchFacets();
+
+    args.handler.on('reset-columns', (columns) => {
+      if (columns.includes(args.column)) {
+        this.appliedFacets = [];
+      }
+    });
   }
 
   get searchEnabled(): boolean {
