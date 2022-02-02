@@ -1,4 +1,4 @@
-<div class="hypertable__facetting fx-1">
+<div class="hypertable__facetting fx-1 fx-col">
   {{#if this.searchEnabled}}
     <div class="margin-bottom-xxx-sm">
       <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
@@ -15,7 +15,8 @@
 
   {{#if this.loading}}
     {{#each this.loadingFacetsRange}}
-      <div class="upf-skeleton-effect" style="width: 100%; height: 10px"></div>
+      {{!-- template-lint-disable no-inline-styles --}}
+      <div class="upf-skeleton-effect margin-top-xxx-sm" style="width: 100%; height: 10px"></div>
     {{/each}}
   {{else}}
     {{#each this.facets as |facet|}}
@@ -33,6 +34,15 @@
           {{facet.count}}
         </div>
       </div>
+    {{else}}
+      {{#if (has-block "empty-state")}}
+        {{yield to="empty-state"}}
+      {{else}}
+        <div class="fx-col fx-1 fx-malign-center upf-align--center">
+          <p class="text-color-default">There are no result for your current search.</p>
+          <p class="text-color-default-light">Please update your filters.</p>
+        </div>
+      {{/if}}
     {{/each}}
   {{/if}}
 </div>
