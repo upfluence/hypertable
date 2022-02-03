@@ -2,7 +2,8 @@ export enum FieldSize {
   ExtraSmall = 'XS',
   Small = 'S',
   Medium = 'M',
-  Large = 'L'
+  Large = 'L',
+  ExtraLarge = 'XL'
 }
 
 export type ColumnDefinition = {
