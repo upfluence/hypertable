@@ -230,7 +230,7 @@ export default class TableHandler {
    */
   async resetColumns(columnsToReset: Column[]): Promise<void> {
     columnsToReset.forEach((column) => {
-      set(column, 'filters',  []);
+      set(column, 'filters', []);
       set(column, 'order', undefined);
     });
 
@@ -317,9 +317,24 @@ export default class TableHandler {
 
   private _reinitColumnsAndRows(columns: Column[]): void {
     this.rows = [];
-    this.columns.forEach((column) => {
-      column = columns.find((c) => c.definition.key === column.definition.key)!;
+
+    let shouldRedraw = false;
+
+    columns.forEach((column) => {
+      let existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
+
+      if (existingColumn) {
+        existingColumn = column;
+      } else {
+        this.columns.push(column);
+        shouldRedraw = true;
+      }
     });
+
+    if (shouldRedraw) {
+      this.columns = this.columns;
+    }
+
     this.currentPage = 1;
     this.fetchRows();
   }
