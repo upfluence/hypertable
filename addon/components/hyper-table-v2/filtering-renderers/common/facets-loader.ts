@@ -102,7 +102,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         this.facets = facets;
         this.filteringKey = filtering_key;
 
-        const filterForKey = this.args.column.filters.find((v) => v.key === this.args.facettingKey);
+        const filterForKey = this.args.column.filters.find((v) => v.key === this.filteringKey);
 
         if (filterForKey && !isEmpty(filterForKey.value)) {
           this.appliedFacets = filterForKey.value.split(',');
