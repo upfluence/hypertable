@@ -199,7 +199,7 @@ module('Unit | core/handler', function (hooks) {
       const resp = await handler.fetchFacets('foo', 'id');
 
       // @ts-ignore
-      assert.ok(tableManagerSpy.fetchFacets.calledOnceWithExactly('foo', 'id'));
+      assert.ok(tableManagerSpy.fetchFacets.calledOnceWithExactly('foo', 'id', undefined));
       assert.deepEqual(resp, {
         facets: [
           {

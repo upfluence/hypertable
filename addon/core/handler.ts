@@ -163,12 +163,12 @@ export default class TableHandler {
    * @param {string} filteringKey — The attribute by which we want to hint by.
    * @returns {Promise<FacetsResponse>}
    */
-  async fetchFacets(columnKey: string, filteringKey: string): Promise<FacetsResponse> {
+  async fetchFacets(columnKey: string, filteringKey: string, searchValue?: string): Promise<FacetsResponse> {
     if (!this.tableManager.fetchFacets) {
       throw new Error('[Hypertable/Handler] The TableManager in use does not support facetting.');
     }
 
-    return this.tableManager.fetchFacets(columnKey, filteringKey);
+    return this.tableManager.fetchFacets(columnKey, filteringKey, searchValue);
   }
 
   /**
@@ -179,19 +179,23 @@ export default class TableHandler {
    * @returns {Promise<void>}
    */
   async applyFilters(column: Column, filters: Filter[]): Promise<void> {
-    column.filters = filters
-      .reduce((acc, v) => {
-        const filterWithSameKey = acc.find((filter) => filter.key === v.key);
+    set(
+      column,
+      'filters',
+      filters
+        .reduce((acc, v) => {
+          const filterWithSameKey = acc.find((filter) => filter.key === v.key);
 
-        if (filterWithSameKey) {
-          filterWithSameKey.value = v.value;
-        } else {
-          acc.push(v);
-        }
+          if (filterWithSameKey) {
+            filterWithSameKey.value = v.value;
+          } else {
+            acc.push(v);
+          }
 
-        return acc;
-      }, column.filters)
-      .filter((f) => !isEmpty(f.key) && !isEmpty(f.value));
+          return acc;
+        }, column.filters)
+        .filter((f) => !isEmpty(f.key) && !isEmpty(f.value))
+    );
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
@@ -224,14 +228,15 @@ export default class TableHandler {
    * @param {Column[]} columns — The columns we want to reset the state for.
    * @returns {Promise<void>}
    */
-  async resetColumns(columns: Column[]): Promise<void> {
-    columns.forEach((column) => {
-      column.filters = [];
+  async resetColumns(columnsToReset: Column[]): Promise<void> {
+    columnsToReset.forEach((column) => {
+      set(column, 'filters', []);
       set(column, 'order', undefined);
     });
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
+      this.triggerEvent('reset-columns', columnsToReset);
     });
   }
 
@@ -312,7 +317,24 @@ export default class TableHandler {
 
   private _reinitColumnsAndRows(columns: Column[]): void {
     this.rows = [];
-    this.columns = columns;
+
+    let shouldRedraw = false;
+
+    columns.forEach((column) => {
+      let existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
+
+      if (existingColumn) {
+        existingColumn = column;
+      } else {
+        this.columns.push(column);
+        shouldRedraw = true;
+      }
+    });
+
+    if (shouldRedraw) {
+      this.columns = this.columns;
+    }
+
     this.currentPage = 1;
     this.fetchRows();
   }

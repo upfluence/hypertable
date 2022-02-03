@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -45,6 +45,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     this.elementId = guidFor(args.column.definition.key);
   }
 
+  @computed('args.column.filters.[]', 'args.column.order')
   get computedClasses(): string {
     const classes = ['hypertable__column'];
 
@@ -94,5 +95,11 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
       attachment: 'top right',
       targetAttachment: 'bottom right'
     });
+  }
+
+  willDestroy() {
+    if (this.args.handler.tetherOn !== this.args.column.definition.key) {
+      this.args.handler.destroyTetherInstance();
+    }
   }
 }

@@ -1,0 +1,46 @@
+<div class="hypertable__facetting fx-1 fx-col">
+  {{#if this.searchEnabled}}
+    <div class="margin-bottom-xxx-sm">
+      <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
+      <OSS::InputContainer @value={{this.searchQuery}} @onChange={{this.onInputChanged}}
+                           @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}>
+        <:suffix>
+          {{#if (gt this.searchQuery.length 0)}}
+            <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
+          {{/if}}
+        </:suffix>
+      </OSS::InputContainer>
+    </div>
+  {{/if}}
+
+  {{#if this.loading}}
+    {{#each this.loadingFacetsRange}}
+      <div class="upf-skeleton-effect margin-top-xxx-sm" style={{this.skeletonStyle}}></div>
+    {{/each}}
+  {{else}}
+    {{#each this.facets as |facet|}}
+      <div class="fx-row fx-malign-space-between fx-xalign-center padding-xxx-sm"
+           role="button" {{on "click" (fn this.toggleFacet facet)}}>
+        <div class="fx-row item">
+          <OSS::Checkbox
+            @checked={{array-includes this.appliedFacets facet.identifier}} @size="sm" @onChange={{fn this.toggleFacet facet}}
+            class="margin-right-xx-sm" />
+          {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
+        </div>
+
+        <div class="count">
+          {{facet.count}}
+        </div>
+      </div>
+    {{else}}
+      {{#if (has-block "empty-state")}}
+        {{yield to="empty-state"}}
+      {{else}}
+        <div class="fx-col fx-1 fx-malign-center upf-align--center">
+          <p class="text-color-default">{{t "hypertable.column.facetting.empty_state.tagline"}}</p>
+          <p class="text-color-default-light">{{t "hypertable.column.facetting.empty_state.tagline_1"}}</p>
+        </div>
+      {{/if}}
+    {{/each}}
+  {{/if}}
+</div>
