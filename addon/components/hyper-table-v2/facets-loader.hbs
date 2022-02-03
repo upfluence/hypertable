@@ -15,8 +15,7 @@
 
   {{#if this.loading}}
     {{#each this.loadingFacetsRange}}
-      {{!-- template-lint-disable no-inline-styles --}}
-      <div class="upf-skeleton-effect margin-top-xxx-sm" style="width: 100%; height: 10px"></div>
+      <div class="upf-skeleton-effect margin-top-xxx-sm" style={{this.skeletonStyle}}></div>
     {{/each}}
   {{else}}
     {{#each this.facets as |facet|}}

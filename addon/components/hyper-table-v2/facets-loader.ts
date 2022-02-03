@@ -41,6 +41,10 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     return this.args.searchEnabled ?? false;
   }
 
+  get skeletonStyle(): string {
+    return ['width: 100%', 'height: 10px'].join(';');
+  }
+
   @action
   onInputChanged(): void {
     debounce(this, this.fetchFacets, SEARCH_DEBOUNCE_TIME);
