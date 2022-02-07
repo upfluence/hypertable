@@ -7,10 +7,10 @@
   {{/if}}
 
   {{#if @column.definition.filterable}}
-    <HyperTableV2::FilteringRenderers::Common::Search @handler={{@handler}} @column={{@column}}
-                                                      @registerResetCallback={{this.registerResetCallback}} />
     <HyperTableV2::FilteringRenderers::Common::Existence @handler={{@handler}} @column={{@column}}
                                                          data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}} />
+    <HyperTableV2::FilteringRenderers::Common::Search @handler={{@handler}} @column={{@column}}
+                                                      @registerResetCallback={{this.registerResetCallback}} />
   {{/if}}
 
   <div class="fx-row fx-malign-space-between">
