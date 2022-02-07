@@ -1,4 +1,5 @@
-<div class="fx-col fx-gap-px-20" data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
+<div class="fx-col fx-gap-px-20"
+     data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
   {{#if @column.definition.orderable}}
     <HyperTableV2::FilteringRenderers::Common::Ordering @handler={{@handler}} @column={{@column}}
                                                         @label={{t "hypertable.column.ordering.label"}}
@@ -8,6 +9,8 @@
   {{#if @column.definition.filterable}}
     <HyperTableV2::FilteringRenderers::Common::Search @handler={{@handler}} @column={{@column}}
                                                       @registerResetCallback={{this.registerResetCallback}} />
+    <HyperTableV2::FilteringRenderers::Common::Existence @handler={{@handler}} @column={{@column}}
+                                                         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}} />
   {{/if}}
 
   <div class="fx-row fx-malign-space-between">
