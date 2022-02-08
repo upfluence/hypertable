@@ -187,8 +187,11 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               category: 'affiliation',
               size: 'M',
               orderable: false,
+              orderable_by: [],
               filterable: false,
-              facetable: false
+              filterable_by: [],
+              facetable: false,
+              facetable_by: ['value']
             },
             filters: []
           },
@@ -201,8 +204,11 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               category: 'influencer',
               size: 'M',
               orderable: false,
+              orderable_by: [],
               filterable: false,
-              facetable: false
+              filterable_by: [],
+              facetable: false,
+              facetable_by: ['value']
             },
             filters: []
           }

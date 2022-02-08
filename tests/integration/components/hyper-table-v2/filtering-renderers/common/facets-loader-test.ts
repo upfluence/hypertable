@@ -24,7 +24,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
     test('the facets are displayed correctly using the dedicated named block', async function (assert: Assert) {
       await render(
         hbs`
-          <HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}>
+          <HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}>
             <:facet-item as |facetting|>
               {{facetting.facet.payload.name}}
             </:facet-item>
@@ -41,35 +41,34 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
-        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}/>`
       );
 
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isNotChecked();
       await click('.hypertable__facetting .item');
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
       //@ts-ignore
-      assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'foo', value: 'band:1' }]));
+      assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: 'band:1' }]));
     });
 
     test('the facet is deleted from the filters if already present', async function (assert: Assert) {
-      this.column.filters = [{ key: 'foo', value: 'band:1' }];
+      this.column.filters = [{ key: 'value', value: 'band:1' }];
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
-        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}/>`
       );
-
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
       await click('.hypertable__facetting .item');
       //@ts-ignore
-      assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'foo', value: '' }]));
+      assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: '' }]));
     });
 
     test('facet identifiers that are already in the column are checked by default when rendering', async function (assert: Assert) {
-      this.column.filters = [{ key: 'foo', value: 'band:1' }];
+      this.column.filters = [{ key: 'value', value: 'band:1' }];
 
       await render(
-        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}/>`
       );
 
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
@@ -79,7 +78,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
   module('facets search', function () {
     test('the search is not displayed when the searchEnabled argument is falsy', async function (assert: Assert) {
       await render(
-        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}/>`
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}/>`
       );
 
       assert.dom('.oss-input-container').doesNotExist();
@@ -87,7 +86,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
 
     test('the search is displayed when the searchEnabled argument is truthy', async function (assert: Assert) {
       await render(
-        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{true}}/>`
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}}/>`
       );
 
       assert.dom('.oss-input-container').exists();
@@ -97,7 +96,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
-        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{true}}/>`
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}}/>`
       );
 
       await fillIn('.oss-input-container input', 'test');
@@ -110,7 +109,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       );
 
       //@ts-ignore
-      assert.ok(handlerSpy.fetchFacets.calledWithExactly(this.column.definition.key, 'foo', 'test'));
+      assert.ok(handlerSpy.fetchFacets.calledWithExactly(this.column.definition.key, 'value', 'test'));
     });
   });
 
@@ -124,7 +123,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       });
 
       await render(
-        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{true}}/>`
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}}/>`
       );
 
       assert
@@ -139,13 +138,13 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       sinon.stub(this.tableManager, 'fetchFacets').callsFake(() => {
         return Promise.resolve({
           facets: [],
-          filtering_key: 'foo'
+          filtering_key: 'value'
         });
       });
 
       await render(
         hbs`
-          <HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @facettingKey="foo" @searchEnabled={{false}}>
+          <HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}>
             <:facet-item as |facetting|>
               {{facetting.facet.payload.name}}
             </:facet-item>
