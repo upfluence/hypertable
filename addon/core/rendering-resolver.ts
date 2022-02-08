@@ -31,13 +31,13 @@ const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
 };
 
 export default class implements RendererResolver {
-  private _context;
+  protected context: unknown;
 
   constructor(emberContext: unknown) {
-    this._context = emberContext;
+    this.context = emberContext;
   }
 
-  private _lookupComponent(
+  lookupComponent(
     columnDef: ColumnDefinition,
     rendererType: 'header' | 'cell' | 'filter'
   ): Promise<ResolvedRenderingComponent> {
@@ -45,20 +45,20 @@ export default class implements RendererResolver {
       component: ensureSafeComponent(
         (rendererMatchers[columnDef.type] || rendererMatchers.default)[rendererType] ||
           rendererMatchers.default[rendererType],
-        this._context
+        this.context
       ) as GlimmerComponent
     });
   }
 
   lookupHeaderComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return this._lookupComponent(columnDef, 'header');
+    return this.lookupComponent(columnDef, 'header');
   }
 
   lookupCellComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return this._lookupComponent(columnDef, 'cell');
+    return this.lookupComponent(columnDef, 'cell');
   }
 
   lookupFilteringComponent(columnDef: ColumnDefinition): Promise<ResolvedRenderingComponent> {
-    return this._lookupComponent(columnDef, 'filter');
+    return this.lookupComponent(columnDef, 'filter');
   }
 }

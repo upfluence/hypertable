@@ -51,8 +51,11 @@ module('Unit | core/handler', function (hooks) {
       category: '',
       size: FieldSize.Medium,
       orderable: false,
+      orderable_by: [],
       filterable: false,
-      facetable: false
+      filterable_by: [],
+      facetable: false,
+      facetable_by: ['value']
     });
 
     assert.equal(handler.columns.length, 1);
@@ -71,8 +74,11 @@ module('Unit | core/handler', function (hooks) {
           category: '',
           size: FieldSize.Medium,
           orderable: false,
+          orderable_by: [],
           filterable: false,
-          facetable: false
+          filterable_by: [],
+          facetable: false,
+          facetable_by: ['value']
         },
         filters: []
       }
