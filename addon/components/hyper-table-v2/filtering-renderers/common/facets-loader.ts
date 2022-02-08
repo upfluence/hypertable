@@ -96,10 +96,11 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   private fetchFacets(): void {
     this.loading = true;
+    this.args.column.definition.facetable_by = null;
     this.args.handler
       .fetchFacets(
         this.args.column.definition.key,
-        this.args.column.definition.facetable_by[0] || 'value',
+        this.args.column.definition.facetable_by?.[0] || 'value',
         this.searchQuery
       )
       .then(({ facets, filtering_key }: FacetsResponse) => {
