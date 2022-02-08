@@ -20,8 +20,11 @@ export const buildColumnDefinition = (key: string, extra?: { [key: string]: any 
     category: '',
     size: FieldSize.Medium,
     orderable: false,
+    orderable_by: [],
     filterable: false,
-    facetable: false
+    filterable_by: [],
+    facetable: false,
+    facetable_by: ['value']
   };
 
   return Object.assign(defaultColumnDefinition, extra || {});

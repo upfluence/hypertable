@@ -14,8 +14,11 @@ export type ColumnDefinition = {
   category: string;
   size: FieldSize;
   orderable: boolean;
+  orderable_by: string[];
   filterable: boolean;
+  filterable_by: string[];
   facetable: boolean;
+  facetable_by: string[];
 };
 
 export type Filter = {

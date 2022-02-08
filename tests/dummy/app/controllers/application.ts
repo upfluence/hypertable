@@ -39,8 +39,11 @@ const buildColumnDefinition = (key: string, extra: { [key: string]: any }): Colu
     category: '',
     size: FieldSize.Medium,
     orderable: true,
+    orderable_by: [],
     filterable: false,
-    facetable: false
+    filterable_by: [],
+    facetable: false,
+    facetable_by: ['value']
   };
 
   return Object.assign(defaultColumnDefinition, extra);
