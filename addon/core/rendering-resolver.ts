@@ -31,10 +31,10 @@ const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
 };
 
 export default class implements RendererResolver {
-  protected context: unknown;
+  private _context: unknown;
 
   constructor(emberContext: unknown) {
-    this.context = emberContext;
+    this._context = emberContext;
   }
 
   lookupComponent(
@@ -45,7 +45,7 @@ export default class implements RendererResolver {
       component: ensureSafeComponent(
         (rendererMatchers[columnDef.type] || rendererMatchers.default)[rendererType] ||
           rendererMatchers.default[rendererType],
-        this.context
+        this._context
       ) as GlimmerComponent
     });
   }
