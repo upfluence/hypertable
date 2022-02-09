@@ -121,6 +121,16 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__state').containsText('An unexpected error has occured.');
     });
 
+    test('It displays an error state when the fetchColumns call fails', async function (assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+        return Promise.reject(new Error());
+      });
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+      assert.dom('.hypertable__state .upf-badge--error').exists();
+      assert.dom('.hypertable__state').containsText('An unexpected error has occured.');
+    });
+
     test('It displays an error state when the fetchColumnDefinitions call fails', async function (assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumnDefinitions').callsFake(() => {
         return Promise.reject(new Error());

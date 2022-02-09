@@ -65,6 +65,9 @@ export default class TableHandler {
       .then(({ columns }) => {
         this.columns = columns;
       })
+      .catch(() => {
+        this.communicationError = true;
+      })
       .finally(() => {
         this.loadingColumns = false;
       });
