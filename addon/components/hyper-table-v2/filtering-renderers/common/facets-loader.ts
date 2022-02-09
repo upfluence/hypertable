@@ -96,7 +96,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   private fetchFacets(): void {
     this.loading = true;
-    this.args.column.definition.facetable_by = null;
     this.args.handler
       .fetchFacets(
         this.args.column.definition.key,
