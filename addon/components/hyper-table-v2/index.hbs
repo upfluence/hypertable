@@ -22,7 +22,7 @@
 
   <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>
     {{#if @handler.communicationError}}
-      <div class="hypertable__state padding-md fx-col fx-gap-px-20">
+      <div class="hypertable__state hypertable__state--error padding-md fx-col fx-gap-px-20">
         <OSS::Badge @icon="fas fa-exclamation-triangle" @skin="error" @size="lg" />
         <div class="fx-col fx-xalign-center">
           <span class="text-style-bold text-size-7">{{t "hypertable.data.communication_error.title"}}</span>
