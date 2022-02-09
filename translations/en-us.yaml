@@ -41,3 +41,7 @@ hypertable:
   data:
     empty_state:
       default: No data
+    communication_error:
+      title: An unexpected error has occured.
+      description: We are working on fixing the problem, please try refreshing the page.
+      refresh_page: Refresh Page

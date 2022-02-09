@@ -110,6 +110,28 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
   });
 
+  module('error state', function () {
+    test('It displays an error state when the fetchRows call fails', async function (assert: Assert) {
+      sinon.stub(this.rowsFetcher, 'fetch').callsFake(() => {
+        return Promise.reject(new Error());
+      });
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+      assert.dom('.hypertable__state .upf-badge--error').exists();
+      assert.dom('.hypertable__state').containsText('An unexpected error has occured.');
+    });
+
+    test('It displays an error state when the fetchColumnDefinitions call fails', async function (assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumnDefinitions').callsFake(() => {
+        return Promise.reject(new Error());
+      });
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+      assert.dom('.hypertable__state .upf-badge--error').exists();
+      assert.dom('.hypertable__state').containsText('An unexpected error has occured.');
+    });
+  });
+
   module('FeatureSet: selection', function () {
     test('the selection checkboxes are not present if the feature is not enabled', async function (assert: Assert) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=false}} />`);

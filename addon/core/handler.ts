@@ -36,6 +36,7 @@ export default class TableHandler {
 
   @tracked loadingColumns: boolean = false;
   @tracked loadingRows: boolean = false;
+  @tracked communicationError: boolean = false;
   @tracked loadingColumnDefinition: boolean = false;
 
   rowsMeta?: RowsFetcherMetadata;
@@ -77,6 +78,9 @@ export default class TableHandler {
       .then(({ column_definitions }) => {
         this.columnDefinitions = column_definitions;
       })
+      .catch(() => {
+        this.communicationError = true;
+      })
       .finally(() => {
         this.loadingColumnDefinition = false;
       });
@@ -91,6 +95,9 @@ export default class TableHandler {
         this.rows = [...this.rows, ...rows];
         this.rowsMeta = meta;
         this.currentPage += 1;
+      })
+      .catch(() => {
+        this.communicationError = true;
       })
       .finally(() => {
         this.loadingRows = false;
