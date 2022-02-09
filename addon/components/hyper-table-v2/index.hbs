@@ -21,60 +21,88 @@
   </div>
 
   <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>
-    {{#if (and (eq @handler.rows.length 0) (not @handler.loadingRows))}}
-      <div class="hypertable__state hypertable__state--empty">
-        {{#if (has-block "empty-state")}}
-          {{yield to="empty-state"}}
-        {{else}}
-          <img src="/@upfluence/hypertable/assets/images/empty-state.png"
-               width="40%" alt={{t "hypertable.rows.empty_content"}} />
-          <p class="text-color-default-light text-size-6 margin-top-xx-sm">
-            {{t "hypertable.rows.empty_content"}}
-          </p>
-        {{/if}}
+    {{#if @handler.communicationError}}
+      <div class="hypertable__state hypertable__state--error padding-md fx-col fx-gap-px-20">
+        <OSS::Badge @icon="fas fa-exclamation-triangle" @skin="error" @size="lg" />
+        <div class="fx-col fx-xalign-center">
+          <span class="text-style-bold text-size-7">{{t "hypertable.data.communication_error.title"}}</span>
+          <span class="text-color-default-light">{{t "hypertable.data.communication_error.description"}}</span>
+        </div>
+        <OSS::Button @label={{t "hypertable.data.communication_error.refresh_page"}} @skin="primary" {{on "click" this.reloadPage}}/>
       </div>
-    {{/if}}
+    {{else}}
+      {{#if (and (eq @handler.rows.length 0) (not @handler.loadingRows))}}
+        <div class="hypertable__state hypertable__state--empty">
+          {{#if (has-block "empty-state")}}
+            {{yield to="empty-state"}}
+          {{else}}
+            <img src="/@upfluence/hypertable/assets/images/empty-state.png"
+                 width="40%" alt={{t "hypertable.rows.empty_content"}} />
+            <p class="text-color-default-light text-size-6 margin-top-xx-sm">
+              {{t "hypertable.rows.empty_content"}}
+            </p>
+          {{/if}}
+        </div>
+      {{/if}}
 
-    <div class="hypertable"
-         {{sortable-group direction="x" onChange=this.reorderColumns}}
-         {{on-bottom-reached this.onBottomReached}}>
-      {{#each @handler.columns as |column index|}}
-        {{#if (eq index 0)}}
-          <div class="hypertable__sticky-columns">
-            {{#if this.features.selection}}
-              <div class="hypertable__column hypertable__column--selection">
-                <header>
-                  <OSS::Checkbox @checked={{eq @handler.selection "all"}} @size="sm" @onChange={{this.toggleSelectAll}}
-                                 @disabled={{false}} />
-                </header>
+      <div class="hypertable"
+           {{sortable-group direction="x" onChange=this.reorderColumns}}
+           {{on-bottom-reached this.onBottomReached}}>
+        {{#each @handler.columns as |column index|}}
+          {{#if (eq index 0)}}
+            <div class="hypertable__sticky-columns">
+              {{#if this.features.selection}}
+                <div class="hypertable__column hypertable__column--selection">
+                  <header>
+                    <OSS::Checkbox @checked={{eq @handler.selection "all"}} @size="sm"
+                                   @onChange={{this.toggleSelectAll}}
+                                   @disabled={{false}} />
+                  </header>
+
+                  {{#if @handler.loadingRows}}
+                    {{#each this.loadingSkeletons}}
+                      <HyperTableV2::Cell @loading={{true}} />
+                    {{/each}}
+                  {{else}}
+                    {{#each @handler.rows as |row|}}
+                      <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
+                                          @onClick={{this.onRowClick}} @onHover={{this.onRowHover}}>
+                        <OSS::Checkbox @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
+                                       @size="sm" @onChange={{fn this.toggleRowSelection row}}
+                                       @disabled={{eq @handler.selection "all"}} />
+                      </HyperTableV2::Cell>
+                    {{/each}}
+
+                    {{#if @handler.loadingRows}}
+                      <HyperTableV2::Cell @loading={{true}} />
+                      <HyperTableV2::Cell @loading={{true}} />
+                      <HyperTableV2::Cell @loading={{true}} />
+                    {{/if}}
+                  {{/if}}
+                </div>
+              {{/if}}
+
+              <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
+                {{#each @handler.rows as |row|}}
+                  <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
+                                      @onClick={{this.onRowClick}} @onHover={{this.onRowHover}} />
+                {{/each}}
 
                 {{#if @handler.loadingRows}}
                   {{#each this.loadingSkeletons}}
                     <HyperTableV2::Cell @loading={{true}} />
                   {{/each}}
-                {{else}}
-                  {{#each @handler.rows as |row|}}
-                    <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
-                                        @onClick={{this.onRowClick}} @onHover={{this.onRowHover}}>
-                      <OSS::Checkbox @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
-                                     @size="sm" @onChange={{fn this.toggleRowSelection row}}
-                                     @disabled={{eq @handler.selection "all"}} />
-                    </HyperTableV2::Cell>
-                  {{/each}}
-
-                  {{#if @handler.loadingRows}}
-                    <HyperTableV2::Cell @loading={{true}} />
-                    <HyperTableV2::Cell @loading={{true}} />
-                    <HyperTableV2::Cell @loading={{true}} />
-                  {{/if}}
                 {{/if}}
-              </div>
-            {{/if}}
+              </HyperTableV2::Column>
+            </div>
+          {{/if}}
 
-            <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
+          {{#if (gt index 0)}}
+            <HyperTableV2::Column @handler={{@handler}} @column={{column}}
+                                  {{sortable-item model=column spacing=5 distance=10}}>
               {{#each @handler.rows as |row|}}
-                <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
-                                    @onClick={{this.onRowClick}} @onHover={{this.onRowHover}} />
+                <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}}
+                                    @onHover={{this.onRowHover}} />
               {{/each}}
 
               {{#if @handler.loadingRows}}
@@ -83,29 +111,14 @@
                 {{/each}}
               {{/if}}
             </HyperTableV2::Column>
-          </div>
-        {{/if}}
+          {{/if}}
+        {{/each}}
+      </div>
 
-        {{#if (gt index 0)}}
-          <HyperTableV2::Column @handler={{@handler}} @column={{column}} {{sortable-item model=column spacing=5 distance=10}}>
-            {{#each @handler.rows as |row|}}
-              <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}}
-                                  @onHover={{this.onRowHover}} />
-            {{/each}}
-
-            {{#if @handler.loadingRows}}
-              {{#each this.loadingSkeletons}}
-                <HyperTableV2::Cell @loading={{true}} />
-              {{/each}}
-            {{/if}}
-          </HyperTableV2::Column>
-        {{/if}}
-      {{/each}}
-    </div>
-
-    <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
-      <OSS::Button @size="sm" @icon="fa fa-chevron-right" class="scroll-button is-visible"
-                   {{on "click" this.scrollToEnd}} />
-    </div>
+      <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
+        <OSS::Button @size="sm" @icon="fa fa-chevron-right" class="scroll-button is-visible"
+                     {{on "click" this.scrollToEnd}} />
+      </div>
+    {{/if}}
   </div>
 </div>
