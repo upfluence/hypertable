@@ -4,12 +4,16 @@ import { action } from '@ember/object';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';
 
-interface HyperTableV2FilteringRenderersTextArgs {
+interface HyperTableV2FilteringRenderersCommonColumnActionsArgs {
   handler: TableHandler;
   column: Column;
 }
 
-export default class HyperTableV2FilteringRenderersText extends Component<HyperTableV2FilteringRenderersTextArgs> {
+export default class HyperTableV2FilteringRenderersCommonColumnActions extends Component<HyperTableV2FilteringRenderersCommonColumnActionsArgs> {
+  get shouldDisplay(): boolean {
+    return this.args.handler.columnPosition(this.args.column) !== 0;
+  }
+
   @action
   reset(): void {
     this.args.handler.resetColumns([this.args.column]);

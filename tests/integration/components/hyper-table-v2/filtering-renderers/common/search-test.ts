@@ -27,12 +27,11 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     await this.handler.fetchColumns();
 
     this.column = this.handler.columns[0];
-    this.registerCallback = () => {};
   });
 
   test('it has the right data-control-name', async function (assert: Assert) {
     await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @registerResetCallback={{this.registerCallback}} />`
+      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
     assert.dom('.oss-input-container').exists();
   });
@@ -40,7 +39,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
   test('When text is inputed, the applyFilters is called', async function (assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @registerResetCallback={{this.registerCallback}} />`
+      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
 
     await fillIn('.oss-input-container input', 'test');
@@ -65,7 +64,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
 
   test('The remove icon is displayed when text is entered', async function (assert: Assert) {
     await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @registerResetCallback={{this.registerCallback}} />`
+      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
     assert.dom('.oss-input-container').exists();
     await fillIn('.oss-input-container input', 'test');
@@ -74,7 +73,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
 
   test('The remove icon is hidden when the input is empty', async function (assert: Assert) {
     await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @registerResetCallback={{this.registerCallback}} />`
+      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
     assert.dom('.oss-input-container').exists();
     assert.dom('.oss-input-container .suffix .fa-remove').doesNotExist();
@@ -83,7 +82,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
   test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @registerResetCallback={{this.registerCallback}} />`
+      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
     assert.dom('.oss-input-container').exists();
     await fillIn('.oss-input-container input', 'test');
@@ -100,16 +99,14 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
   });
 
   test('When the parent triggers the reset event, the text input is cleared', async function (assert: Assert) {
-    this.resetTrigger = (childResetMethod: () => {}) => {
-      this._childResetCallback = childResetMethod;
-    };
     await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @registerResetCallback={{this.resetTrigger}} />`
+      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
     assert.dom('.oss-input-container').exists();
     await fillIn('.oss-input-container input', 'test');
     assert.dom('.oss-input-container input').hasValue('test');
-    this._childResetCallback();
+    await settled();
+    this.handler.resetColumns([this.column]);
     await settled();
     assert.dom('.oss-input-container input').hasValue('');
   });

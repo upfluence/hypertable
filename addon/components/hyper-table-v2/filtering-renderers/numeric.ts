@@ -23,6 +23,15 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
     '9 — 0': 'desc'
   });
 
+  constructor(owner: unknown, args: HyperTableV2FilteringRenderersNumericArgs) {
+    super(owner, args);
+    args.handler.on('reset-columns', (columns) => {
+      if (columns.includes(args.column)) {
+        this._resetStates();
+      }
+    });
+  }
+
   get hasBoundFiltersDefined(): boolean {
     return this.lowerBoundFilter || this.upperBoundFilter ? true : false;
   }
@@ -46,10 +55,8 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
     this.args.handler.removeColumn(this.args.column.definition);
   }
 
-  @action
-  reset(): void {
+  private _resetStates(): void {
     this.lowerBoundFilter = '';
     this.upperBoundFilter = '';
-    this.args.handler.resetColumns([this.args.column]);
   }
 }
