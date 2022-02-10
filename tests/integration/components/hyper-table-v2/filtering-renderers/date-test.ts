@@ -20,13 +20,16 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
 
     sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
       return Promise.resolve({
-        columns: [buildColumn('date', { type: 'timestamp', size: FieldSize.Large, filterable: true, orderable: true })]
+        columns: [
+          buildColumn('static', { type: 'text', size: FieldSize.Large, filterable: true, orderable: true }),
+          buildColumn('date', { type: 'timestamp', size: FieldSize.Large, filterable: true, orderable: true })
+        ]
       });
     });
 
     await this.handler.fetchColumns();
 
-    this.column = this.handler.columns[0];
+    this.column = this.handler.columns[1];
   });
 
   test('it has the right data-control-name', async function (assert: Assert) {
