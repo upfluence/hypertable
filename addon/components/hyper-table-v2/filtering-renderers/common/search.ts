@@ -9,7 +9,6 @@ import { Column } from '@upfluence/hypertable/core/interfaces';
 interface HyperTableV2FilteringRenderersSearchArgs {
   handler: TableHandler;
   column: Column;
-  registerResetCallback(any: (...args: any[]) => void): void;
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
@@ -20,14 +19,13 @@ export default class HyperTableV2FilteringRenderersSearch extends Component<Hype
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersSearchArgs) {
     super(owner, args);
 
-    if (typeof this.args.registerResetCallback !== 'function') {
-      throw new Error(
-        '[HyperTableV2::FilteringRenderers::Common::Search] You need to link a method to reset your search input'
-      );
-    }
     const searchTerm = this.args.column.filters.find((filter) => filter.key === 'value');
     this.searchQuery = searchTerm?.value || '';
-    this.args.registerResetCallback(this._resetSearchQuery.bind(this));
+    args.handler.on('reset-columns', (columns) => {
+      if (columns.includes(args.column)) {
+        this.searchQuery = '';
+      }
+    });
   }
 
   @action
@@ -49,9 +47,5 @@ export default class HyperTableV2FilteringRenderersSearch extends Component<Hype
         value: this.searchQuery
       }
     ]);
-  }
-
-  private _resetSearchQuery(): void {
-    this.searchQuery = '';
   }
 }
