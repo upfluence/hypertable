@@ -46,7 +46,11 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     let filter = this.args.column.filters.find((f) => f.key === 'value');
     this._currentMovingDateOption = filter ? filter.value : null;
     this.filterOption = this._currentMovingDateOption ? 'moving' : 'fixed';
-
+    args.handler.on('reset-columns', (columns) => {
+      if (columns.includes(args.column)) {
+        this._resetStates();
+      }
+    });
     this._initBounderingFilters();
   }
 
@@ -106,9 +110,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     this.args.handler.removeColumn(this.args.column.definition);
   }
 
-  @action
-  reset(): void {
-    this.args.handler.resetColumns([this.args.column]);
+  private _resetStates(): void {
     this._currentDateValue = [];
     this._currentMovingDateOption = [];
     if (this.flatpickrRef) {

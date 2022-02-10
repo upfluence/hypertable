@@ -39,14 +39,6 @@
       </div>
     </div>
 
-    <div class="buttons-container">
-      <OSS::Button @skin="destructive" @label={{t "hypertable.column.remove"}} @size="md"
-                   {{on "click" this.removeColumn}}
-                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_remove_column"}} />
-
-      <OSS::Button @skin="default" @label={{t "hypertable.column.clear_filters"}} @size="md"
-                   {{on "click" this.reset}}
-                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_clear_filters"}} />
-    </div>
+    <HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{@handler}} @column={{@column}} />
   {{/if}}
 </div>
