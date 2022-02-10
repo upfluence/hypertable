@@ -30,6 +30,9 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
         this._resetStates();
       }
     });
+
+    this.lowerBoundFilter = args.column.filters.find((filter) => filter.key === 'lower_bound')?.value || '';
+    this.upperBoundFilter = args.column.filters.find((filter) => filter.key === 'upper_bound')?.value || '';
   }
 
   get hasBoundFiltersDefined(): boolean {
