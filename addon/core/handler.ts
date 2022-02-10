@@ -313,6 +313,13 @@ export default class TableHandler {
   }
 
   /**
+   * Get the current position of the column
+   */
+  columnPosition(column: Column): number {
+    return this.columns.indexOf(column);
+  }
+
+  /**
    * Destroy the current Tether instance if any.
    */
   destroyTetherInstance(): void {
