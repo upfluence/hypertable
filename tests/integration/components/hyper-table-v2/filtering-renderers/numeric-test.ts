@@ -175,6 +175,22 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         ])
       );
     });
+
+    module('with existing range value', function () {
+      test('it display range value', async function (assert: Assert) {
+        this.column.filters = [
+          { key: 'lower_bound', value: '10' },
+          { key: 'upper_bound', value: '1000' }
+        ];
+
+        await render(
+          hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
+        );
+
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').hasValue('10');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').hasValue('1000');
+      });
+    });
   });
 
   module('clear column', async function () {
