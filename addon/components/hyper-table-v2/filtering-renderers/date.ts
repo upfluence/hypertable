@@ -46,7 +46,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     let filter = this.args.column.filters.find((f) => f.key === 'value');
     this._currentMovingDateOption = filter ? filter.value : null;
     this.filterOption = this._currentMovingDateOption ? 'moving' : 'fixed';
-    args.handler.on('reset-columns', (columns) => {
+    args.handler.on('reset-columns', (columns) => {
       if (columns.includes(args.column)) {
         this._resetStates();
       }
