@@ -125,7 +125,7 @@ export default class TableHandler {
   /**
    * Attach a handler to a specific event in the handler's lifecycle.
    *
-   * @param {string} event — The event to subscribe to.
+   * @param {string} event — The event to subscribe to.
    * @param {Function} handler - A callback function to be called when the subscribed event is triggered.
    * @returns {TableHandler}
    */
@@ -209,14 +209,15 @@ export default class TableHandler {
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
+      this.triggerEvent('apply-filters', column, filters);
     });
   }
 
   /**
    * Apply ordering to a column
    *
-   * @param {Column} column — The column we want to order by
-   * @param {OrderDirection} direction — The direction we want to order the column in
+   * @param {Column} column — The column we want to order by
+   * @param {OrderDirection} direction — The direction we want to order the column in
    * @returns {Promise<void>}
    */
   async applyOrder(column: Column, direction: OrderDirection): Promise<void> {
