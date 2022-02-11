@@ -209,7 +209,7 @@ export default class TableHandler {
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
-      this.triggerEvent('apply-filter', column, filters);
+      this.triggerEvent('apply-filters', column, filters);
     });
   }
 

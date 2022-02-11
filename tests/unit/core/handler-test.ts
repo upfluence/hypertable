@@ -107,6 +107,15 @@ module('Unit | core/handler', function (hooks) {
       ]);
     });
 
+    test('new filters trigger event with the apply-filters event', async function (assert: Assert) {
+      const handlerSpy = sinon.spy(this.handler, 'triggerEvent');
+      await this.handler.applyFilters(this.handler.columns[0], [{ key: 'foo', value: 'bar' }]);
+
+      assert.ok(
+        handlerSpy.calledOnceWithExactly('apply-filters', this.handler.columns[0], [{ key: 'foo', value: 'bar' }])
+      );
+    });
+
     test('existing filters are updated if they have the same key', function (assert: Assert) {
       this.handler.columns[0].filters = [{ key: 'foo', value: 'bar' }];
 
