@@ -146,6 +146,20 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.columns[1].order, undefined);
   });
 
+  test('Handler#resetRows', async function (assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
+
+    await handler.fetchRows();
+    await handler.resetRows();
+
+    // @ts-ignore
+    assert.ok(rowsFetcherSpy.fetch.calledTwice);
+    // @ts-ignore
+    assert.ok(rowsFetcherSpy.fetch.calledWithExactly(1, 20));
+    assert.equal(handler.rows.length, 2);
+  });
+
   test('Handler#applyOrder', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const tableManagerSpy = sinon.spy(this.tableManager);

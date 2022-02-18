@@ -34,10 +34,10 @@ export default class TableHandler {
   @tracked rows: Row[] = [];
   @tracked selection: Row[] | 'all' = [];
 
-  @tracked loadingColumns: boolean = false;
-  @tracked loadingRows: boolean = false;
+  @tracked loadingColumns: boolean = true;
+  @tracked loadingRows: boolean = true;
   @tracked communicationError: boolean = false;
-  @tracked loadingColumnDefinition: boolean = false;
+  @tracked loadingColumnDefinition: boolean = true;
 
   rowsMeta?: RowsFetcherMetadata;
   currentPage: number = 1;
@@ -249,6 +249,17 @@ export default class TableHandler {
       this._reinitColumnsAndRows(columns);
       this.triggerEvent('reset-columns', columnsToReset);
     });
+  }
+
+  /**
+   * Reset rows
+   *
+   * @returns {Promise<void>}
+   */
+  async resetRows(): Promise<void> {
+    this.rows = [];
+    this.currentPage = 1;
+    return this.fetchRows();
   }
 
   /**
