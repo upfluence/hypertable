@@ -252,6 +252,17 @@ export default class TableHandler {
   }
 
   /**
+   * Reset rows
+   *
+   * @returns {Promise<void>}
+   */
+  async resetRows(): Promise<void> {
+    this.rows = [];
+    this.currentPage = 1;
+    return this.fetchRows();
+  }
+
+  /**
    * Fetches more rows if there are any.
    *
    * @returns {void}
