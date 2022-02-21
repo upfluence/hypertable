@@ -50,6 +50,21 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
   });
 
+  test('cliking on the buttons should trigger the applyFilters method with a custom filtering key', async function (assert: Assert) {
+    const handlerSpy = sinon.spy(this.handler);
+    await render(
+      hbs`<HyperTableV2::FilteringRenderers::Common::Existence @filteringKey="bozo" @handler={{this.handler}} @column={{this.column}} />`
+    );
+
+    await click('.btn-group .btn:first-child');
+    // @ts-ignore
+    assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'with' }]));
+
+    await click('.btn-group .btn:last-child');
+    // @ts-ignore
+    assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'without' }]));
+  });
+
   test('if a label is provided, it is displayed', async function (assert: Assert) {
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} @label="test" />`
