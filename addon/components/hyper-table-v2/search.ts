@@ -35,7 +35,7 @@ export default class HyperTableV2Search extends Component<HyperTableV2SearchArgs
   private _applySearchFilter(): void {
     this.args.handler.applyFilters(this.args.handler.columns[0], [
       {
-        key: 'value',
+        key: this.args.handler?.columns[0]?.definition?.filterable_by?.[0] || 'value',
         value: this.searchQuery
       }
     ]);
