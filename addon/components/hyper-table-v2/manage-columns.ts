@@ -50,6 +50,12 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
     const map = new Map();
 
     columnDefinitions.forEach((columnDefinition) => {
+      if (
+        this.args.handler.columns.length > 0 &&
+        this.args.handler.columns[0].definition.name === columnDefinition.name
+      ) {
+        return;
+      }
       const cluster = map.get(columnDefinition.clustering_key);
       const manageColumn: ManagedColumn = {
         definition: columnDefinition,
@@ -70,6 +76,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   columnVisibilityUpdate(column: ManagedColumn, event: PointerEvent): void {
     event.stopPropagation();
     if (column.visible) {
+      console.log('handler removeColumn');
       this.args.handler.removeColumn(column.definition);
     } else {
       this.args.handler.addColumn(column.definition).then(() => {
