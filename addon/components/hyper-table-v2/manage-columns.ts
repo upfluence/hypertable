@@ -52,7 +52,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
     columnDefinitions.forEach((columnDefinition) => {
       if (
         this.args.handler.columns.length > 0 &&
-        this.args.handler.columns[0].definition.name === columnDefinition.name
+        this.args.handler.columns[0].definition.key === columnDefinition.key
       ) {
         return;
       }
