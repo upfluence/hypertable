@@ -76,7 +76,6 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   columnVisibilityUpdate(column: ManagedColumn, event: PointerEvent): void {
     event.stopPropagation();
     if (column.visible) {
-      console.log('handler removeColumn');
       this.args.handler.removeColumn(column.definition);
     } else {
       this.args.handler.addColumn(column.definition).then(() => {
