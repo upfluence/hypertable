@@ -15,6 +15,15 @@ export default class HyperTableV2Search extends Component<HyperTableV2SearchArgs
   @service declare intl: any;
   @tracked searchQuery: string = '';
 
+  constructor(owner: any, args: HyperTableV2SearchArgs) {
+    super(owner, args);
+    args.handler.on('reset-columns', (columns) => {
+      if (columns.includes(args.handler?.columns[0])) {
+        this.onClearSearch();
+      }
+    });
+  }
+
   get searchPlaceholder(): string {
     if (this.args.handler?.columns[0]?.definition?.name)
       return this.intl.t('hypertable.header.search_by') + ' ' + this.args.handler.columns[0].definition.name;
