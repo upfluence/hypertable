@@ -19,6 +19,8 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   @tracked filteringComponent?: ResolvedRenderingComponent;
   @tracked displayFilteringComponent: boolean = false;
 
+  displayMoveIndicator: boolean;
+
   constructor(owner: unknown, args: HyperTableV2ColumnArgs) {
     super(owner, args);
 
@@ -30,6 +32,8 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
       .finally(() => {
         this.loadingHeaderComponent = false;
       });
+
+    this.displayMoveIndicator = args.handler.columnPosition(args.column) !== 0;
 
     if (args.column.definition.orderable || args.column.definition.filterable) {
       args.handler.renderingResolver

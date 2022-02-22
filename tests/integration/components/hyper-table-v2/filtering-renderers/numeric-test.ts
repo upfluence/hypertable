@@ -140,11 +140,15 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
 
     test('it triggers applyFilter when the range values are changed', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
+      //@ts-ignore
+      Ember.run.debounce = function (target: () => {}, func: () => {}) {
+        func.call(target);
+      };
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
 
-      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_from"]', '10');
+      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_from"]', '1');
       await triggerKeyEvent(
         '[data-control-name="hypertable__column_filtering_for_total_range_from"]',
         'keydown',
@@ -152,13 +156,12 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         //@ts-ignore
         { code: 'Enter' }
       );
-
       assert.ok(
         //@ts-ignore
-        handlerSpy.applyFilters.calledWith(this.column, [{ key: 'lower_bound', value: '10' }])
+        handlerSpy.applyFilters.calledWith(this.column, [{ key: 'lower_bound', value: '1' }])
       );
 
-      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_to"]', '10000');
+      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_to"]', '9');
       await triggerKeyEvent(
         '[data-control-name="hypertable__column_filtering_for_total_range_to"]',
         'keydown',
@@ -170,8 +173,8 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       assert.ok(
         //@ts-ignore
         handlerSpy.applyFilters.calledWith(this.column, [
-          { key: 'lower_bound', value: '10' },
-          { key: 'upper_bound', value: '10000' }
+          { key: 'lower_bound', value: '1' },
+          { key: 'upper_bound', value: '9' }
         ])
       );
     });
