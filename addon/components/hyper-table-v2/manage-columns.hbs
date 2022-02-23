@@ -32,10 +32,8 @@
             </div>
           {{/if}}
           {{#each fields as |field|}}
-            <div class="field" {{on "click" (fn this.columnVisibilityUpdate field)}}>
-              <UpfCheckbox
-                @value={{field.visible}} @size="sm"
-                data-control-name={{concat "column_definition_toggle_checkbox_" field.definition.key}} />
+            <div class="field" role="button" {{on "click" (fn this.columnVisibilityUpdate field)}}>
+              <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm" />
               <div class="margin-left-xxx-sm">
                 {{field.definition.name}}
               </div>
