@@ -268,7 +268,6 @@ export default class TableHandler {
    * @returns {void}
    */
   onBottomReached(): void {
-    if (!this.rowsMeta || this.rowsMeta.total > this.rows.length) {
     if (!this.loadingRows && (!this.rowsMeta || this.rowsMeta.total > this.rows.length)) {
       this.fetchRows();
     }

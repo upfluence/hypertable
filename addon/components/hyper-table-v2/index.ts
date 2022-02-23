@@ -4,7 +4,7 @@ import { action, set } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
-import { scheduleOnce } from '@ember/runloop';
+import { debounce, scheduleOnce } from '@ember/runloop';
 
 type FeatureSet = {
   selection: boolean;
@@ -17,6 +17,7 @@ interface HyperTableV2Args {
 }
 
 const DEFAULT_FEATURES_SET: FeatureSet = { selection: false, searchable: true };
+const RESET_DEBOUNCE_TIME = 300;
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
@@ -86,10 +87,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   resetFilters() {
-    this.loadingResetFilters = true;
-    this.args.handler.resetColumns(this.args.handler.columns).finally(() => {
-      this.loadingResetFilters = false;
-    });
+    debounce(this, this._resetFilters, RESET_DEBOUNCE_TIME);
   }
 
   @action
@@ -126,5 +124,12 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @action
   reloadPage() {
     window.location.reload();
+  }
+
+  private _resetFilters(): void {
+    this.loadingResetFilters = true;
+    this.args.handler.resetColumns(this.args.handler.columns).finally(() => {
+      this.loadingResetFilters = false;
+    });
   }
 }
