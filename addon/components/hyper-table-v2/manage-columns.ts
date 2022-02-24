@@ -1,6 +1,7 @@
 import { A } from '@ember/array';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+import { set } from '@ember/object';
 import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -9,6 +10,7 @@ import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 type ManagedColumn = {
   definition: ColumnDefinition;
   visible: boolean;
+  isLoading: boolean;
 };
 
 interface HyperTableV2ManageColumnsArgs {
@@ -59,7 +61,8 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
       const cluster = map.get(columnDefinition.clustering_key);
       const manageColumn: ManagedColumn = {
         definition: columnDefinition,
-        visible: !isEmpty(this.args.handler.columns.find((column) => column?.definition.key === columnDefinition.key))
+        visible: !isEmpty(this.args.handler.columns.find((column) => column?.definition.key === columnDefinition.key)),
+        isLoading: false
       };
 
       if (!cluster) {
@@ -74,11 +77,15 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
 
   @action
   columnVisibilityUpdate(column: ManagedColumn, event: PointerEvent): void {
+    set(column, 'isLoading', true);
     event?.stopPropagation?.();
     if (column.visible) {
-      this.args.handler.removeColumn(column.definition);
+      this.args.handler.removeColumn(column.definition).then(() => {
+        set(column, 'isLoading', false);
+      });
     } else {
       this.args.handler.addColumn(column.definition).then(() => {
+        set(column, 'isLoading', false);
         this.args.didInsertColumn?.();
       });
     }

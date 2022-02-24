@@ -33,7 +33,11 @@
           {{/if}}
           {{#each fields as |field|}}
             <div class="field" role="button" {{on "click" (fn this.columnVisibilityUpdate field)}}>
-              <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm" />
+              {{#if field.isLoading}}
+                <div><i class="fa fa-spinner fa-spin"></i></div>
+              {{else}}
+                <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm" />
+              {{/if}}
               <div class="margin-left-xxx-sm">
                 {{field.definition.name}}
               </div>
