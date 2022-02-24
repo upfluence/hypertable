@@ -36,7 +36,8 @@
               {{#if field.isLoading}}
                 <div><i class="fa fa-spinner fa-spin"></i></div>
               {{else}}
-                <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm" />
+                <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm" 
+                               data-control-name={{concat "column_definition_toggle_checkbox_" field.definition.key}} />
               {{/if}}
               <div class="margin-left-xxx-sm">
                 {{field.definition.name}}
