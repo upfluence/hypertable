@@ -147,6 +147,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=false}} />`);
 
       assert.dom('.hypertable__column.hypertable__column--selection').doesNotExist();
+      assert.dom('.selected-count').doesNotExist();
     });
 
     test('the selection column is present when the feature is enabled', async function (assert: Assert) {
@@ -155,6 +156,13 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__column.hypertable__column--selection').exists();
       assert.dom('.upf-checkbox').exists({ count: 3 });
     });
+
+
+    test('the selection column is present when the feature is enabled', async function (assert: Assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+
+      assert.dom('.selected-count').exists();
+    })
 
     test('clicking the checkbox in the header of the selection column triggers the SelectAll', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
@@ -167,6 +175,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       // @ts-ignore
       assert.ok(handlerSpy.toggleSelectAll.calledOnceWithExactly(true));
       assert.equal(this.handler.selection, 'all');
+      assert.dom('.selected-count').hasText(this.handler.rowsMeta.total.toString());
     });
 
     test("when in SelectAll mode, all rows' selection checkboxes are disabled", async function (assert: Assert) {
@@ -203,6 +212,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.equal(this.handler.selection.length, 1);
       assert.ok(this.handler.selection.includes(this.handler.rows[0]));
       assert.dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').isChecked();
+      assert.dom('.selected-count').hasText('1');
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
@@ -212,6 +222,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert
         .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input')
         .isNotChecked();
+      assert.dom('.selected-count').hasText('0');
     });
   });
 
