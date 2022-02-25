@@ -259,7 +259,9 @@ export default class TableHandler {
   async resetRows(): Promise<void> {
     this.rows = [];
     this.currentPage = 1;
-    return this.fetchRows();
+    return this.fetchRows().then(() => {
+      this.triggerEvent('reset-rows');
+    });
   }
 
   /**
