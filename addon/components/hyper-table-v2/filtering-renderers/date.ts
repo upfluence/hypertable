@@ -14,7 +14,6 @@ interface HyperTableV2FilteringRenderersDateArgs {
 type FilterOption = 'moving' | 'fixed';
 
 export default class HyperTableV2FilteringRenderersDate extends Component<HyperTableV2FilteringRenderersDateArgs> {
-  @tracked flatpickrRef: any;
   @tracked _currentDateValue: Date[] = [];
   @tracked _currentMovingDateOption: any;
   @tracked filterOption: FilterOption;
@@ -113,8 +112,5 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   private _resetStates(): void {
     this._currentDateValue = [];
     this._currentMovingDateOption = [];
-    if (this.flatpickrRef) {
-      this.flatpickrRef.clear();
-    }
   }
 }
