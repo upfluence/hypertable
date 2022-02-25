@@ -38,8 +38,8 @@ export default class TableHandler {
   @tracked loadingRows: boolean = true;
   @tracked communicationError: boolean = false;
   @tracked loadingColumnDefinition: boolean = true;
+  @tracked rowsMeta?: RowsFetcherMetadata;
 
-  rowsMeta?: RowsFetcherMetadata;
   currentPage: number = 1;
 
   constructor(emberContext: unknown, manager: TableManager, rowsFetcher: RowsFetcher, renderingResolver = undefined) {
