@@ -1,6 +1,12 @@
 <div class="hypertable-container" ...attributes>
   <div class="hypertable__upper-header fx-row">
     <div class="left-side padding-left-xx-sm">
+      {{#if this.features.selection}}
+        <div class="selected-count">
+          {{format-number this.selectionCount}}
+        </div>
+      {{/if}}
+
       <div class="search">
         {{#if (has-block "search")}}
           {{yield to="search"}}

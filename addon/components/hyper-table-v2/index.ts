@@ -42,6 +42,18 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     };
   }
 
+  get selectionCount(): number {
+    if (!this.args.handler.rowsMeta || this.args.handler.selection === []) {
+      return 0;
+    }
+
+    if (this.args.handler.selection === 'all') {
+      return this.args.handler.rowsMeta.total;
+    } else {
+      return this.args.handler.selection.length;
+    }
+  }
+
   @action
   computeScrollableTable(): void {
     const table = this.innerTableElement?.querySelector('.hypertable');
