@@ -42,7 +42,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersDateArgs) {
     super(owner, args);
 
-    let filter = this.args.column.filters.find((f) => f.key === 'value');
+    let filter = this.args.column.filters.find((f) => f.key === 'moving');
     this._currentMovingDateOption = filter ? filter.value : null;
     this.filterOption = this._currentMovingDateOption ? 'moving' : 'fixed';
     args.handler.on('reset-columns', (columns) => {
@@ -89,7 +89,11 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   @action
   selectMovingDate(value: any): void {
     this._currentMovingDateOption = value;
-    this.args.handler.applyFilters(this.args.column, [{ key: 'value', value: value }]);
+    this.args.handler.applyFilters(this.args.column, [
+      { key: 'lower_bound', value: '' },
+      { key: 'upper_bound', value: '' },
+      { key: 'moving', value: value }
+    ]);
   }
 
   @action
@@ -98,6 +102,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
 
     if (fromDate && toDate) {
       this.args.handler.applyFilters(this.args.column, [
+        { key: 'moving', value: '' },
         { key: 'lower_bound', value: (+fromDate / 1000).toString() },
         { key: 'upper_bound', value: (+toDate / 1000).toString() }
       ]);

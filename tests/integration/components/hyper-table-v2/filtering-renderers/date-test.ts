@@ -125,7 +125,11 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await click('.filters__option');
       assert.ok(
         //@ts-ignore
-        handlerSpy.applyFilters.calledWith(this.column, [{ key: 'value', value: 'today' }])
+        handlerSpy.applyFilters.calledWith(this.column, [
+          { key: 'lower_bound', value: '' },
+          { key: 'upper_bound', value: '' },
+          { key: 'moving', value: 'today' },
+        ])
       );
     });
 
@@ -153,7 +157,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
   module('clear column', async function () {
     test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
-      this.handler.applyFilters(this.column, [{ key: 'value', value: 'today' }]);
+      this.handler.applyFilters(this.column, [{ key: 'moving', value: 'today' }]);
       this.handler.applyOrder(this.column, 'asc');
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
