@@ -19,7 +19,7 @@ export default class HyperTableV2Search extends Component<HyperTableV2SearchArgs
     super(owner, args);
     args.handler.on('reset-columns', (columns) => {
       if (columns.includes(args.handler?.columns[0])) {
-        this.onClearSearch();
+        this.searchQuery = '';
       }
     });
   }
