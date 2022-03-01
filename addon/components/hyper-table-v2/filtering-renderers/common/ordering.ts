@@ -1,4 +1,5 @@
 import { action } from '@ember/object';
+import { throttle } from '@ember/runloop';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
@@ -15,6 +16,8 @@ const defaultOrderingDirections: { [key: string]: OrderDirection } = {
   'A — Z': 'asc',
   'Z — A': 'desc'
 };
+
+const THROTTLE_TIME = 300;
 
 export default class HyperTableV2FilteringRenderersOrdering extends Component<HyperTableV2FilteringRenderersOrderingArgs> {
   @tracked _selectedDirection: OrderDirection | undefined;
@@ -39,6 +42,10 @@ export default class HyperTableV2FilteringRenderersOrdering extends Component<Hy
 
   @action
   orderingDirectionChanged(direction: OrderDirection): void {
+    throttle(this, this._applyOrdering, direction, THROTTLE_TIME);
+  }
+
+  private _applyOrdering(direction: OrderDirection): void {
     this.args.handler.applyOrder(this.args.column, direction).then(() => {
       this._selectedDirection = direction;
     });
