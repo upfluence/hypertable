@@ -6040,7 +6040,7 @@ var t,n,r,i=l(u)
 function u(e,t){var n,r,a,s,l
 return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,u),n=i.call(this,e,t),r=c(n),a="_selectedDirection",s=o,l=c(n),s&&Object.defineProperty(r,a,{enumerable:s.enumerable,configurable:s.configurable,writable:s.writable,value:s.initializer?s.initializer.call(l):void 0}),t.handler.on("reset-columns",(function(e){e.includes(t.column)&&(n._selectedDirection=void 0)})),n}return t=u,(n=[{key:"orderingOptions",get:function(){var e
 return(null===(e=this.args)||void 0===e?void 0:e.orderingOptions)||h}},{key:"currentOrderingDirection",get:function(){var e
-return this._selectedDirection||(null===(e=this.args.column.order)||void 0===e?void 0:e.direction)}},{key:"orderingDirectionChanged",value:function(e){var t=this
+return this._selectedDirection||(null===(e=this.args.column.order)||void 0===e?void 0:e.direction)}},{key:"orderingDirectionChanged",value:function(e){Ember.run.throttle(this,this._applyOrdering,e,300)}},{key:"_applyOrdering",value:function(e){var t=this
 this.args.handler.applyOrder(this.args.column,e).then((function(){t._selectedDirection=e}))}}])&&a(t.prototype,n),r&&a(t,r),Object.defineProperty(t,"prototype",{writable:!1}),u}(t.default),o=f(i.prototype,"_selectedDirection",[n],{configurable:!0,enumerable:!0,writable:!0,initializer:null}),f(i.prototype,"orderingDirectionChanged",[r],Object.getOwnPropertyDescriptor(i.prototype,"orderingDirectionChanged"),i.prototype),i)
 e.default=m,Ember._setComponentTemplate(p,m)})),define("@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/common/search",["exports","@glimmer/component"],(function(e,t){"use strict"
 var n,r,i,o,a
