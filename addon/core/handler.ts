@@ -167,6 +167,17 @@ export default class TableHandler {
   }
 
   /**
+   * Remove a row by its record id.
+   *
+   * @param {number} recordId - The record id of the row
+   * @returns {void}
+   */
+  removeRow(recordId: number): void {
+    this.rows = this.rows.filter((row) => row.record_id !== recordId);
+    this.triggerEvent('remove-row');
+  }
+
+  /**
    * Fetch facets for a given columns to hint filtering.
    *
    * @param {string} columnKey — The key of the column to fetch facets for.
