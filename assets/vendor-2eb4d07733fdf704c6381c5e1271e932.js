@@ -6429,7 +6429,7 @@ return regeneratorRuntime.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:
 n._reinitColumnsAndRows(t)})))
 case 1:case"end":return e.stop()}}),e,this)}))),function(e){return f.apply(this,arguments)})},{key:"removeColumn",value:(d=O(regeneratorRuntime.mark((function e(t){var n=this
 return regeneratorRuntime.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return e.abrupt("return",this.tableManager.upsertColumns({columns:this.columns.filter((function(e){return e.definition.key!==t.key}))}).then((function(e){n.columns=e.columns})))
-case 1:case"end":return e.stop()}}),e,this)}))),function(e){return d.apply(this,arguments)})},{key:"fetchFacets",value:(c=O(regeneratorRuntime.mark((function e(t,n,r){return regeneratorRuntime.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:if(this.tableManager.fetchFacets){e.next=2
+case 1:case"end":return e.stop()}}),e,this)}))),function(e){return d.apply(this,arguments)})},{key:"removeRow",value:function(e){this.rows=this.rows.filter((function(t){return t.record_id!==e})),this.triggerEvent("remove-row")}},{key:"fetchFacets",value:(c=O(regeneratorRuntime.mark((function e(t,n,r){return regeneratorRuntime.wrap((function(e){for(;;)switch(e.prev=e.next){case 0:if(this.tableManager.fetchFacets){e.next=2
 break}throw new Error("[Hypertable/Handler] The TableManager in use does not support facetting.")
 case 2:return e.abrupt("return",this.tableManager.fetchFacets(t,n,r))
 case 3:case"end":return e.stop()}}),e,this)}))),function(e,t,n){return c.apply(this,arguments)})},{key:"applyFilters",value:(u=O(regeneratorRuntime.mark((function e(t,n){var r=this
