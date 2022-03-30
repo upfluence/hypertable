@@ -160,6 +160,17 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.rows.length, 2);
   });
 
+  test('Handler#removeRow', async function (assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+
+    await handler.fetchRows();
+    assert.equal(handler.rows.length, 2);
+
+    handler.removeRow(12);
+    assert.equal(handler.rows.length, 1);
+    assert.equal(handler.rows[0].recordId, 13);
+  });
+
   test('Handler#applyOrder', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const tableManagerSpy = sinon.spy(this.tableManager);

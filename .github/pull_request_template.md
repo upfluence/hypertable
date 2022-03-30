@@ -22,7 +22,6 @@ Useful Resource : [Ember Octane vs Classic Cheat Sheet](https://ember-learn.gith
 
 ### Good PR checklist
 
-
 - [ ] Title makes sense
 - [ ] Is against the correct branch
 - [ ] Only addresses one issue
