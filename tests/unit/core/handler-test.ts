@@ -162,6 +162,7 @@ module('Unit | core/handler', function (hooks) {
 
   test('Handler#removeRow', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
     await handler.fetchRows();
     assert.equal(handler.rows.length, 2);
@@ -169,6 +170,8 @@ module('Unit | core/handler', function (hooks) {
     handler.removeRow(12);
     assert.equal(handler.rows.length, 1);
     assert.equal(handler.rows[0].recordId, 13);
+    // @ts-ignore
+    assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
   });
 
   test('Handler#applyOrder', async function (assert: Assert) {
