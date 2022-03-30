@@ -6,8 +6,9 @@ export default class RowsFetcher {
     return Promise.resolve({
       rows: [
         {
-          influencerId: Math.random(),
+          influencerId: 42,
           recordId: 12,
+          record_id: 12,
           holderId: 57,
           holderType: 'list',
           foo: 'ekip',
@@ -16,8 +17,9 @@ export default class RowsFetcher {
           date: 1643386394
         },
         {
-          influencerId: Math.random(),
-          recordId: 12,
+          influencerId: 43,
+          recordId: 13,
+          record_id: 13,
           holderId: 57,
           holderType: 'list',
           foo: 'second',
