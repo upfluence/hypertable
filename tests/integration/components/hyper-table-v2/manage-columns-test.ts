@@ -9,7 +9,7 @@ import { buildColumn, buildColumnDefinition } from '@upfluence/hypertable/test-s
 import { Column, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 
 const COLUMN_DEFINITIONS = [
-  { key: 'alone', extra: { category: '', clustering_key: '' } },
+  { key: 'alone', extra: { category: '', clustering_key: '', position: { sticky: true } } },
   { key: 'code', extra: { category: 'affiliation', clustering_key: '' } },
   { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
   { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } }
@@ -24,7 +24,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
   setupRenderingTest(hooks);
 
   function builderHelper(
-    columnOptions: Array<{ key: string; extra: { [key: string]: string } }>,
+    columnOptions: Array<{ key: string; extra: { [key: string]: any } }>,
     buildMethod: (key: string, extra: { [key: string]: string }) => ColumnDefinition | Column
   ): (ColumnDefinition | Column)[] {
     return columnOptions.reduce((columns, column) => [...columns, ...[buildMethod(column.key, column.extra)]], []);
@@ -64,7 +64,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
       assert.dom('.available-fields-wrapper.visible').exists({ count: 1 });
     });
 
-    test('The first column of the table is not visible in the component', async function (assert: Assert) {
+    test('The sticky columns of the table are not visible in the component', async function (assert: Assert) {
       await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
 
       await click('.upf-btn.upf-btn--primary');
@@ -192,7 +192,10 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               orderable: false,
               orderable_by: [],
               size: 'M',
-              type: 'text'
+              type: 'text',
+              position: {
+                sticky: false
+              }
             },
             filters: []
           }
@@ -222,7 +225,10 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               orderable: false,
               orderable_by: [],
               size: 'M',
-              type: 'text'
+              type: 'text',
+              position: {
+                sticky: false
+              }
             },
             filters: []
           },
@@ -239,7 +245,10 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               filterable: false,
               filterable_by: [],
               facetable: false,
-              facetable_by: ['value']
+              facetable_by: ['value'],
+              position: {
+                sticky: false
+              }
             },
             filters: []
           },
@@ -256,7 +265,10 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
               filterable: false,
               filterable_by: [],
               facetable: false,
-              facetable_by: ['value']
+              facetable_by: ['value'],
+              position: {
+                sticky: false
+              }
             },
             filters: []
           }

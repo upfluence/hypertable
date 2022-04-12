@@ -21,8 +21,7 @@ export type ColumnDefinition = {
   facetable_by: string[] | null;
   position?: {
     sticky: boolean;
-    side: string;
-  }
+  };
 };
 
 export type Filter = {

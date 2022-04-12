@@ -21,7 +21,13 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
       return Promise.resolve({
         columns: [
-          buildColumn('static', { type: 'text', size: FieldSize.Large, filterable: true, orderable: true }),
+          buildColumn('static', {
+            type: 'text',
+            size: FieldSize.Large,
+            filterable: true,
+            orderable: true,
+            position: { sticky: true }
+          }),
           buildColumn('Name', { type: 'text', size: FieldSize.Large, filterable: true, orderable: true })
         ]
       });
@@ -40,7 +46,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     assert.dom('.upf-btn--default').exists();
   });
 
-  test('The remove button is not displayed if it is the first column', async function (assert: Assert) {
+  test('The remove button is not displayed if it is a sticky column', async function (assert: Assert) {
     this.column = this.handler.columns[0];
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
