@@ -11,7 +11,7 @@ interface HyperTableV2FilteringRenderersCommonColumnActionsArgs {
 
 export default class HyperTableV2FilteringRenderersCommonColumnActions extends Component<HyperTableV2FilteringRenderersCommonColumnActionsArgs> {
   get shouldDisplay(): boolean {
-    return this.args.handler.columnPosition(this.args.column) !== 0;
+    return !this.args.column.definition.position?.sticky;
   }
 
   @action

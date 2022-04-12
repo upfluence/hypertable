@@ -52,10 +52,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
     const map = new Map();
 
     columnDefinitions.forEach((columnDefinition) => {
-      if (
-        this.args.handler.columns.length > 0 &&
-        this.args.handler.columns[0].definition.key === columnDefinition.key
-      ) {
+      if (this.args.handler.columns.length > 0 && columnDefinition.position?.sticky) {
         return;
       }
       const cluster = map.get(columnDefinition.clustering_key);

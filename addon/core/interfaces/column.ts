@@ -19,6 +19,10 @@ export type ColumnDefinition = {
   filterable_by: string[] | null;
   facetable: boolean;
   facetable_by: string[] | null;
+  position?: {
+    sticky: boolean;
+    side: string;
+  }
 };
 
 export type Filter = {

@@ -98,8 +98,9 @@
           {{/if}}
 
           {{#if (gt index 0)}}
-            <HyperTableV2::Column @handler={{@handler}} @column={{column}}
-                                  {{sortable-item model=column spacing=5 distance=10}}>
+            <HyperTableV2::Column
+              @handler={{@handler}} @column={{column}}
+              {{sortable-item model=column spacing=5 distance=10 disabled=column.definition.position.sticky}}>
               {{#each @handler.rows as |row|}}
                 <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}}
                                     @onHover={{this.onRowHover}} />
