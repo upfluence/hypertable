@@ -24,7 +24,10 @@ export const buildColumnDefinition = (key: string, extra?: { [key: string]: any 
     filterable: false,
     filterable_by: [],
     facetable: false,
-    facetable_by: ['value']
+    facetable_by: ['value'],
+    position: {
+      sticky: false
+    }
   };
 
   return Object.assign(defaultColumnDefinition, extra || {});

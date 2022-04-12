@@ -33,7 +33,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
         this.loadingHeaderComponent = false;
       });
 
-    this.displayMoveIndicator = args.handler.columnPosition(args.column) !== 0;
+    this.displayMoveIndicator = !args.column.definition.position?.sticky;
 
     if (args.column.definition.orderable || args.column.definition.filterable) {
       args.handler.renderingResolver

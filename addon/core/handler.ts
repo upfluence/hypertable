@@ -368,7 +368,7 @@ export default class TableHandler {
       if (existingColumn) {
         existingColumn = column;
       } else {
-        this.columns.push(column);
+        this.columns.splice(columns.indexOf(column), 0, column);
         shouldRedraw = true;
       }
     });
