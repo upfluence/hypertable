@@ -20,7 +20,6 @@ const ELLIPSIS_STEPS: { [key: string]: string } = {
 
 export default class HyperTableV2CellRenderersText extends Component<HyperTableV2CellRenderersTextArgs> {
   get ellipsisClass(): string {
-    console.log(ELLIPSIS_STEPS);
     return `text-ellipsis-${ELLIPSIS_STEPS[this.args.column.definition.size]}`;
   }
 
