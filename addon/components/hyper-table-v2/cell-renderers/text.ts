@@ -10,4 +10,8 @@ interface HyperTableV2CellRenderersTextArgs {
   extra?: { [key: string]: any };
 }
 
-export default class HyperTableV2CellRenderersText extends Component<HyperTableV2CellRenderersTextArgs> {}
+export default class HyperTableV2CellRenderersText extends Component<HyperTableV2CellRenderersTextArgs> {
+  get value(): string {
+    return this.args.row[this.args.column.definition.key];
+  }
+}

@@ -27,6 +27,6 @@ module('Integration | Component | hyper-table-v2/cell-renderers/text', function 
 
     assert.equal(this.column.definition.key, 'foo');
     assert.equal(this.row[this.column.definition.key], 'ekip');
-    assert.dom().hasText('ekip');
+    assert.dom('span').hasText('ekip');
   });
 });
