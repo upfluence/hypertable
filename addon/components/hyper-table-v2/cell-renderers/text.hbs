@@ -1,1 +1,7 @@
-{{or (get @row @column.definition.key) '—'}}
+{{#if this.value}}
+  <span class={{this.ellipsisClass}} {{enable-tooltip title=this.value placement="top"}}>
+    {{this.value}}
+  </span>
+{{else}}
+  —
+{{/if}}
