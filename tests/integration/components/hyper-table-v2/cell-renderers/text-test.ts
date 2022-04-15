@@ -4,7 +4,6 @@ import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
-import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 
 module('Integration | Component | hyper-table-v2/cell-renderers/text', function (hooks) {
   setupRenderingTest(hooks);
