@@ -58,6 +58,12 @@
   &:nth-child(2) header {
     border-left: none;
   }
+
+  &--sticky-right {
+    position: sticky;
+    right: 0;
+    z-index: 20;
+  }
 }
 
 .hypertable__column header {
@@ -333,7 +339,8 @@
     }
   }
 
-  &--visible, &.js--visible {
+  &--visible,
+  &.js--visible {
     animation: openFilters 0.3s ease-out forwards;
   }
 
