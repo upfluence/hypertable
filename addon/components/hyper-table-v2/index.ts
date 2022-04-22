@@ -25,11 +25,13 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @tracked loadingResetFilters = false;
   @tracked scrollableTable: boolean = false;
+  @tracked initialFetchColumnsDone: boolean = false;
 
   constructor(owner: unknown, args: HyperTableV2Args) {
     super(owner, args);
     args.handler.fetchColumnDefinitions();
     args.handler.fetchColumns().then(() => {
+      this.initialFetchColumnsDone = true;
       args.handler.fetchRows();
       this.computeScrollableTable();
     });
