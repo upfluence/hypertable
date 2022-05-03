@@ -64,6 +64,7 @@ module('Unit | core/handler', function (hooks) {
 
   test('Handler#removeColumn', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
     handler.columns = [
       {
         definition: {
@@ -87,6 +88,8 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.columns.length, 1);
     await handler.removeColumn(handler.columns[0].definition);
     assert.equal(handler.columns.length, 0);
+    // @ts-ignore
+    assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-column'));
   });
 
   module('Handler#applyFilter', function (hooks) {
