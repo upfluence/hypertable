@@ -161,8 +161,10 @@ export default class TableHandler {
       .upsertColumns({
         columns: this.columns.filter((column) => column.definition.key !== definition.key)
       })
-      .then((resp) => {
-        this.columns = resp.columns;
+      .then(({ columns }) => {
+        this.columns = columns;
+        this._reinitColumnsAndRows(columns);
+        this.triggerEvent('remove-column');
       });
   }
 
@@ -358,25 +360,20 @@ export default class TableHandler {
   }
 
   private _reinitColumnsAndRows(columns: Column[]): void {
-    this.rows = [];
-
     let shouldRedraw = false;
-
     columns.forEach((column) => {
       let existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
 
-      if (existingColumn) {
-        existingColumn = column;
-      } else {
+      if (!existingColumn) {
         this.columns.splice(columns.indexOf(column), 0, column);
         shouldRedraw = true;
       }
     });
-
     if (shouldRedraw) {
       this.columns = this.columns;
     }
 
+    this.rows = [];
     this.currentPage = 1;
     this.fetchRows();
   }
