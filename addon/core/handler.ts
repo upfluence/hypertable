@@ -157,14 +157,17 @@ export default class TableHandler {
    * @returns {Promise<void>}
    */
   async removeColumn(definition: ColumnDefinition): Promise<void> {
+    const columnToRemove = this.columns.filter((column) => column.definition.key === definition.key);
     return this.tableManager
       .upsertColumns({
         columns: this.columns.filter((column) => column.definition.key !== definition.key)
       })
       .then(({ columns }) => {
         this.columns = columns;
-        this._reinitColumnsAndRows(columns);
-        this.triggerEvent('remove-column');
+        if (columnToRemove.length > 0 && columnToRemove[0].filters.length > 0) {
+          this._reinitColumnsAndRows(columns);
+          this.triggerEvent('remove-column');
+        }
       });
   }
 
