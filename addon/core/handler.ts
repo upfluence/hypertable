@@ -157,12 +157,17 @@ export default class TableHandler {
    * @returns {Promise<void>}
    */
   async removeColumn(definition: ColumnDefinition): Promise<void> {
+    const columnToRemove = this.columns.filter((column) => column.definition.key === definition.key);
     return this.tableManager
       .upsertColumns({
         columns: this.columns.filter((column) => column.definition.key !== definition.key)
       })
-      .then((resp) => {
-        this.columns = resp.columns;
+      .then(({ columns }) => {
+        this.columns = columns;
+        if (columnToRemove.length > 0 && columnToRemove[0].filters.length > 0) {
+          this._reinitColumnsAndRows(columns);
+          this.triggerEvent('remove-column');
+        }
       });
   }
 
@@ -358,25 +363,20 @@ export default class TableHandler {
   }
 
   private _reinitColumnsAndRows(columns: Column[]): void {
-    this.rows = [];
-
     let shouldRedraw = false;
-
     columns.forEach((column) => {
       let existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
 
-      if (existingColumn) {
-        existingColumn = column;
-      } else {
+      if (!existingColumn) {
         this.columns.splice(columns.indexOf(column), 0, column);
         shouldRedraw = true;
       }
     });
-
     if (shouldRedraw) {
       this.columns = this.columns;
     }
 
+    this.rows = [];
     this.currentPage = 1;
     this.fetchRows();
   }

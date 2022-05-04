@@ -62,31 +62,66 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.columns[0].definition.key, 'foo');
   });
 
-  test('Handler#removeColumn', async function (assert: Assert) {
-    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    handler.columns = [
-      {
-        definition: {
-          key: 'foo',
-          type: 'text',
-          name: `foo`,
-          clustering_key: '',
-          category: '',
-          size: FieldSize.Medium,
-          orderable: false,
-          orderable_by: [],
-          filterable: false,
-          filterable_by: [],
-          facetable: false,
-          facetable_by: ['value']
-        },
-        filters: []
-      }
-    ];
+  module('Handler#removeColumn', function () {
+    test('when filter is empty', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
+      handler.columns = [
+        {
+          definition: {
+            key: 'foo',
+            type: 'text',
+            name: `foo`,
+            clustering_key: '',
+            category: '',
+            size: FieldSize.Medium,
+            orderable: false,
+            orderable_by: [],
+            filterable: false,
+            filterable_by: [],
+            facetable: false,
+            facetable_by: ['value']
+          },
+          filters: []
+        }
+      ];
 
-    assert.equal(handler.columns.length, 1);
-    await handler.removeColumn(handler.columns[0].definition);
-    assert.equal(handler.columns.length, 0);
+      assert.equal(handler.columns.length, 1);
+      await handler.removeColumn(handler.columns[0].definition);
+      assert.equal(handler.columns.length, 0);
+      // @ts-ignore
+      assert.ok(handlerTriggerEventSpy.notCalled);
+    });
+
+    test('when filters is present', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
+      handler.columns = [
+        {
+          definition: {
+            key: 'foo',
+            type: 'text',
+            name: `foo`,
+            clustering_key: '',
+            category: '',
+            size: FieldSize.Medium,
+            orderable: false,
+            orderable_by: [],
+            filterable: false,
+            filterable_by: [],
+            facetable: false,
+            facetable_by: ['value']
+          },
+          filters: [{ key: 'value', value: '3' }]
+        }
+      ];
+
+      assert.equal(handler.columns.length, 1);
+      await handler.removeColumn(handler.columns[0].definition);
+      assert.equal(handler.columns.length, 0);
+      // @ts-ignore
+      assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-column'));
+    });
   });
 
   module('Handler#applyFilter', function (hooks) {
