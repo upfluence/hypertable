@@ -209,6 +209,29 @@ module('Unit | core/handler', function (hooks) {
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
   });
 
+  test('Handler#mutateRows', async function (assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
+
+    await handler.fetchRows();
+
+    let didRefresh = handler.mutateRow(12, (row: Row) :boolean => {
+      row.bar = 'woop woop'
+      return true
+    });
+
+    assert.equal(handler.rows[0].bar, 'woop woop');
+    // @ts-ignore
+    assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
+    assert.true(didRefresh);
+
+    didRefresh = handler.mutateRow(13, () :boolean => false);
+    assert.equal(handler.rows[1].bar, 'second bar');
+    // @ts-ignore
+    assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
+    assert.false(didRefresh);
+  });
+
   test('Handler#applyOrder', async function (assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const tableManagerSpy = sinon.spy(this.tableManager);

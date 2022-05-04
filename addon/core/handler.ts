@@ -19,6 +19,8 @@ import {
 import BaseRenderingResolver from './rendering-resolver';
 import { isEmpty } from '@ember/utils';
 
+export type RowMutator = (row: Row) => boolean;
+
 export default class TableHandler {
   private _context: unknown;
   private _renderingResolver?: RendererResolver;
@@ -180,6 +182,28 @@ export default class TableHandler {
   removeRow(recordId: number): void {
     this.rows = this.rows.filter((row) => row.record_id !== recordId);
     this.triggerEvent('remove-row');
+  }
+
+  /**
+   * Updates a row by its record id.
+   *
+   * @param {number} recordId - The record id of the row
+   * @param {RowMutator} changeRow - The chagne to apply to the row, returns true if the table has to be redrawn.
+   * @returns {boolean} true if the table has been redrawn.
+   */
+  mutateRow(recordId: number, changeRow: RowMutator): boolean {
+    const shouldRefresh = this.rows
+      .filter((row: Row) => row.record_id === recordId)
+      .map(changeRow)
+      .reduce((previousValue, currentValue) => previousValue || currentValue, false);
+
+    // Triggers the redraw of the table.
+    if (shouldRefresh) {
+      this.rows = this.rows;
+      this.triggerEvent('mutate-rows');
+    }
+
+    return shouldRefresh;
   }
 
   /**
