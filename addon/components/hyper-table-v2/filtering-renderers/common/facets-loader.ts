@@ -15,6 +15,7 @@ interface FacetsLoaderArgs {
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
+const FACET_APPLY_DEBOUNCE_TIME: number = 300;
 
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
   @tracked loading = false;
@@ -65,7 +66,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       this,
       this.appliedFacets.includes(facet.identifier) ? this.removeFacet : this.addFacet,
       facet,
-      300
+      FACET_APPLY_DEBOUNCE_TIME
     );
   }
 
@@ -89,7 +90,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   }
 
   private removeFacet(facet: Facet): void {
-    console.log(facet);
     const existingFilter = this.args.column.filters.find((filter) => filter.key === this.filteringKey);
 
     if (existingFilter) {
