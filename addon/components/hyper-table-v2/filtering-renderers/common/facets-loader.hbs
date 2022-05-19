@@ -22,9 +22,15 @@
       <div class="fx-row fx-malign-space-between fx-xalign-center padding-xxx-sm"
            role="button" {{on "click" (fn this.toggleFacet facet)}}>
         <div class="fx-row item">
-          <OSS::Checkbox
-            @checked={{array-includes this.appliedFacets facet.identifier}} @size="sm" @onChange={{fn this.toggleFacet facet}}
-            class="margin-right-xx-sm" />
+          {{#if this.ongoingFacetApply}}
+            <span class="margin-right-xx-sm">
+              <i class="fa fa-circle-o-notch fa-spin"></i>
+            </span>
+          {{else}}
+            <OSS::Checkbox
+              @checked={{array-includes this.appliedFacets facet.identifier}} @size="sm" @onChange={{fn this.toggleFacet facet}}
+              class="margin-right-xx-sm" />
+          {{/if}}
           {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
         </div>
 

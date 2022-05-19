@@ -21,6 +21,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   @tracked facets: Facet[] = [];
   @tracked appliedFacets: string[] = [];
   @tracked searchQuery: string = '';
+  @tracked ongoingFacetApply: boolean = false;
 
   declare filteringKey: string;
 
@@ -59,7 +60,13 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   @action
   toggleFacet(facet: Facet): void {
-    this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
+    if (this.ongoingFacetApply) return;
+    debounce(
+      this,
+      this.appliedFacets.includes(facet.identifier) ? this.removeFacet : this.addFacet,
+      facet,
+      300
+    );
   }
 
   private addFacet(facet: Facet): void {
@@ -70,12 +77,19 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       facetFilter = { key: this.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
 
-    this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
-      this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
-    });
+    this.ongoingFacetApply = true;
+    this.args.handler
+      .applyFilters(this.args.column, [facetFilter])
+      .then(() => {
+        this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
+      })
+      .finally(() => {
+        this.ongoingFacetApply = false;
+      });
   }
 
   private removeFacet(facet: Facet): void {
+    console.log(facet);
     const existingFilter = this.args.column.filters.find((filter) => filter.key === this.filteringKey);
 
     if (existingFilter) {
@@ -88,9 +102,15 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         facetFilter = { key: this.filteringKey, value: '' };
       }
 
-      this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
-        this.appliedFacets = this.appliedFacets.filter((x) => x !== facet.identifier);
-      });
+      this.ongoingFacetApply = true;
+      this.args.handler
+        .applyFilters(this.args.column, [facetFilter])
+        .then(() => {
+          this.appliedFacets = this.appliedFacets.filter((x) => x !== facet.identifier);
+        })
+        .finally(() => {
+          this.ongoingFacetApply = false;
+        });
     }
   }
 
