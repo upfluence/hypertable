@@ -15,12 +15,14 @@ interface FacetsLoaderArgs {
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
+const FACET_APPLY_DEBOUNCE_TIME: number = 300;
 
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
   @tracked loading = false;
   @tracked facets: Facet[] = [];
   @tracked appliedFacets: string[] = [];
   @tracked searchQuery: string = '';
+  @tracked ongoingFacetApply: boolean = false;
 
   declare filteringKey: string;
 
@@ -59,7 +61,13 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   @action
   toggleFacet(facet: Facet): void {
-    this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
+    if (this.ongoingFacetApply) return;
+    debounce(
+      this,
+      this.appliedFacets.includes(facet.identifier) ? this.removeFacet : this.addFacet,
+      facet,
+      FACET_APPLY_DEBOUNCE_TIME
+    );
   }
 
   private addFacet(facet: Facet): void {
@@ -70,9 +78,15 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       facetFilter = { key: this.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
 
-    this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
-      this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
-    });
+    this.ongoingFacetApply = true;
+    this.args.handler
+      .applyFilters(this.args.column, [facetFilter])
+      .then(() => {
+        this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
+      })
+      .finally(() => {
+        this.ongoingFacetApply = false;
+      });
   }
 
   private removeFacet(facet: Facet): void {
@@ -88,9 +102,15 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         facetFilter = { key: this.filteringKey, value: '' };
       }
 
-      this.args.handler.applyFilters(this.args.column, [facetFilter]).then(() => {
-        this.appliedFacets = this.appliedFacets.filter((x) => x !== facet.identifier);
-      });
+      this.ongoingFacetApply = true;
+      this.args.handler
+        .applyFilters(this.args.column, [facetFilter])
+        .then(() => {
+          this.appliedFacets = this.appliedFacets.filter((x) => x !== facet.identifier);
+        })
+        .finally(() => {
+          this.ongoingFacetApply = false;
+        });
     }
   }
 
