@@ -53,7 +53,7 @@ hypertable:
     new:
       title: New Table View
       description: |
-        You are just now going to save a new view with the columns, ordering and filters currently applied to your
+        You are about to save a new view with the columns, ordering and filters currently applied to your
         table.
         <br />
         Your existing saved views will not be affected.
