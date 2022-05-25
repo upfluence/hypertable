@@ -1,21 +1,20 @@
-<div class="table-views-wrapper {{if this.manager.availableTableViews "visible" "invisible"}}" {{on-click-outside this.closeAvailableViews}}>
+<div class="table-views-wrapper {{if @manager.availableTableViews "visible" "invisible"}}" {{on-click-outside @closeAvailableViews}}>
   <div class="fx-col view-search-container">
     <div class="text-color-default-light">{{t "hypertable.view.search.label"}}</div>
-    <Input type="text" placeholder={{t "hypertable.view.search.placeholder"}} @value={{this._searchQuery}}
+    <Input type="text" placeholder={{t "hypertable.view.search.placeholder"}} @value={{this._searchQuery}} {{on "input" this.onSearchChange}}
       data-control-name="view_search_input" class="form-control upf-input upf-input--small margin-top-xxx-sm margin-bottom-xxx-sm" />
   </div>
 
   <div class="views-container">
-    {{#if this.manager.predefinedViews}}
-      {{#each this.manager.predefinedViews as |view|}}
+    {{#if @manager.predefinedViews}}
+      {{#each @manager.predefinedViews as |view|}}
         <HyperTable::Views::View @view={{view}} @deleteView={{action "deleteView"}} @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
                                  @selectedView={{this.selectedView}} @predefined={{true}} @addPredefinedView={{action "addPredefinedView"}}
                                  @onSelectView={{action "addPredefinedView"}} />
       {{/each}}
       <hr />
     {{/if}}
-
-    {{#each (if this.filteredViews.length this.filteredViews this.manager.views) as |view|}}
+    {{#each (if this.filteredViews.length this.filteredViews @manager.views) as |view|}}
       <HyperTable::Views::View @view={{view}} @deleteView={{action "toggleDeleteViewModal"}} @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
                                @selectedView={{this.selectedView}} @onSelectView={{action "selectView"}} />
     {{/each}}

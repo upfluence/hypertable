@@ -1,87 +1,96 @@
-import Component from '@ember/component';
-import { observer } from '@ember/object';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import { run } from '@ember/runloop';
-import { isPresent, isEmpty } from '@ember/utils';
+import { isPresent } from '@ember/utils';
 
-export default Component.extend({
-  isHiddenAddViewModal: true,
-  isHiddenUpdateViewModal: true,
-  isHiddenDeleteViewModal: true,
-  newViewName: '',
-  selectedView: null,
-  filteredViews: null,
+const SEARCH_DEBOUNCE = 500;
 
-  _searchQuery: '',
+export default class ViewsComponent extends Component {
+  @tracked isHiddenAddViewModal = true;
+  @tracked isHiddenUpdateViewModal = true;
+  @tracked isHiddenDeleteViewModal = true;
 
-  _searchQueryObserver: observer('_searchQuery', function () {
-    run.debounce(this, this.searchView, 500);
-  }),
+  @tracked newViewName = '';
+  @tracked selectedView = null;
+  @tracked isDeleteViewLoading = false;
+  @tracked _searchQuery = '';
+  @tracked filteredViews = [];
 
-  searchView() {
-    if (!isEmpty(this._searchQuery)) {
-      this.set(
-        'filteredViews',
-        this.manager.views.filter((view) => {
-          return view.name.toLowerCase().includes(this._searchQuery.toLowerCase());
-        })
-      );
-      return;
-    }
+  filterViews() {
+    this.filteredViews = this.args.manager.views.filter((view) =>
+      view.name.toLowerCase().includes(this._searchQuery.toLowerCase())
+    );
+  }
 
-    this.set('filteredViews', null);
-  },
+  @action
+  onSearchChange() {
+    run.debounce(this, this.filterViews, SEARCH_DEBOUNCE);
+  }
 
-  actions: {
-    addPredefinedView(view) {
-      if (this.manager.hooks.onAddView) {
-        this.manager.hooks.onAddView(view.name, view.table);
-        this.manager.predefinedViews.removeObject(view);
-      }
-    },
-
-    addView() {
-      if (this.manager.hooks.onAddView && isPresent(this.newViewName)) {
-        this.manager.hooks.onAddView(this.newViewName);
-        this.toggleProperty('isHiddenAddViewModal');
-      }
-    },
-
-    updateView() {
-      if (this.manager.hooks.onUpdateView && this.selectedView) {
-        this.manager.hooks.onUpdateView(this.selectedView);
-        this.toggleProperty('isHiddenUpdateViewModal');
-      }
-    },
-
-    deleteView(_, defer) {
-      if (this.manager.hooks.onDeleteView && this.selectedView) {
-        this.manager.hooks.onDeleteView(this.selectedView).then(() => {
-          this.toggleProperty('isHiddenDeleteViewModal');
-          defer.resolve();
-        });
-      }
-    },
-
-    selectView(view) {
-      if (this.manager.hooks.onSelectView) {
-        this.set('selectedView', view);
-        this.manager.hooks.onSelectView(view);
-      }
-    },
-
-    toggleAddViewModal() {
-      this.set('newViewName', '');
-      this.toggleProperty('isHiddenAddViewModal');
-    },
-
-    toggleUpdateViewModal(selectedView) {
-      this.set('selectedView', selectedView);
-      this.toggleProperty('isHiddenUpdateViewModal');
-    },
-
-    toggleDeleteViewModal(selectedView) {
-      this.set('selectedView', selectedView);
-      this.toggleProperty('isHiddenDeleteViewModal');
+  @action
+  addPredefinedView(view) {
+    if (this.args.manager.hooks.onAddView) {
+      this.args.manager.hooks.onAddView(view.name, view.table);
+      this.args.manager.predefinedViews.removeObject(view);
     }
   }
-});
+
+  @action
+  addView() {
+    if (this.args.manager.hooks.onAddView && isPresent(this.newViewName)) {
+      this.args.manager.hooks.onAddView(this.newViewName);
+      this.isHiddenAddViewModal = !this.isHiddenAddViewModal;
+    }
+  }
+
+  @action
+  updateView() {
+    if (this.args.manager.hooks.onUpdateView && this.selectedView) {
+      this.args.manager.hooks.onUpdateView(this.selectedView);
+      this.isHiddenUpdateViewModal = !this.isHiddenUpdateViewModal;
+    }
+  }
+
+  @action
+  deleteView() {
+    if (this.args.manager.hooks.onDeleteView && this.selectedView) {
+      this.isDeleteViewLoading = true;
+      this.args.manager.hooks
+        .onDeleteView(this.selectedView)
+        .then(() => {
+          this.isHiddenDeleteViewModal = !this.isHiddenDeleteViewModal;
+        })
+        .finally(() => {
+          this.isDeleteViewLoading = true;
+        });
+    }
+  }
+
+  @action
+  selectView(view) {
+    if (this.args.manager.hooks.onSelectView) {
+      this.selectedView = view;
+      this.args.manager.hooks.onSelectView(view);
+    }
+  }
+
+  @action
+  toggleAddViewModal(event) {
+    event?.stopPropagation();
+    this.newViewName = '';
+    this.isHiddenAddViewModal = !this.isHiddenAddViewModal;
+  }
+
+  @action
+  toggleUpdateViewModal(selectedView) {
+    this.selectedView = selectedView;
+    this.isHiddenUpdateViewModal = !this.isHiddenUpdateViewModal;
+  }
+
+  @action
+  toggleDeleteViewModal(selectedView) {
+    this.selectedView = selectedView;
+    this.isHiddenDeleteViewModal = !this.isHiddenDeleteViewModal;
+  }
+}
