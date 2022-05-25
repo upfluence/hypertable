@@ -45,3 +45,30 @@ hypertable:
       title: An unexpected error has occured.
       description: We are working on fixing the problem, please try refreshing the page.
       refresh_page: Refresh Page
+  view:
+    search:
+      label: Search
+      placeholder: Search...
+    add: Add View
+    new:
+      title: New Table View
+      description: |
+        You are just now going to save a new view with the columns, ordering and filters currently applied to your
+        table.
+        <br />
+        Your existing saved views will not be affected.
+      placeholder: Profile View Name..
+      suggest: We suggest using a name that will help you easily identify your new IRM Table View.
+      cancel: Cancel
+      cta: Save View
+    update:
+      title: Update Table View
+      description: You are going to update the <b>{name}</b> Table View with the settings currently applied to your table.
+      question: Do you want to update your table view?
+      cta: Update
+      cancel: Cancel
+    delete:
+      title: Delete View
+      description: Are you sure you would like to delete this view?
+      cta: Delete
+      cancel: Cancel
