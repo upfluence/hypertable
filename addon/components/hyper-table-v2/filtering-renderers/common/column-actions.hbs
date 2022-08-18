@@ -1,10 +1,10 @@
 <div class="fx-row fx-malign-space-between">
   {{#if this.shouldDisplay}}
-    <OSS::Button @skin="destructive" @size="sm" @label={{t "hypertable.column.remove"}} {{on "click" this.removeColumn}}
+    <OSS::Button @skin="destructive" @label={{t "hypertable.column.remove"}} {{on "click" this.removeColumn}}
                  data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_remove_column"}} />
   {{else}}
     <div class="fx-1"></div>
   {{/if}}
-  <OSS::Button @size="sm" @label={{t "hypertable.column.clear_filters"}} {{on "click" this.reset}}
+  <OSS::Button @label={{t "hypertable.column.clear_filters"}} {{on "click" this.reset}}
                data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_clear_filters"}} />
 </div>

@@ -19,7 +19,7 @@
                                @selectedView={{this.selectedView}} @onSelectView={{action "selectView"}} />
     {{/each}}
   </div>
-  <OSS::Button class="margin-top-x-sm padding-xxx-sm" @skin="primary" @icon="fas fa-plus" @label={{t "hypertable.view.add"}} @size="sm"
+  <OSS::Button class="margin-top-x-sm" @skin="primary" @icon="fas fa-plus" @label={{t "hypertable.view.add"}} 
                {{on "click" (action "toggleAddViewModal" bubbles=false)}} />
 </div>
 

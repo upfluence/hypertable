@@ -40,13 +40,9 @@
     </div>
   </div>
 
-  <div class="margin-top-xx-sm buttons-container">
-    <button class="upf-btn upf-btn--destructive upf-btn--small" type="button" {{on "click" this.removeColumn}}>
-      {{t "hypertable.column.remove"}}
-    </button>
-
-    <button class="upf-btn upf-btn--default upf-btn--small" type="button" {{on "click" this.reset}}>
-      {{t "hypertable.column.filtering.clear"}}
-    </button>
+  <div class="margin-top-px-12 fx-row fx-malign-space-between">
+    <OSS::Button
+      @skin="destructive" @label="Remove field" {{on "click" this.removeColumn}} />
+    <OSS::Button @label="Clear filters" {{on "click" this.reset}} />
   </div>
 {{/if}}

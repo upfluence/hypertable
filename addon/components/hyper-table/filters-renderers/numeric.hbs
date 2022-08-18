@@ -1,14 +1,14 @@
 {{#if column.orderable}}
   {{#input-wrapper}}
     <label>Order By</label>
-    <div class='btn-group upf-radio-group' data-control-name={{concat _controlNamePrefix '_order_by_radiogroup'}}>
+    <div class="btn-group upf-radio-group" data-control-name={{concat _controlNamePrefix "_order_by_radiogroup"}}>
       {{#each-in orderingOptions as |label value|}}
         {{radio-button
           value=value
           currentValue=column.orderBy
           label=label
           options=orderingOptions
-          onCheck='orderingOptionChanged'
+          onCheck="orderingOptionChanged"
         }}
       {{/each-in}}
     </div>
@@ -16,11 +16,11 @@
 {{/if}}
 
 {{#if column.filterable}}
-  {{#input-wrapper classNames=(if column.orderable 'margin-top-xx-sm')}}
+  {{#input-wrapper classNames=(if column.orderable "margin-top-xx-sm")}}
     <label>Display</label>
     <div
-      class='btn-group upf-radio-group upf-radio-group--block'
-      data-control-name={{concat _controlNamePrefix '_display_radiogroup'}}
+      class="btn-group upf-radio-group upf-radio-group--block"
+      data-control-name={{concat _controlNamePrefix "_display_radiogroup"}}
     >
       {{#each-in existenceFilters as |label value|}}
         {{radio-button
@@ -28,36 +28,32 @@
           currentValue=currentExistenceFilter
           label=label
           options=existenceFilters
-          onCheck='existenceFilterChanged'
+          onCheck="existenceFilterChanged"
         }}
       {{/each-in}}
     </div>
   {{/input-wrapper}}
 
-  <div class='row margin-top-xx-sm' data-control-name={{concat _controlNamePrefix '_range_radiogroup'}}>
-    {{#input-wrapper classNames='col-xs-6'}}
+  <div class="row margin-top-xx-sm" data-control-name={{concat _controlNamePrefix "_range_radiogroup"}}>
+    {{#input-wrapper classNames="col-xs-6"}}
       <label>From</label>
       {{input
-        type='number'
-        placeholder='From'
+        type="number"
+        placeholder="From"
         value=lowerBoundFilter
-        class='form-control upf-input upf-input--textarea'
+        class="form-control upf-input upf-input--textarea"
       }}
     {{/input-wrapper}}
 
-    {{#input-wrapper classNames='col-xs-6'}}
+    {{#input-wrapper classNames="col-xs-6"}}
       <label>To</label>
-      {{input type='number' placeholder='To' value=upperBoundFilter class='form-control upf-input upf-input--textarea'}}
+      {{input type="number" placeholder="To" value=upperBoundFilter class="form-control upf-input upf-input--textarea"}}
     {{/input-wrapper}}
   </div>
 
-  <div class='margin-top-xx-sm buttons-container'>
-    <button class='upf-btn upf-btn--destructive upf-btn--small' {{action 'removeColumn'}}>
-      Remove Field
-    </button>
-
-    <button class='upf-btn upf-btn--default upf-btn--small' {{action 'reset'}}>
-      Clear Filters
-    </button>
+  <div class="margin-top-px-12 fx-row fx-malign-space-between">
+    <OSS::Button
+      @skin="destructive" @label="Remove field" {{action "removeColumn"}} />
+    <OSS::Button @label="Clear filters" {{action "reset"}} />
   </div>
 {{/if}}
