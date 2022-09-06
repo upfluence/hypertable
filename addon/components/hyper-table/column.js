@@ -63,6 +63,12 @@ export default Component.extend({
     }
   },
 
+  willDestroyElement() {
+    if (this.manager.tetherOn !== this.column.key) {
+      this.manager.destroyTetherInstance();
+    }
+  },
+
   actions: {
     toggleFiltersPanel() {
       let isFirstColumn = this.manager.columns.indexOf(this.column) === 1;
