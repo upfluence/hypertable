@@ -32,27 +32,29 @@
 
   <div class="right-side">
     {{#if this.manager.options.features.filtering}}
-      <button
-        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small"
-        data-control-name="table_reset_filters" {{action "resetAllFilters"}}
-        type="button">
-        {{t "hypertable.features.filtering.reset_all"}}
-      </button>
+      <OSS::Button
+        @label={{t "hypertable.features.filtering.reset_all"}}
+        class="margin-right-px-12 margin-bottom-px-6"
+        data-control-name="table_reset_filters"
+        {{action "resetAllFilters"}} />
     {{/if}}
 
     {{#if this.manager.options.features.tableViews}}
-      <button
-        class="margin-right-xx-sm margin-bottom-xxx-sm upf-btn upf-btn--default upf-btn--small views-manager-toggle icon-responsive"
-        data-control-name="table_toggle_views" type="button" {{action "openAvailableViews" bubbles=false}}>
-        <i class="fa fa-eye margin-right-xxx-sm"></i> {{t "hypertable.features.table_views.title"}}
-      </button>
+      <OSS::Button
+        @icon="fa fa-eye"
+        @label={{t "hypertable.features.table_views.title"}}
+        class="margin-right-px-12 margin-bottom-px-6 views-manager-toggle icon-responsive"
+        data-control-name="table_toggle_views"
+        {{action "openAvailableViews" bubbles=false}} />
     {{/if}}
 
-    <button
-      class="margin-bottom-xxx-sm upf-btn upf-btn--primary upf-btn--small fields-manager-toggle icon-responsive"
-      data-control-name="table_toggle_fields" type="button" {{action "openAvailableFields" bubbles=false}}>
-      <i class="fa fa-columns margin-right-xxx-sm"></i> {{t "hypertable.features.manage_fields.title"}}
-    </button>
+    <OSS::Button
+      @skin="primary"
+      @icon="fa fa-columns"
+      @label={{t "hypertable.features.manage_fields.title"}}
+      class="margin-bottom-px-6 fields-manager-toggle icon-responsive"
+      data-control-name="table_toggle_fields"
+      {{action "openAvailableFields" bubbles=false}} />
 
     <HyperTable::Views
       @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
@@ -236,11 +238,10 @@
   </div>
 
   <div class="scroll-button-container {{if this.manager.isScrollable 'is-visible'}}">
-    <button
-      class="upf-btn upf-btn--small scroll-button {{if this.manager.isScrollable 'is-visible'}}"
-      {{action "scrollToEnd"}} type="button">
-      {{t "hypertable.column.scroll_to_end"}} <i class='fa fa-chevron-right margin-left-xxx-sm'></i>
-    </button>
+    <OSS::Button
+      @label={{t "hypertable.column.scroll_to_end"}}
+      class="scroll-button {{if this.manager.isScrollable 'is-visible'}}"
+      {{action "scrollToEnd"}} />
   </div>
 </div>
 

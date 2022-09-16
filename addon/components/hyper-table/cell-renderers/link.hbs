@@ -3,25 +3,17 @@
 {{else}}
   <a
     href={{this.value}}
-    target='_blank'
-    rel='noopener'
-    class='upf-link--reset link__value'
-    onclick='event.stopPropagation();'
+    target="_blank"
+    rel="noopener"
+    class="upf-link--reset link__value"
+    onclick="event.stopPropagation();"
   >
     {{value}}
   </a>
 
-  {{#if isCopied}}
-    <i
-      class='link__copy upf-btn fa fa-copy success-tooltip'
-      {{action 'copy' bubbles=false}}
-      {{enable-tooltip title='Copied' placement='top'}}
-    ></i>
-  {{else}}
-    <i
-      class='link__copy upf-btn fa fa-copy'
-      {{action 'copy' bubbles=false}}
-      {{enable-tooltip title='Copy' placement='top'}}
-    ></i>
-  {{/if}}
+  <OSS::Button
+    @icon="fa fa-copy"
+    class="link__copy {{if this.isCopied 'success-tooltip'}}"
+    {{enable-tooltip title=(if this.isCopied "Copied" "Copy") placement="top"}}
+    {{action "copy" bubbles=false}} />
 {{/if}}
