@@ -16,7 +16,7 @@
       {{else}}
         <Input
           @type="text" @placeholder={{this.placeholder}} @value={{this._searchQuery}}
-          data-control-name="table_search_input" class="form-control upf-input upf-input--small" />
+          data-control-name="table_search_input" class="form-control upf-input" />
       {{/if}}
     {{/if}}
 
@@ -84,7 +84,7 @@
         <div class="search">
           <Input
             @type="text" @value={{this._availableFieldsKeyword}}
-            data-control-name="field_search_input" class="upf-input upf-input--small"
+            data-control-name="field_search_input" class="upf-input"
             placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
           />
         </div>
