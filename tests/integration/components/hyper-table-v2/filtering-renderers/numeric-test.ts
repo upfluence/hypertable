@@ -114,7 +114,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       );
 
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .upf-radio-btn:first-child'
+        'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
       );
       //@ts-ignore
       assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'with' }]));
@@ -126,7 +126,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       ]);
 
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .upf-radio-btn:last-child'
+        'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:last-child .oss-radio-btn'
       );
       //@ts-ignore
       assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));

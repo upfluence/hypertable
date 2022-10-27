@@ -1,13 +1,11 @@
 <div class="fx-col">
   <label>{{this.label}}</label>
-  <div class="btn-group upf-radio-group upf-radio-group--block"
-       ...attributes>
+  <div class="fx-col fx-gap-px-3" ...attributes>
     {{#each-in this.existenceFilters as |label value|}}
-      <RadioButton @value={{value}}
-                   @currentValue={{this.currentExistenceFilter}}
-                   @label={{label}}
-                   @options={{this.existenceFilters}}
-                   @onCheck={{this.existenceFilterChanged}} />
+      <div class="fx-row fx-gap-px-6" role="button" {{on "click" (fn this.existenceFilterChanged value)}}>
+        <OSS::RadioButton @selected={{eq this.currentExistenceFilter value}} />
+        <span class="font-color-gray-900">{{label}}</span>
+      </div>
     {{/each-in}}
   </div>
 </div>

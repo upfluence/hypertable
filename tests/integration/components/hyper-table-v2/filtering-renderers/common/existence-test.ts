@@ -32,7 +32,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} />`
     );
-    assert.dom('.btn-group').exists();
+    assert.dom('.oss-radio-btn').exists({ count: 2 });
   });
 
   test('clicking on the buttons should trigger the applyFilters method', async function (assert: Assert) {
@@ -41,11 +41,11 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} />`
     );
 
-    await click('.btn-group .btn:first-child');
+    await click('.fx-row:first-child .oss-radio-btn');
     // @ts-ignore
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'with' }]));
 
-    await click('.btn-group .btn:last-child');
+    await click('.fx-row:last-child .oss-radio-btn');
     // @ts-ignore
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
   });
@@ -56,11 +56,11 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @filteringKey="bozo" @handler={{this.handler}} @column={{this.column}} />`
     );
 
-    await click('.btn-group .btn:first-child');
+    await click('.fx-row:first-child .oss-radio-btn');
     // @ts-ignore
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'with' }]));
 
-    await click('.btn-group .btn:last-child');
+    await click('.fx-row:last-child .oss-radio-btn');
     // @ts-ignore
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'without' }]));
   });
@@ -85,6 +85,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} @activateWithValue={{true}} />`
     );
-    assert.dom('.btn-group .btn:first-child input').isChecked();
+    assert.dom('.fx-row:first-child .oss-radio-btn').hasClass('oss-radio-btn--selected');
   });
 });
