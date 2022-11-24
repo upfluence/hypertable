@@ -1,26 +1,5 @@
-{{#if (or emptyValue (eq value 0))}}
-  {{#if column.upsertable}}
-    <span {{action 'toggleEditing'}}>
-      {{or column.field.emptyPlaceholder 'Add value'}}
-    </span>
-  {{else}}
-    {{or column.field.emptyState '—'}}
-  {{/if}}
+{{#if (or this.emptyValue (eq this.value 0))}}
+  {{or this.column.field.emptyState '—'}}
 {{else}}
-  <div class='editing-input'>
-    {{ember-flatpickr
-      onChange=(action 'updateDate')
-      onOpen=(action 'toggleEditing')
-      clickOpens=column.upsertable
-      onClose=(action 'onCalendarClose')
-      date=(readonly _formattedDate)
-      altInput=true
-      placeholder='—'
-      getFlatpickrRef=(action (mut flatpickrRef))
-    }}
-
-    {{#unless (or isEditing (not column.upsertable))}}
-      <i class='fa fa-pencil cell-edition margin-left-xxx-sm' {{action 'toggleEditing'}}></i>
-    {{/unless}}
-  </div>
-{{/if}}
+  {{this._formattedDate}}
+{{/if}} 

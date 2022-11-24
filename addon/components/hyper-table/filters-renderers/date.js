@@ -5,7 +5,6 @@ import moment from 'moment';
 import FiltersRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers';
 
 export default class DateFiltersRenderer extends FiltersRenderer {
-  @tracked flatpickrRef = null;
   @tracked filterOption;
   @tracked _currentMovingDateOption;
   @tracked _currentDateValue;
@@ -102,9 +101,5 @@ export default class DateFiltersRenderer extends FiltersRenderer {
 
     this._currentDateValue = [];
     this._currentMovingDateOption = [];
-
-    if (this.flatpickrRef) {
-      this.flatpickrRef.clear();
-    }
   }
 }
