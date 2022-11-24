@@ -27,7 +27,7 @@
         <EmberFlatpickr
           @onChange={{this.selectFixedDate}} @dateFormat="M/D/Y" @placeholder={{t "hypertable.column.filtering.date.range.label"}}
           @mode="range" @date={{readonly this._currentDateValue}} @altInput={{true}}
-          @altInputClass="upf-input upf-input--textarea" @getFlatpickrRef={{fn (mut this.flatpickrRef)}}
+          @altInputClass="upf-input upf-input--textarea"
           @onOpen={{this.openedFlatpickr}} @onClose={{this.closedFlatpickr}} />
       {{else}}
         {{#each-in this.movingDateOptions as |label value|}}

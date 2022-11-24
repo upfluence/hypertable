@@ -15,7 +15,7 @@ export default Component.extend({
 
   emptyValue: empty('value'),
 
-  _defaultDateFormat: 'YYYY-MM-DD',
+  _defaultDateFormat: 'MMMM DD, YYYY',
   _dateFormat: or('column.date_format', '_defaultDateFormat'),
 
   _formattedDate: computed('value', '_dateFormat', function () {
@@ -28,21 +28,5 @@ export default Component.extend({
     }
 
     return _date.format(this._dateFormat);
-  }),
-  isEditing: false,
-
-  actions: {
-    toggleEditing() {
-      this.set('isEditing', true);
-      this.flatpickrRef.open();
-    },
-    onCalendarClose() {
-      this.set('isEditing', false);
-    },
-    updateDate(date) {
-      this.item.set(this.column.property, +date[0] / 1000);
-      this.set('_formattedDate', date);
-      this.set('isEditing', false);
-    }
-  }
+  })
 });
