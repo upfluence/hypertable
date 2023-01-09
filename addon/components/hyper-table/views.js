@@ -33,6 +33,7 @@ export default class ViewsComponent extends Component {
     if (this.args.manager.hooks.onAddView) {
       this.args.manager.hooks.onAddView(view.name, view.table);
       this.args.manager.predefinedViews.removeObject(view);
+      this.selectView(view);
     }
   }
 
