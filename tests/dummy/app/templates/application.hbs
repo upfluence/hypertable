@@ -1,9 +1,18 @@
-<div class="padding-sm">
+<div class="padding-px-12 fx-col fx-gap-px-6">
+  <div class="fx-row fx-gap-px-6 fx-xalign-center">
+    <span>Change selected creator:</span>
+    <OSS::NumberInput @value={{this.selectedValue}} @min={{0}} @max={{5}} @onChange={{this.updateSelected}} />
+  </div>
+  <HyperTableV2::Selection @selected={{this.selectedValue}} @total={{5}} @onClear={{this.onClear}}
+                           @onSelectAll={{this.onSelectAll}} />
+</div>
+
+<div class="padding-px-12">
   <HyperTableV2 @handler={{this.handler}}>
-    {{!-- <:search>
+    <:search>
       <OSS::InputContainer style="width: 200px" @value={{this.searchQuery}}
                            @placeholder="Custom Search Block" @onChange={{this.onCustomSearchInput}} />
-    </:search> --}}
+    </:search>
     <:contextual-actions>
       {{!-- To do : move contextual-actions CSS to the target component --}}
       <div class="contextual-actions contextual-actions--visible">

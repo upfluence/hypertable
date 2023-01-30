@@ -1,0 +1,38 @@
+//.hypertable-container {
+.selection-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-px-6);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-500);
+  height: 34px;
+  visibility: hidden;
+  opacity: 0;
+
+  transition: all 0.25s;
+
+  &--visible {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .count-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-px-3);
+  }
+
+  .select-all-container {
+    .font-weight-semibold;
+    color: var(--color-primary-400);
+  }
+
+  .clear-container {
+    color: var(--color-primary-400);
+  }
+}
+//}

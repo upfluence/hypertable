@@ -1,0 +1,21 @@
+<div class={{this.classes}} {{did-insert this.setup}}>
+  <div class="count-container">
+    <i class="fas fa-users"></i>
+    {{#if this.isAllCreatorsSelected}}
+      <span>{{{t "hypertable.selection.all_creator_selected" count=@total}}}</span>
+    {{else}}
+      <span>{{t "hypertable.selection.creator_selected" count=@selected}}</span>
+    {{/if}}
+
+  </div>
+  {{#if (not this.isAllCreatorsSelected)}}
+    <span>-</span>
+    <span class="select-all-container" role="button" {{on "click" this.onSelectAll}}>
+      {{t "hypertable.selection.select_all" count=@total}}
+    </span>
+  {{/if}}
+  <span>-</span>
+  <span class="clear-container" role="button" {{on "click" this.onClear}}>
+    {{t "hypertable.selection.clear"}}
+  </span>
+</div>
