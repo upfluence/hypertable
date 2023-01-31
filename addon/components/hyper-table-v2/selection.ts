@@ -9,9 +9,7 @@ interface HyperTableV2SelectionArgs {
 }
 
 export default class HyperTableV2Selection extends Component<HyperTableV2SelectionArgs> {
-  componentElement: HTMLElement | null = null;
-
-  get isAllCreatorsSelected(): boolean {
+  get allCreatorsSelected(): boolean {
     return this.args.selected === this.args.total;
   }
 
@@ -23,11 +21,6 @@ export default class HyperTableV2Selection extends Component<HyperTableV2Selecti
     }
 
     return classes.join(' ');
-  }
-
-  @action
-  setup(element: HTMLElement): void {
-    this.componentElement = element;
   }
 
   @action

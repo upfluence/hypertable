@@ -16,7 +16,7 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
     this.intlService = this.owner.lookup('service:intl');
   });
 
-  test("it doesn't renders when @selected is equals to 0", async function (assert) {
+  test("it doesn't renders when @selected is equal to 0", async function (assert) {
     this.selected = 0;
     await render(hbs`
       <div class="hypertable-container">
@@ -62,7 +62,7 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
       `);
       assert.equal(
         document.querySelector('.count-container span')?.innerHTML,
-        this.intlService.t('hypertable.selection.all_creator_selected', { count: 5 })
+        this.intlService.t('hypertable.selection.all_creators_selected', { count: 5 })
       );
     });
   });
