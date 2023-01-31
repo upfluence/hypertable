@@ -19,8 +19,10 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
   test("it doesn't renders when @selected is equals to 0", async function (assert) {
     this.selected = 0;
     await render(hbs`
-      <HyperTableV2::Selection @selected={{this.selected}} @total={{this.total}} @onClear={{this.onClear}}
-                               @onSelectAll={{this.onSelectAll}} />
+      <div class="hypertable-container">
+        <HyperTableV2::Selection @selected={{this.selected}} @total={{this.total}} @onClear={{this.onClear}}
+                                 @onSelectAll={{this.onSelectAll}} />
+      </div>
     `);
     assert.dom('.selection-container').exists();
     assert.dom('.selection-container').hasStyle({
@@ -30,8 +32,10 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
 
   test('it renders when @selected is superior to 0', async function (assert) {
     await render(hbs`
-      <HyperTableV2::Selection @selected={{this.selected}} @total={{this.total}} @onClear={{this.onClear}}
-                               @onSelectAll={{this.onSelectAll}} />
+      <div class="hypertable-container">
+        <HyperTableV2::Selection @selected={{this.selected}} @total={{this.total}} @onClear={{this.onClear}}
+                                 @onSelectAll={{this.onSelectAll}} />
+      </div>
     `);
     assert.dom('.selection-container').exists();
     assert.dom('.selection-container').hasStyle({
