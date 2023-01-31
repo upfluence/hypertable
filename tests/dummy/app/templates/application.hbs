@@ -3,8 +3,10 @@
     <span>Change selected creator:</span>
     <OSS::NumberInput @value={{this.selectedValue}} @min={{0}} @max={{5}} @onChange={{this.updateSelected}} />
   </div>
-  <HyperTableV2::Selection @selected={{this.selectedValue}} @total={{5}} @onClear={{this.onClear}}
-                           @onSelectAll={{this.onSelectAll}} />
+  <div class="hypertable-container">
+    <HyperTableV2::Selection @selected={{this.selectedValue}} @total={{5}} @onClear={{this.onClear}}
+                             @onSelectAll={{this.onSelectAll}} />
+  </div>
 </div>
 
 <div class="padding-px-12">

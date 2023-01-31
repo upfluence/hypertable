@@ -26,7 +26,7 @@ export default class HyperTableV2Selection extends Component<HyperTableV2Selecti
   }
 
   @action
-  setup(element: HTMLElement) {
+  setup(element: HTMLElement): void {
     this.componentElement = element;
   }
 

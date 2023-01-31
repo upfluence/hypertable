@@ -17,11 +17,15 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
   });
 
   test("it doesn't renders when @selected is equals to 0", async function (assert) {
+    this.selected = 0;
     await render(hbs`
       <HyperTableV2::Selection @selected={{this.selected}} @total={{this.total}} @onClear={{this.onClear}}
                                @onSelectAll={{this.onSelectAll}} />
     `);
-    assert.dom('.selection-container').doesNotExist();
+    assert.dom('.selection-container').exists();
+    assert.dom('.selection-container').hasStyle({
+      visibility: 'hidden'
+    });
   });
 
   test('it renders when @selected is superior to 0', async function (assert) {
@@ -30,6 +34,9 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
                                @onSelectAll={{this.onSelectAll}} />
     `);
     assert.dom('.selection-container').exists();
+    assert.dom('.selection-container').hasStyle({
+      visibility: 'visible'
+    });
   });
 
   module('for creator number render', () => {
