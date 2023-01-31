@@ -202,6 +202,7 @@ class RowsFetcher {
 
 export default class Application extends Controller {
   @tracked searchQuery: string = '';
+  @tracked selectedValue: number = 0;
 
   tableManager = new Manager();
   rowsFetcher = new RowsFetcher();
@@ -224,9 +225,23 @@ export default class Application extends Controller {
       }
     ]);
   }
+
+  @action
+  updateSelected(value: number): void {
+    this.selectedValue = value;
+  }
+
+  @action
+  onClear(): void {
+    console.log('clear');
+  }
+
+  @action
+  onSelectAll(): void {
+    console.log('sellect all');
+  }
 }
 
-// DO NOT DELETE: this is how TypeScript knows how to look up your controllers.
 declare module '@ember/controller' {
   interface Registry {
     application: Application;

@@ -1,6 +1,10 @@
 @import 'oss-components';
-
 @import 'animations';
+@import 'header';
+@import 'inner-table';
+@import 'facetting';
+@import 'footer';
+@import 'selection';
 
 .hypertable-container {
   width: 100%;
@@ -13,11 +17,6 @@
   scroll-behavior: smooth;
   background-color: white;
 }
-
-@import 'header';
-@import 'inner-table';
-@import 'facetting';
-@import 'footer';
 
 .hypertable__state {
   display: flex;
@@ -61,6 +60,7 @@
 
   transition: max-width 0.3s ease-in-out;
   max-width: 0;
+
   &.is-visible {
     max-width: 200px;
   }
@@ -78,6 +78,7 @@
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     transform: translateX(100px);
     opacity: 0;
+
     &.is-visible {
       opacity: 1;
       transform: translateX(0);
