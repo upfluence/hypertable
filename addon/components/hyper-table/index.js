@@ -105,15 +105,15 @@ export default Component.extend({
 
   _loadingMore: computed.and('manager.hooks.onBottomReached', 'loadingMore'),
 
-  _allRowSelectedManager() {
+  _setAllRowSelected(value) {
+    this.set('_allRowsSelected', value);
     this.manager.set('_allRowsSelected', this._allRowsSelected);
-    this.get('_collection').forEach((item) => {
-      if (this.get('_allRowsSelected')) {
-        item.set('selected', true);
-      } else {
-        item.set('selected', false);
-      }
-    });
+  },
+
+  _allRowSelectedManager(value) {
+    this._setAllRowSelected(value);
+
+    this.get('_collection').setEach('selected', value);
 
     this.set('_excludedItems', []);
     this.manager.set('excludedItems', this._excludedItems);
@@ -284,22 +284,23 @@ export default Component.extend({
     },
 
     selectAllGlobal() {
-      this.set('_allRowsSelected', true);
-      this._allRowSelectedManager();
+      this._allRowSelectedManager(true);
       this.set('_selectAllChecked', true);
     },
 
     clearSelection() {
-      this.set('_allRowsSelected', false);
-      this._allRowSelectedManager();
-      this.get('_collection').setEach('selected', false);
+      this._allRowSelectedManager(false);
       this.set('_selectAllChecked', false);
     },
 
     toggleSelectAll() {
       this.set('_selectAllChecked', !this._selectAllChecked);
       if (this._selectAllChecked) {
-        this.get('_collection').setEach('selected', true);
+        if (this._selectedCount === this.meta.total) {
+          this._allRowSelectedManager(true);
+        } else {
+          this.get('_collection').setEach('selected', true);
+        }
       } else {
         this.send('clearSelection');
       }
@@ -307,6 +308,8 @@ export default Component.extend({
 
     toggleItem(item) {
       item.set('selected', !item.selected);
+      this.set('_selectAllChecked', this._selectedCount > 0);
+
       if (this._allRowsSelected) {
         if (this._excludedItems.includes(item)) {
           this.set(
@@ -317,6 +320,10 @@ export default Component.extend({
           this.set('_excludedItems', [...this._excludedItems, item]);
         }
         this.manager.set('excludedItems', this._excludedItems);
+      }
+
+      if (this._selectedCount === this.meta.total) {
+        this._setAllRowSelected(true);
       }
     }
   }

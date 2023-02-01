@@ -1,9 +1,11 @@
 @import 'oss-components';
+@import 'columns';
+@import 'cells';
 
 .hypertable__table {
-  border: 1px solid lighten(@upf-gray, 15%);
+  border: 1px solid var(--color-border-default);
   border-top: none;
-  border-radius: @default-radius;
+  border-radius: var(--border-radius-md);
   height: 700px;
   overflow: auto;
   position: relative;
@@ -27,11 +29,11 @@
 
   .hypertable__cell,
   header {
-    border-right: 1px solid lighten(@upf-gray, 15%);
+    border-right: 1px solid var(--color-border-default);
   }
 
   header {
-    border-right: 1px solid darken(@upf-gray-light, 10%);
+    border-right: 1px solid var(--color-border-default);
   }
 
   &:nth-child(2) header {
@@ -54,6 +56,3 @@
   top: 60px;
   z-index: 7;
 }
-
-@import 'columns';
-@import 'cells';
