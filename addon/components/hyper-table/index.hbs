@@ -15,9 +15,8 @@
             {{this.searchComponent}}
           {{/if}}
         {{else}}
-          <Input
-            @type="text" @placeholder={{this.placeholder}} @value={{this._searchQuery}}
-            data-control-name="table_search_input" class="form-control upf-input" />
+          <OSS::InputContainer @placeholder={{this.placeholder}} @value={{this._searchQuery}}
+                               data-control-name="table_search_input" />
         {{/if}}
       {{/if}}
 
@@ -34,65 +33,60 @@
       {{#if this.manager.options.features.filtering}}
         <OSS::Button
           @label={{t "hypertable.features.filtering.reset_all"}}
-          class="margin-right-px-12 margin-bottom-px-6"
+          class="margin-right-px-12"
           data-control-name="table_reset_filters"
           {{action "resetAllFilters"}} />
       {{/if}}
 
       {{#if this.manager.options.features.tableViews}}
         <OSS::Button
-          @icon="fa fa-eye"
+          @icon="far fa-eye"
           @label={{t "hypertable.features.table_views.title"}}
-          class="margin-right-px-12 margin-bottom-px-6 views-manager-toggle icon-responsive"
+          class="margin-right-px-12 views-manager-toggle icon-responsive"
           data-control-name="table_toggle_views"
           {{action "openAvailableViews" bubbles=false}} />
       {{/if}}
 
       <OSS::Button
         @skin="primary"
-        @icon="fa fa-columns"
+        @icon="far fa-columns"
         @label={{t "hypertable.features.manage_fields.title"}}
-        class="margin-bottom-px-6 fields-manager-toggle icon-responsive"
+        class="fields-manager-toggle icon-responsive"
         data-control-name="table_toggle_fields"
         {{action "openAvailableFields" bubbles=false}} />
 
       <HyperTable::Views
         @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
 
-      <div
-        class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
-        {{on-click-outside (action "closeAvailableFields")}}>
+      <div class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
+           {{on-click-outside (action "closeAvailableFields")}}>
         <div class="available-fields-wrapper__categories">
           <div
             class="field-category {{unless this._activeFieldCategory 'field-category--active'}}"
             {{action "setFieldCategory"}}>
             <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
-            <div><i class="fa fa-caret-right"></i></div>
+            <div><i class="fas fa-caret-right"></i></div>
           </div>
           {{#each this._fieldCategories as |category|}}
-            <div
-              class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
-              data-control-name={{concat "field_category_toggle_" category.key}}
-              {{action "setFieldCategory" category.key}}>
+            <div class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
+                 data-control-name={{concat "field_category_toggle_" category.key}}
+                 {{action "setFieldCategory" category.key}}>
               <div>{{category.label}}</div>
-              <div><i class="fa fa-caret-right"></i></div>
+              <div><i class="fas fa-caret-right"></i></div>
             </div>
           {{/each}}
         </div>
 
         <div class="available-fields-wrapper__fields">
           <div class="search">
-            <Input
-              @type="text" @value={{this._availableFieldsKeyword}}
-              data-control-name="field_search_input" class="upf-input"
-              placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-            />
+            <OSS::InputContainer @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+                                 @value={{this._availableFieldsKeyword}} data-control-name="field_search_input" />
           </div>
 
           <div class="fields-list">
             {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
               {{#if clusterName}}
-                <p class="cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
+                <p class="cluster-name text-style-bold margin-top-px-6 margin-bottom-px-6">
                   {{clusterName}}
                 </p>
               {{/if}}
@@ -102,7 +96,7 @@
                     @value={{field.visible}} @size="sm"
                     @onValueChange={{action "fieldVisibilityUpdated" field}}
                     data-control-name={{concat "field_toggle_checkbox_" field.key}} />
-                  <div class="margin-left-xxx-sm">
+                  <div class="margin-left-px-6">
                     {{#if field.title}}
                       {{field.title}}
                     {{else}}
@@ -112,7 +106,7 @@
                 </div>
               {{/each}}
             {{else}}
-              <div class="field margin-top-md">
+              <div class="field margin-top-px-30">
                 {{t "hypertable.features.manage_fields.no_columns"}}
               </div>
             {{/each-in}}
@@ -121,7 +115,7 @@
       </div>
     </div>
   </div>
-  <HyperTableV2::Selection class={{if (gt this._selectedCount 0) "margin-top-px-12"}} @selected={{this._selectedCount}}
+  <HyperTableV2::Selection class={{if (gt this._selectedCount 0) "margin-top-px-18"}} @selected={{this._selectedCount}}
                            @total={{this.meta.total}} @onSelectAll={{action "selectAllGlobal"}}
                            @onClear={{action "clearSelection"}} />
 </div>

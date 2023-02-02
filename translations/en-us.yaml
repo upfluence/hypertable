@@ -74,7 +74,6 @@ hypertable:
       cancel: Cancel
   selection:
     creator_selected: '{count, plural, =0 {{count} creator is selected} =1 {{count} creator is selected} other {{count} creators are selected}}'
-    all_creators_selected: |
-      {count, plural, =1 {All <b>{count}</b> creator is selected} other {All <b>{count}</b> creators are selected}}
+    all_creators_selected: All creators (<b>{count}</b>) are selected
     select_all: '{count, plural, =1 {Select all {count} creator} other {Select all {count} creators}}'
     clear: Clear selection

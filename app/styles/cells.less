@@ -48,7 +48,7 @@
       }
     }
     &.empty-value {
-      color: var(--color-gray-300);
+      color: var(--color-gray-500);
       span:first-child {
         &:hover {
           color: var(--color-gray-900);
@@ -130,7 +130,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-px-6) var(--spacing-px-6);
+    padding: var(--spacing-px-6) var(--spacing-px-12);
     border-radius: var(--border-radius-sm);
     position: relative;
 
@@ -149,7 +149,7 @@
     }
 
     &.tether-enabled {
-      border: 1px solid var(--color-gray-200);
+      border: 1px solid var(--color-border-default);
       z-index: 11;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
@@ -168,9 +168,9 @@
   }
 
   .is-invalid > .form-control {
-    border-color: var(--color-error-600);
+    border-color: var(--color-error-500);
     &:focus {
-      border-color: var(--color-error-600);
+      border-color: var(--color-error-500);
     }
   }
 
@@ -282,7 +282,7 @@
   padding-top: 0;
   padding-bottom: 0;
   border: 0;
-  background-color: var(--color-error-600) !important;
+  background-color: var(--color-error-500) !important;
 }
 
 .hypertable__cell--clickable {
