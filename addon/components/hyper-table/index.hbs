@@ -1,125 +1,123 @@
 <div class="hypertable__upper-header">
-  <div class="left-side">
-    {{#if this.manager.options.features.selection}}
-      <div class="selected-count">
-        {{format-number this._selectedCount}}
-      </div>
-    {{/if}}
-
-    {{#if this.manager.options.features.search}}
-      {{#if this.searchComponent}}
-        {{#if (eq this._searchComponentType "string")}}
-          {{component this.searchComponent manager=this.manager}}
-        {{else}}
-          {{this.searchComponent}}
-        {{/if}}
-      {{else}}
-        <Input
-          @type="text" @placeholder={{this.placeholder}} @value={{this._searchQuery}}
-          data-control-name="table_search_input" class="form-control upf-input" />
+  <div class="fx-row">
+    <div class="left-side">
+      {{#if this.manager.options.features.selection}}
+        <div class="selected-count">
+          {{format-number this._selectedCount}}
+        </div>
       {{/if}}
-    {{/if}}
 
-    {{#if (and this.contextualActions (gt this._collection.length 0))}}
-      <div
-        class="contextual-actions contextual-actions--no-animation {{unless this.manager.options.features.search 'contextual-actions--no-search-sibling'}}">
-        {{component
-          this.contextualActions selectedItems=this._selectedItems
-          collection=this._collection manager=this.manager meta=this.meta}}
-      </div>
-    {{/if}}
-  </div>
-
-  <div class="right-side">
-    {{#if this.manager.options.features.filtering}}
-      <OSS::Button
-        @label={{t "hypertable.features.filtering.reset_all"}}
-        class="margin-right-px-12 margin-bottom-px-6"
-        data-control-name="table_reset_filters"
-        {{action "resetAllFilters"}} />
-    {{/if}}
-
-    {{#if this.manager.options.features.tableViews}}
-      <OSS::Button
-        @icon="fa fa-eye"
-        @label={{t "hypertable.features.table_views.title"}}
-        class="margin-right-px-12 margin-bottom-px-6 views-manager-toggle icon-responsive"
-        data-control-name="table_toggle_views"
-        {{action "openAvailableViews" bubbles=false}} />
-    {{/if}}
-
-    <OSS::Button
-      @skin="primary"
-      @icon="fa fa-columns"
-      @label={{t "hypertable.features.manage_fields.title"}}
-      class="margin-bottom-px-6 fields-manager-toggle icon-responsive"
-      data-control-name="table_toggle_fields"
-      {{action "openAvailableFields" bubbles=false}} />
-
-    <HyperTable::Views
-      @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
-
-    <div
-      class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
-      {{on-click-outside (action "closeAvailableFields")}}>
-      <div class="available-fields-wrapper__categories">
-        <div
-          class="field-category {{unless this._activeFieldCategory 'field-category--active'}}"
-          {{action "setFieldCategory"}}>
-          <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
-          <div><i class="fa fa-caret-right"></i></div>
-        </div>
-        {{#each this._fieldCategories as |category|}}
-          <div
-            class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
-            data-control-name={{concat "field_category_toggle_" category.key}}
-            {{action "setFieldCategory" category.key}}>
-            <div>{{category.label}}</div>
-            <div><i class="fa fa-caret-right"></i></div>
-          </div>
-        {{/each}}
-      </div>
-
-      <div class="available-fields-wrapper__fields">
-        <div class="search">
-          <Input
-            @type="text" @value={{this._availableFieldsKeyword}}
-            data-control-name="field_search_input" class="upf-input"
-            placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-          />
-        </div>
-
-        <div class="fields-list">
-          {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
-            {{#if clusterName}}
-              <p class="cluster-name text-style-bold margin-top-xxx-sm margin-bottom-xxx-sm">
-                {{clusterName}}
-              </p>
-            {{/if}}
-            {{#each fields as |field|}}
-              <div class="field {{if field.visible 'field--visible'}}" {{action "updateFieldVisibility" field}}>
-                <UpfCheckbox
-                  @value={{field.visible}} @size="sm"
-                  @onValueChange={{action "fieldVisibilityUpdated" field}}
-                  data-control-name={{concat "field_toggle_checkbox_" field.key}} />
-                <div class="margin-left-xxx-sm">
-                  {{#if field.title}}
-                    {{field.title}}
-                  {{else}}
-                    {{field.name}}
-                  {{/if}}
-                </div>
-              </div>
-            {{/each}}
+      {{#if this.manager.options.features.search}}
+        {{#if this.searchComponent}}
+          {{#if (eq this._searchComponentType "string")}}
+            {{component this.searchComponent manager=this.manager}}
           {{else}}
-            <div class="field margin-top-md">
-              {{t "hypertable.features.manage_fields.no_columns"}}
+            {{this.searchComponent}}
+          {{/if}}
+        {{else}}
+          <OSS::InputContainer @placeholder={{this.placeholder}} @value={{this._searchQuery}}
+                               data-control-name="table_search_input" />
+        {{/if}}
+      {{/if}}
+
+      {{#if (and this.contextualActions (gt this._collection.length 0))}}
+        <div
+          class="contextual-actions contextual-actions--no-animation {{unless this.manager.options.features.search 'contextual-actions--no-search-sibling'}}">
+          {{component
+            this.contextualActions selectedItems=this._selectedItems
+            collection=this._collection manager=this.manager meta=this.meta}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="right-side">
+      {{#if this.manager.options.features.filtering}}
+        <OSS::Button
+          @label={{t "hypertable.features.filtering.reset_all"}}
+          class="margin-right-px-12"
+          data-control-name="table_reset_filters"
+          {{action "resetAllFilters"}} />
+      {{/if}}
+
+      {{#if this.manager.options.features.tableViews}}
+        <OSS::Button
+          @icon="far fa-eye"
+          @label={{t "hypertable.features.table_views.title"}}
+          class="margin-right-px-12 views-manager-toggle icon-responsive"
+          data-control-name="table_toggle_views"
+          {{action "openAvailableViews" bubbles=false}} />
+      {{/if}}
+
+      <OSS::Button
+        @skin="primary"
+        @icon="far fa-columns"
+        @label={{t "hypertable.features.manage_fields.title"}}
+        class="fields-manager-toggle icon-responsive"
+        data-control-name="table_toggle_fields"
+        {{action "openAvailableFields" bubbles=false}} />
+
+      <HyperTable::Views
+        @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
+
+      <div class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
+           {{on-click-outside (action "closeAvailableFields")}}>
+        <div class="available-fields-wrapper__categories">
+          <div
+            class="field-category {{unless this._activeFieldCategory 'field-category--active'}}"
+            {{action "setFieldCategory"}}>
+            <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
+            <div><i class="fas fa-caret-right"></i></div>
+          </div>
+          {{#each this._fieldCategories as |category|}}
+            <div class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
+                 data-control-name={{concat "field_category_toggle_" category.key}}
+                 {{action "setFieldCategory" category.key}}>
+              <div>{{category.label}}</div>
+              <div><i class="fas fa-caret-right"></i></div>
             </div>
-          {{/each-in}}
+          {{/each}}
+        </div>
+
+        <div class="available-fields-wrapper__fields">
+          <div class="search">
+            <OSS::InputContainer @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+                                 @value={{this._availableFieldsKeyword}} data-control-name="field_search_input" />
+          </div>
+
+          <div class="fields-list">
+            {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
+              {{#if clusterName}}
+                <p class="cluster-name text-style-bold margin-top-px-6 margin-bottom-px-6">
+                  {{clusterName}}
+                </p>
+              {{/if}}
+              {{#each fields as |field|}}
+                <div class="field {{if field.visible 'field--visible'}}" {{action "updateFieldVisibility" field}}>
+                  <UpfCheckbox
+                    @value={{field.visible}} @size="sm"
+                    @onValueChange={{action "fieldVisibilityUpdated" field}}
+                    data-control-name={{concat "field_toggle_checkbox_" field.key}} />
+                  <div class="margin-left-px-6">
+                    {{#if field.title}}
+                      {{field.title}}
+                    {{else}}
+                      {{field.name}}
+                    {{/if}}
+                  </div>
+                </div>
+              {{/each}}
+            {{else}}
+              <div class="field margin-top-px-30">
+                {{t "hypertable.features.manage_fields.no_columns"}}
+              </div>
+            {{/each-in}}
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <HyperTableV2::Selection class={{if (gt this._selectedCount 0) "margin-top-px-18"}} @selected={{this._selectedCount}}
+                           @total={{this.meta.total}} @onSelectAll={{action "selectAllGlobal"}}
+                           @onClear={{action "clearSelection"}} />
 </div>
 
 <div class="hypertable__table {{if (eq this._collection.length 0) 'hypertable__table--empty'}}">
@@ -146,9 +144,10 @@
           {{#if this.manager.options.features.selection}}
             <div class="hypertable__column hypertable__column--selection {{concat 'hypertable__column--size-' column.size}}">
               <header>
-                <UpfCheckbox
-                  @value={{this._allRowsSelected}} @size="sm"
-                  data-control-name="row_select_all_toggle_checkbox" />
+                <OSS::Checkbox @checked={{this._selectAllChecked}}
+                               @partial={{lt this._selectedCount this.meta.total}}
+                               @size="sm" @onChange={{action "toggleSelectAll"}}
+                               data-control-name="row_select_all_toggle_checkbox" />
               </header>
 
               {{#if this.loadingData}}
@@ -159,11 +158,9 @@
                 {{#each this._collection as |item|}}
                   <HyperTable::Cell
                     @item={{item}} @manager={{this.manager}} selection={{true}}>
-                    <UpfCheckbox
-                      @value={{item.selected}}
-                      @size="sm"
-                      @disabled={{and this.selectAllIncludesHidden this._allRowsSelected}}
-                      data-control-name="row_select_toggle_checkbox" />
+                    <OSS::Checkbox @checked={{item.selected}}
+                                   @size="sm" @onChange={{action "toggleItem" item}}
+                                   data-control-name="row_select_toggle_checkbox" />
                   </HyperTable::Cell>
                 {{/each}}
 

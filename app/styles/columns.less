@@ -2,7 +2,7 @@
   opacity: 1;
   transition: all 0.125s;
   height: fit-content;
-  border-top: 1px solid lighten(@upf-gray, 15%);
+  border-top: 1px solid var(--color-border-default);
 
   &--size-XS {
     min-width: 125px;
@@ -44,14 +44,10 @@
   // Animate Columns Drag & Drop
   &.is-dragging {
     transition-duration: 0s;
-    background-color: white;
+    background-color: var(--color-white);
     z-index: 17;
-    box-shadow: 0 0 15px 5px fadeout(@upf-gray, 80%);
-    border: 1px solid lighten(@upf-gray, 15%);
-
-    .tooltip {
-      display: none !important;
-    }
+    box-shadow: var(--box-shadow-lg);
+    border-right: 1px solid var(--color-border-default);
   }
 
   &.is-dropping {
@@ -59,7 +55,8 @@
   }
 
   header {
-    border-left: 1px solid darken(@upf-gray-light, 10%);
+    border-left: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border-default);
   }
   &:nth-child(2) header {
     border-left: none;
@@ -73,16 +70,15 @@
 }
 
 .hypertable__column header {
-  border-bottom: 1px solid lighten(@upf-gray, 15%);
   display: flex;
   align-items: center;
   z-index: 15;
   height: @cell-height;
   max-height: @cell-height;
-  padding: @spacing-xx-sm;
+  padding: var(--spacing-px-12);
   width: 100%;
 
-  background-color: @field-background-color;
+  background-color: var(--color-gray-100);
   cursor: pointer;
   text-transform: capitalize;
 
@@ -90,12 +86,8 @@
   position: sticky;
   top: 0;
 
-  .tooltip {
-    text-transform: capitalize;
-  }
-
   & > .cell-header {
-    color: @upf-primary-rock-blue;
+    color: var(--color-gray-500);
     font-size: 16 / @rem;
     font-weight: bold;
     overflow: hidden;
@@ -110,7 +102,7 @@
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-right: @spacing-xxx-sm;
+        margin-right: var(--spacing-px-6);
       }
     }
 
@@ -124,28 +116,12 @@
         text-transform: capitalize;
       }
     }
-
-    .header-tooltip + .tooltip {
-      left: -35px !important;
-      text-transform: none;
-
-      .tooltip-arrow {
-        display: none;
-      }
-
-      .tooltip-inner {
-        text-align: left;
-        width: 280px;
-        max-width: none;
-        padding: 10px;
-      }
-    }
   }
 
   & > .icon-commands {
     position: absolute;
-    right: @spacing-xx-sm;
-    color: @color-text-lighter;
+    right: var(--spacing-px-12);
+    color: var(--color-gray-400);
 
     display: flex;
     flex-direction: row;
@@ -155,16 +131,16 @@
       opacity: 0;
       font-size: 16 / @rem;
       &.fa-bars {
-        padding: @spacing-xxx-sm 0;
+        padding: var(--spacing-px-6) 0;
       }
       &.fa-filter {
-        padding: @spacing-xx-sm;
+        padding: var(--spacing-px-12);
       }
     }
 
     i:hover,
     i:active {
-      color: @color-text;
+      color: var(--color-gray-900);
       cursor: pointer;
     }
 
@@ -174,7 +150,7 @@
   }
 
   &:hover {
-    background-color: darken(@field-background-color, 5%);
+    background-color: var(--color-gray-200);
     .cell-header {
       margin-right: 55px;
     }
@@ -204,17 +180,17 @@
     .fa.fa-filter {
       opacity: 1;
       display: inline-block;
-      color: @color-text;
+      color: var(--color-gray-900);
     }
 
     .fa.fa-bars {
-      color: @color-text;
+      color: var(--color-gray-900);
     }
 
     .cell-header {
       margin-right: 40px;
       .order-direction {
-        color: @color-text;
+        color: var(--color-gray-900);
         font-family: 'FontAwesome';
         font-size: 20 / @rem;
       }
@@ -225,7 +201,7 @@
 .hypertable__column--filtered {
   & > header {
     .icon-commands .fa.fa-filter {
-      color: @color-text;
+      color: var(--color-gray-900);
       display: block;
       font-weight: bold;
       opacity: 1;
@@ -260,22 +236,13 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
-  .tooltip-inner {
-    max-width: 350px;
-    overflow-wrap: break-word;
-    text-align: left;
-  }
 }
 
 .hypertable__column--list .hypertable__cell {
   & > div:first-child {
     width: 100%;
   }
-  .tooltip-inner {
-    max-width: 120px;
-    overflow-wrap: break-word;
-  }
+
   .editing-input {
     display: flex;
     justify-content: space-between;
@@ -287,10 +254,10 @@
   align-items: center;
 
   & > div:nth-child(2) {
-    margin-left: @spacing-xx-sm;
+    margin-left: var(--spacing-px-12);
 
     span {
-      color: @color-text;
+      color: var(--color-gray-900);
       display: block;
       width: 90%;
       overflow: hidden;
@@ -299,7 +266,7 @@
     }
 
     span:not(:first-child) {
-      color: @upf-primary-rock-blue;
+      color: var(--color-gray-400);
     }
   }
 }
@@ -313,14 +280,14 @@
 //
 .available-filters {
   background-color: #fff;
-  border: 2px solid lighten(@upf-gray, 15%);
-  border-radius: @default-radius;
-  box-shadow: 0 0 20px 10px fadeout(@upf-gray, 80%);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--box-shadow-sm);
 
   min-width: 300px;
   width: 300px;
 
-  padding: @spacing-xx-sm;
+  padding: var(--spacing-px-12);
   z-index: 20;
   transform-origin: 95% top;
   max-height: 0;
@@ -328,19 +295,19 @@
   opacity: 0;
 
   .filters {
-    padding-top: @spacing-xx-sm;
+    padding-top: var(--spacing-px-12);
 
     .filters__option {
-      padding: @spacing-xxx-sm;
+      padding: var(--spacing-px-6);
 
       &:hover {
-        background-color: @field-background-color;
+        background-color: var(--color-gray-100);
         cursor: pointer;
       }
     }
 
     .filters__option--active {
-      background-color: @field-background-color;
+      background-color: var(--color-gray-100);
       font-weight: bold;
     }
   }
