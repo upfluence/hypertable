@@ -35,6 +35,7 @@ export default class TableHandler {
   @tracked columns: Column[] = [];
   @tracked rows: Row[] = [];
   @tracked selection: Row[] | 'all' = [];
+  @tracked exclusion: Row[] = [];
 
   @tracked loadingColumns: boolean = true;
   @tracked loadingRows: boolean = true;
@@ -316,12 +317,40 @@ export default class TableHandler {
   }
 
   /**
-   * Toggle the selection state of all rows.
+   * Toggle the selection state of loaded or all rows.
    *
    * @param {boolean} toggled
    */
   toggleSelectAll(toggled: boolean): void {
-    this.selection = toggled ? 'all' : [];
+    if (toggled) {
+      if (this.rowsMeta?.total === this.rows.length) {
+        this.selection = 'all';
+      } else {
+        this.selection = this.rows;
+      }
+    } else {
+      this.clearSelection();
+    }
+  }
+
+  /**
+   * Update the selection state of all row and clean exclusion rows array
+   *
+   * @returns {void}
+   */
+  selectAllGlobal(): void {
+    this.selection = 'all';
+    this.exclusion = [];
+  }
+
+  /**
+   * Clean selection and exclusion rows arrays
+   *
+   * @returns {void}
+   */
+  clearSelection(): void {
+    this.selection = [];
+    this.exclusion = [];
   }
 
   /**
@@ -333,9 +362,25 @@ export default class TableHandler {
     this.selection = this.selection instanceof Array ? this.selection : [];
 
     if (this.selection.includes(row)) {
-      this.selection = this.selection.filter((_selectedRow: Row) => _selectedRow !== row);
+      this.selection = this.selection.filter((selectedRow: Row) => selectedRow !== row);
     } else {
-      this.selection = [...this.selection, ...[row]];
+      this.selection = [...this.selection, row];
+      if (this.selection.length === this.rowsMeta?.total) {
+        this.selection = 'all';
+      }
+    }
+  }
+
+  /**
+   * Add or remove a row to the excluded items depending on whether it's already present or not.
+   *
+   * @param {Row} row
+   */
+  updateExclusion(row: Row): void {
+    if (this.exclusion.includes(row)) {
+      this.exclusion = this.exclusion.filter((excludedRow: Row) => excludedRow !== row);
+    } else {
+      this.exclusion = [...this.exclusion, row];
     }
   }
 

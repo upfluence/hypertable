@@ -50,7 +50,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     }
 
     if (this.args.handler.selection === 'all') {
-      return this.args.handler.rowsMeta.total;
+      return this.args.handler.rowsMeta.total - this.args.handler.exclusion.length;
     } else {
       return this.args.handler.selection.length;
     }
@@ -110,8 +110,22 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
+  selectAllGlobal() {
+    this.args.handler.selectAllGlobal();
+  }
+
+  @action
+  clearSelection() {
+    this.args.handler.clearSelection();
+  }
+
+  @action
   toggleRowSelection(row: Row): void {
-    this.args.handler.updateSelection(row);
+    if (this.args.handler.selection === 'all') {
+      this.args.handler.updateExclusion(row);
+    } else {
+      this.args.handler.updateSelection(row);
+    }
   }
 
   @action
