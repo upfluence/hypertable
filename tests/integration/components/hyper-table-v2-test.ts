@@ -164,8 +164,8 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.selected-count').exists();
     });
 
-    module('when clicking the checkbox in the header of the selection column with partial rows loaded', () => {
-      test('it triggers the handler SelectAll', async function (assert: Assert) {
+    module('when clicking on the select-all checkbox with partial rows loaded', () => {
+      test('it triggers the handler SelectAll function', async function (assert: Assert) {
         const toggleSelectAllStub = sinon.stub(this.handler, 'toggleSelectAll');
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -182,7 +182,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert.dom('.selected-count').hasText(this.handler.selection.length.toString());
       });
 
-      test('it renders the partial mode for the head checkbox', async function (assert: Assert) {
+      test('it renders the partial mode for the select-all checkbox', async function (assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
@@ -206,13 +206,13 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       });
     });
 
-    module('when clicking the checkbox in the header of the selection column with all rows loaded', (hooks) => {
+    module('when clicking on the select-all checkbox all rows loaded', (hooks) => {
       hooks.beforeEach(function () {
         this.rowsFetcher = new AllRowsFetcher();
         this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
       });
 
-      test('it triggers the handler SelectAll', async function (assert: Assert) {
+      test('it triggers the handler SelectAll function', async function (assert: Assert) {
         const toggleSelectAllStub = sinon.stub(this.handler, 'toggleSelectAll');
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -229,7 +229,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert.dom('.selected-count').hasText(this.handler.rowsMeta.total.toString());
       });
 
-      test('it renders the checked mode for the head checkbox', async function (assert: Assert) {
+      test('it renders the checked mode for the select-all checkbox', async function (assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
@@ -252,7 +252,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       });
     });
 
-    module('when header checkbox is check with partial select all', () => {
+    module('when the select-all checkbox is partially selected', () => {
       test('all checkboxes of loaded rows are selected', async function (assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
@@ -300,7 +300,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       });
     });
 
-    module('when header checkbox is check with global select all', () => {
+    module('when the select-all checkbox is globally selected', () => {
       test('all checkboxes of loaded rows are selected', async function (assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
@@ -346,7 +346,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       });
     });
 
-    test('clicking a row selection checkbox toggles its selection status', async function (assert: Assert) {
+    test('clicking a one multiline checkbox toggles its selection status', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -372,7 +372,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.selected-count').hasText('0');
     });
 
-    test('clicking on all row selection checkbox toggles the select all', async function (assert: Assert) {
+    test('clicking on all multiline checkbox toggles the global select', async function (assert: Assert) {
       this.rowsFetcher = new AllRowsFetcher();
       this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
       const handlerSpy = sinon.spy(this.handler);
@@ -392,7 +392,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.equal(this.handler.selection, 'all');
     });
 
-    test('clicking a row selection checkbox toggles its exclusion status', async function (assert: Assert) {
+    test('clicking on one multiline checkbox toggles its exclusion status', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 

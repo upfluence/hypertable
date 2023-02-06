@@ -100,22 +100,22 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  resetFilters() {
+  resetFilters(): void {
     debounce(this, this._resetFilters, RESET_DEBOUNCE_TIME);
   }
 
   @action
-  toggleSelectAll(value: boolean) {
+  toggleSelectAll(value: boolean): void {
     this.args.handler.toggleSelectAll(value);
   }
 
   @action
-  selectAllGlobal() {
+  selectAllGlobal(): void {
     this.args.handler.selectAllGlobal();
   }
 
   @action
-  clearSelection() {
+  clearSelection(): void {
     this.args.handler.clearSelection();
   }
 
@@ -140,17 +140,17 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  onRowClick(row: Row) {
+  onRowClick(row: Row): void {
     this.args.handler.triggerEvent('row-click', row);
   }
 
   @action
-  onRowHover(row: Row, hovered: boolean) {
+  onRowHover(row: Row, hovered: boolean): void {
     set(this.args.handler.rows[this.args.handler.rows.indexOf(row)], 'hovered', hovered);
   }
 
   @action
-  reloadPage() {
+  reloadPage(): void {
     window.location.reload();
   }
 

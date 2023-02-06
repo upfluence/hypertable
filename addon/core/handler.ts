@@ -317,7 +317,7 @@ export default class TableHandler {
   }
 
   /**
-   * Toggle the selection state of loaded or all rows.
+   * Toggle the selection state between loaded and all rows.
    *
    * @param {boolean} toggled
    */
@@ -334,7 +334,7 @@ export default class TableHandler {
   }
 
   /**
-   * Update the selection state of all row and clean exclusion rows array
+   * Update the selection state of all rows and clean exclusion rows array
    *
    * @returns {void}
    */

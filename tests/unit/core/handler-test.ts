@@ -278,32 +278,7 @@ module('Unit | core/handler', function (hooks) {
 
   test('Handler#selectAllGlobal', async function (assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    handler.selection = [
-      {
-        influencerId: 42,
-        recordId: 12,
-        record_id: 12,
-        holderId: 57,
-        holderType: 'list',
-        foo: 'ekip',
-        bar: 'hello',
-        total: 123,
-        date: 1643386394
-      }
-    ];
-    handler.exclusion = [
-      {
-        influencerId: 42,
-        recordId: 12,
-        record_id: 12,
-        holderId: 57,
-        holderType: 'list',
-        foo: 'ekip',
-        bar: 'hello',
-        total: 123,
-        date: 1643386394
-      }
-    ];
+    populateSelectionAndExclusionHandler(handler);
     assert.equal(handler.selection.length, 1);
     assert.equal(handler.exclusion.length, 1);
 
@@ -314,32 +289,7 @@ module('Unit | core/handler', function (hooks) {
 
   test('Handler#selectAllGlobal', async function (assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    handler.selection = [
-      {
-        influencerId: 42,
-        recordId: 12,
-        record_id: 12,
-        holderId: 57,
-        holderType: 'list',
-        foo: 'ekip',
-        bar: 'hello',
-        total: 123,
-        date: 1643386394
-      }
-    ];
-    handler.exclusion = [
-      {
-        influencerId: 42,
-        recordId: 12,
-        record_id: 12,
-        holderId: 57,
-        holderType: 'list',
-        foo: 'ekip',
-        bar: 'hello',
-        total: 123,
-        date: 1643386394
-      }
-    ];
+    populateSelectionAndExclusionHandler(handler);
     assert.equal(handler.selection.length, 1);
     assert.equal(handler.exclusion.length, 1);
 
@@ -421,4 +371,20 @@ module('Unit | core/handler', function (hooks) {
       assert.expect(1);
     });
   });
+
+  function populateSelectionAndExclusionHandler(handler: TableHandler): void {
+    const row = {
+      influencerId: 42,
+      recordId: 12,
+      record_id: 12,
+      holderId: 57,
+      holderType: 'list',
+      foo: 'ekip',
+      bar: 'hello',
+      total: 123,
+      date: 1643386394
+    };
+    handler.selection = [row];
+    handler.exclusion = [row];
+  }
 });
