@@ -1,11 +1,11 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, findAll, render } from '@ember/test-helpers';
+import { click, render, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
+import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
 
 module('Integration | Component | hyper-table-v2', function (hooks) {
@@ -14,6 +14,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
+    this.intlService = this.owner.lookup('service:intl');
   });
 
   test('it fetches the columns and rows as expected', async function (assert) {
@@ -157,49 +158,195 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.upf-checkbox').exists({ count: 3 });
     });
 
-
     test('the selection column is present when the feature is enabled', async function (assert: Assert) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
       assert.dom('.selected-count').exists();
-    })
-
-    test('clicking the checkbox in the header of the selection column triggers the SelectAll', async function (assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
-      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
-
-      assert.deepEqual(this.handler.selection, []);
-      assert.dom('.hypertable__column.hypertable__column--selection header .upf-checkbox').exists();
-
-      await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
-      // @ts-ignore
-      assert.ok(handlerSpy.toggleSelectAll.calledOnceWithExactly(true));
-      assert.equal(this.handler.selection, 'all');
-      assert.dom('.selected-count').hasText(this.handler.rowsMeta.total.toString());
     });
 
-    test("when in SelectAll mode, all rows' selection checkboxes are disabled", async function (assert: Assert) {
-      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
-      await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+    module('when clicking on the select-all checkbox with partial rows loaded', () => {
+      test('it triggers the handler SelectAll function', async function (assert: Assert) {
+        const toggleSelectAllStub = sinon.stub(this.handler, 'toggleSelectAll');
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
-      assert
-        .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox')
-        .exists({ count: 2 });
-      findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
-        (checkbox) => {
-          assert.dom(checkbox).hasAttribute('disabled');
-        }
-      );
+        assert.dom('.hypertable__column.hypertable__column--selection header .upf-checkbox').exists();
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
-      await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
-      findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
-        (checkbox) => {
-          assert.dom(checkbox).hasNoAttribute('disabled');
-        }
-      );
+        assert.ok(toggleSelectAllStub.calledOnceWithExactly(true));
+      });
+
+      test('it updates the selected count with correct number', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+
+        assert.dom('.selected-count').hasText(this.handler.selection.length.toString());
+      });
+
+      test('it renders the partial mode for the select-all checkbox', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+
+        assert
+          .dom('.hypertable__column.hypertable__column--selection header .upf-checkbox label')
+          .hasClass('upf-checkbox__fake-checkbox--partial');
+      });
+
+      test('HyperTableV2::Selection component renders correct value', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+
+        assert
+          .dom('.selection-container .count-container span')
+          .hasText(
+            this.intlService.t('hypertable.selection.creator_selected', { count: this.handler.selection.length })
+          );
+        assert
+          .dom('.selection-container .select-all-container')
+          .hasText(this.intlService.t('hypertable.selection.select_all', { count: this.handler.rowsMeta.total }));
+      });
     });
 
-    test('clicking a row selection checkbox toggles its selection status', async function (assert: Assert) {
+    module('when clicking on the select-all checkbox all rows loaded', (hooks) => {
+      hooks.beforeEach(function () {
+        this.rowsFetcher = new AllRowsFetcher();
+        this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
+      });
+
+      test('it triggers the handler SelectAll function', async function (assert: Assert) {
+        const toggleSelectAllStub = sinon.stub(this.handler, 'toggleSelectAll');
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+
+        assert.dom('.hypertable__column.hypertable__column--selection header .upf-checkbox').exists();
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+
+        assert.ok(toggleSelectAllStub.calledOnceWithExactly(true));
+      });
+
+      test('it updates the selected count with correct number', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+
+        assert.dom('.selected-count').hasText(this.handler.rowsMeta.total.toString());
+      });
+
+      test('it renders the checked mode for the select-all checkbox', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+
+        assert
+          .dom('.hypertable__column.hypertable__column--selection header .upf-checkbox label')
+          .doesNotHaveClass('upf-checkbox__fake-checkbox--partial');
+        assert.dom('.hypertable__column.hypertable__column--selection header .upf-checkbox input').isChecked();
+      });
+
+      test('HyperTableV2::Selection component renders correct value', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+
+        const countText = document.querySelector('.selection-container .count-container span')?.innerHTML;
+        assert.equal(
+          this.intlService.t('hypertable.selection.all_creators_selected', { count: this.handler.rowsMeta.total }),
+          countText
+        );
+        assert.dom('.selection-container .select-all-container').doesNotExist();
+      });
+    });
+
+    module('when the select-all checkbox is partially selected', () => {
+      test('all checkboxes of loaded rows are selected', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        assert
+          .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox')
+          .exists({ count: 2 });
+        findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
+          (checkbox) => {
+            assert.dom(checkbox).isChecked();
+          }
+        );
+
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
+          (checkbox) => {
+            assert.dom(checkbox).isNotChecked();
+          }
+        );
+      });
+
+      test('all checkboxes of new rows are not selected', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        await this.handler.fetchRows();
+        await assert.expect(9);
+
+        assert
+          .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox')
+          .exists({ count: 4 });
+
+        const checkboxes = document.querySelectorAll(
+          '.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input'
+        );
+        [0, 1].forEach((index) => {
+          assert.dom(checkboxes[index]).isChecked();
+        });
+        [2, 3].forEach((index) => {
+          assert.dom(checkboxes[index]).isNotChecked();
+        });
+
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        checkboxes.forEach((checkbox) => {
+          assert.dom(checkbox).isNotChecked();
+        });
+      });
+    });
+
+    module('when the select-all checkbox is globally selected', () => {
+      test('all checkboxes of loaded rows are selected', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        await this.handler.selectAllGlobal();
+
+        assert
+          .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox')
+          .exists({ count: 2 });
+        findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
+          (checkbox) => {
+            assert.dom(checkbox).isChecked();
+          }
+        );
+
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
+          (checkbox) => {
+            assert.dom(checkbox).isNotChecked();
+          }
+        );
+      });
+
+      test('all checkboxes of new rows are also selected', async function (assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        await this.handler.fetchRows();
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        await this.handler.selectAllGlobal();
+        assert
+          .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox')
+          .exists({ count: 4 });
+        findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
+          (checkbox) => {
+            assert.dom(checkbox).isChecked();
+          }
+        );
+
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
+          (checkbox) => {
+            assert.dom(checkbox).isNotChecked();
+          }
+        );
+      });
+    });
+
+    test('clicking a one multiline checkbox toggles its selection status', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -223,6 +370,54 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input')
         .isNotChecked();
       assert.dom('.selected-count').hasText('0');
+    });
+
+    test('clicking on all multiline checkbox toggles the global select', async function (assert: Assert) {
+      this.rowsFetcher = new AllRowsFetcher();
+      this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
+      const handlerSpy = sinon.spy(this.handler);
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+
+      assert.deepEqual(this.handler.selection, []);
+
+      await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
+      // @ts-ignore
+      assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[0]));
+      assert.equal(this.handler.selection.length, 1);
+      await click('.hypertable__column.hypertable__column--selection .hypertable__cell:last-child .upf-checkbox');
+      // @ts-ignore
+      assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[1]));
+      // await this.pauseTest();
+      assert.equal(this.handler.selection, 'all');
+    });
+
+    test('clicking on one multiline checkbox toggles its exclusion status', async function (assert: Assert) {
+      const handlerSpy = sinon.spy(this.handler);
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+
+      await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+      await this.handler.selectAllGlobal();
+      assert.deepEqual(this.handler.exclusion, []);
+
+      await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
+
+      // @ts-ignore
+      assert.ok(handlerSpy.updateExclusion.calledWithExactly(this.handler.rows[0]));
+      assert.equal(this.handler.exclusion.length, 1);
+      assert.ok(this.handler.exclusion.includes(this.handler.rows[0]));
+      assert
+        .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input')
+        .isNotChecked();
+      assert.dom('.selected-count').hasText('11');
+
+      await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
+
+      // @ts-ignore
+      assert.ok(handlerSpy.updateExclusion.calledWithExactly(this.handler.rows[0]));
+      assert.equal(this.handler.exclusion.length, 0);
+      assert.dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').isChecked();
+      assert.dom('.selected-count').hasText('12');
     });
   });
 

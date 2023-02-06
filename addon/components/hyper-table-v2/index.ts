@@ -50,7 +50,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     }
 
     if (this.args.handler.selection === 'all') {
-      return this.args.handler.rowsMeta.total;
+      return this.args.handler.rowsMeta.total - this.args.handler.exclusion.length;
     } else {
       return this.args.handler.selection.length;
     }
@@ -100,18 +100,32 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  resetFilters() {
+  resetFilters(): void {
     debounce(this, this._resetFilters, RESET_DEBOUNCE_TIME);
   }
 
   @action
-  toggleSelectAll(value: boolean) {
+  toggleSelectAll(value: boolean): void {
     this.args.handler.toggleSelectAll(value);
   }
 
   @action
+  selectAllGlobal(): void {
+    this.args.handler.selectAllGlobal();
+  }
+
+  @action
+  clearSelection(): void {
+    this.args.handler.clearSelection();
+  }
+
+  @action
   toggleRowSelection(row: Row): void {
-    this.args.handler.updateSelection(row);
+    if (this.args.handler.selection === 'all') {
+      this.args.handler.updateExclusion(row);
+    } else {
+      this.args.handler.updateSelection(row);
+    }
   }
 
   @action
@@ -126,17 +140,17 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  onRowClick(row: Row) {
+  onRowClick(row: Row): void {
     this.args.handler.triggerEvent('row-click', row);
   }
 
   @action
-  onRowHover(row: Row, hovered: boolean) {
+  onRowHover(row: Row, hovered: boolean): void {
     set(this.args.handler.rows[this.args.handler.rows.indexOf(row)], 'hovered', hovered);
   }
 
   @action
-  reloadPage() {
+  reloadPage(): void {
     window.location.reload();
   }
 

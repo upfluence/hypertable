@@ -293,8 +293,8 @@ export default Component.extend({
       this.set('_selectAllChecked', false);
     },
 
-    toggleSelectAll() {
-      this.set('_selectAllChecked', !this._selectAllChecked);
+    toggleSelectAll(value) {
+      this.set('_selectAllChecked', value);
       if (this._selectAllChecked) {
         if (this._selectedCount === this.meta.total) {
           this._allRowSelectedManager(true);
@@ -306,8 +306,8 @@ export default Component.extend({
       }
     },
 
-    toggleItem(item) {
-      item.set('selected', !item.selected);
+    toggleItem(item, value) {
+      item.set('selected', value);
       this.set('_selectAllChecked', this._selectedCount > 0);
 
       if (this._allRowsSelected) {

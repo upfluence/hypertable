@@ -5,7 +5,7 @@ import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { FieldSize, Row } from '@upfluence/hypertable/core/interfaces';
-import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
+import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 
 module('Unit | core/handler', function (hooks) {
@@ -215,9 +215,9 @@ module('Unit | core/handler', function (hooks) {
 
     await handler.fetchRows();
 
-    let didRefresh = handler.mutateRow(12, (row: Row) :boolean => {
-      row.bar = 'woop woop'
-      return true
+    let didRefresh = handler.mutateRow(12, (row: Row): boolean => {
+      row.bar = 'woop woop';
+      return true;
     });
 
     assert.equal(handler.rows[0].bar, 'woop woop');
@@ -225,7 +225,7 @@ module('Unit | core/handler', function (hooks) {
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
     assert.true(didRefresh);
 
-    didRefresh = handler.mutateRow(13, () :boolean => false);
+    didRefresh = handler.mutateRow(13, (): boolean => false);
     assert.equal(handler.rows[1].bar, 'second bar');
     // @ts-ignore
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
@@ -244,15 +244,58 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.currentPage, 1);
   });
 
-  test('Handler#toggleSelectAll', function (assert: Assert) {
+  module('Handler#toggleSelectAll', () => {
+    test('it selects all the loaded rows', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      assert.deepEqual(handler.selection, []);
+
+      await handler.fetchRows();
+      handler.toggleSelectAll(true);
+      assert.equal(handler.selection.length, 2);
+    });
+
+    test('it selects all the rows', async function (assert: Assert) {
+      this.rowsFetcher = new AllRowsFetcher();
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      assert.deepEqual(handler.selection, []);
+
+      await handler.fetchRows();
+      handler.toggleSelectAll(true);
+      assert.equal(handler.selection, 'all');
+    });
+
+    test('it clears the selected rows', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      assert.deepEqual(handler.selection, []);
+      await handler.fetchRows();
+
+      handler.toggleSelectAll(true);
+      handler.toggleSelectAll(false);
+
+      assert.deepEqual(handler.selection, []);
+    });
+  });
+
+  test('Handler#selectAllGlobal', async function (assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    assert.deepEqual(handler.selection, []);
+    populateSelectionAndExclusionHandler(handler);
+    assert.equal(handler.selection.length, 1);
+    assert.equal(handler.exclusion.length, 1);
 
-    handler.toggleSelectAll(true);
-    assert.deepEqual(handler.selection, 'all');
+    handler.selectAllGlobal();
+    assert.equal(handler.selection, 'all');
+    assert.deepEqual(handler.exclusion, []);
+  });
 
-    handler.toggleSelectAll(false);
+  test('Handler#selectAllGlobal', async function (assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    populateSelectionAndExclusionHandler(handler);
+    assert.equal(handler.selection.length, 1);
+    assert.equal(handler.exclusion.length, 1);
+
+    handler.clearSelection();
     assert.deepEqual(handler.selection, []);
+    assert.deepEqual(handler.exclusion, []);
   });
 
   test('Handler#updateSelection', async function (assert: Assert) {
@@ -328,4 +371,20 @@ module('Unit | core/handler', function (hooks) {
       assert.expect(1);
     });
   });
+
+  function populateSelectionAndExclusionHandler(handler: TableHandler): void {
+    const row = {
+      influencerId: 42,
+      recordId: 12,
+      record_id: 12,
+      holderId: 57,
+      holderType: 'list',
+      foo: 'ekip',
+      bar: 'hello',
+      total: 123,
+      date: 1643386394
+    };
+    handler.selection = [row];
+    handler.exclusion = [row];
+  }
 });
