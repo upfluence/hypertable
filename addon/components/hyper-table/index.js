@@ -176,6 +176,9 @@ export default Component.extend({
       });
       this.manager.refreshScrollableStatus();
       this.manager.set('excludedItems', []);
+      if (this._selectedCount > 0) {
+        this._selectAllChecked = true;
+      }
     });
   },
 
@@ -306,7 +309,6 @@ export default Component.extend({
 
     toggleItem(item, value) {
       item.set('selected', value);
-      this.set('_selectAllChecked', this._selectedCount > 0);
 
       if (this._allRowsSelected) {
         if (this._excludedItems.includes(item)) {
@@ -319,6 +321,8 @@ export default Component.extend({
         }
         this.manager.set('excludedItems', this._excludedItems);
       }
+
+      this.set('_selectAllChecked', this._selectedCount > 0);
 
       if (this._selectedCount === this.meta.total) {
         this._setAllRowSelected(true);
