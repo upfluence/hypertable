@@ -68,11 +68,9 @@ export default Component.extend({
     '_excludedItems.length',
     'meta.total',
     function () {
-      if (this._allRowsSelected) {
-        return this.meta.total - this._excludedItems.length;
-      }
-
-      return this._selectedItems.length;
+      const count = this._allRowsSelected ? this.meta.total - this._excludedItems.length : this._selectedItems.length;
+      this.manager.set('_selectedCount', count);
+      return count;
     }
   ),
 
@@ -177,6 +175,7 @@ export default Component.extend({
         }
       });
       this.manager.refreshScrollableStatus();
+      this.manager.set('excludedItems', []);
     });
   },
 
@@ -296,10 +295,9 @@ export default Component.extend({
     toggleSelectAll(value) {
       this.set('_selectAllChecked', value);
       if (this._selectAllChecked) {
+        this.get('_collection').setEach('selected', true);
         if (this._selectedCount === this.meta.total) {
           this._allRowSelectedManager(true);
-        } else {
-          this.get('_collection').setEach('selected', true);
         }
       } else {
         this.send('clearSelection');
