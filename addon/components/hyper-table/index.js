@@ -68,11 +68,13 @@ export default Component.extend({
     '_excludedItems.length',
     'meta.total',
     function () {
-      const count = this._allRowsSelected ? this.meta.total - this._excludedItems.length : this._selectedItems.length;
-      this.manager.set('_selectedCount', count);
-      return count;
+      return this._allRowsSelected ? this.meta.total - this._excludedItems.length : this._selectedItems.length;
     }
   ),
+
+  _selectedCountObserver: observer('_selectedCount', function () {
+    this.manager.set('_selectedCount', this._selectedCount);
+  }),
 
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
