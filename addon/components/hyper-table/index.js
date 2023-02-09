@@ -68,13 +68,13 @@ export default Component.extend({
     '_excludedItems.length',
     'meta.total',
     function () {
-      if (this._allRowsSelected) {
-        return this.meta.total - this._excludedItems.length;
-      }
-
-      return this._selectedItems.length;
+      return this._allRowsSelected ? this.meta.total - this._excludedItems.length : this._selectedItems.length;
     }
   ),
+
+  _selectedCountObserver: observer('_selectedCount', function () {
+    this.manager.set('_selectedCount', this._selectedCount);
+  }),
 
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -177,6 +177,10 @@ export default Component.extend({
         }
       });
       this.manager.refreshScrollableStatus();
+      this.manager.set('excludedItems', []);
+      if (this._selectedCount > 0) {
+        this._selectAllChecked = true;
+      }
     });
   },
 
@@ -296,10 +300,9 @@ export default Component.extend({
     toggleSelectAll(value) {
       this.set('_selectAllChecked', value);
       if (this._selectAllChecked) {
+        this.get('_collection').setEach('selected', true);
         if (this._selectedCount === this.meta.total) {
           this._allRowSelectedManager(true);
-        } else {
-          this.get('_collection').setEach('selected', true);
         }
       } else {
         this.send('clearSelection');
@@ -308,7 +311,6 @@ export default Component.extend({
 
     toggleItem(item, value) {
       item.set('selected', value);
-      this.set('_selectAllChecked', this._selectedCount > 0);
 
       if (this._allRowsSelected) {
         if (this._excludedItems.includes(item)) {
@@ -321,6 +323,8 @@ export default Component.extend({
         }
         this.manager.set('excludedItems', this._excludedItems);
       }
+
+      this.set('_selectAllChecked', this._selectedCount > 0);
 
       if (this._selectedCount === this.meta.total) {
         this._setAllRowSelected(true);
