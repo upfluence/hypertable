@@ -198,7 +198,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert
           .dom('.selection-container .count-container span')
           .hasText(
-            this.intlService.t('hypertable.selection.creator_selected', { count: this.handler.selection.length })
+            this.intlService.t('hypertable.selection.records_selected', { count: this.handler.selection.length })
           );
         assert
           .dom('.selection-container .select-all-container')
@@ -245,7 +245,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
         const countText = document.querySelector('.selection-container .count-container span')?.innerHTML;
         assert.equal(
-          this.intlService.t('hypertable.selection.all_creators_selected', { count: this.handler.rowsMeta.total }),
+          this.intlService.t('hypertable.selection.all_records_selected', { count: this.handler.rowsMeta.total }),
           countText
         );
         assert.dom('.selection-container .select-all-container').doesNotExist();
