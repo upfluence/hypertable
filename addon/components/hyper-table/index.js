@@ -13,7 +13,6 @@ export default Component.extend({
   contextualActions: null,
   footer: null,
   bottomReachedOffset: 0,
-  meta: {},
 
   /*
    * Table States
@@ -28,8 +27,6 @@ export default Component.extend({
   _allRowsSelected: false,
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
-
-  _selectAllChecked: false,
 
   _searchQuery: computed('_columns.firstObject.filters.{[],@each.value}', {
     get: function () {
@@ -59,16 +56,21 @@ export default Component.extend({
     return this.manager.fieldCategories.sortBy('label');
   }),
 
+  metaObserver: observer('meta.total', function () {
+    this.manager.set('meta', this.meta);
+  }),
+
   _selectedItems: filterBy('_collection', 'selected', true),
-  _excludedItems: [],
   _selectedCount: computed(
     'selectAllIncludesHidden',
-    '_allRowsSelected',
+    'manager._allRowsSelected',
     '_selectedItems.length',
-    '_excludedItems.length',
-    'meta.total',
+    'manager.excludedItems.length',
+    'manager.meta.total',
     function () {
-      return this._allRowsSelected ? this.meta.total - this._excludedItems.length : this._selectedItems.length;
+      return this.manager._allRowsSelected
+        ? this.manager.meta.total - this.manager.excludedItems.length
+        : this._selectedItems.length;
     }
   ),
 
@@ -106,8 +108,7 @@ export default Component.extend({
   _loadingMore: computed.and('manager.hooks.onBottomReached', 'loadingMore'),
 
   _setAllRowSelected(value) {
-    this.set('_allRowsSelected', value);
-    this.manager.set('_allRowsSelected', this._allRowsSelected);
+    this.manager.set('_allRowsSelected', value);
   },
 
   _allRowSelectedManager(value) {
@@ -115,8 +116,7 @@ export default Component.extend({
 
     this.get('_collection').setEach('selected', value);
 
-    this.set('_excludedItems', []);
-    this.manager.set('excludedItems', this._excludedItems);
+    this.manager.set('excludedItems', []);
   },
 
   _selectedItemsChanged: observer('_selectedItems', function () {
@@ -177,9 +177,9 @@ export default Component.extend({
         }
       });
       this.manager.refreshScrollableStatus();
-      this.manager.set('excludedItems', []);
+      this.manager.set('meta', this.meta);
       if (this._selectedCount > 0) {
-        this._selectAllChecked = true;
+        this.manager.set('_selectAllChecked', true);
       }
     });
   },
@@ -289,19 +289,19 @@ export default Component.extend({
 
     selectAllGlobal() {
       this._allRowSelectedManager(true);
-      this.set('_selectAllChecked', true);
+      this.manager.set('_selectAllChecked', true);
     },
 
     clearSelection() {
       this._allRowSelectedManager(false);
-      this.set('_selectAllChecked', false);
+      this.manager.set('_selectAllChecked', false);
     },
 
     toggleSelectAll(value) {
-      this.set('_selectAllChecked', value);
-      if (this._selectAllChecked) {
+      this.manager.set('_selectAllChecked', value);
+      if (this.manager._selectAllChecked) {
         this.get('_collection').setEach('selected', true);
-        if (this._selectedCount === this.meta.total) {
+        if (this._selectedCount === this.manager.meta.total) {
           this._allRowSelectedManager(true);
         }
       } else {
@@ -312,21 +312,20 @@ export default Component.extend({
     toggleItem(item, value) {
       item.set('selected', value);
 
-      if (this._allRowsSelected) {
-        if (this._excludedItems.includes(item)) {
-          this.set(
-            '_excludedItems',
-            this._excludedItems.filter((_excludedItem) => _excludedItem !== item)
+      if (this.manager._allRowsSelected) {
+        if (this.manager.excludedItems.includes(item)) {
+          this.manager.set(
+            'excludedItems',
+            this.manager.excludedItems.filter((_excludedItem) => _excludedItem !== item)
           );
         } else {
-          this.set('_excludedItems', [...this._excludedItems, item]);
+          this.manager.set('excludedItems', [...this.manager.excludedItems, item]);
         }
-        this.manager.set('excludedItems', this._excludedItems);
       }
 
-      this.set('_selectAllChecked', this._selectedCount > 0);
+      this.manager.set('_selectAllChecked', this._selectedCount > 0);
 
-      if (this._selectedCount === this.meta.total) {
+      if (this._selectedCount === this.manager.meta.total) {
         this._setAllRowSelected(true);
       }
     }

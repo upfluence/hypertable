@@ -25,7 +25,7 @@
           class="contextual-actions contextual-actions--no-animation {{unless this.manager.options.features.search 'contextual-actions--no-search-sibling'}}">
           {{component
             this.contextualActions selectedItems=this._selectedItems
-            collection=this._collection manager=this.manager meta=this.meta}}
+            collection=this._collection manager=this.manager meta=this.manager.meta}}
         </div>
       {{/if}}
     </div>
@@ -116,7 +116,7 @@
     </div>
   </div>
   <HyperTableV2::Selection class={{if (gt this._selectedCount 0) "margin-top-px-18"}} @selected={{this._selectedCount}}
-                           @total={{this.meta.total}} @intlKeyPath={{this.manager.options.selectionIntlKeyPath}}
+                           @total={{this.manager.meta.total}} @intlKeyPath={{this.manager.options.selectionIntlKeyPath}}
                            @onSelectAll={{action "selectAllGlobal"}} @onClear={{action "clearSelection"}} />
 </div>
 
@@ -144,8 +144,8 @@
           {{#if this.manager.options.features.selection}}
             <div class="hypertable__column hypertable__column--selection {{concat 'hypertable__column--size-' column.size}}">
               <header>
-                <OSS::Checkbox @checked={{this._selectAllChecked}}
-                               @partial={{lt this._selectedCount this.meta.total}}
+                <OSS::Checkbox @checked={{this.manager._selectAllChecked}}
+                               @partial={{lt this._selectedCount this.manager.meta.total}}
                                @size="sm" @onChange={{action "toggleSelectAll"}}
                                data-control-name="row_select_all_toggle_checkbox" />
               </header>
