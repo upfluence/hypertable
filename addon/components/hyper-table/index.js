@@ -62,11 +62,8 @@ export default Component.extend({
 
   _selectedItems: filterBy('_collection', 'selected', true),
   _selectedCount: computed(
-    'selectAllIncludesHidden',
-    'manager._allRowsSelected',
+    'manager.{_allRowsSelected,excludedItems.length,meta.total}',
     '_selectedItems.length',
-    'manager.excludedItems.length',
-    'manager.meta.total',
     function () {
       return this.manager._allRowsSelected
         ? this.manager.meta.total - this.manager.excludedItems.length
