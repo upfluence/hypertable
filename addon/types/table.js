@@ -42,7 +42,8 @@ export default EmberObject.extend({
       filtering: false,
       tableViews: false,
       localStorage: false
-    }
+    },
+    selectionIntlKeyPath: null
   },
   options: or('_options', '_defaultOptions'),
 

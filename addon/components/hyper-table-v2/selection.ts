@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 interface HyperTableV2SelectionArgs {
   selected: number;
   total: number;
+  intlKeyPath?: string;
   onClear(): void;
   onSelectAll(): void;
 }
@@ -21,6 +22,10 @@ export default class HyperTableV2Selection extends Component<HyperTableV2Selecti
     }
 
     return classes.join(' ');
+  }
+
+  get intlKeyPath(): string {
+    return this.args.intlKeyPath ?? 'hypertable.selection';
   }
 
   @action

@@ -11,9 +11,14 @@ type FeatureSet = {
   searchable: boolean;
 };
 
+type OptionSet = {
+  selectionIntlKeyPath?: string;
+}
+
 interface HyperTableV2Args {
   handler: TableHandler;
   features: FeatureSet;
+  options?: OptionSet;
 }
 
 const DEFAULT_FEATURES_SET: FeatureSet = { selection: false, searchable: true };

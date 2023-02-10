@@ -2,15 +2,15 @@
   <div class="count-container">
     <i class="far fa-users"></i>
     {{#if this.allCreatorsSelected}}
-      <span>{{{t "hypertable.selection.all_creators_selected" count=@total}}}</span>
+      <span>{{{t (concat this.intlKeyPath ".all_records_selected") count=@total}}}</span>
     {{else}}
-      <span>{{t "hypertable.selection.creator_selected" count=@selected}}</span>
+      <span>{{t (concat this.intlKeyPath ".records_selected") count=@selected}}</span>
     {{/if}}
   </div>
   {{#unless this.allCreatorsSelected}}
     <span>-</span>
     <span class="select-all-container" role="button" {{on "click" this.onSelectAll}}>
-      {{t "hypertable.selection.select_all" count=@total}}
+      {{t (concat this.intlKeyPath ".select_all") count=@total}}
     </span>
   {{/unless}}
   <span>-</span>

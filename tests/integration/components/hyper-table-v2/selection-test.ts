@@ -51,7 +51,7 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
       `);
       assert
         .dom('.count-container span')
-        .hasText(this.intlService.t('hypertable.selection.creator_selected', { count: 1 }));
+        .hasText(this.intlService.t('hypertable.selection.records_selected', { count: 1 }));
     });
 
     test('if @selected is equal to @total, it renders the right wording', async function (assert) {
@@ -62,7 +62,7 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
       `);
       assert.equal(
         document.querySelector('.count-container span')?.innerHTML,
-        this.intlService.t('hypertable.selection.all_creators_selected', { count: 5 })
+        this.intlService.t('hypertable.selection.all_records_selected', { count: 5 })
       );
     });
   });

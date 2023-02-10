@@ -29,8 +29,8 @@
       </div>
     </div>
     <HyperTableV2::Selection class={{if (gt selectionCount 0) "margin-top-px-18"}} @selected={{this.selectionCount}}
-                             @total={{@handler.rowsMeta.total}} @onSelectAll={{this.selectAllGlobal}}
-                             @onClear={{this.clearSelection}} />
+                             @total={{@handler.rowsMeta.total}} @intlKeyPath={{@options.selectionIntlKeyPath}}
+                             @onSelectAll={{this.selectAllGlobal}} @onClear={{this.clearSelection}} />
   </div>
 
   <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>

@@ -116,8 +116,8 @@
     </div>
   </div>
   <HyperTableV2::Selection class={{if (gt this._selectedCount 0) "margin-top-px-18"}} @selected={{this._selectedCount}}
-                           @total={{this.meta.total}} @onSelectAll={{action "selectAllGlobal"}}
-                           @onClear={{action "clearSelection"}} />
+                           @total={{this.meta.total}} @intlKeyPath={{this.manager.options.selectionIntlKeyPath}}
+                           @onSelectAll={{action "selectAllGlobal"}} @onClear={{action "clearSelection"}} />
 </div>
 
 <div class="hypertable__table {{if (eq this._collection.length 0) 'hypertable__table--empty'}}">
