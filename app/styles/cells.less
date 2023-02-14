@@ -1,20 +1,16 @@
 @cell-height: 60px;
 
 .hypertable__cell {
-  border-bottom: 1px solid lighten(@upf-gray, 15%);
-  border-left: 1px solid lighten(@upf-gray, 15%);
+  border-bottom: 1px solid var(--color-border-default);
+  border-left: 1px solid var(--color-border-default);
   display: flex;
   align-items: center;
   background-color: white;
 
   height: @cell-height;
   max-height: @cell-height;
-  padding: @spacing-xx-sm;
+  padding: var(--spacing-px-12);
   width: 100%;
-
-  .tooltip > .tooltip-inner {
-    padding: 5px;
-  }
 
   .ember-flatpickr-input {
     background-color: transparent;
@@ -28,20 +24,16 @@
     &.active {
       padding: 4px;
       margin-left: -5px;
-      margin-top: 0px;
-      border: 1px solid @upf-gray-light;
+      margin-top: 0;
+      border: 1px solid var(--color-border-default);
     }
   }
 
   &.email {
-    background-color: white;
+    background-color: var(--color-white);
     .text-value:hover {
-      color: @upf-primary-bright-purple;
+      color: var(--color-primary-500);
       text-decoration: underline;
-    }
-
-    .tooltip {
-      display: none !important;
     }
   }
 
@@ -56,12 +48,12 @@
       }
     }
     &.empty-value {
-      color: @color-text-lighter;
+      color: var(--color-gray-500);
       span:first-child {
         &:hover {
-          color: @color-text;
+          color: var(--color-gray-900);
           + .status-container {
-            color: @color-text;
+            color: var(--color-gray-900);
           }
         }
       }
@@ -138,8 +130,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: @spacing-xxx-sm @spacing-xx-sm;
-    border-radius: @default-radius;
+    padding: var(--spacing-px-6) var(--spacing-px-12);
+    border-radius: var(--border-radius-sm);
     position: relative;
 
     > div:first-child {
@@ -157,16 +149,12 @@
     }
 
     &.tether-enabled {
-      border: 1px solid lighten(@upf-gray, 15%);
+      border: 1px solid var(--color-border-default);
       z-index: 11;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      background-color: @field-background-color;
+      background-color: var(--color-gray-100);
       margin-left: -1px;
-
-      .tooltip {
-        display: none !important;
-      }
 
       .list-elements {
         margin-right: -2px;
@@ -176,13 +164,13 @@
 
   .form-control:focus {
     box-shadow: none;
-    border-color: @upf-primary-bright-purple;
+    border-color: var(--color-primary-500);
   }
 
   .is-invalid > .form-control {
-    border-color: @upf-feedback-error;
+    border-color: var(--color-error-500);
     &:focus {
-      border-color: @upf-feedback-error;
+      border-color: var(--color-error-500);
     }
   }
 
@@ -216,17 +204,16 @@
     .upf-icon--check,
     .upf-loading {
       position: absolute;
-      padding: @spacing-xxx-sm;
+      padding: var(--spacing-px-6);
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      -webkit-transform: translate(-50%, -50%);
     }
     .upf-loading {
       width: 100px;
       .spinner {
         width: auto;
-        margin: 0 0 0 @spacing-xx-sm;
+        margin: 0 0 0 var(--spacing-px-12);
         > div {
           width: 6px;
           height: 6px;
@@ -236,18 +223,18 @@
   }
 
   .link__value {
-    background-color: @field-background-color;
-    padding: 4px @spacing-xx-sm;
-    color: @text-color;
-    border-radius: @default-radius;
+    background-color: var(--color-gray-100);
+    padding: 4px var(--spacing-px-12);
+    color: var(--color-gray-900);
+    border-radius: var(--border-radius-sm);
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-right: 5px;
+    margin-right: var(--spacing-px-6);
     white-space: nowrap;
   }
 
   .upf-icon--check {
-    background-color: white;
+    background-color: var(--color-white);
     animation: fadeIn 1.5s ease forwards;
   }
 
@@ -281,9 +268,9 @@
 
 .hypertable__cell--selected,
 .hypertable__cell--hovered {
-  background-color: lighten(@color-text-lighter, 20%) !important;
+  background-color: var(--color-gray-100);
   .upf-icon--check {
-    background-color: @upf-gray-light;
+    background-color: var(--color-gray-100);
   }
 }
 
@@ -295,7 +282,7 @@
   padding-top: 0;
   padding-bottom: 0;
   border: 0;
-  background-color: @upf-feedback-error !important;
+  background-color: var(--color-error-500) !important;
 }
 
 .hypertable__cell--clickable {
@@ -309,7 +296,7 @@
   background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
   background-size: 200px 100%;
   background-repeat: no-repeat;
-  border-radius: @default-radius;
+  border-radius: var(--border-radius-sm);
   display: inline-block;
   line-height: 1;
   width: 100%;
@@ -322,26 +309,26 @@
   top: 30px;
   z-index: 10;
   background-color: white;
-  padding-top: @spacing-xx-sm;
-  padding-bottom: @spacing-xx-sm;
-  box-shadow: 0px 0.6rem 1.2rem rgba(0, 0, 0, 0.1);
-  border-bottom-left-radius: @default-radius;
-  border-bottom-right-radius: @default-radius;
+  padding-top: var(--spacing-px-12);
+  padding-bottom: var(--spacing-px-12);
+  box-shadow: var(--box-shadow-sm);
+  border-bottom-left-radius: var(--box-shadow-sm);
+  border-bottom-right-radius: var(--box-shadow-sm);
   opacity: 0;
   overflow-y: hidden;
   width: 226px;
   animation: slideDown 0.45s ease-in-out forwards;
 
   .expandable-list__item {
-    padding: @spacing-xx-sm @spacing-x-sm;
+    padding: var(--spacing-px-12) var(--spacing-px-18);
     cursor: pointer;
 
     &:hover {
-      background-color: @upf-gray-light;
+      background-color: var(--color-gray-100);
     }
 
     &--loading {
-      padding: @spacing-xxx-sm @spacing-x-sm;
+      padding: var(--spacing-px-6) var(--spacing-px-18);
 
       .item {
         animation: skeleton-content 1.2s ease-in-out infinite;
@@ -349,7 +336,7 @@
         background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
         background-size: 200px 100%;
         background-repeat: no-repeat;
-        border-radius: @default-radius;
+        border-radius: var(--border-radius-sm);
 
         height: 10px;
         width: 100%;
@@ -379,14 +366,4 @@
 
 .tether-out-of-bounds {
   display: none;
-}
-
-.success-tooltip + .tooltip {
-  & > .tooltip-inner {
-    background-color: @upf-feedback-success;
-  }
-
-  & > .tooltip-arrow {
-    border-top-color: @upf-feedback-success;
-  }
 }

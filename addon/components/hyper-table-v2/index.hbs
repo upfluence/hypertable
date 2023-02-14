@@ -1,31 +1,36 @@
 <div class="hypertable-container" ...attributes>
-  <div class="hypertable__upper-header fx-row">
-    <div class="left-side padding-left-xx-sm">
-      {{#if this.features.selection}}
-        <div class="selected-count">
-          {{format-number this.selectionCount}}
-        </div>
-      {{/if}}
+  <div class="hypertable__upper-header">
+    <div class="fx-row">
+      <div class="left-side">
+        {{#if this.features.selection}}
+          <div class="selected-count">
+            {{format-number this.selectionCount}}
+          </div>
+        {{/if}}
 
-      {{#if this.initialFetchColumnsDone}}
-        <div class="search">
-          {{#if (has-block "search")}}
-            {{yield to="search"}}
-          {{else if this.features.searchable}}
-            <HyperTableV2::Search @handler={{@handler}} />
-          {{/if}}
-        </div>
-      {{/if}}
-      {{#if (has-block "contextual-actions")}}
-        {{yield to="contextual-actions"}}
-      {{/if}}
+        {{#if this.initialFetchColumnsDone}}
+          <div class="search">
+            {{#if (has-block "search")}}
+              {{yield to="search"}}
+            {{else if this.features.searchable}}
+              <HyperTableV2::Search @handler={{@handler}} />
+            {{/if}}
+          </div>
+        {{/if}}
+        {{#if (has-block "contextual-actions")}}
+          {{yield to="contextual-actions"}}
+        {{/if}}
+      </div>
+      <div class="right-side">
+        <OSS::Button class="margin-right-xx-sm" @label={{t "hypertable.features.filtering.reset_all"}}
+                     {{on "click" this.resetFilters}} @loading={{this.loadingResetFilters}}
+                     data-control-name="hypertable_reset_filters_button" />
+        <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
+      </div>
     </div>
-    <div class="right-side">
-      <OSS::Button class="margin-right-xx-sm" @label={{t "hypertable.features.filtering.reset_all"}}
-                   {{on "click" this.resetFilters}} @loading={{this.loadingResetFilters}}
-                   data-control-name="hypertable_reset_filters_button" />
-      <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
-    </div>
+    <HyperTableV2::Selection class={{if (gt selectionCount 0) "margin-top-px-18"}} @selected={{this.selectionCount}}
+                             @total={{@handler.rowsMeta.total}} @intlKeyPath={{@options.selectionIntlKeyPath}}
+                             @onSelectAll={{this.selectAllGlobal}} @onClear={{this.clearSelection}} />
   </div>
 
   <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>
@@ -62,17 +67,15 @@
               {{#if this.features.selection}}
                 <div class="hypertable__column hypertable__column--selection">
                   <header>
-                    <OSS::Checkbox @checked={{eq @handler.selection "all"}} @size="sm"
-                                   @onChange={{this.toggleSelectAll}}
-                                   @disabled={{false}} />
+                    <OSS::Checkbox @checked={{gt this.selectionCount 0}} @size="sm" @onChange={{this.toggleSelectAll}}
+                                   @partial={{lt this.selectionCount @handler.rowsMeta.total}} />
                   </header>
 
                   {{#each @handler.rows as |row|}}
                     <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
                                         @onClick={{this.onRowClick}} @onHover={{this.onRowHover}}>
-                      <OSS::Checkbox @checked={{or (array-includes @handler.selection row) (eq @handler.selection "all")}}
-                                     @size="sm" @onChange={{fn this.toggleRowSelection row}}
-                                     @disabled={{eq @handler.selection "all"}} />
+                      <OSS::Checkbox @checked={{if (eq @handler.selection "all") (not (array-includes @handler.exclusion row)) (array-includes @handler.selection row)}}
+                                     @size="sm" @onChange={{fn this.toggleRowSelection row}} />
                     </HyperTableV2::Cell>
                   {{/each}}
 

@@ -13,8 +13,6 @@ export default Component.extend({
   contextualActions: null,
   footer: null,
   bottomReachedOffset: 0,
-  selectAllIncludesHidden: false,
-  meta: {},
 
   /*
    * Table States
@@ -58,20 +56,24 @@ export default Component.extend({
     return this.manager.fieldCategories.sortBy('label');
   }),
 
+  metaObserver: observer('meta.total', function () {
+    this.manager.set('meta', this.meta);
+  }),
+
   _selectedItems: filterBy('_collection', 'selected', true),
   _selectedCount: computed(
-    'selectAllIncludesHidden',
-    '_allRowsSelected',
+    'manager.{_allRowsSelected,excludedItems.length,meta.total}',
     '_selectedItems.length',
-    'meta.total',
     function () {
-      if (this.selectAllIncludesHidden && this._allRowsSelected) {
-        return this.meta.total;
-      }
-
-      return this._selectedItems.length;
+      return this.manager._allRowsSelected
+        ? this.manager.meta.total - this.manager.excludedItems.length
+        : this._selectedItems.length;
     }
   ),
+
+  _selectedCountObserver: observer('_selectedCount', function () {
+    this.manager.set('_selectedCount', this._selectedCount);
+  }),
 
   _hoveredItems: filterBy('_collection', 'hovered', true),
 
@@ -102,17 +104,17 @@ export default Component.extend({
 
   _loadingMore: computed.and('manager.hooks.onBottomReached', 'loadingMore'),
 
-  _selectAllObserver: observer('_allRowsSelected', function () {
-    this.manager.set('_allRowsSelected', this._allRowsSelected);
+  _setAllRowSelected(value) {
+    this.manager.set('_allRowsSelected', value);
+  },
 
-    this.get('_collection').forEach((item) => {
-      if (this.get('_allRowsSelected')) {
-        item.set('selected', true);
-      } else {
-        item.set('selected', false);
-      }
-    });
-  }),
+  _allRowSelectedManager(value) {
+    this._setAllRowSelected(value);
+
+    this.get('_collection').setEach('selected', value);
+
+    this.manager.set('excludedItems', []);
+  },
 
   _selectedItemsChanged: observer('_selectedItems', function () {
     if (this.contextualActions) {
@@ -171,8 +173,11 @@ export default Component.extend({
           this.manager.set('isScrollable', true);
         }
       });
-
       this.manager.refreshScrollableStatus();
+      this.manager.set('meta', this.meta);
+      if (this._selectedCount > 0) {
+        this.manager.set('_selectAllChecked', true);
+      }
     });
   },
 
@@ -276,6 +281,49 @@ export default Component.extend({
 
       if (this.manager.hooks.onColumnsChange) {
         this.manager.hooks.onColumnsChange('columns:change');
+      }
+    },
+
+    selectAllGlobal() {
+      this._allRowSelectedManager(true);
+      this.manager.set('_selectAllChecked', true);
+    },
+
+    clearSelection() {
+      this._allRowSelectedManager(false);
+      this.manager.set('_selectAllChecked', false);
+    },
+
+    toggleSelectAll(value) {
+      this.manager.set('_selectAllChecked', value);
+      if (this.manager._selectAllChecked) {
+        this.get('_collection').setEach('selected', true);
+        if (this._selectedCount === this.manager.meta.total) {
+          this._allRowSelectedManager(true);
+        }
+      } else {
+        this.send('clearSelection');
+      }
+    },
+
+    toggleItem(item, value) {
+      item.set('selected', value);
+
+      if (this.manager._allRowsSelected) {
+        if (this.manager.excludedItems.includes(item)) {
+          this.manager.set(
+            'excludedItems',
+            this.manager.excludedItems.filter((_excludedItem) => _excludedItem !== item)
+          );
+        } else {
+          this.manager.set('excludedItems', [...this.manager.excludedItems, item]);
+        }
+      }
+
+      this.manager.set('_selectAllChecked', this._selectedCount > 0);
+
+      if (this._selectedCount === this.manager.meta.total) {
+        this._setAllRowSelected(true);
       }
     }
   }

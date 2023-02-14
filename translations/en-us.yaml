@@ -73,8 +73,7 @@ hypertable:
       cta: Delete
       cancel: Cancel
   selection:
-    creator_selected: '{count, plural, =0 {{count} creator is selected} =1 {{count} creator is selected} other {{count} creators are selected}}'
-    all_creators_selected: |
-      {count, plural, =1 {All <b>{count}</b> campaign creator is selected} other {All <b>{count}</b> campaign creators are selected}}
-    select_all: '{count, plural, =1 {Select all {count} campaign creator} other {Select all {count} campaign creators}}'
+    records_selected: '{count, plural, =0 {{count} record is selected} =1 {{count} record is selected} other {{count} records are selected}}'
+    all_records_selected: All records (<b>{count}</b>) are selected
+    select_all: '{count, plural, =1 {Select all {count} record} other {Select all {count} records}}'
     clear: Clear selection

@@ -16,6 +16,7 @@ export default EmberObject.extend({
   data: [],
   fields: [],
   fieldCategories: [],
+  excludedItems: [],
   applyingFiltersOn: null,
   editStatus: [],
   tetherInstance: null,
@@ -24,7 +25,9 @@ export default EmberObject.extend({
   availableTableViews: false,
   updatingTableView: false,
   _allRowsSelected: false,
+  _selectAllChecked: false,
   store: null,
+  meta: {},
 
   /*
    * Configuration
@@ -42,7 +45,8 @@ export default EmberObject.extend({
       filtering: false,
       tableViews: false,
       localStorage: false
-    }
+    },
+    selectionIntlKeyPath: null
   },
   options: or('_options', '_defaultOptions'),
 
@@ -127,11 +131,39 @@ export default EmberObject.extend({
   },
 
   updateData(data) {
-    if (this._allRowsSelected) {
-      data.setEach('selected', this._allRowsSelected);
+    if (data.length > 0) {
+      let undefinedSelectedData = data.filterBy('selected', undefined);
+      undefinedSelectedData.forEach((undefinedSelectedRow) => {
+        let existingRow = this.data.find((row) => row.id === undefinedSelectedRow.id);
+        if (!existingRow) return;
+        undefinedSelectedRow.selected = existingRow.selected;
+      });
+
+      let newData = data.filterBy('selected', undefined);
+      this._allRowsSelected ? newData.setEach('selected', true) : newData.setEach('selected', false);
     }
 
     this.set('data', data);
+  },
+
+  removeData(data) {
+    let removeRowNumber = 0;
+    data.forEach((removeRow) => {
+      const rowDataIndex = this.data.findIndex((row) => row.id === removeRow.id);
+      if (rowDataIndex > -1) {
+        this.data.splice(rowDataIndex, 1);
+        removeRowNumber++;
+      }
+    });
+    this.set('meta.total', this.meta.total - removeRowNumber);
+    this.set('data', this.data);
+    this.resetSelection();
+  },
+
+  resetSelection() {
+    this.set('_allRowsSelected', false);
+    this.set('_selectAllChecked', false);
+    this.set('excludedItems', []);
   },
 
   updateViews(views, predefinedViews) {

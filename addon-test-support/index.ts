@@ -1,4 +1,4 @@
 import TableManager from './table-manager';
-import RowsFetcher from './rows-fetcher';
+import RowsFetcher, { AllRowsFetcher } from './rows-fetcher';
 
-export { TableManager, RowsFetcher };
+export { TableManager, RowsFetcher, AllRowsFetcher };
