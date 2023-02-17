@@ -1,6 +1,6 @@
 .hypertable-footer {
-  background-color: @upf-primary-white;
-  box-shadow: 0px 0px 0.6rem fadeout(@upf-primary-black, 80%);
+  background-color: var(--color-white);
+  box-shadow: 0 0 0.6rem fadeout(@upf-primary-black, 80%);
 
   display: flex;
   align-items: center;
@@ -18,10 +18,10 @@
 }
 
 .hypertable-footer__title {
-  color: @upf-primary-bright-purple;
+  color: var(--color-primary-500);
   font-size: 24 / @rem;
   font-weight: 600;
-  margin: 0 @spacing-x-sm;
+  margin: 0 var(--spacing-px-18);
 }
 
 .hypertable-footer__stats-container {
@@ -35,7 +35,7 @@
     align-items: center;
     justify-content: space-between;
 
-    padding: 0 @spacing-sm;
+    padding: 0 var(--spacing-px-24);
     width: 90%;
   }
 }
@@ -50,9 +50,9 @@
   }
 
   .number {
-    color: @upf-primary-bright-purple;
+    color: var(--color-primary-500);
     font-size: 24 / @rem;
-    margin-left: @spacing-xxx-sm;
+    margin-left: var(--spacing-px-6);
   }
 }
 
@@ -64,7 +64,7 @@
     background-image: linear-gradient(90deg, #eee, #f5f5f5, #eee);
     background-size: 200px 100%;
     background-repeat: no-repeat;
-    border-radius: @default-radius;
+    border-radius: var(--border-radius-sm);
     display: inline-block;
     line-height: 1;
   }
