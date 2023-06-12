@@ -15,7 +15,7 @@ export default Component.extend({
 
   actions: {
     toggleAppliedFacet(facet) {
-      set(facet, 'applied', !facet.applied)
+      set(facet, 'applied', !facet.applied);
 
       if (this.onToggleAppliedFacet) {
         this.onToggleAppliedFacet(facet);
