@@ -1,33 +1,35 @@
-{{#if loading}}
-  {{#each loadingFacetsRange}}
-    <div class='hypertable__facetting-item'>
-      <div class='item'></div>
-      <div class='count'></div>
+{{#if this.loading}}
+  {{#each this.loadingFacetsRange}}
+    <div class="hypertable__facetting-item">
+      <div class="item"></div>
+      <div class="count"></div>
     </div>
   {{/each}}
 {{else}}
-  {{#each facets as |facet|}}
+  {{#each this.facets as |facet|}}
     <div
-      class='hypertable__facetting-item'
-      data-control-name={{concat 'table_column_filter_sort_facet_' facet.identifier '_toggle'}}
+      class="hypertable__facetting-item"
+      data-control-name={{concat "table_column_filter_sort_facet_" facet.identifier "_toggle"}}
     >
-      <div class='item'>
-        {{upf-checkbox value=facet.applied size='sm' onValueChange=(action 'toggleAppliedFacet' facet)}}
+      <div class="item">
+        <OSS::Checkbox
+          @checked={{facet.applied}} @size="sm"
+          @onChange={{action "toggleAppliedFacet" facet}} />
 
         {{#if facet.facetRenderer}}
           {{facet.facetRenderer}}
         {{else}}
-          <span class={{if facet.applied 'text-style-bold'}}>
+          <span class={{if facet.applied "text-style-bold"}}>
             {{facet.formattedIdentifier}}
             {{#if facet.infoBubble}}
               &nbsp; &nbsp;
-              <i class="fa fa-info-circle text-color-blue-gray" {{enable-tooltip title=facet.infoBubble placement="bottom"}} />
+              <i class="far fa-info-circle font-color-gray-500" {{enable-tooltip title=facet.infoBubble placement="bottom"}} />
             {{/if}}
           </span>
         {{/if}}
       </div>
 
-      <div class='count'>
+      <div class="count">
         {{facet.count}}
       </div>
     </div>

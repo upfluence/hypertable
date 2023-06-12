@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { isEmpty } from '@ember/utils';
 import { run } from '@ember/runloop';
+import { set } from '@ember/object';
 
 export default Component.extend({
   classNames: ['hypertable__facetting'],
@@ -14,6 +15,8 @@ export default Component.extend({
 
   actions: {
     toggleAppliedFacet(facet) {
+      set(facet, 'applied', !facet.applied)
+
       if (this.onToggleAppliedFacet) {
         this.onToggleAppliedFacet(facet);
       }

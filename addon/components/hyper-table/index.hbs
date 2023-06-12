@@ -92,9 +92,9 @@
               {{/if}}
               {{#each fields as |field|}}
                 <div class="field {{if field.visible 'field--visible'}}" {{action "updateFieldVisibility" field}}>
-                  <UpfCheckbox
-                    @value={{field.visible}} @size="sm"
-                    @onValueChange={{action "fieldVisibilityUpdated" field}}
+                  <OSS::Checkbox
+                    @checked={{field.visible}} @size="sm"
+                    @onChange={{action "fieldVisibilityUpdated" field}}
                     data-control-name={{concat "field_toggle_checkbox_" field.key}} />
                   <div class="margin-left-px-6">
                     {{#if field.title}}
