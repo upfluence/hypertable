@@ -6,14 +6,14 @@
       <div class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
            role="button" {{on "click" (fn this.setFieldCategory null)}} data-control-name="field_category_toggle_all_fields">
         <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
-        <div><i class="fas fa-caret-right"></i></div>
+        <div><OSS::Icon @icon="fa-caret-right" /></div>
       </div>
       {{#each this._columnCategories as |category|}}
         <div class={{concat "field-category" (if (eq this._activeColumnCategory category) " field-category--active")}}
              role="button" data-control-name={{concat "field_category_toggle_" category}}
              {{on "click" (fn this.setFieldCategory category)}}>
           <div>{{category}}</div>
-          <div><i class="fa fa-caret-right"></i></div>
+          <div><OSS::Icon @icon="fa-caret-right" /></div>
         </div>
       {{/each}}
     </div>
@@ -27,19 +27,19 @@
       <div class="fields-list">
         {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
           {{#if clusterName}}
-            <div class="cluster-name text-style-bold margin-top-xxx-sm">
+            <div class="cluster-name font-weight-semibold margin-top-px-6">
               {{clusterName}}
             </div>
           {{/if}}
           {{#each fields as |field|}}
             <div class="field" role="button" {{on "click" (fn this.columnVisibilityUpdate field)}}>
               {{#if field.isLoading}}
-                <div><i class="fa fa-spinner fa-spin"></i></div>
+                <div><OSS::Icon @icon="fa-spinner fa-spin" /></div>
               {{else}}
-                <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm" 
+                <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm"
                                data-control-name={{concat "column_definition_toggle_checkbox_" field.definition.key}} />
               {{/if}}
-              <div class="margin-left-xxx-sm">
+              <div class="margin-left-px-6">
                 {{field.definition.name}}
               </div>
             </div>

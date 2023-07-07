@@ -23,8 +23,9 @@
           <span class={{if facet.applied "text-style-bold"}}>
             {{facet.formattedIdentifier}}
             {{#if facet.infoBubble}}
-              &nbsp; &nbsp;
-              <i class="far fa-info-circle font-color-gray-500" {{enable-tooltip title=facet.infoBubble placement="bottom"}} />
+              <OSS::Icon
+                @icon="fa-info-circle" class="margin-left-px-6 font-color-gray-500"
+                {{enable-tooltip title=facet.infoBubble placement="bottom"}} />
             {{/if}}
           </span>
         {{/if}}

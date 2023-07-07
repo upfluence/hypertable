@@ -1,41 +1,41 @@
-{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
-  {{#if isUpsertable}}
-    <span {{action 'toggleEditing'}}>
-      {{or column.field.emptyPlaceholder 'Add value'}}
+{{#if (and this.emptyValue (or (not this.editStatus.status) this.isSuccess))}}
+  {{#if this.isUpsertable}}
+    <span {{action "toggleEditing"}}>
+      {{or this.column.field.emptyPlaceholder "Add value"}}
     </span>
   {{else}}
-    {{or column.field.emptyState '—'}}
+    {{or this.column.field.emptyState "—"}}
   {{/if}}
 {{else}}
-  <div class='editing-input'>
-    {{#if (and editStatus.status (not isSuccess))}}
-      <div class={{if isError 'is-invalid'}}>
+  <div class="editing-input">
+    {{#if (and this.editStatus.status (not this.isSuccess))}}
+      <div class={{if this.isError 'is-invalid'}}>
         {{input
-          type='number'
-          focus-out=(action 'toggleEditing' editableValue)
-          insert-newline=(action 'toggleEditing' editableValue)
-          value=value
-          class='editing-input__field form-control'
+          type="number"
+          focus-out=(action "toggleEditing" this.editableValue)
+          insert-newline=(action "toggleEditing" this.editableValue)
+          value=this.value
+          class="editing-input__field form-control"
         }}
       </div>
     {{else}}
-      <div class="text-value" {{enable-tooltip title=(format-numeric value) placement="bottom"}}>
-        {{format-number value}}
+      <div class="text-value" {{enable-tooltip title=(format-numeric this.value) placement="bottom"}}>
+        {{format-number this.value}}
       </div>
     {{/if}}
   </div>
 {{/if}}
 
 {{! TODO: Extract to component }}
-{{#if isUpsertable}}
+{{#if this.isUpsertable}}
   <div class='status-container margin-left-x-sm text-color-default-lighter'>
-    {{#if isSaving}}
-      {{loading-state}}
-    {{else if isSuccess}}
-      <i class='fa fa-pencil cell-edition delayed' onclick={{action 'toggleEditing'}}></i>
-      <span class='text-color-success upf-icon upf-icon--check text-size-6'></span>
-    {{else if (not editStatus.status)}}
-      <i class='fa fa-pencil cell-edition delayed' onclick={{action 'toggleEditing'}}></i>
+    {{#if this.isSaving}}
+      <LoadingState />
+    {{else if this.isSuccess}}
+      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
+      <OSS::Icon @icon="fa-check" class="font-size-lg font-color-success-500" />
+    {{else if (not this.editStatus.status)}}
+      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
     {{/if}}
   </div>
 {{/if}}

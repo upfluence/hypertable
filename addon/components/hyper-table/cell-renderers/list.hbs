@@ -1,32 +1,34 @@
-{{#if emptyValue}}
+{{#if this.emptyValue}}
   —
 {{else}}
-  <div class='list-container' {{action 'toggleList' bubbles=false}}>
-    {{#if value.firstObject.name}}
+  <div class="list-container" {{action "toggleList" bubbles=false}}>
+    {{#if this.value.firstObject.name}}
       <div>
-        {{value.firstObject.name}}
+        {{this.value.firstObject.name}}
       </div>
-      {{#if (eq manager.tetherOn elementId)}}
-        <div class='expandable-list'>
-          {{#each value as |item|}}
-            <div class='expandable-list__item' {{action 'goToUrl' (concat url item.id) bubbles=false}}>
+      {{#if (eq this.manager.tetherOn this.elementId)}}
+        <div class="expandable-list">
+          {{#each this.value as |item|}}
+            <div class="expandable-list__item" {{action "goToUrl" (concat this.url item.id) bubbles=false}}>
               {{item.name}}
             </div>
           {{/each}}
         </div>
       {{/if}}
     {{else}}
-      <div {{enable-tooltip title=(get value "0") html=true placement="bottom"}}>
-        {{get value '0'}}
+      <div {{enable-tooltip title=(get this.value "0") html=true placement="bottom"}}>
+        {{get this.value '0'}}
       </div>
     {{/if}}
 
-    <div class='margin-left-xxx-sm list-elements' {{enable-tooltip title=formattedList placement="bottom" html=true}}>
-      {{#if length}}
-        +{{length}}
+    <div class="margin-left-px-6 list-elements" {{enable-tooltip title=this.formattedList placement="bottom" html=true}}>
+      {{#if this.length}}
+        +{{this.length}}
         more
       {{/if}}
-      <i class='fa {{if (eq manager.tetherOn elementId) 'fa-caret-up' 'fa-caret-down'}} padding-left-xxx-sm'></i>
+      <OSS::Icon
+        @icon={{if (eq this.manager.tetherOn this.elementId) "fa-caret-up" "fa-caret-down"}}
+        class="margin-left-px-6" />
     </div>
   </div>
 {{/if}}

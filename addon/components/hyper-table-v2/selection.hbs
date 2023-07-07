@@ -1,6 +1,6 @@
 <div class={{this.classes}} ...attributes>
   <div class="count-container">
-    <i class="far fa-users"></i>
+    <OSS::Icon @icon="fa-users" />
     {{#if this.allCreatorsSelected}}
       <span>{{{t (concat this.intlKeyPath ".all_records_selected") count=@total}}}</span>
     {{else}}

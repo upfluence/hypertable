@@ -1,35 +1,35 @@
-<div class='view-line' {{action onSelectView view}}>
-  <div class='view-name {{if (and selectedView (eq selectedView.id view.id)) 'selected'}}'>{{view.name}}</div>
-  <div class='view-icons'>
-    {{#if predefined}}
-      <i class='fa fa-plus' {{action addPredefinedView view bubbles=false}}></i>
+<div class="view-line" {{action this.onSelectView this.view}}>
+  <div class="view-name {{if (and this.selectedView (eq this.selectedView.id this.view.id)) 'selected'}}">
+    {{this.view.name}}
+  </div>
+
+  <div class="view-icons">
+    {{#if this.predefined}}
+      <OSS::Icon @icon="fa-plus" {{action addPredefinedView view bubbles=false}} />
     {{else}}
-      <i
-        class="fa fa-retweet"
+      <OSS::Icon
+        @icon="fa-retweet"
         {{enable-tooltip title="Update this view with the current columns & filters"}}
-        {{action toggleUpdateViewModal view bubbles=false}} />
+        {{action this.toggleUpdateViewModal this.view bubbles=false}} />
 
-      <i
-        class="fa fa-share-alt"
+      <OSS::Icon
+        @icon="fa-share"
         {{enable-tooltip title="Share this view"}}
-        {{action 'toggleSharingModal' bubbles=false}}
-      ></i>
+        {{action "toggleSharingModal" bubbles=false}} />
 
-      <i
-        class="fa fa-close"
+      <OSS::Icon
+        @icon="fa-times"
         {{enable-tooltip title="Delete the view"}}
-        {{action deleteView view bubbles=false}}
-      ></i>
+        {{action this.deleteView this.view bubbles=false}} />
     {{/if}}
   </div>
 </div>
 
-{{#if showSharingModal}}
-  {{ownership-selection-modal
-    model=view
-    header='Share View'
-    successfulSharing='Your view has been shared'
-    modelType='view'
-    closeModal=(action 'toggleSharingModal')
-  }}
+{{#if this.showSharingModal}}
+  <OwnershipSelectionModal
+    @model={{this.view}}
+    @header="Share View"
+    @successfulSharing="Your view has been shared"
+    @modelType="view"
+    @closeModal={{action "toggleSharingModal"}} />
 {{/if}}

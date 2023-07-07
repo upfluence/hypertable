@@ -1,47 +1,50 @@
 <header {{sortable-handle}}>
-  <div class='cell-header' {{action 'orderColumn' bubbles=false}}>
-    <div class='header-title-container'>
-      <span class='field-title' {{enable-tooltip title=this.column.field.name}}>
-        {{#if column.field.title}}
-          <span>{{column.field.title}}</span>
+  <div class="cell-header" {{action "orderColumn" bubbles=false}}>
+    <div class="header-title-container">
+      <span class="field-title" {{enable-tooltip title=this.column.field.name}}>
+        {{#if this.column.field.title}}
+          <span>{{this.column.field.title}}</span>
         {{else}}
-          {{column.field.name}}
+          {{this.column.field.name}}
         {{/if}}
       </span>
 
-      {{#if column.field.tooltip}}
-        <i class="fa fa-info-circle header-tooltip" {{enable-tooltip title=column.field.tooltip html=true placement="bottom"}} />
+      {{#if this.column.field.tooltip}}
+        <OSS::Icon @icon="fa-info-circle" class="header-tooltip" {{enable-tooltip title=this.column.field.tooltip html=true placement="bottom"}} />
       {{/if}}
 
-      {{#if (eq column.orderDirection 'asc')}}
-        &nbsp;<span class='order-direction'>&uarr;</span>
-      {{else if (eq column.orderDirection 'desc')}}
-        &nbsp;<span class='order-direction'>&darr;</span>
+      {{#if (eq this.column.orderDirection "asc")}}
+        &nbsp;<span class="order-direction">&uarr;</span>
+      {{else if (eq this.column.orderDirection "desc")}}
+        &nbsp;<span class="order-direction">&darr;</span>
       {{/if}}
     </div>
 
-    {{#if column.field.clustering_key}}
-      <div class='subtitle text-size-4'>
-        {{column.field.clustering_key}}
+    {{#if this.column.field.clustering_key}}
+      <div class="subtitle font-size-sm">
+        {{this.column.field.clustering_key}}
       </div>
-    {{else if column.field.subtitle}}
-      <div class='subtitle text-size-4'>
-        {{column.field.subtitle}}
+    {{else if this.column.field.subtitle}}
+      <div class="subtitle font-size-sm">
+        {{this.column.field.subtitle}}
       </div>
     {{/if}}
   </div>
 
-  <div class='icon-commands' data-control-name={{concat 'table_column_filter_sort_toggle_' column.key}}>
-    {{#if _supportsOrderingOrFiltering}}
-      <i class='fa fa-filter' {{enable-tooltip title='Filters'}} {{action 'toggleFiltersPanel' bubbles=false}}></i>
+  <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" this.column.key}}>
+    {{#if this._supportsOrderingOrFiltering}}
+      <OSS::Icon
+        @icon="fa-filter"
+        {{enable-tooltip title="Filters"}}
+        {{action "toggleFiltersPanel" bubbles=false}} />
     {{/if}}
 
-    <i class='fa fa-bars fa-rotate-90'></i>
+    <OSS::Icon @icon="fa-bars fa-rotate-90" />
   </div>
 
-  {{#if (and _supportsOrderingOrFiltering (eq manager.tetherOn column.key))}}
-    <div class='available-filters' {{on-click-outside (action 'toggleFiltersPanel' bubbles=false)}}>
-      {{component _filtersRenderingComponent column=column manager=manager}}
+  {{#if (and this._supportsOrderingOrFiltering (eq this.manager.tetherOn this.column.key))}}
+    <div class="available-filters" {{on-click-outside (action "toggleFiltersPanel" bubbles=false)}}>
+      {{component this._filtersRenderingComponent column=this.column manager=this.manager}}
     </div>
   {{/if}}
 </header>

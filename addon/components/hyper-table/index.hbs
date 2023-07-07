@@ -65,14 +65,14 @@
             class="field-category {{unless this._activeFieldCategory 'field-category--active'}}"
             {{action "setFieldCategory"}}>
             <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
-            <div><i class="fas fa-caret-right"></i></div>
+            <div><OSS::Icon @icon="fa-caret-right" /></div>
           </div>
           {{#each this._fieldCategories as |category|}}
             <div class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
                  data-control-name={{concat "field_category_toggle_" category.key}}
                  {{action "setFieldCategory" category.key}}>
               <div>{{category.label}}</div>
-              <div><i class="fas fa-caret-right"></i></div>
+              <div><OSS::Icon @icon="fa-caret-right" /></div>
             </div>
           {{/each}}
         </div>

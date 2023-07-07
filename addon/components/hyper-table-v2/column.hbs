@@ -3,24 +3,25 @@
     <div class="cell-header" role="button" {{on "click" this.orderColumn}}>
       <div class="header-title-container">
         {{#if this.loadingHeaderComponent}}
-          <i class="fa fa-circle-o-notch fa-spin"></i>
+          <OSS::Icon @icon="fa-spinner fa-spin" />
         {{else if this.headerComponent}}
           <this.headerComponent.component @handler={{@handler}} @column={{@column}} @extra={{this.headerComponent.args}} />
         {{/if}}
 
         {{#if (eq @column.order.direction "asc")}}
-          <span class="margin-left-xxx-sm text-color-default"><i class="fas fa-long-arrow-up"></i></span>
+          <span class="margin-left-px-6 text-color-default"><OSS::Icon @icon="fa-long-arrow-up" /></span>
         {{else if (eq @column.order.direction "desc")}}
-          <span class="margin-left-xxx-sm text-color-default"><i class="fas fa-long-arrow-down"></i></span>
+          <span class="margin-left-px-6 text-color-default"><OSS::Icon @icon="fa-long-arrow-down" /></span>
         {{/if}}
       </div>
     </div>
 
     <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
       {{#if (or @column.definition.filterable @column.definition.orderable)}}
-        <i class="fa fa-filter" role="button"
+        <OSS::Icon
+          @icon="fa-filter" role="button"
           {{on "click" this.toggleFilteringComponent}}
-          {{enable-tooltip title=(t "hypertable.column.filtering.label")}}></i>
+          {{enable-tooltip title=(t "hypertable.column.filtering.label")}} />
       {{/if}}
 
       {{#if (and this.filteringComponent (eq @handler.tetherOn @column.definition.key))}}
@@ -31,7 +32,7 @@
       {{/if}}
 
       {{#if this.displayMoveIndicator}}
-        <i class="fas fa-bars fa-rotate-90"></i>
+        <OSS::Icon @icon="fa-bars fa-rotate-90" />
       {{/if}}
     </div>
   </header>

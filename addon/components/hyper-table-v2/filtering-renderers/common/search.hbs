@@ -5,7 +5,7 @@
                          @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}>
       <:suffix>
         {{#if (gt this.searchQuery.length 0)}}
-          <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
+          <OSS::Icon @icon="fa-times" {{on "click" this.onClearSearch}} />
         {{/if}}
       </:suffix>
     </OSS::InputContainer>
