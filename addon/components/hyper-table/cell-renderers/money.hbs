@@ -1,52 +1,52 @@
-{{#if (and emptyValue (or (not editStatus.status) isSuccess))}}
-  {{#if column.upsertable}}
-    <span {{action 'toggleEditing'}}>
-      {{or column.field.emptyPlaceholder 'Add value'}}
+{{#if (and this.emptyValue (or (not this.editStatus.status) this.isSuccess))}}
+  {{#if this.column.upsertable}}
+    <span {{action "toggleEditing"}}>
+      {{or this.column.field.emptyPlaceholder "Add value"}}
     </span>
   {{else}}
-    {{or column.field.emptyState '—'}}
+    {{or this.column.field.emptyState "—"}}
   {{/if}}
 {{else}}
-  <div class='editing-input'>
-    {{#if (and editStatus.status (not isSuccess))}}
-      <div class={{if isError 'is-invalid'}}>
+  <div class="editing-input">
+    {{#if (and this.editStatus.status (not this.isSuccess))}}
+      <div class={{if this.isError "is-invalid"}}>
         {{#x-select
-          class='editing-input__field editing-input__field--select form-control'
-          value=item.currency
-          on-change=(action 'updateCurrency')
+          class="editing-input__field editing-input__field--select form-control"
+          value=this.item.currency
+          on-change=(action "updateCurrency")
           as |xs|
         }}
-          {{#each manager.options.currencies as |code|}}
+          {{#each this.manager.options.currencies as |code|}}
             {{#xs.option value=code}}{{code}}{{/xs.option}}
           {{/each}}
         {{/x-select}}
         {{input
-          type='number'
-          insert-newline=(action 'toggleEditing' editableValue)
-          value=value
-          class='editing-input__field form-control'
+          type="number"
+          insert-newline=(action "toggleEditing" this.editableValue)
+          value=this.value
+          class="editing-input__field form-control"
         }}
       </div>
     {{else}}
-      <div class="text-value" {{enable-tooltip title=(format-money amount item.currency) placement="bottom"}}>
-        {{if emptyValue (or column.field.emptyState '—') (format-money amount currency)}}
+      <div class="text-value" {{enable-tooltip title=(format-money this.amount this.item.currency) placement="bottom"}}>
+        {{if this.emptyValue (or this.column.field.emptyState "—") (format-money this.amount this.currency)}}
       </div>
     {{/if}}
   </div>
 {{/if}}
 
 {{! TODO: Extract to component }}
-{{#if column.upsertable}}
+{{#if this.column.upsertable}}
   <div class='status-container margin-left-x-sm text-color-default-lighter'>
-    {{#if isSuccess}}
-      <i class='fa fa-pencil cell-edition delayed' onclick={{action 'toggleEditing'}}></i>
-      <span class='text-color-success upf-icon upf-icon--check text-size-6'></span>
-    {{else if (or isEditing isError)}}
-      <i class='fa fa-save' onclick={{action 'toggleEditing' editableValue}}></i>
-    {{else if isSaving}}
-      {{loading-state}}
+    {{#if this.isSuccess}}
+      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
+      <OSS::Icon @icon="fa-check" class="font-size-lg font-color-success-500" />
+    {{else if (or this.isEditing this.isError)}}
+      <OSS::Icon @icon="fa-save" {{action "toggleEditing" this.editableValue}} />
+    {{else if this.isSaving}}
+      <LoadingState />
     {{else}}
-      <i class='fa fa-pencil cell-edition' onclick={{action 'toggleEditing'}}></i>
+      <OSS::Icon @icon="fa-pencil" class="cell-edition" {{action "toggleEditing"}} />
     {{/if}}
   </div>
 {{/if}}

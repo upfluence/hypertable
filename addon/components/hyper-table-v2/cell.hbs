@@ -5,7 +5,7 @@
      {{on "mouseleave" (fn this.toggleHover @row false)}}
      ...attributes>
   {{#if this.loading}}
-    <div class="skeleton-placeholder"></div>
+    <OSS::Skeleton @height={{10}} @width="100%" />
   {{else if (has-block)}}
     {{yield}}
   {{else if this.cellComponent}}

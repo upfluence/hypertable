@@ -1,12 +1,12 @@
 <div class="hypertable__facetting fx-col">
   {{#if this.searchEnabled}}
-    <div class="margin-bottom-xxx-sm">
+    <div class="margin-bottom-px-6">
       <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
       <OSS::InputContainer @value={{this.searchQuery}} @onChange={{this.onInputChanged}}
                            @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}>
         <:suffix>
           {{#if (gt this.searchQuery.length 0)}}
-            <i class="fa fa-remove" role="button" {{on "click" this.onClearSearch}}></i>
+            <OSS::Icon @icon="fa-times" role="button" {{on "click" this.onClearSearch}} />
           {{/if}}
         </:suffix>
       </OSS::InputContainer>
@@ -15,7 +15,7 @@
 
   {{#if this.loading}}
     {{#each this.loadingFacetsRange}}
-      <div class="upf-skeleton-effect margin-top-xxx-sm" style={{this.skeletonStyle}}></div>
+      <div class="upf-skeleton-effect margin-top-px-6" style={{this.skeletonStyle}}></div>
     {{/each}}
   {{else}}
     {{#each this.facets as |facet|}}
@@ -23,13 +23,13 @@
            role="button" {{on "click" (fn this.toggleFacet facet)}}>
         <div class="fx-row item">
           {{#if this.ongoingFacetApply}}
-            <span class="margin-right-xx-sm">
-              <i class="fa fa-circle-o-notch fa-spin"></i>
+            <span class="margin-right-px-12">
+              <OSS::Icon @icon="fa-spinner-third fa-spin" />
             </span>
           {{else}}
             <OSS::Checkbox
               @checked={{array-includes this.appliedFacets facet.identifier}} @size="sm" @onChange={{fn this.toggleFacet facet}}
-              class="margin-right-xx-sm" />
+              class="margin-right-px-12" />
           {{/if}}
           {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
         </div>
