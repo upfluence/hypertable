@@ -2,7 +2,7 @@
                      @onChange={{this.onSearchInput}} data-control-name="table_search_input">
   <:suffix>
     {{#if (gt this.searchQuery.length 0)}}
-      <OSS::Icon @icon="fa-times" {{on "click" this.onClearSearch}} />
+      <OSS::Icon @icon="fa-times" role="button" {{on "click" this.onClearSearch}} />
     {{/if}}
   </:suffix>
 </OSS::InputContainer>
