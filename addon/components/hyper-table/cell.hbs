@@ -1,13 +1,13 @@
-{{#if loading}}
-  <div class='skeleton-placeholder'></div>
+{{#if this.loading}}
+  <OSS::Skeleton @height={{10}} @width="100%" />
 {{else if (has-block)}}
   {{yield}}
 {{else}}
-  {{#if loading}}
-    <div class='skeleton-placeholder'></div>
+  {{#if this.loading}}
+    <OSS::Skeleton @height={{10}} @width="100%" />
   {{else if (has-block)}}
     {{yield}}
   {{else}}
-    {{component renderingComponent item=item column=column manager=manager}}
+    {{component this.renderingComponent item=this.item column=this.column manager=this.manager}}
   {{/if}}
 {{/if}}

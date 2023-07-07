@@ -68,7 +68,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     );
     assert.dom('.oss-input-container').exists();
     await fillIn('.oss-input-container input', 'test');
-    assert.dom('.oss-input-container .suffix .fa-remove').exists();
+    assert.dom('.oss-input-container .suffix .fa-times').exists();
   });
 
   test('The remove icon is hidden when the input is empty', async function (assert: Assert) {
@@ -76,7 +76,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
     assert.dom('.oss-input-container').exists();
-    assert.dom('.oss-input-container .suffix .fa-remove').doesNotExist();
+    assert.dom('.oss-input-container .suffix .fa-times').doesNotExist();
   });
 
   test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (assert: Assert) {
@@ -86,7 +86,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     );
     assert.dom('.oss-input-container').exists();
     await fillIn('.oss-input-container input', 'test');
-    await click('.oss-input-container .suffix .fa-remove');
+    await click('.oss-input-container .suffix .fa-times');
     assert.ok(
       //@ts-ignore
       handlerSpy.applyFilters.calledWith(this.column, [

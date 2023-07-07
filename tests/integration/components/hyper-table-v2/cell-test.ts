@@ -25,7 +25,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
   test('it renders the loading state correctly', async function (assert) {
     await render(hbs`<HyperTableV2::Cell @loading={{true}} />`);
     assert.dom('.hypertable__cell').hasClass('hypertable__cell--loading');
-    assert.dom('.hypertable__cell .skeleton-placeholder').exists();
+    assert.dom('.hypertable__cell .upf-skeleton-content').exists();
   });
 
   test('it looks up the rendering component for the column', async function (assert: Assert) {
