@@ -15,6 +15,7 @@ export default Component.extend({
   renderingComponent: null,
 
   click() {
+    if (this.loading) return;
     let editStatus = this.manager.get('editStatus').find((editStatus) => {
       return editStatus.status === 'editing' || editStatus.status === 'error';
     });
