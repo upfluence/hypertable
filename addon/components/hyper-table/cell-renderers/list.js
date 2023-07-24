@@ -17,7 +17,13 @@ export default Component.extend(CellRendererMixin, {
   }),
 
   actions: {
-    goToUrl(url) {
+    goToUrl(url, event) {
+      if (!this.url) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+
       window.open(url, '_blank');
     },
 
