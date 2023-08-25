@@ -16,7 +16,11 @@ export default Mixin.create({
         this.manager.destroyTetherInstance();
       }
 
-      this.manager.toggleColumnVisibility(this.column.field, this.column);
+      this.manager.toggleColumnVisibility(this.column.field, this.column).then(() => {
+        if (this.manager.hooks.onColumnsChange) {
+          this.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
+        }
+      });
     }
   }
 });
