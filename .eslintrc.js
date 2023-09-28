@@ -32,6 +32,7 @@ module.exports = {
     'ember/no-actions-hash': 'off',
     'ember/no-component-lifecycle-hooks': 'off'
   },
+  rules: {},
   overrides: [
     // node files
     {
@@ -43,7 +44,8 @@ module.exports = {
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js'
+        'tests/dummy/config/**/*.js',
+        './.prettierrc.js'
       ],
       excludedFiles: ['addon/**', 'addon-test-support/**', 'app/**', 'tests/dummy/app/**'],
       parserOptions: {
@@ -54,7 +56,12 @@ module.exports = {
         node: true
       },
       plugins: ['node'],
-      rules: {}
+      extends: ['plugin:node/recommended']
+    },
+    {
+      // Test files:
+      files: ['tests/**/*-test.{js,ts}'],
+      extends: ['plugin:qunit/recommended']
     }
   ]
 };

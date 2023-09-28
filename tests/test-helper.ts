@@ -12,6 +12,8 @@ setup(QUnit.assert);
 // @ts-ignore
 setApplication(Application.create(config.APP));
 
+setup(QUnit.assert);
+
 start();
 
 declare module 'ember-test-helpers' {
