@@ -161,7 +161,9 @@ export default Component.extend({
   init() {
     this._super();
 
-    $(window).on('resize', this._resizeInnerTable.bind(this));
+    if (!this.disableAutoResize) {
+      $(window).on('resize', this._resizeInnerTable.bind(this));
+    }
 
     // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
     run.scheduleOnce('afterRender', this, () => {
@@ -187,7 +189,9 @@ export default Component.extend({
     // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
     once(() => {
       this.set('_innerTable', document.querySelector('.hypertable__table'));
-      this._resizeInnerTable();
+      if (!this.disableAutoResize) {
+        this._resizeInnerTable();
+      }
     });
   },
 
