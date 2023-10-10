@@ -8,39 +8,39 @@ import { FieldSize, Row } from '@upfluence/hypertable/core/interfaces';
 import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 
-module('Unit | core/handler', function (hooks) {
+module('Unit | core/handler', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function () {
+  hooks.beforeEach(function() {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
   });
 
-  test('it works', function (assert) {
+  test('it works', function(assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.ok(handler);
   });
 
-  test('it uses the base rendering resolver when non is passed', function (assert: Assert) {
+  test('it uses the base rendering resolver when non is passed', function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.ok(handler.renderingResolver instanceof BaseRenderingResolver);
   });
 
-  test('Handler#fetchColumns', async function (assert: Assert) {
+  test('Handler#fetchColumns', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.equal(handler.columns.length, 0);
     await handler.fetchColumns();
     assert.equal(handler.columns.length, 4);
   });
 
-  test('Handler#fetchRows', async function (assert: Assert) {
+  test('Handler#fetchRows', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.equal(handler.rows.length, 0);
     await handler.fetchRows();
     assert.equal(handler.rows.length, 2);
   });
 
-  test('Handler#addColumn', async function (assert: Assert) {
+  test('Handler#addColumn', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     assert.equal(handler.columns.length, 0);
     await handler.addColumn({
@@ -62,8 +62,8 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.columns[0].definition.key, 'foo');
   });
 
-  module('Handler#removeColumn', function () {
-    test('when filter is empty', async function (assert: Assert) {
+  module('Handler#removeColumn', function() {
+    test('when filter is empty', async function(assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
       handler.columns = [
@@ -93,7 +93,7 @@ module('Unit | core/handler', function (hooks) {
       assert.ok(handlerTriggerEventSpy.notCalled);
     });
 
-    test('when filters is present', async function (assert: Assert) {
+    test('when filters is present', async function(assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
       handler.columns = [
@@ -124,13 +124,13 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
-  module('Handler#applyFilter', function (hooks) {
-    hooks.beforeEach(async function () {
+  module('Handler#applyFilter', function(hooks) {
+    hooks.beforeEach(async function() {
       this.handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       await this.handler.fetchColumns();
     });
 
-    test('new filters are added to the column', async function (assert: Assert) {
+    test('new filters are added to the column', async function(assert: Assert) {
       this.handler.applyFilters(this.handler.columns[0], [{ key: 'foo', value: 'bar' }]);
 
       assert.equal(this.handler.columns[0].filters.length, 1);
@@ -142,7 +142,7 @@ module('Unit | core/handler', function (hooks) {
       ]);
     });
 
-    test('new filters trigger event with the apply-filters event', async function (assert: Assert) {
+    test('new filters trigger event with the apply-filters event', async function(assert: Assert) {
       const handlerSpy = sinon.spy(this.handler, 'triggerEvent');
       await this.handler.applyFilters(this.handler.columns[0], [{ key: 'foo', value: 'bar' }]);
 
@@ -151,7 +151,7 @@ module('Unit | core/handler', function (hooks) {
       );
     });
 
-    test('existing filters are updated if they have the same key', function (assert: Assert) {
+    test('existing filters are updated if they have the same key', function(assert: Assert) {
       this.handler.columns[0].filters = [{ key: 'foo', value: 'bar' }];
 
       this.handler.applyFilters(this.handler.columns[0], [
@@ -167,7 +167,7 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
-  test('Handler#resetColumns', async function (assert: Assert) {
+  test('Handler#resetColumns', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     await handler.fetchColumns();
 
@@ -181,7 +181,7 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.columns[1].order, undefined);
   });
 
-  test('Handler#resetRows', async function (assert: Assert) {
+  test('Handler#resetRows', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
 
@@ -195,7 +195,7 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.rows.length, 2);
   });
 
-  test('Handler#removeRow', async function (assert: Assert) {
+  test('Handler#removeRow', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
@@ -209,7 +209,7 @@ module('Unit | core/handler', function (hooks) {
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
   });
 
-  test('Handler#mutateRows', async function (assert: Assert) {
+  test('Handler#mutateRows', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
@@ -232,7 +232,7 @@ module('Unit | core/handler', function (hooks) {
     assert.false(didRefresh);
   });
 
-  test('Handler#applyOrder', async function (assert: Assert) {
+  test('Handler#applyOrder', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const tableManagerSpy = sinon.spy(this.tableManager);
 
@@ -245,7 +245,7 @@ module('Unit | core/handler', function (hooks) {
   });
 
   module('Handler#toggleSelectAll', () => {
-    test('it selects all the loaded rows', async function (assert: Assert) {
+    test('it selects all the loaded rows', async function(assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       assert.deepEqual(handler.selection, []);
 
@@ -254,7 +254,7 @@ module('Unit | core/handler', function (hooks) {
       assert.equal(handler.selection.length, 2);
     });
 
-    test('it selects all the rows', async function (assert: Assert) {
+    test('it selects all the rows', async function(assert: Assert) {
       this.rowsFetcher = new AllRowsFetcher();
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       assert.deepEqual(handler.selection, []);
@@ -264,7 +264,7 @@ module('Unit | core/handler', function (hooks) {
       assert.equal(handler.selection, 'all');
     });
 
-    test('it clears the selected rows', async function (assert: Assert) {
+    test('it clears the selected rows', async function(assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       assert.deepEqual(handler.selection, []);
       await handler.fetchRows();
@@ -276,7 +276,7 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
-  test('Handler#selectAllGlobal', async function (assert) {
+  test('Handler#selectAllGlobal', async function(assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     populateSelectionAndExclusionHandler(handler);
     assert.equal(handler.selection.length, 1);
@@ -287,7 +287,7 @@ module('Unit | core/handler', function (hooks) {
     assert.deepEqual(handler.exclusion, []);
   });
 
-  test('Handler#selectAllGlobal', async function (assert) {
+  test('Handler#selectAllGlobal', async function(assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     populateSelectionAndExclusionHandler(handler);
     assert.equal(handler.selection.length, 1);
@@ -298,7 +298,7 @@ module('Unit | core/handler', function (hooks) {
     assert.deepEqual(handler.exclusion, []);
   });
 
-  test('Handler#updateSelection', async function (assert: Assert) {
+  test('Handler#updateSelection', async function(assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     await handler.fetchRows();
 
@@ -311,8 +311,8 @@ module('Unit | core/handler', function (hooks) {
     assert.deepEqual(handler.selection, []);
   });
 
-  module('Handler#onBottomReached', function () {
-    test('it does nothing if the maximum rows have been loaded already', async function (assert: Assert) {
+  module('Handler#onBottomReached', function() {
+    test('it does nothing if the maximum rows have been loaded already', async function(assert: Assert) {
       sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {
         return Promise.resolve({ rows: [], meta: { total: 0 } });
       });
@@ -326,7 +326,7 @@ module('Unit | core/handler', function (hooks) {
       assert.ok(handlerSpy.fetchRows.calledOnce);
     });
 
-    test('it calls the Handler#fetchRows method if there are more rows to be fetched', async function (assert: Assert) {
+    test('it calls the Handler#fetchRows method if there are more rows to be fetched', async function(assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       const handlerSpy = sinon.spy(handler);
       await handler.fetchRows();
@@ -336,8 +336,8 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
-  module('Handler#fetchFacets', function () {
-    test('it calls the fetchFacets method of the manager correctly', async function (assert: Assert) {
+  module('Handler#fetchFacets', function() {
+    test('it calls the fetchFacets method of the manager correctly', async function(assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       const tableManagerSpy = sinon.spy(this.tableManager);
       const resp = await handler.fetchFacets('foo', 'id');
@@ -359,8 +359,23 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
-  module('Events', function () {
-    test('callbacks are called properly when an event is subscribed to', function (assert: Assert) {
+  module('Handler#updateRowById', function() {
+    test('it calls the updateRowById method of the manager correctly', async function(assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
+      await handler.fetchRows();
+
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
+      await handler.updateRowById(12);
+
+      // @ts-ignore
+      assert.ok(rowsFetcherSpy.fetchById.calledOnceWithExactly(12));
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'world');
+    });
+  });
+
+  module('Events', function() {
+    test('callbacks are called properly when an event is subscribed to', function(assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
 
       handler.on('row-click', (row: Row) => {
