@@ -1,4 +1,4 @@
-import { RowsFetcherResponse } from '@upfluence/hypertable/core/interfaces';
+import { Row, RowsFetcherResponse } from '@upfluence/hypertable/core/interfaces';
 
 export default class RowsFetcher {
   // @ts-ignore
@@ -29,6 +29,20 @@ export default class RowsFetcher {
         }
       ],
       meta: { total: 12 }
+    });
+  }
+
+  fetchById(recordId: number): Promise<Row> {
+    return Promise.resolve({
+      recordId,
+      influencerId: 42,
+      record_id: 12,
+      holderId: 57,
+      holderType: 'list',
+      foo: 'ekip',
+      bar: 'world',
+      total: 123,
+      date: 1643386394
     });
   }
 }

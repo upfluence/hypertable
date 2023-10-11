@@ -8,7 +8,7 @@ import { FieldSize, Row } from '@upfluence/hypertable/core/interfaces';
 import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 
-module('Unit | core/handler', function (hooks) {
+module('Unit | core/handler', function(hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(function () {
@@ -356,6 +356,21 @@ module('Unit | core/handler', function (hooks) {
         ],
         filtering_key: 'id'
       });
+    });
+  });
+
+  module('Handler#updateRowById', function () {
+    test('it calls the updateRowById method of the manager correctly', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
+      await handler.fetchRows();
+
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
+      await handler.updateRowById(12);
+
+      // @ts-ignore
+      assert.ok(rowsFetcherSpy.fetchById.calledOnceWithExactly(12));
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'world');
     });
   });
 

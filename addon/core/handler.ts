@@ -110,6 +110,21 @@ export default class TableHandler {
       });
   }
 
+  async updateRowById(recordId: number): Promise<void> {
+    if (!this.rowsFetcher.fetchById) {
+      throw new Error('[Hypertable/Handler] The RowsFetcher in use does not support fetchById.');
+    }
+
+    return this.rowsFetcher.fetchById(recordId).then((updatedRow: Row) => {
+      this.mutateRow(recordId, (row) => {
+        Object.keys(updatedRow).forEach((key) => {
+          set(row, key, updatedRow[key]);
+        });
+        return true;
+      });
+    });
+  }
+
   reorderColumns(columns: Column[]) {
     this.columns = columns;
     this.tableManager.upsertColumns({ columns: this.columns });
