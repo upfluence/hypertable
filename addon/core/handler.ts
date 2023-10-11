@@ -119,10 +119,10 @@ export default class TableHandler {
       this.mutateRow(recordId, (row) => {
         Object.keys(updatedRow).forEach((key) => {
           set(row, key, updatedRow[key]);
-        })
+        });
         return true;
-      })
-    })
+      });
+    });
   }
 
   reorderColumns(columns: Column[]) {
