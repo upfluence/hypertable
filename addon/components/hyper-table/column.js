@@ -50,6 +50,7 @@ export default Component.extend({
   _filtersRenderingComponent: or('column.filtersRenderingComponent', '_typeInferredFiltersRenderingComponent'),
 
   didReceiveAttrs() {
+    this._super();
     if (this.column && !this.column.renderingComponent) {
       AVAILABLE_RENDERERS.forEach((rendererType) => {
         defineProperty(
@@ -64,6 +65,7 @@ export default Component.extend({
   },
 
   willDestroyElement() {
+    this._super(...arguments);
     if (this.manager.tetherOn !== this.column.key) {
       this.manager.destroyTetherInstance();
     }

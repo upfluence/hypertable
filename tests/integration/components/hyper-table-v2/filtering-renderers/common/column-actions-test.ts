@@ -46,7 +46,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     assert.dom('.upf-btn--default').exists();
   });
 
-  test('The remove button is not displayed if it is a sticky column', async function (assert: Assert) {
+  test('The remove button is not displayed if it is a sticky column', async function (assert) {
     this.column = this.handler.columns[0];
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
@@ -56,7 +56,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     assert.dom('.upf-btn--default').exists();
   });
 
-  test('Clicking on the clear button calls the #handler.resetColumns method', async function (assert: Assert) {
+  test('Clicking on the clear button calls the #handler.resetColumns method', async function (assert) {
     const handlerSpy = sinon.spy(this.handler, 'resetColumns');
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
@@ -65,7 +65,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     assert.ok(handlerSpy.calledOnce);
   });
 
-  test('Clicking on the remove button calls the #handler.removeColumn method', async function (assert: Assert) {
+  test('Clicking on the remove button calls the #handler.removeColumn method', async function (assert) {
     const handlerSpy = sinon.spy(this.handler, 'removeColumn');
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
@@ -74,7 +74,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     assert.ok(handlerSpy.calledOnce);
   });
 
-  test('Clicking on the clear button calls the #handler.triggerEvent with the reset-columns event', async function (assert: Assert) {
+  test('Clicking on the clear button calls the #handler.triggerEvent with the reset-columns event', async function (assert) {
     const handlerSpy = sinon.spy(this.handler, 'triggerEvent');
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`

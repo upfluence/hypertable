@@ -10,6 +10,7 @@ export default NumericFilterRenderer.extend({
   },
 
   didReceiveAttrs() {
+    this._super();
     if (this.column) {
       let lowerBound = this.column.filters.findBy('key', 'lower_bound');
       let upperBound = this.column.filters.findBy('key', 'upper_bound');

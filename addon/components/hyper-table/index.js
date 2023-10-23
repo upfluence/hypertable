@@ -111,7 +111,7 @@ export default Component.extend({
   _allRowSelectedManager(value) {
     this._setAllRowSelected(value);
 
-    this.get('_collection').setEach('selected', value);
+    this._collection.setEach('selected', value);
 
     this.manager.set('excludedItems', []);
   },
@@ -196,6 +196,7 @@ export default Component.extend({
   },
 
   willDestroyElement() {
+    this._super(...arguments);
     $(window).off('resize');
   },
 
@@ -301,7 +302,7 @@ export default Component.extend({
     toggleSelectAll(value) {
       this.manager.set('_selectAllChecked', value);
       if (this.manager._selectAllChecked) {
-        this.get('_collection').setEach('selected', true);
+        this._collection.setEach('selected', true);
         if (this._selectedCount === this.manager.meta.total) {
           this._allRowSelectedManager(true);
         }

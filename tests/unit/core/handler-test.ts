@@ -8,7 +8,7 @@ import { FieldSize, Row } from '@upfluence/hypertable/core/interfaces';
 import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 
-module('Unit | core/handler', function(hooks) {
+module('Unit | core/handler', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(function () {

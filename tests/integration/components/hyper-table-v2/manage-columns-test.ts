@@ -159,7 +159,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         await click('.upf-btn.upf-btn--default');
 
         const columnDefinitionsChecked = document.querySelectorAll('.fields-list .field input:checked');
-        assert.ok(columnDefinitionsChecked.length === 1);
+        assert.strictEqual(columnDefinitionsChecked.length, 1);
         assert.equal(
           columnDefinitionsChecked[0].parentElement?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_code'

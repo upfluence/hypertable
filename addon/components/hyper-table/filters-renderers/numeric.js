@@ -45,6 +45,7 @@ export default Component.extend(FiltersRendererMixin, {
   },
 
   didReceiveAttrs() {
+    this._super();
     if (this.column) {
       let lowerBound = this.column.filters.findBy('key', 'lower_bound');
       let upperBound = this.column.filters.findBy('key', 'upper_bound');

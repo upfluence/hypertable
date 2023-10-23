@@ -19,7 +19,7 @@ module('Unit | core/rendering-resolver', function (hooks) {
   test('it returns the right header rendering component', async function (assert: Assert) {
     const renderingResolver = new BaseRenderingResolver(getContext());
     const resolved = await renderingResolver.lookupHeaderComponent(buildColumnDefinition('foo'));
-    assert.deepEqual(resolved.component, ensureSafeComponent(BaseHeaderRenderer, getContext()))
-    assert.equal(resolved.args, undefined)
+    assert.deepEqual(resolved.component, ensureSafeComponent(BaseHeaderRenderer, getContext()));
+    assert.equal(resolved.args, undefined);
   });
 });

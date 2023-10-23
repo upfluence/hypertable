@@ -128,7 +128,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
         handlerSpy.applyFilters.calledWith(this.column, [
           { key: 'lower_bound', value: '' },
           { key: 'upper_bound', value: '' },
-          { key: 'moving', value: 'today' },
+          { key: 'moving', value: 'today' }
         ])
       );
     });
