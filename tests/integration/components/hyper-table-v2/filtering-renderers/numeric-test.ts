@@ -140,10 +140,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
 
     test('it triggers applyFilter when the range values are changed', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
-      //@ts-ignore
-      Ember.run.debounce = function (target: () => {}, func: () => {}) {
-        func.call(target);
-      };
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );

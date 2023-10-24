@@ -1,11 +1,11 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { isTesting } from '@embroider/macros';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
-// @ts-ignore
-import { run } from '@ember/runloop';
+import { debounce } from '@ember/runloop';
 
 interface HyperTableV2FilteringRenderersNumericArgs {
   handler: TableHandler;
@@ -48,8 +48,7 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
 
   @action
   addRangeFilter(): void {
-    // @ts-ignore
-    run.debounce(this, this._addRangeFilter, RANGE_DEBOUNCE_TIME);
+    debounce(this, this._addRangeFilter, isTesting() ? 0 : RANGE_DEBOUNCE_TIME);
   }
 
   @action

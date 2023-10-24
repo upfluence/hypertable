@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable node/no-extraneous-require */
+
 const { name, version } = require('./package');
 const MergeTrees = require('broccoli-merge-trees');
 const writeFile = require('broccoli-file-creator');
@@ -32,3 +34,4 @@ module.exports = {
     return new MergeTrees(trees);
   }
 };
+/* eslint-enable node/no-extraneous-require */
