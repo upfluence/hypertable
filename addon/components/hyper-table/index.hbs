@@ -207,7 +207,7 @@
     {{#each this._columns as |column index|}}
       {{#if (gt index 0)}}
         <HyperTable::Column
-          @column={{column}} @manager={{this.manager}} {{sortable-item model=column onDragStart=(action "dragStarted")}}>
+          @column={{column}} @manager={{this.manager}} {{sortable-item model=column spacing=5 distance=10 onDragStart=(action "dragStarted")}}>
           {{#if this.loadingData}}
             {{#each this._loadingCollection}}
               <HyperTable::Cell @loading={{true}} />
