@@ -37,11 +37,6 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
     assert.dom('.prefix .fa-search').exists();
   });
 
-  test('The input has a search icon prefix', async function (assert) {
-    await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
-    assert.dom('.prefix .fa-search').exists();
-  });
-
   module('When text is inserted in the input', () => {
     test('The handler.applyFilters is called', async function (assert) {
       const handlerSpy = sinon.spy(this.handler);
