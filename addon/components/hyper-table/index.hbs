@@ -16,7 +16,14 @@
           {{/if}}
         {{else}}
           <OSS::InputContainer @placeholder={{this.placeholder}} @value={{this._searchQuery}}
-                               data-control-name="table_search_input" />
+                               data-control-name="table_search_input">
+            <:prefix><OSS::Icon @icon="fa-search" class="font-color-gray-500" /></:prefix>
+            <:suffix>
+              {{#if (gt this._searchQuery.length 0)}}
+                <OSS::Icon @icon="fa-times" class="font-color-gray-500" role="button" {{action "clearSearch"}} />
+              {{/if}}
+            </:suffix>
+          </OSS::InputContainer>
         {{/if}}
       {{/if}}
 
