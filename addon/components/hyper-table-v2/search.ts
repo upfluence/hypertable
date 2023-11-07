@@ -7,6 +7,7 @@ import { debounce } from '@ember/runloop';
 
 interface HyperTableV2SearchArgs {
   handler: TableHandler;
+  placeholder?: string;
 }
 
 const SEARCH_DEBOUNCE_TIME = 300;
@@ -28,7 +29,8 @@ export default class HyperTableV2Search extends Component<HyperTableV2SearchArgs
   }
 
   get searchPlaceholder(): string {
-    if (this.args.handler?.columns[0]?.definition?.name)
+    if (this.args.placeholder) return this.args.placeholder;
+    else if (this.args.handler?.columns[0]?.definition?.name)
       return this.intl.t('hypertable.header.search_by') + ' ' + this.args.handler.columns[0].definition.name;
     return this.intl.t('hypertable.header.search');
   }

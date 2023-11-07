@@ -11,10 +11,6 @@
 
 <div class="padding-px-12">
   <HyperTableV2 @handler={{this.handler}}>
-    <:search>
-      <OSS::InputContainer style="width: 200px" @value={{this.searchQuery}}
-                           @placeholder="Custom Search Block" @onChange={{this.onCustomSearchInput}} />
-    </:search>
     <:contextual-actions>
       {{!-- To do : move contextual-actions CSS to the target component --}}
       <div class="contextual-actions contextual-actions--visible">

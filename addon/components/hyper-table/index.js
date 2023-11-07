@@ -201,6 +201,11 @@ export default Component.extend({
   },
 
   actions: {
+    clearSearch() {
+      this._searchQuery = '';
+      this._doSearch();
+    },
+
     reorderColumns(itemModels) {
       let _cs = [this._columns[0]].concat(itemModels);
       let hasSameOrder = compare(_cs.mapBy('key'), this.manager.columns.mapBy('key')) === 0;
