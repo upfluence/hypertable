@@ -360,6 +360,19 @@ module('Unit | core/handler', function (hooks) {
   });
 
   module('Handler#updateRowById', function () {
+    test('it skips the row refresh if the record_id is not loaded yet', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
+      await handler.fetchRows();
+
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
+      await handler.updateRowById(667);
+
+      // @ts-ignore
+      assert.ok(rowsFetcherSpy.fetchById.notCalled)
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
+    });
+
     test('it calls the updateRowById method of the manager correctly', async function (assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
