@@ -115,10 +115,7 @@ export default class TableHandler {
       throw new Error('[Hypertable/Handler] The RowsFetcher in use does not support fetchById.');
     }
 
-    const matchingRow = this.rows.find((row: Row) => {
-      return row.record_id === recordId;
-    });
-    if (!matchingRow) return Promise.resolve();
+    if (!this.rows.find((row: Row) => row.record_id === recordId)) return Promise.resolve();
 
     return this.rowsFetcher.fetchById(recordId).then((updatedRow: Row) => {
       this.mutateRow(recordId, (row) => {
