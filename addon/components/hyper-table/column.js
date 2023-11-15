@@ -73,10 +73,6 @@ export default Component.extend({
 
   actions: {
     toggleFiltersPanel() {
-      let isFirstColumn = this.manager.columns.indexOf(this.column) === 1;
-      let isMedium = this.column.size === 'M';
-      let isSmall = this.column.size === 'S';
-
       if (this.manager.tetherOn !== this.column.key) {
         this.manager.destroyTetherInstance();
       }
@@ -89,7 +85,7 @@ export default Component.extend({
           target: `#${this.elementId} header`,
           attachment: 'top right',
           targetAttachment: 'bottom right',
-          offset: isFirstColumn ? `0 ${isMedium ? '-50px' : isSmall ? '-130px' : '0'}` : '0 0'
+          offset: '0 0'
         },
         true
       );
