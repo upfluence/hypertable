@@ -18,7 +18,7 @@
           class="margin-right-px-12" />
 
         {{#if facet.facetRenderer}}
-          {{facet.facetRenderer}}
+          {{component facet.facetRenderer facet=facet}}
         {{else}}
           <span class={{if facet.applied "text-style-bold"}}>
             {{facet.formattedIdentifier}}
