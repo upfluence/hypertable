@@ -10,7 +10,11 @@
       </span>
 
       {{#if this.column.field.tooltip}}
-        <OSS::Icon @icon="fa-info-circle" class="header-tooltip" {{enable-tooltip title=this.column.field.tooltip html=true placement="bottom"}} />
+        <OSS::Icon
+          @icon="fa-info-circle"
+          class="header-tooltip"
+          {{enable-tooltip title=this.column.field.tooltip html=true placement="bottom"}}
+        />
       {{/if}}
 
       {{#if (eq this.column.orderDirection "asc")}}
@@ -33,10 +37,7 @@
 
   <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" this.column.key}}>
     {{#if this._supportsOrderingOrFiltering}}
-      <OSS::Icon
-        @icon="fa-filter"
-        {{enable-tooltip title="Filters"}}
-        {{action "toggleFiltersPanel" bubbles=false}} />
+      <OSS::Icon @icon="fa-filter" {{enable-tooltip title="Filters"}} {{action "toggleFiltersPanel" bubbles=false}} />
     {{/if}}
 
     <OSS::Icon @icon="fa-bars fa-rotate-90" />

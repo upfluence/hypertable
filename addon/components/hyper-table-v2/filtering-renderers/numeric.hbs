@@ -1,24 +1,37 @@
-<div class="fx-col fx-gap-px-20"
-     data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
+<div
+  class="fx-col fx-gap-px-20"
+  data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}
+>
   {{#if @column.definition.orderable}}
-    <HyperTableV2::FilteringRenderers::Common::Ordering @handler={{@handler}} @column={{@column}}
-                                                        @label={{t "hypertable.column.ordering.label"}}
-                                                        @orderingOptions={{this.orderingDirections}}
-                                                        data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_ordering"}} />
+    <HyperTableV2::FilteringRenderers::Common::Ordering
+      @handler={{@handler}}
+      @column={{@column}}
+      @label={{t "hypertable.column.ordering.label"}}
+      @orderingOptions={{this.orderingDirections}}
+      data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_ordering"}}
+    />
   {{/if}}
 
   {{#if @column.definition.filterable}}
-    <HyperTableV2::FilteringRenderers::Common::Existence @handler={{@handler}} @column={{@column}}
-                                                         @activateWithValue={{this.hasBoundFiltersDefined}}
-                                                         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}} />
+    <HyperTableV2::FilteringRenderers::Common::Existence
+      @handler={{@handler}}
+      @column={{@column}}
+      @activateWithValue={{this.hasBoundFiltersDefined}}
+      data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}}
+    />
     <div class="fx-row fx-gap-px-30">
       <div class="fx-col">
         <label>{{t "hypertable.column.filtering.from"}}</label>
         <OSS::InputContainer>
           <:input>
-            <Input type="number" @placeholder={{t "hypertable.column.filtering.from"}} @value={{this.lowerBoundFilter}}
-                   autocomplete="off" {{on "keydown" this.addRangeFilter}}
-                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_from"}} />
+            <Input
+              type="number"
+              @placeholder={{t "hypertable.column.filtering.from"}}
+              @value={{this.lowerBoundFilter}}
+              autocomplete="off"
+              {{on "keydown" this.addRangeFilter}}
+              data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_from"}}
+            />
           </:input>
         </OSS::InputContainer>
       </div>
@@ -26,9 +39,14 @@
         <label>{{t "hypertable.column.filtering.to"}}</label>
         <OSS::InputContainer>
           <:input>
-            <Input type="number" @placeholder={{t "hypertable.column.filtering.to"}} @value={{this.upperBoundFilter}}
-                   autocomplete="off" {{on "keydown" this.addRangeFilter}}
-                   data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_to"}} />
+            <Input
+              type="number"
+              @placeholder={{t "hypertable.column.filtering.to"}}
+              @value={{this.upperBoundFilter}}
+              autocomplete="off"
+              {{on "keydown" this.addRangeFilter}}
+              data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_to"}}
+            />
           </:input>
         </OSS::InputContainer>
       </div>

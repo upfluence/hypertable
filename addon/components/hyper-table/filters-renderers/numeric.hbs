@@ -37,12 +37,7 @@
   <div class="row margin-top-xx-sm" data-control-name={{concat _controlNamePrefix "_range_radiogroup"}}>
     {{#input-wrapper classNames="col-xs-6"}}
       <label>From</label>
-      {{input
-        type="number"
-        placeholder="From"
-        value=lowerBoundFilter
-        class="form-control upf-input"
-      }}
+      {{input type="number" placeholder="From" value=lowerBoundFilter class="form-control upf-input"}}
     {{/input-wrapper}}
 
     {{#input-wrapper classNames="col-xs-6"}}
@@ -52,8 +47,7 @@
   </div>
 
   <div class="margin-top-px-12 fx-row fx-malign-space-between">
-    <OSS::Button
-      @skin="destructive" @label="Remove field" {{action "removeColumn"}} />
+    <OSS::Button @skin="destructive" @label="Remove field" {{action "removeColumn"}} />
     <OSS::Button @label="Clear filters" {{action "reset"}} />
   </div>
 {{/if}}

@@ -27,8 +27,10 @@ jobs:
           cache: 'yarn'
       - name: Install Dependencies
         run: yarn --prefer-offline --frozen-lockfile
-      - name: Lint
+      - name: Lint JS
         run: yarn lint:js
+      - name: Lint HBS
+        run: yarn run prettier **/*.hbs -c
       - name: Run Tests
         run: yarn test:ember
 

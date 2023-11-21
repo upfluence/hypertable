@@ -13,9 +13,11 @@
     >
       <div class="item">
         <OSS::Checkbox
-          @checked={{facet.applied}} @size="sm"
+          @checked={{facet.applied}}
+          @size="sm"
           @onChange={{action "toggleAppliedFacet" facet}}
-          class="margin-right-px-12" />
+          class="margin-right-px-12"
+        />
 
         {{#if facet.facetRenderer}}
           {{facet.facetRenderer}}
@@ -24,8 +26,10 @@
             {{facet.formattedIdentifier}}
             {{#if facet.infoBubble}}
               <OSS::Icon
-                @icon="fa-info-circle" class="margin-left-px-6 font-color-gray-500"
-                {{enable-tooltip title=facet.infoBubble placement="bottom"}} />
+                @icon="fa-info-circle"
+                class="margin-left-px-6 font-color-gray-500"
+                {{enable-tooltip title=facet.infoBubble placement="bottom"}}
+              />
             {{/if}}
           </span>
         {{/if}}

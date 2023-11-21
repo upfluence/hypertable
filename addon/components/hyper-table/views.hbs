@@ -1,26 +1,51 @@
-<div class="table-views-wrapper {{if @manager.availableTableViews "visible" "invisible"}}" {{on-click-outside @closeAvailableViews}}>
+<div
+  class="table-views-wrapper {{if @manager.availableTableViews 'visible' 'invisible'}}"
+  {{on-click-outside @closeAvailableViews}}
+>
   <div class="fx-col view-search-container">
     <div class="text-color-default-light">{{t "hypertable.view.search.label"}}</div>
-    <Input type="text" placeholder={{t "hypertable.view.search.placeholder"}} @value={{this._searchQuery}} {{on "input" this.onSearchChange}}
-      data-control-name="view_search_input" class="form-control upf-input margin-top-xxx-sm margin-bottom-xxx-sm" />
+    <Input
+      type="text"
+      placeholder={{t "hypertable.view.search.placeholder"}}
+      @value={{this._searchQuery}}
+      {{on "input" this.onSearchChange}}
+      data-control-name="view_search_input"
+      class="form-control upf-input margin-top-xxx-sm margin-bottom-xxx-sm"
+    />
   </div>
 
   <div class="views-container">
     {{#if @manager.predefinedViews}}
       {{#each @manager.predefinedViews as |view|}}
-        <HyperTable::Views::View @view={{view}} @deleteView={{action "deleteView"}} @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
-                                 @selectedView={{this.selectedView}} @predefined={{true}} @addPredefinedView={{action "addPredefinedView"}}
-                                 @onSelectView={{action "addPredefinedView"}} />
+        <HyperTable::Views::View
+          @view={{view}}
+          @deleteView={{action "deleteView"}}
+          @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
+          @selectedView={{this.selectedView}}
+          @predefined={{true}}
+          @addPredefinedView={{action "addPredefinedView"}}
+          @onSelectView={{action "addPredefinedView"}}
+        />
       {{/each}}
       <hr />
     {{/if}}
     {{#each (if this.filteredViews.length this.filteredViews @manager.views) as |view|}}
-      <HyperTable::Views::View @view={{view}} @deleteView={{action "toggleDeleteViewModal"}} @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
-                               @selectedView={{this.selectedView}} @onSelectView={{action "selectView"}} />
+      <HyperTable::Views::View
+        @view={{view}}
+        @deleteView={{action "toggleDeleteViewModal"}}
+        @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
+        @selectedView={{this.selectedView}}
+        @onSelectView={{action "selectView"}}
+      />
     {{/each}}
   </div>
-  <OSS::Button class="margin-top-x-sm" @skin="primary" @icon="fas fa-plus" @label={{t "hypertable.view.add"}} 
-               {{on "click" (action "toggleAddViewModal" bubbles=false)}} />
+  <OSS::Button
+    class="margin-top-x-sm"
+    @skin="primary"
+    @icon="fas fa-plus"
+    @label={{t "hypertable.view.add"}}
+    {{on "click" (action "toggleAddViewModal" bubbles=false)}}
+  />
 </div>
 
 {{#unless this.isHiddenAddViewModal}}
@@ -28,16 +53,29 @@
     <:content>
       <div class="fx-col">
         <span>{{t "hypertable.view.new.description" htmlSafe=true}}</span>
-        <Input type="text" placeholder={{t "hypertable.view.new.placeholder"}} @value={{this.newViewName}}
-               data-control-name="modal_create_view_input" class="form-control upf-input margin-top-x-sm" />
+        <Input
+          type="text"
+          placeholder={{t "hypertable.view.new.placeholder"}}
+          @value={{this.newViewName}}
+          data-control-name="modal_create_view_input"
+          class="form-control upf-input margin-top-x-sm"
+        />
         <span class="margin-top-xx-sm">{{t "hypertable.view.new.suggest"}}</span>
       </div>
     </:content>
     <:footer>
       <div class="fx-row fx-1 fx-malign-end fx-gap-px-10">
-        <OSS::Button @skin="default" @label={{t "hypertable.view.new.cancel"}} {{on "click" (action "toggleAddViewModal")}} />
-        <OSS::Button @skin="primary" @label={{t "hypertable.view.new.cta"}} {{on "click" (action "addView")}}
-                     data-control-name="modal_confirm_create_view_button" />
+        <OSS::Button
+          @skin="default"
+          @label={{t "hypertable.view.new.cancel"}}
+          {{on "click" (action "toggleAddViewModal")}}
+        />
+        <OSS::Button
+          @skin="primary"
+          @label={{t "hypertable.view.new.cta"}}
+          {{on "click" (action "addView")}}
+          data-control-name="modal_confirm_create_view_button"
+        />
       </div>
     </:footer>
   </OSS::ModalDialog>
@@ -53,9 +91,17 @@
     </:content>
     <:footer>
       <div class="fx-row fx-1 fx-malign-end fx-gap-px-10">
-        <OSS::Button @skin="default" @label={{t "hypertable.view.update.cancel"}} {{on "click" (action "toggleUpdateViewModal")}} />
-        <OSS::Button @skin="primary" @label={{t "hypertable.view.update.cta"}} {{on "click" (action "updateView")}}
-                     data-control-name="modal_confirm_update_view_button" />
+        <OSS::Button
+          @skin="default"
+          @label={{t "hypertable.view.update.cancel"}}
+          {{on "click" (action "toggleUpdateViewModal")}}
+        />
+        <OSS::Button
+          @skin="primary"
+          @label={{t "hypertable.view.update.cta"}}
+          {{on "click" (action "updateView")}}
+          data-control-name="modal_confirm_update_view_button"
+        />
       </div>
     </:footer>
   </OSS::ModalDialog>
@@ -68,9 +114,17 @@
     </:content>
     <:footer>
       <div class="fx-row fx-1 fx-malign-end fx-gap-px-10">
-        <OSS::Button @skin="default" @label={{t "hypertable.view.delete.cancel"}} {{on "click" (action "toggleDeleteViewModal")}} />
-        <OSS::Button @skin="destructive" @label={{t "hypertable.view.delete.cta"}} {{on "click" (action "deleteView")}}
-                     data-control-name="modal_confirm_delete_view_button" />
+        <OSS::Button
+          @skin="default"
+          @label={{t "hypertable.view.delete.cancel"}}
+          {{on "click" (action "toggleDeleteViewModal")}}
+        />
+        <OSS::Button
+          @skin="destructive"
+          @label={{t "hypertable.view.delete.cta"}}
+          {{on "click" (action "deleteView")}}
+          data-control-name="modal_confirm_delete_view_button"
+        />
       </div>
     </:footer>
   </OSS::ModalDialog>

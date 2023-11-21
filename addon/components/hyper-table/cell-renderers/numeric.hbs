@@ -9,7 +9,7 @@
 {{else}}
   <div class="editing-input">
     {{#if (and this.editStatus.status (not this.isSuccess))}}
-      <div class={{if this.isError 'is-invalid'}}>
+      <div class={{if this.isError "is-invalid"}}>
         {{input
           type="number"
           focus-out=(action "toggleEditing" this.editableValue)
@@ -28,7 +28,7 @@
 
 {{! TODO: Extract to component }}
 {{#if this.isUpsertable}}
-  <div class='status-container margin-left-x-sm text-color-default-lighter'>
+  <div class="status-container margin-left-x-sm text-color-default-lighter">
     {{#if this.isSaving}}
       <LoadingState />
     {{else if this.isSuccess}}

@@ -1,17 +1,27 @@
 <div class="hypertable__manage-fields" {{on-click-outside this.closeAvailableFields}}>
-  <OSS::Button @icon="fas fa-columns" @label={{t "hypertable.features.manage_fields.title"}}
-    {{on "click" this.toggleAvailableFields}} />
+  <OSS::Button
+    @icon="fas fa-columns"
+    @label={{t "hypertable.features.manage_fields.title"}}
+    {{on "click" this.toggleAvailableFields}}
+  />
   <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
     <div class="available-fields-wrapper__categories">
-      <div class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
-           role="button" {{on "click" (fn this.setFieldCategory null)}} data-control-name="field_category_toggle_all_fields">
+      <div
+        class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
+        role="button"
+        {{on "click" (fn this.setFieldCategory null)}}
+        data-control-name="field_category_toggle_all_fields"
+      >
         <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
         <div><OSS::Icon @icon="fa-caret-right" /></div>
       </div>
       {{#each this._columnCategories as |category|}}
-        <div class={{concat "field-category" (if (eq this._activeColumnCategory category) " field-category--active")}}
-             role="button" data-control-name={{concat "field_category_toggle_" category}}
-             {{on "click" (fn this.setFieldCategory category)}}>
+        <div
+          class={{concat "field-category" (if (eq this._activeColumnCategory category) " field-category--active")}}
+          role="button"
+          data-control-name={{concat "field_category_toggle_" category}}
+          {{on "click" (fn this.setFieldCategory category)}}
+        >
           <div>{{category}}</div>
           <div><OSS::Icon @icon="fa-caret-right" /></div>
         </div>
@@ -20,9 +30,12 @@
     <div class="available-fields-wrapper__fields">
       <div class="search">
         <Input
-          @type="text" @value={{this._searchColumnDefinitionKeyword}}
-          data-control-name="column_definitions_search_input" class="upf-input"
-          placeholder={{t "hypertable.features.manage_fields.search_placeholder"}} />
+          @type="text"
+          @value={{this._searchColumnDefinitionKeyword}}
+          data-control-name="column_definitions_search_input"
+          class="upf-input"
+          placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+        />
       </div>
       <div class="fields-list">
         {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
@@ -36,8 +49,12 @@
               {{#if field.isLoading}}
                 <div><OSS::Icon @icon="fa-spinner fa-spin" /></div>
               {{else}}
-                <OSS::Checkbox @checked={{field.visible}} @onChange={{fn this.columnVisibilityUpdate field}} @size="sm"
-                               data-control-name={{concat "column_definition_toggle_checkbox_" field.definition.key}} />
+                <OSS::Checkbox
+                  @checked={{field.visible}}
+                  @onChange={{fn this.columnVisibilityUpdate field}}
+                  @size="sm"
+                  data-control-name={{concat "column_definition_toggle_checkbox_" field.definition.key}}
+                />
               {{/if}}
               <div class="margin-left-px-6">
                 {{field.definition.name}}

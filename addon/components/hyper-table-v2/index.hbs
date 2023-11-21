@@ -22,15 +22,24 @@
         {{/if}}
       </div>
       <div class="right-side">
-        <OSS::Button class="margin-right-xx-sm" @label={{t "hypertable.features.filtering.reset_all"}}
-                     {{on "click" this.resetFilters}} @loading={{this.loadingResetFilters}}
-                     data-control-name="hypertable_reset_filters_button" />
+        <OSS::Button
+          class="margin-right-xx-sm"
+          @label={{t "hypertable.features.filtering.reset_all"}}
+          {{on "click" this.resetFilters}}
+          @loading={{this.loadingResetFilters}}
+          data-control-name="hypertable_reset_filters_button"
+        />
         <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
       </div>
     </div>
-    <HyperTableV2::Selection class={{if (gt selectionCount 0) "margin-top-px-18"}} @selected={{this.selectionCount}}
-                             @total={{@handler.rowsMeta.total}} @intlKeyPath={{@options.selectionIntlKeyPath}}
-                             @onSelectAll={{this.selectAllGlobal}} @onClear={{this.clearSelection}} />
+    <HyperTableV2::Selection
+      class={{if (gt selectionCount 0) "margin-top-px-18"}}
+      @selected={{this.selectionCount}}
+      @total={{@handler.rowsMeta.total}}
+      @intlKeyPath={{@options.selectionIntlKeyPath}}
+      @onSelectAll={{this.selectAllGlobal}}
+      @onClear={{this.clearSelection}}
+    />
   </div>
 
   <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>
@@ -41,7 +50,11 @@
           <span class="text-style-bold text-size-7">{{t "hypertable.data.communication_error.title"}}</span>
           <span class="text-color-default-light">{{t "hypertable.data.communication_error.description"}}</span>
         </div>
-        <OSS::Button @label={{t "hypertable.data.communication_error.refresh_page"}} @skin="primary" {{on "click" this.reloadPage}}/>
+        <OSS::Button
+          @label={{t "hypertable.data.communication_error.refresh_page"}}
+          @skin="primary"
+          {{on "click" this.reloadPage}}
+        />
       </div>
     {{else}}
       {{#if (and (eq @handler.rows.length 0) (not @handler.loadingRows))}}
@@ -49,8 +62,11 @@
           {{#if (has-block "empty-state")}}
             {{yield to="empty-state"}}
           {{else}}
-            <img src="/@upfluence/hypertable/assets/images/empty-state.png"
-                 width="40%" alt={{t "hypertable.rows.empty_content"}} />
+            <img
+              src="/@upfluence/hypertable/assets/images/empty-state.png"
+              width="40%"
+              alt={{t "hypertable.rows.empty_content"}}
+            />
             <p class="text-color-default-light text-size-6 margin-top-xx-sm">
               {{t "hypertable.rows.empty_content"}}
             </p>
@@ -58,24 +74,42 @@
         </div>
       {{/if}}
 
-      <div class="hypertable"
-           {{sortable-group direction="x" onChange=this.reorderColumns}}
-           {{on-bottom-reached this.onBottomReached}}>
+      <div
+        class="hypertable"
+        {{sortable-group direction="x" onChange=this.reorderColumns}}
+        {{on-bottom-reached this.onBottomReached}}
+      >
         {{#each @handler.columns as |column index|}}
           {{#if (eq index 0)}}
             <div class="hypertable__sticky-columns">
               {{#if this.features.selection}}
                 <div class="hypertable__column hypertable__column--selection">
                   <header>
-                    <OSS::Checkbox @checked={{gt this.selectionCount 0}} @size="sm" @onChange={{this.toggleSelectAll}}
-                                   @partial={{lt this.selectionCount @handler.rowsMeta.total}} />
+                    <OSS::Checkbox
+                      @checked={{gt this.selectionCount 0}}
+                      @size="sm"
+                      @onChange={{this.toggleSelectAll}}
+                      @partial={{lt this.selectionCount @handler.rowsMeta.total}}
+                    />
                   </header>
 
                   {{#each @handler.rows as |row|}}
-                    <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
-                                        @onClick={{this.onRowClick}} @onHover={{this.onRowHover}}>
-                      <OSS::Checkbox @checked={{if (eq @handler.selection "all") (not (array-includes @handler.exclusion row)) (array-includes @handler.selection row)}}
-                                     @size="sm" @onChange={{fn this.toggleRowSelection row}} />
+                    <HyperTableV2::Cell
+                      @handler={{@handler}}
+                      @column={{column}}
+                      @row={{row}}
+                      @onClick={{this.onRowClick}}
+                      @onHover={{this.onRowHover}}
+                    >
+                      <OSS::Checkbox
+                        @checked={{if
+                          (eq @handler.selection "all")
+                          (not (array-includes @handler.exclusion row))
+                          (array-includes @handler.selection row)
+                        }}
+                        @size="sm"
+                        @onChange={{fn this.toggleRowSelection row}}
+                      />
                     </HyperTableV2::Cell>
                   {{/each}}
 
@@ -89,8 +123,13 @@
 
               <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
                 {{#each @handler.rows as |row|}}
-                  <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}}
-                                      @onClick={{this.onRowClick}} @onHover={{this.onRowHover}} />
+                  <HyperTableV2::Cell
+                    @handler={{@handler}}
+                    @column={{column}}
+                    @row={{row}}
+                    @onClick={{this.onRowClick}}
+                    @onHover={{this.onRowHover}}
+                  />
                 {{/each}}
 
                 {{#if @handler.loadingRows}}
@@ -104,12 +143,22 @@
 
           {{#if (gt index 0)}}
             <HyperTableV2::Column
-              @handler={{@handler}} @column={{column}}
-               class={{if column.definition.position.sticky (concat "hypertable__column--sticky-" column.definition.position.side)}}
-              {{sortable-item model=column spacing=5 distance=10 disabled=column.definition.position.sticky}}>
+              @handler={{@handler}}
+              @column={{column}}
+              class={{if
+                column.definition.position.sticky
+                (concat "hypertable__column--sticky-" column.definition.position.side)
+              }}
+              {{sortable-item model=column spacing=5 distance=10 disabled=column.definition.position.sticky}}
+            >
               {{#each @handler.rows as |row|}}
-                <HyperTableV2::Cell @handler={{@handler}} @column={{column}} @row={{row}} @onClick={{this.onRowClick}}
-                                    @onHover={{this.onRowHover}} />
+                <HyperTableV2::Cell
+                  @handler={{@handler}}
+                  @column={{column}}
+                  @row={{row}}
+                  @onClick={{this.onRowClick}}
+                  @onHover={{this.onRowHover}}
+                />
               {{/each}}
 
               {{#if @handler.loadingRows}}
@@ -123,8 +172,7 @@
       </div>
 
       <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
-        <OSS::Button @icon="fa fa-chevron-right" class="scroll-button is-visible"
-                     {{on "click" this.scrollToEnd}} />
+        <OSS::Button @icon="fa fa-chevron-right" class="scroll-button is-visible" {{on "click" this.scrollToEnd}} />
       </div>
     {{/if}}
   </div>

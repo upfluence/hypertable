@@ -1,5 +1,5 @@
 {{#if (or this.emptyValue (eq this.value 0))}}
-  {{or this.column.field.emptyState '—'}}
+  {{or this.column.field.emptyState "—"}}
 {{else}}
   {{this._formattedDate}}
-{{/if}} 
+{{/if}}

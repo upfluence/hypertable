@@ -1,8 +1,11 @@
 <div data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filters"}}>
   <div class="margin-top-xxx-sm">
     <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
-    <OSS::InputContainer @value={{this.searchQuery}} @onChange={{this.onInputChanged}}
-                         @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}>
+    <OSS::InputContainer
+      @value={{this.searchQuery}}
+      @onChange={{this.onInputChanged}}
+      @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}
+    >
       <:suffix>
         {{#if (gt this.searchQuery.length 0)}}
           <OSS::Icon @icon="fa-times" role="button" {{on "click" this.onClearSearch}} />

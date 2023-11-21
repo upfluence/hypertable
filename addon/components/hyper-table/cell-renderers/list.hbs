@@ -9,7 +9,10 @@
       {{#if (eq this.manager.tetherOn this.elementId)}}
         <div class="expandable-list">
           {{#each this.value as |item|}}
-            <div class="expandable-list__item" {{on "click" (action "goToUrl" (concat this.url item.id) bubbles=false)}}>
+            <div
+              class="expandable-list__item"
+              {{on "click" (action "goToUrl" (concat this.url item.id) bubbles=false)}}
+            >
               {{item.name}}
             </div>
           {{/each}}
@@ -17,18 +20,22 @@
       {{/if}}
     {{else}}
       <div {{enable-tooltip title=(get this.value "0") html=true placement="bottom"}}>
-        {{get this.value '0'}}
+        {{get this.value "0"}}
       </div>
     {{/if}}
 
-    <div class="margin-left-px-6 list-elements" {{enable-tooltip title=this.formattedList placement="bottom" html=true}}>
+    <div
+      class="margin-left-px-6 list-elements"
+      {{enable-tooltip title=this.formattedList placement="bottom" html=true}}
+    >
       {{#if this.length}}
         +{{this.length}}
         more
       {{/if}}
       <OSS::Icon
         @icon={{if (eq this.manager.tetherOn this.elementId) "fa-caret-up" "fa-caret-down"}}
-        class="margin-left-px-6" />
+        class="margin-left-px-6"
+      />
     </div>
   </div>
 {{/if}}
