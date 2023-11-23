@@ -16,5 +16,6 @@
     @square={{true}}
     class={{if this.isCopied "success-tooltip"}}
     {{enable-tooltip title=(if this.isCopied "Copied" "Copy") placement="top"}}
-    {{action "copy" bubbles=false}} />
+    {{action "copy" bubbles=false}}
+  />
 {{/if}}

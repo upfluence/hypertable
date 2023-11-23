@@ -10,17 +10,20 @@
       <OSS::Icon
         @icon="fa-retweet"
         {{enable-tooltip title="Update this view with the current columns & filters"}}
-        {{action this.toggleUpdateViewModal this.view bubbles=false}} />
+        {{action this.toggleUpdateViewModal this.view bubbles=false}}
+      />
 
       <OSS::Icon
         @icon="fa-share"
         {{enable-tooltip title="Share this view"}}
-        {{action "toggleSharingModal" bubbles=false}} />
+        {{action "toggleSharingModal" bubbles=false}}
+      />
 
       <OSS::Icon
         @icon="fa-times"
         {{enable-tooltip title="Delete the view"}}
-        {{action this.deleteView this.view bubbles=false}} />
+        {{action this.deleteView this.view bubbles=false}}
+      />
     {{/if}}
   </div>
 </div>
@@ -31,5 +34,6 @@
     @header="Share View"
     @successfulSharing="Your view has been shared"
     @modelType="view"
-    @closeModal={{action "toggleSharingModal"}} />
+    @closeModal={{action "toggleSharingModal"}}
+  />
 {{/if}}

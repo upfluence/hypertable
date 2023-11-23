@@ -37,7 +37,7 @@
 
 {{! TODO: Extract to component }}
 {{#if this.column.upsertable}}
-  <div class='status-container margin-left-x-sm text-color-default-lighter'>
+  <div class="status-container margin-left-x-sm text-color-default-lighter">
     {{#if this.isSuccess}}
       <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
       <OSS::Icon @icon="fa-check" class="font-size-lg font-color-success-500" />

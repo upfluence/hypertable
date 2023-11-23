@@ -1,37 +1,59 @@
-<div class="fx-col fx-gap-px-20"
-     data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}>
+<div
+  class="fx-col fx-gap-px-20"
+  data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key}}
+>
   {{#if @column.definition.orderable}}
-    <HyperTableV2::FilteringRenderers::Common::Ordering @handler={{@handler}} @column={{@column}}
-                                                        @label={{t "hypertable.column.ordering.label"}}
-                                                        @orderingOptions={{this.orderingOptions}}
-                                                        data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_order_by_radiogroup"}} />
+    <HyperTableV2::FilteringRenderers::Common::Ordering
+      @handler={{@handler}}
+      @column={{@column}}
+      @label={{t "hypertable.column.ordering.label"}}
+      @orderingOptions={{this.orderingOptions}}
+      data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_order_by_radiogroup"}}
+    />
   {{/if}}
 
   {{#if @column.definition.filterable}}
     <div class="fx-col">
       <label>{{t "hypertable.column.filtering.label"}}</label>
 
-      <div class="btn-group upf-radio-group"
-           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filter_by_radiogroup"}}>
+      <div
+        class="btn-group upf-radio-group"
+        data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filter_by_radiogroup"}}
+      >
         {{#each-in this.filteringOptions as |label value|}}
-          <RadioButton @value={{value}} @currentValue={{this.filterOption}} @label={{label}}
-                       @options={{this.filteringOptions}} @onCheck="filterOptionChanged" />
+          <RadioButton
+            @value={{value}}
+            @currentValue={{this.filterOption}}
+            @label={{label}}
+            @options={{this.filteringOptions}}
+            @onCheck="filterOptionChanged"
+          />
         {{/each-in}}
       </div>
-      <div class="filters"
-           data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_date_range_inputs"}}>
+      <div
+        class="filters"
+        data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_date_range_inputs"}}
+      >
         {{#if (eq this.filterOption "fixed")}}
           <label>{{t "hypertable.column.filtering.date.range.label"}}</label>
-          <EmberFlatpickr @onChange={{this.selectFixedDate}} @dateFormat="M/D/Y"
-                          @placeholder={{t "hypertable.column.filtering.date.range.label"}}
-                          @mode="range" @date={{readonly this._currentDateValue}} @altInput={{true}}
-                          @altInputClass="upf-input"
-                          @onOpen={{this.openedFlatpickr}} @onClose={{this.closedFlatpickr}} />
+          <EmberFlatpickr
+            @onChange={{this.selectFixedDate}}
+            @dateFormat="M/D/Y"
+            @placeholder={{t "hypertable.column.filtering.date.range.label"}}
+            @mode="range"
+            @date={{readonly this._currentDateValue}}
+            @altInput={{true}}
+            @altInputClass="upf-input"
+            @onOpen={{this.openedFlatpickr}}
+            @onClose={{this.closedFlatpickr}}
+          />
         {{else}}
           {{#each-in this.movingDateOptions as |label value|}}
-            <div class="filters__option {{if (eq this._currentMovingDateOption value) 'filters__option--active'}}"
-                 role="button"
-                 {{on "click" (fn this.selectMovingDate value)}}>
+            <div
+              class="filters__option {{if (eq this._currentMovingDateOption value) 'filters__option--active'}}"
+              role="button"
+              {{on "click" (fn this.selectMovingDate value)}}
+            >
               {{label}}
             </div>
           {{/each-in}}

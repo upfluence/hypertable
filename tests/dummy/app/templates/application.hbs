@@ -4,15 +4,19 @@
     <OSS::NumberInput @value={{this.selectedValue}} @min={{0}} @max={{5}} @onChange={{this.updateSelected}} />
   </div>
   <div class="hypertable-container">
-    <HyperTableV2::Selection @selected={{this.selectedValue}} @total={{5}} @onClear={{this.onClear}}
-                             @onSelectAll={{this.onSelectAll}} />
+    <HyperTableV2::Selection
+      @selected={{this.selectedValue}}
+      @total={{5}}
+      @onClear={{this.onClear}}
+      @onSelectAll={{this.onSelectAll}}
+    />
   </div>
 </div>
 
 <div class="padding-px-12">
   <HyperTableV2 @handler={{this.handler}}>
     <:contextual-actions>
-      {{!-- To do : move contextual-actions CSS to the target component --}}
+      {{! To do : move contextual-actions CSS to the target component }}
       <div class="contextual-actions contextual-actions--visible">
         <div class="fx-row fx-row fx-gap-px-10">
           <OSS::Badge @icon="fas fa-box-open" />

@@ -15,8 +15,11 @@
             {{this.searchComponent}}
           {{/if}}
         {{else}}
-          <OSS::InputContainer @placeholder={{this.placeholder}} @value={{this._searchQuery}}
-                               data-control-name="table_search_input">
+          <OSS::InputContainer
+            @placeholder={{this.placeholder}}
+            @value={{this._searchQuery}}
+            data-control-name="table_search_input"
+          >
             <:prefix><OSS::Icon @icon="fa-search" class="font-color-gray-500" /></:prefix>
             <:suffix>
               {{#if (gt this._searchQuery.length 0)}}
@@ -29,10 +32,16 @@
 
       {{#if (and this.contextualActions (gt this._collection.length 0))}}
         <div
-          class="contextual-actions contextual-actions--no-animation {{unless this.manager.options.features.search 'contextual-actions--no-search-sibling'}}">
+          class="contextual-actions contextual-actions--no-animation
+            {{unless this.manager.options.features.search 'contextual-actions--no-search-sibling'}}"
+        >
           {{component
-            this.contextualActions selectedItems=this._selectedItems
-            collection=this._collection manager=this.manager meta=this.manager.meta}}
+            this.contextualActions
+            selectedItems=this._selectedItems
+            collection=this._collection
+            manager=this.manager
+            meta=this.manager.meta
+          }}
         </div>
       {{/if}}
     </div>
@@ -42,7 +51,8 @@
           @label={{t "hypertable.features.filtering.reset_all"}}
           class="margin-right-px-12"
           data-control-name="table_reset_filters"
-          {{action "resetAllFilters"}} />
+          {{action "resetAllFilters"}}
+        />
       {{/if}}
 
       {{#if this.manager.options.features.tableViews}}
@@ -51,7 +61,8 @@
           @label={{t "hypertable.features.table_views.title"}}
           class="margin-right-px-12 views-manager-toggle icon-responsive"
           data-control-name="table_toggle_views"
-          {{action "openAvailableViews" bubbles=false}} />
+          {{action "openAvailableViews" bubbles=false}}
+        />
       {{/if}}
 
       <OSS::Button
@@ -59,24 +70,29 @@
         @label={{t "hypertable.features.manage_fields.title"}}
         class="fields-manager-toggle icon-responsive"
         data-control-name="table_toggle_fields"
-        {{action "openAvailableFields" bubbles=false}} />
+        {{action "openAvailableFields" bubbles=false}}
+      />
 
-      <HyperTable::Views
-        @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
+      <HyperTable::Views @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
 
-      <div class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
-           {{on-click-outside (action "closeAvailableFields")}}>
+      <div
+        class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
+        {{on-click-outside (action "closeAvailableFields")}}
+      >
         <div class="available-fields-wrapper__categories">
           <div
             class="field-category {{unless this._activeFieldCategory 'field-category--active'}}"
-            {{action "setFieldCategory"}}>
+            {{action "setFieldCategory"}}
+          >
             <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
             <div><OSS::Icon @icon="fa-caret-right" /></div>
           </div>
           {{#each this._fieldCategories as |category|}}
-            <div class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
-                 data-control-name={{concat "field_category_toggle_" category.key}}
-                 {{action "setFieldCategory" category.key}}>
+            <div
+              class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
+              data-control-name={{concat "field_category_toggle_" category.key}}
+              {{action "setFieldCategory" category.key}}
+            >
               <div>{{category.label}}</div>
               <div><OSS::Icon @icon="fa-caret-right" /></div>
             </div>
@@ -85,8 +101,11 @@
 
         <div class="available-fields-wrapper__fields">
           <div class="search">
-            <OSS::InputContainer @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-                                 @value={{this._availableFieldsKeyword}} data-control-name="field_search_input" />
+            <OSS::InputContainer
+              @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+              @value={{this._availableFieldsKeyword}}
+              data-control-name="field_search_input"
+            />
           </div>
 
           <div class="fields-list">
@@ -99,9 +118,11 @@
               {{#each fields as |field|}}
                 <div class="field {{if field.visible 'field--visible'}}" {{action "fieldVisibilityUpdated" field}}>
                   <OSS::Checkbox
-                    @checked={{field.visible}} @size="sm"
+                    @checked={{field.visible}}
+                    @size="sm"
                     @onChange={{action "fieldVisibilityUpdated" field bubbes=false}}
-                    data-control-name={{concat "field_toggle_checkbox_" field.key}} />
+                    data-control-name={{concat "field_toggle_checkbox_" field.key}}
+                  />
                   <div class="margin-left-px-6">
                     {{#if field.title}}
                       {{field.title}}
@@ -121,9 +142,14 @@
       </div>
     </div>
   </div>
-  <HyperTableV2::Selection class={{if (gt this._selectedCount 0) "margin-top-px-18"}} @selected={{this._selectedCount}}
-                           @total={{this.manager.meta.total}} @intlKeyPath={{this.manager.options.selectionIntlKeyPath}}
-                           @onSelectAll={{action "selectAllGlobal"}} @onClear={{action "clearSelection"}} />
+  <HyperTableV2::Selection
+    class={{if (gt this._selectedCount 0) "margin-top-px-18"}}
+    @selected={{this._selectedCount}}
+    @total={{this.manager.meta.total}}
+    @intlKeyPath={{this.manager.options.selectionIntlKeyPath}}
+    @onSelectAll={{action "selectAllGlobal"}}
+    @onClear={{action "clearSelection"}}
+  />
 </div>
 
 <div class="hypertable__table {{if (eq this._collection.length 0) 'hypertable__table--empty'}}">
@@ -141,19 +167,27 @@
     </div>
   {{/if}}
 
-  <div class="hypertable"
-       {{sortable-group direction="x" onChange=(action "reorderColumns")}}
-       {{on-bottom-reached this.manager.hooks.onBottomReached}}>
+  <div
+    class="hypertable"
+    {{sortable-group direction="x" onChange=(action "reorderColumns")}}
+    {{on-bottom-reached this.manager.hooks.onBottomReached}}
+  >
     {{#each this._columns as |column index|}}
       {{#if (eq index 0)}}
         <div class="hypertable__sticky-columns">
           {{#if this.manager.options.features.selection}}
-            <div class="hypertable__column hypertable__column--selection {{concat 'hypertable__column--size-' column.size}}">
+            <div
+              class="hypertable__column hypertable__column--selection
+                {{concat 'hypertable__column--size-' column.size}}"
+            >
               <header>
-                <OSS::Checkbox @checked={{this.manager._selectAllChecked}}
-                               @partial={{lt this._selectedCount this.manager.meta.total}}
-                               @size="sm" @onChange={{action "toggleSelectAll"}}
-                               data-control-name="row_select_all_toggle_checkbox" />
+                <OSS::Checkbox
+                  @checked={{this.manager._selectAllChecked}}
+                  @partial={{lt this._selectedCount this.manager.meta.total}}
+                  @size="sm"
+                  @onChange={{action "toggleSelectAll"}}
+                  data-control-name="row_select_all_toggle_checkbox"
+                />
               </header>
 
               {{#if this.loadingData}}
@@ -162,11 +196,13 @@
                 {{/each}}
               {{else}}
                 {{#each this._collection as |item|}}
-                  <HyperTable::Cell
-                    @item={{item}} @manager={{this.manager}} selection={{true}}>
-                    <OSS::Checkbox @checked={{item.selected}}
-                                   @size="sm" @onChange={{action "toggleItem" item}}
-                                   data-control-name="row_select_toggle_checkbox" />
+                  <HyperTable::Cell @item={{item}} @manager={{this.manager}} selection={{true}}>
+                    <OSS::Checkbox
+                      @checked={{item.selected}}
+                      @size="sm"
+                      @onChange={{action "toggleItem" item}}
+                      data-control-name="row_select_toggle_checkbox"
+                    />
                   </HyperTable::Cell>
                 {{/each}}
 
@@ -192,11 +228,13 @@
               {{/each}}
             {{else}}
               {{#each this._collection as |item|}}
-                <div onmouseover={{action "toggleHover" item true}}
-                     onmouseout={{action "toggleHover" item false}}>
+                <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                   <HyperTable::Cell
-                    @item={{item}} @column={{column}} @manager={{this.manager}}
-                    @renderingComponent={{cell-rendering-inferer column}} />
+                    @item={{item}}
+                    @column={{column}}
+                    @manager={{this.manager}}
+                    @renderingComponent={{cell-rendering-inferer column}}
+                  />
                 </div>
               {{/each}}
 
@@ -214,18 +252,23 @@
     {{#each this._columns as |column index|}}
       {{#if (gt index 0)}}
         <HyperTable::Column
-          @column={{column}} @manager={{this.manager}} {{sortable-item model=column spacing=5 distance=10 onDragStart=(action "dragStarted")}}>
+          @column={{column}}
+          @manager={{this.manager}}
+          {{sortable-item model=column spacing=5 distance=10 onDragStart=(action "dragStarted")}}
+        >
           {{#if this.loadingData}}
             {{#each this._loadingCollection}}
               <HyperTable::Cell @loading={{true}} />
             {{/each}}
           {{else}}
             {{#each this._collection as |item|}}
-              <div onmouseover={{action "toggleHover" item true}}
-                   onmouseout={{action "toggleHover" item false}}>
+              <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
                 <HyperTable::Cell
-                  @item={{item}} @column={{column}} @manager={{this.manager}}
-                  @renderingComponent={{cell-rendering-inferer column}} />
+                  @item={{item}}
+                  @column={{column}}
+                  @manager={{this.manager}}
+                  @renderingComponent={{cell-rendering-inferer column}}
+                />
               </div>
             {{/each}}
 
@@ -244,7 +287,8 @@
     <OSS::Button
       @label={{t "hypertable.column.scroll_to_end"}}
       class="scroll-button {{if this.manager.isScrollable 'is-visible'}}"
-      {{action "scrollToEnd"}} />
+      {{action "scrollToEnd"}}
+    />
   </div>
 </div>
 

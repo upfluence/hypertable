@@ -1,15 +1,25 @@
-<div class={{concat "hypertable__cell" (if this.loading " hypertable__cell--loading") (if @row.hovered " hypertable__cell--hovered")}}
-     role="button"
-     {{on "click" this.clickedCell}}
-     {{on "mouseenter" (fn this.toggleHover @row true)}}
-     {{on "mouseleave" (fn this.toggleHover @row false)}}
-     ...attributes>
+<div
+  class={{concat
+    "hypertable__cell"
+    (if this.loading " hypertable__cell--loading")
+    (if @row.hovered " hypertable__cell--hovered")
+  }}
+  role="button"
+  {{on "click" this.clickedCell}}
+  {{on "mouseenter" (fn this.toggleHover @row true)}}
+  {{on "mouseleave" (fn this.toggleHover @row false)}}
+  ...attributes
+>
   {{#if this.loading}}
     <OSS::Skeleton @height={{10}} @width="100%" />
   {{else if (has-block)}}
     {{yield}}
   {{else if this.cellComponent}}
     <this.cellComponent.component
-      @handler={{@handler}} @column={{@column}} @row={{@row}} @extra={{this.cellComponent.args}} />
+      @handler={{@handler}}
+      @column={{@column}}
+      @row={{@row}}
+      @extra={{this.cellComponent.args}}
+    />
   {{/if}}
 </div>
