@@ -98,7 +98,7 @@ export default class TableHandler {
     return this.rowsFetcher
       .fetch(this.currentPage, 20)
       .then(({ rows, meta }) => {
-        this.rows = [...this.rows, ...rows];
+        this.rows = [...this.rows, ...rows.filter((row) => !this.rows.map((r) => r.record_id).includes(row.record_id))];
         this.rowsMeta = meta;
         this.currentPage += 1;
       })

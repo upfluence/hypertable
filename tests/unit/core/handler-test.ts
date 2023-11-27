@@ -33,11 +33,28 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.columns.length, 4);
   });
 
-  test('Handler#fetchRows', async function (assert: Assert) {
-    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    assert.equal(handler.rows.length, 0);
-    await handler.fetchRows();
-    assert.equal(handler.rows.length, 2);
+  module('Handler#fetchRows', () => {
+    test('it adds the correct number of rows', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      assert.equal(handler.rows.length, 0);
+      await handler.fetchRows();
+      assert.equal(handler.rows.length, 2);
+    });
+
+    test('it removes duplicated row by record_id', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      stubFetchRowForDuplication(handler);
+
+      await handler.fetchRows();
+      await handler.fetchRows();
+      assert.equal(handler.rows.length, 3);
+      assert.equal(handler.rows[0].record_id, 12);
+      assert.equal(handler.rows[0].foo, 'ekip');
+      assert.equal(handler.rows[1].record_id, 13);
+      assert.equal(handler.rows[1].foo, 'second');
+      assert.equal(handler.rows[2].record_id, 14);
+      assert.equal(handler.rows[2].foo, 'third');
+    });
   });
 
   test('Handler#addColumn', async function (assert: Assert) {
@@ -369,7 +386,7 @@ module('Unit | core/handler', function (hooks) {
       await handler.updateRowById(667);
 
       // @ts-ignore
-      assert.ok(rowsFetcherSpy.fetchById.notCalled)
+      assert.ok(rowsFetcherSpy.fetchById.notCalled);
       assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
     });
 
@@ -414,5 +431,66 @@ module('Unit | core/handler', function (hooks) {
     };
     handler.selection = [row];
     handler.exclusion = [row];
+  }
+
+  function stubFetchRowForDuplication(handler: TableHandler): void {
+    sinon
+      .stub(handler.rowsFetcher, 'fetch')
+      .onFirstCall()
+      .resolves({
+        rows: [
+          {
+            influencerId: 42,
+            recordId: 12,
+            record_id: 12,
+            holderId: 57,
+            holderType: 'list',
+            foo: 'ekip',
+            bar: 'hello',
+            total: 123,
+            date: 1643386394
+          },
+          {
+            influencerId: 43,
+            recordId: 13,
+            record_id: 13,
+            holderId: 57,
+            holderType: 'list',
+            foo: 'second',
+            bar: 'second bar',
+            total: 123123,
+            date: 0
+          }
+        ],
+        meta: { total: 12 }
+      })
+      .onSecondCall()
+      .resolves({
+        rows: [
+          {
+            influencerId: 42,
+            recordId: 12,
+            record_id: 12,
+            holderId: 57,
+            holderType: 'list',
+            foo: 'second duplication',
+            bar: 'duplicate row',
+            total: 123,
+            date: 1643386394
+          },
+          {
+            influencerId: 44,
+            recordId: 14,
+            record_id: 14,
+            holderId: 69,
+            holderType: 'list',
+            foo: 'third',
+            bar: 'third bar',
+            total: 123123,
+            date: 0
+          }
+        ],
+        meta: { total: 12 }
+      });
   }
 });
