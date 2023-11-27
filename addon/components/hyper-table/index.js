@@ -90,7 +90,10 @@ export default Component.extend({
 
     let fields = A(
       this.manager.fields.filter((x) => {
-        const hasKeyword = !this._availableFieldsKeyword || x.name.toLowerCase().indexOf(_keyword) >= 0;
+        const hasKeyword =
+          !this._availableFieldsKeyword ||
+          (x.name || '').toLowerCase().indexOf(_keyword) >= 0 ||
+          (x.title || '').toLowerCase().indexOf(_keyword) >= 0;
         const hasActiveGroup = !this._activeFieldCategory || x.categories.indexOf(this._activeFieldCategory) >= 0;
         const isToggleable = x.toggleable === true;
 
