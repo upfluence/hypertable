@@ -274,6 +274,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       });
 
       test('all checkboxes of new rows are not selected', async function (assert: Assert) {
+        stubFetchMultipleRows(this.handler);
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
         await this.handler.fetchRows();
@@ -324,6 +325,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       });
 
       test('all checkboxes of new rows are also selected', async function (assert: Assert) {
+        stubFetchMultipleRows(this.handler);
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await this.handler.fetchRows();
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
@@ -489,4 +491,65 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('#example-contextual-action-named-block').exists();
     });
   });
+
+  function stubFetchMultipleRows(handler: TableHandler): void {
+    sinon
+      .stub(handler.rowsFetcher, 'fetch')
+      .onFirstCall()
+      .resolves({
+        rows: [
+          {
+            influencerId: 42,
+            recordId: 12,
+            record_id: 12,
+            holderId: 57,
+            holderType: 'list',
+            foo: 'ekip',
+            bar: 'hello',
+            total: 123,
+            date: 1643386394
+          },
+          {
+            influencerId: 43,
+            recordId: 13,
+            record_id: 13,
+            holderId: 57,
+            holderType: 'list',
+            foo: 'second',
+            bar: 'second bar',
+            total: 123123,
+            date: 0
+          }
+        ],
+        meta: { total: 12 }
+      })
+      .onSecondCall()
+      .resolves({
+        rows: [
+          {
+            influencerId: 49,
+            recordId: 13,
+            record_id: 14,
+            holderId: 57,
+            holderType: 'list',
+            foo: 'third',
+            bar: 'third bar',
+            total: 65,
+            date: 1643396394
+          },
+          {
+            influencerId: 44,
+            recordId: 14,
+            record_id: 14,
+            holderId: 69,
+            holderType: 'list',
+            foo: 'fourth',
+            bar: 'fourth bar',
+            total: 1231,
+            date: 0
+          }
+        ],
+        meta: { total: 12 }
+      });
+  }
 });
