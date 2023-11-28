@@ -44,9 +44,9 @@ module('Unit | core/handler', function (hooks) {
     test('it removes duplicated row by record_id', async function (assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       stubFetchRowForDuplication(handler);
+      await handler.fetchRows();
+      await handler.fetchRows();
 
-      await handler.fetchRows();
-      await handler.fetchRows();
       assert.equal(handler.rows.length, 3);
       assert.equal(handler.rows[0].record_id, 12);
       assert.equal(handler.rows[0].foo, 'ekip');
