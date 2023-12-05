@@ -43,7 +43,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       this.computeScrollableTable();
     });
 
-    this.hypertableInstanceID = window.crypto.randomUUID();
+    this.hypertableInstanceID = crypto.randomUUID();
   }
 
   get features(): FeatureSet {
