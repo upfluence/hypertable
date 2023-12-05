@@ -76,7 +76,7 @@
 
       <div
         class="hypertable"
-        {{sortable-group direction="x" onChange=this.reorderColumns}}
+        {{sortable-group direction="x" onChange=this.reorderColumns groupName=this.hypertableInstanceID}}
         {{on-bottom-reached this.onBottomReached}}
       >
         {{#each @handler.columns as |column index|}}
@@ -149,7 +149,13 @@
                 column.definition.position.sticky
                 (concat "hypertable__column--sticky-" column.definition.position.side)
               }}
-              {{sortable-item model=column spacing=5 distance=10 disabled=column.definition.position.sticky}}
+              {{sortable-item
+                groupName=this.hypertableInstanceID
+                model=column
+                spacing=5
+                distance=10
+                disabled=column.definition.position.sticky
+              }}
             >
               {{#each @handler.rows as |row|}}
                 <HyperTableV2::Cell

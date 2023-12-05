@@ -27,6 +27,7 @@ export default Component.extend({
   _allRowsSelected: false,
   _availableFieldsKeyword: '',
   _activeFieldCategory: null,
+  _hypertableInstanceID: null,
 
   _searchQuery: computed('_columns.firstObject.filters.{[],@each.value}', {
     get: function () {
@@ -163,6 +164,8 @@ export default Component.extend({
 
   init() {
     this._super();
+
+    this.set('_hypertableInstanceID', crypto.randomUUID());
 
     if (!this.disableAutoResize) {
       $(window).on('resize', this._resizeInnerTable.bind(this));

@@ -13,7 +13,7 @@ type FeatureSet = {
 
 type OptionSet = {
   selectionIntlKeyPath?: string;
-}
+};
 
 interface HyperTableV2Args {
   handler: TableHandler;
@@ -32,6 +32,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
 
+  private declare hypertableInstanceID: string;
+
   constructor(owner: unknown, args: HyperTableV2Args) {
     super(owner, args);
     args.handler.fetchColumnDefinitions();
@@ -40,6 +42,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       args.handler.fetchRows();
       this.computeScrollableTable();
     });
+
+    this.hypertableInstanceID = window.crypto.randomUUID();
   }
 
   get features(): FeatureSet {
