@@ -1,10 +1,11 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action, set } from '@ember/object';
+import { debounce, scheduleOnce } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
-import { debounce, scheduleOnce } from '@ember/runloop';
 
 type FeatureSet = {
   selection: boolean;
@@ -54,7 +55,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   get selectionCount(): number {
-    if (!this.args.handler.rowsMeta || this.args.handler.selection === []) {
+    if (
+      !this.args.handler.rowsMeta ||
+      (Array.isArray(this.args.handler.selection) && isEmpty(this.args.handler.selection))
+    ) {
       return 0;
     }
 
