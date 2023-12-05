@@ -1,10 +1,11 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action, set } from '@ember/object';
+import { debounce, scheduleOnce } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
-import { debounce, scheduleOnce } from '@ember/runloop';
 
 type FeatureSet = {
   selection: boolean;
@@ -13,7 +14,7 @@ type FeatureSet = {
 
 type OptionSet = {
   selectionIntlKeyPath?: string;
-}
+};
 
 interface HyperTableV2Args {
   handler: TableHandler;
@@ -32,6 +33,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
 
+  private declare hypertableInstanceID: string;
+
   constructor(owner: unknown, args: HyperTableV2Args) {
     super(owner, args);
     args.handler.fetchColumnDefinitions();
@@ -40,6 +43,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       args.handler.fetchRows();
       this.computeScrollableTable();
     });
+
+    this.hypertableInstanceID = crypto.randomUUID();
   }
 
   get features(): FeatureSet {
@@ -50,7 +55,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   get selectionCount(): number {
-    if (!this.args.handler.rowsMeta || this.args.handler.selection === []) {
+    if (
+      !this.args.handler.rowsMeta ||
+      (Array.isArray(this.args.handler.selection) && isEmpty(this.args.handler.selection))
+    ) {
       return 0;
     }
 

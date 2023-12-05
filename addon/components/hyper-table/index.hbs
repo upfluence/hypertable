@@ -169,7 +169,7 @@
 
   <div
     class="hypertable"
-    {{sortable-group direction="x" onChange=(action "reorderColumns")}}
+    {{sortable-group direction="x" onChange=(action "reorderColumns") groupName=this._hypertableInstanceID}}
     {{on-bottom-reached this.manager.hooks.onBottomReached}}
   >
     {{#each this._columns as |column index|}}
@@ -254,7 +254,13 @@
         <HyperTable::Column
           @column={{column}}
           @manager={{this.manager}}
-          {{sortable-item model=column spacing=5 distance=10 onDragStart=(action "dragStarted")}}
+          {{sortable-item
+            groupName=this._hypertableInstanceID
+            model=column
+            spacing=5
+            distance=10
+            onDragStart=(action "dragStarted")
+          }}
         >
           {{#if this.loadingData}}
             {{#each this._loadingCollection}}
