@@ -1,39 +1,39 @@
-<div class="view-line" {{action this.onSelectView this.view}}>
-  <div class="view-name {{if (and this.selectedView (eq this.selectedView.id this.view.id)) 'selected'}}">
-    {{this.view.name}}
+<div class="view-line" {{on "click" (fn @onSelectView @view)}} role="button">
+  <div class="view-name {{if (and @selectedView (eq @selectedView.id @view.id)) 'selected'}}">
+    {{@view.name}}
   </div>
 
   <div class="view-icons">
-    {{#if this.predefined}}
-      <OSS::Icon @icon="fa-plus" {{action addPredefinedView view bubbles=false}} />
+    {{#if @predefined}}
+      <OSS::Icon @icon="fa-plus" {{on "click" (fn @addPredefinedView @view)}} />
     {{else}}
       <OSS::Icon
         @icon="fa-retweet"
-        {{enable-tooltip title="Update this view with the current columns & filters"}}
-        {{action this.toggleUpdateViewModal this.view bubbles=false}}
+        {{enable-tooltip title=(t "hypertable.view.update_with_current")}}
+        {{on "click" (stop-propagation (fn @toggleUpdateViewModal @view))}}
       />
 
       <OSS::Icon
         @icon="fa-share"
-        {{enable-tooltip title="Share this view"}}
-        {{action "toggleSharingModal" bubbles=false}}
+        {{enable-tooltip title=(t "hypertable.view.share_view")}}
+        {{on "click" this.openSharingModal}}
       />
 
       <OSS::Icon
         @icon="fa-times"
-        {{enable-tooltip title="Delete the view"}}
-        {{action this.deleteView this.view bubbles=false}}
+        {{enable-tooltip title=(t "hypertable.view.delete_view")}}
+        {{on "click" (stop-propagation (fn @deleteView @view))}}
       />
     {{/if}}
   </div>
 </div>
 
-{{#if this.showSharingModal}}
-  <OwnershipSelectionModal
-    @model={{this.view}}
-    @header="Share View"
-    @successfulSharing="Your view has been shared"
-    @modelType="view"
-    @closeModal={{action "toggleSharingModal"}}
+{{#if this.displaySharingModal}}
+  <Identity::OwnershipUpdater
+    @title={{t "hypertable.view.share.modal.title"}}
+    @record={{@view}}
+    @recordType="view"
+    @onSuccess={{this.onOwnershipUpdated}}
+    @onClose={{this.closeOwnershipModal}}
   />
 {{/if}}

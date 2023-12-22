@@ -50,6 +50,9 @@ hypertable:
       label: Search
       placeholder: Search...
     add: Add View
+    update_with_current: Update this view with the current columns & filters
+    share_view: Share this view
+    delete_view: Delete the view
     new:
       title: New Table View
       description: |
@@ -72,6 +75,12 @@ hypertable:
       description: Are you sure you would like to delete this view?
       cta: Delete
       cancel: Cancel
+    share:
+      modal:
+        title: Share view
+        success:
+          title: Ownership update
+          message: View successfully shared
   selection:
     records_selected: '{count, plural, =0 {{count} record is selected} =1 {{count} record is selected} other {{count} records are selected}}'
     all_records_selected: All records (<b>{count}</b>) are selected
