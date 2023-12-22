@@ -20,18 +20,18 @@ export default class ViewComponent extends Component<ViewsViewComponentArgs> {
   @tracked displaySharingModal: boolean = false;
 
   @action
-  openSharingModal(event: PointerEvent) {
+  openSharingModal(event: PointerEvent): void {
     event.stopPropagation();
     this.displaySharingModal = true;
   }
 
   @action
-  closeOwnershipModal() {
+  closeOwnershipModal(): void {
     this.displaySharingModal = false;
   }
 
   @action
-  onOwnershipUpdated() {
+  onOwnershipUpdated(): void {
     this.toast.success(
       this.intl.t('hypertable.view.share.modal.success.message'),
       this.intl.t('hypertable.view.share.modal.success.title')
