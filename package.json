@@ -1,6 +1,6 @@
 {
   "name": "@upfluence/hypertable",
-  "version": "3.7.5",
+  "version": "3.7.6",
   "description": "Datatable under steroïds.",
   "keywords": [
     "ember-addon"
