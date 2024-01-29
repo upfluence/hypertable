@@ -24,18 +24,21 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: '${{ env.NODE_VERSION }}'
-          cache: 'yarn'
+          cache: 'pnpm'
       - name: Install Dependencies
-        run: yarn --prefer-offline --frozen-lockfile
+        run: pnpm install
       - name: Lint JS
-        run: yarn lint:js
+        run: pnpm lint:js
       - name: Lint HBS
-        run: yarn run prettier **/*.hbs -c
+        run: pnpm prettier **/*.hbs -c
       - name: Run Tests
-        run: yarn test:ember
+        run: pnpm test:ember
 
   release:
     name: Release Package
@@ -45,14 +48,17 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: '${{ env.NODE_VERSION }}'
           registry-url: 'https://npm.pkg.github.com'
-          cache: 'yarn'
+          cache: 'pnpm'
       - name: Install Dependencies
-        run: yarn --prefer-offline --frozen-lockfile
-      - run: yarn publish
+        run: pnpm install
+      - run: pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -64,14 +70,17 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: '${{ env.NODE_VERSION }}'
-          cache: 'yarn'
+          cache: 'pnpm'
       - name: Install Dependencies
-        run: yarn --prefer-offline --frozen-lockfile
+        run: pnpm install
       - name: Ember Build
-        run: ./node_modules/ember-cli/bin/ember build --silent --environment=production
+        run: pnpm ember build --silent --environment=production
       - name: Deploy website
         uses: peaceiris/actions-gh-pages@v3
         with:
