@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
+import { setupIntl } from 'ember-intl/test-support';
 import { click, fillIn, triggerKeyEvent, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
@@ -9,6 +10,7 @@ import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 
 module('Integration | Component | hyper-table-v2/facets-loader', function (hooks) {
   setupRenderingTest(hooks);
+  setupIntl(hooks);
 
   hooks.beforeEach(async function () {
     this.tableManager = new TableManager();
