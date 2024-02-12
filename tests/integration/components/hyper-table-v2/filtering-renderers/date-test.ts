@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
+import { setupIntl } from 'ember-intl/test-support';
 import { render, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
@@ -12,6 +13,7 @@ import findAll from '@ember/test-helpers/dom/find-all';
 
 module('Integration | Component | hyper-table-v2/filtering-renderers/date', function (hooks) {
   setupRenderingTest(hooks);
+  setupIntl(hooks);
 
   hooks.beforeEach(async function () {
     this.tableManager = new TableManager();

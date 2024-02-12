@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
+import { setupIntl } from 'ember-intl/test-support';
 import { click, fillIn, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
@@ -22,6 +23,7 @@ const COLUMNS = [
 
 module('Integration | Component | hyper-table-v2/manage-columns', function (hooks) {
   setupRenderingTest(hooks);
+  setupIntl(hooks);
 
   function builderHelper(
     columnOptions: Array<{ key: string; extra: { [key: string]: any } }>,

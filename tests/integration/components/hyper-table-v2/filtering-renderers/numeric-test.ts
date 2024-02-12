@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
+import { setupIntl } from 'ember-intl/test-support';
 import { render, click, triggerKeyEvent, fillIn } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
@@ -11,6 +12,7 @@ import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 
 module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', function (hooks) {
   setupRenderingTest(hooks);
+  setupIntl(hooks);
 
   hooks.beforeEach(async function () {
     this.tableManager = new TableManager();
