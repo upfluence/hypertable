@@ -1,52 +1,9 @@
 {{#if (and this.emptyValue (or (not this.editStatus.status) this.isSuccess))}}
-  {{#if this.column.upsertable}}
-    <span {{action "toggleEditing"}}>
-      {{or this.column.field.emptyPlaceholder "Add value"}}
-    </span>
-  {{else}}
-    {{or this.column.field.emptyState "—"}}
-  {{/if}}
+  {{or this.column.field.emptyState "—"}}
 {{else}}
   <div class="editing-input">
-    {{#if (and this.editStatus.status (not this.isSuccess))}}
-      <div class={{if this.isError "is-invalid"}}>
-        {{#x-select
-          class="editing-input__field editing-input__field--select form-control"
-          value=this.item.currency
-          on-change=(action "updateCurrency")
-          as |xs|
-        }}
-          {{#each this.manager.options.currencies as |code|}}
-            {{#xs.option value=code}}{{code}}{{/xs.option}}
-          {{/each}}
-        {{/x-select}}
-        {{input
-          type="number"
-          insert-newline=(action "toggleEditing" this.editableValue)
-          value=this.value
-          class="editing-input__field form-control"
-        }}
-      </div>
-    {{else}}
-      <div class="text-value" {{enable-tooltip title=(format-money this.amount this.item.currency) placement="bottom"}}>
-        {{if this.emptyValue (or this.column.field.emptyState "—") (format-money this.amount this.currency)}}
-      </div>
-    {{/if}}
-  </div>
-{{/if}}
-
-{{! TODO: Extract to component }}
-{{#if this.column.upsertable}}
-  <div class="status-container margin-left-x-sm text-color-default-lighter">
-    {{#if this.isSuccess}}
-      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
-      <OSS::Icon @icon="fa-check" class="font-size-lg font-color-success-500" />
-    {{else if (or this.isEditing this.isError)}}
-      <OSS::Icon @icon="fa-save" {{action "toggleEditing" this.editableValue}} />
-    {{else if this.isSaving}}
-      <LoadingState />
-    {{else}}
-      <OSS::Icon @icon="fa-pencil" class="cell-edition" {{action "toggleEditing"}} />
-    {{/if}}
+    <div class="text-value" {{enable-tooltip title=(format-money this.amount this.item.currency) placement="bottom"}}>
+      {{if this.emptyValue (or this.column.field.emptyState "—") (format-money this.amount this.currency)}}
+    </div>
   </div>
 {{/if}}
