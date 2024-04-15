@@ -184,18 +184,52 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
-  test('Handler#resetColumns', async function (assert: Assert) {
-    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    await handler.fetchColumns();
+  module('Handler#resetColumns', function () {
+    test('the columns filters are order are properly reset', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      await handler.fetchColumns();
 
-    handler.applyFilters(handler.columns[0], [{ key: 'foo', value: 'bar' }]);
-    handler.applyOrder(handler.columns[1], 'asc');
+      handler.applyFilters(handler.columns[0], [{ key: 'foo', value: 'bar' }]);
+      handler.applyOrder(handler.columns[1], 'asc');
 
-    handler.resetColumns(handler.columns);
+      handler.resetColumns(handler.columns);
 
-    assert.equal(handler.columns.filter((column) => column.filters.length > 0 || column.order).length, 0);
-    assert.equal(handler.columns[0].filters.length, 0);
-    assert.equal(handler.columns[1].order, undefined);
+      assert.equal(handler.columns.filter((column) => column.filters.length > 0 || column.order).length, 0);
+      assert.equal(handler.columns[0].filters.length, 0);
+      assert.equal(handler.columns[1].order, undefined);
+    });
+
+    test('if all items where globally selected, the selection is properly reset', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      await handler.fetchColumns();
+      await handler.fetchRows();
+
+      handler.applyFilters(handler.columns[0], [{ key: 'foo', value: 'bar' }]);
+      handler.applyOrder(handler.columns[1], 'asc');
+      handler.selectAllGlobal();
+
+      assert.equal(handler.selection, 'all');
+
+      await handler.resetColumns(handler.columns);
+
+      assert.deepEqual(handler.selection, []);
+    });
+
+    test('if a precise selection where done, the selection is properly reset', async function (assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      await handler.fetchColumns();
+      await handler.fetchRows();
+
+      handler.applyFilters(handler.columns[0], [{ key: 'foo', value: 'bar' }]);
+      handler.applyOrder(handler.columns[1], 'asc');
+      handler.toggleSelectAll(true);
+
+      assert.equal(handler.selection.length, 2);
+
+      handler.resetColumns(handler.columns);
+
+      assert.equal(handler.selection.length, 0);
+    });
   });
 
   test('Handler#resetRows', async function (assert: Assert) {
