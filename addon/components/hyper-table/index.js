@@ -294,6 +294,7 @@ export default Component.extend({
 
     resetAllFilters() {
       this._columns.setEach('filters', []);
+      this.manager.resetSelection();
 
       if (this.manager.hooks.onColumnsChange) {
         this.manager.hooks.onColumnsChange('columns:change');

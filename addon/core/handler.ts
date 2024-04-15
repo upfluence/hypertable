@@ -294,7 +294,7 @@ export default class TableHandler {
   /**
    * Reset columns' filters and order attributes
    *
-   * @param {Column[]} columns — The columns we want to reset the state for.
+   * @param {Column[]} columnsToReset — The columns we want to reset the state for.
    * @returns {Promise<void>}
    */
   async resetColumns(columnsToReset: Column[]): Promise<void> {
@@ -302,6 +302,10 @@ export default class TableHandler {
       set(column, 'filters', []);
       set(column, 'order', undefined);
     });
+
+    if (this.columns.length === columnsToReset.length) {
+      this.clearSelection();
+    }
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
