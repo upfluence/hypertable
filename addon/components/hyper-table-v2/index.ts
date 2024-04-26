@@ -88,17 +88,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     const table = element.querySelector('.hypertable');
 
     if (table) {
-      scheduleOnce('afterRender', this, () => {
-        table.addEventListener('scroll', () => {
-          if (table.scrollLeft === table.scrollWidth - table.clientWidth) {
-            this.scrollableTable = false;
-          } else if (!this.scrollableTable) {
-            this.scrollableTable = true;
-          }
-        });
-
-        this.computeScrollableTable();
-      });
+      scheduleOnce('afterRender', this, this._setupInnerTableElement, table);
     }
   }
 
@@ -146,9 +136,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     const table = this.innerTableElement?.querySelector('.hypertable');
 
     if (table) {
-      scheduleOnce('afterRender', this, () => {
-        table.scrollLeft = table.scrollWidth;
-      });
+      scheduleOnce('afterRender', this, this._scrollToEnd, table);
     }
   }
 
@@ -172,5 +160,22 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     this.args.handler.resetColumns(this.args.handler.columns).finally(() => {
       this.loadingResetFilters = false;
     });
+  }
+
+  private _scrollToEnd(table: HTMLElement): void {
+    table.scrollLeft = table.scrollWidth;
+  }
+
+  private _setupInnerTableElement(table: HTMLElement): void {
+    table.addEventListener('scroll', () => {
+      this.args.handler.destroyTetherInstance();
+      if (table.scrollLeft === table.scrollWidth - table.clientWidth) {
+        this.scrollableTable = false;
+      } else if (!this.scrollableTable) {
+        this.scrollableTable = true;
+      }
+    });
+
+    this.computeScrollableTable();
   }
 }
