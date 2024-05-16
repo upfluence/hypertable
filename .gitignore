@@ -18,6 +18,7 @@
 /libpeerconnection.log
 /npm-debug.log*
 /testem.log
+.scannerwork/
 
 # ember-try
 /.node_modules.ember-try/
