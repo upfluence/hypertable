@@ -17,6 +17,11 @@ export default class FiltersRenderer extends Component {
     if (this.args.manager.tetherInstance) {
       this.args.manager.destroyTetherInstance();
     }
-    this.args.column.field.set('visible', false);
+
+    this.args.manager.toggleColumnVisibility(this.args.column.field, this.args.column).then(() => {
+      if (this.args.manager.hooks.onColumnsChange) {
+        this.args.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
+      }
+    });
   }
 }
