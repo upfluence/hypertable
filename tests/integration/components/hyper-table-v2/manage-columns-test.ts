@@ -13,6 +13,7 @@ const COLUMN_DEFINITIONS = [
   { key: 'alone', extra: { category: '', clustering_key: '', position: { sticky: true } } },
   { key: 'code', extra: { category: 'affiliation', clustering_key: '' } },
   { key: 'foo', extra: { category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'doe', extra: { category: 'influencer', clustering_key: 'twitter' } },
   { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } }
 ];
 
@@ -97,6 +98,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
       test('it displays all the column definitions for default category', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
         await click('.upf-btn.upf-btn--default');
+        // await this.pauseTest();
 
         document.querySelectorAll('.fields-list .field').forEach((element, index) => {
           // index + 1 because the first column is not visible
@@ -109,8 +111,9 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         const clusterNames = document.querySelectorAll('.fields-list .cluster-name');
 
         assert.equal(clusterNames[0].textContent?.trim(), 'instagram');
-        assert.equal(clusterNames[1].textContent?.trim(), 'youtube');
-        assert.expect(5);
+        assert.equal(clusterNames[1].textContent?.trim(), 'x');
+        assert.equal(clusterNames[2].textContent?.trim(), 'youtube');
+        assert.expect(7);
       });
 
       test('it sets the category. as active when user select a category', async function (assert) {
@@ -134,9 +137,14 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
           columnDefinitionsVisible[1].firstElementChild?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_foo'
         );
-        assert.equal(columnDefinitionsVisible[2].textContent?.trim(), 'youtube');
+        assert.equal(columnDefinitionsVisible[2].textContent?.trim(), 'x');
         assert.equal(
           columnDefinitionsVisible[3].firstElementChild?.getAttribute('data-control-name'),
+          'column_definition_toggle_checkbox_doe'
+        );
+        assert.equal(columnDefinitionsVisible[4].textContent?.trim(), 'youtube');
+        assert.equal(
+          columnDefinitionsVisible[5].firstElementChild?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_bar'
         );
       });
