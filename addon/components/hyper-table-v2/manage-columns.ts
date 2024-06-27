@@ -55,7 +55,8 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
       if (this.args.handler.columns.length > 0 && columnDefinition.position?.sticky) {
         return;
       }
-      const cluster = map.get(columnDefinition.clustering_key);
+      const key = columnDefinition.clustering_key === 'twitter' ? 'x' : columnDefinition.clustering_key;
+      const cluster = map.get(key);
       const manageColumn: ManagedColumn = {
         definition: columnDefinition,
         visible: !isEmpty(this.args.handler.columns.find((column) => column?.definition.key === columnDefinition.key)),
@@ -63,7 +64,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
       };
 
       if (!cluster) {
-        map.set(columnDefinition.clustering_key, [manageColumn]);
+        map.set(key, [manageColumn]);
       } else {
         cluster.push(manageColumn);
       }
