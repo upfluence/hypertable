@@ -1,8 +1,8 @@
 import { A } from '@ember/array';
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
-import { alias, filterBy } from '@ember/object/computed';
-import { run, once } from '@ember/runloop';
+import { alias, and, filterBy } from '@ember/object/computed';
+import { debounce, once, scheduleOnce } from '@ember/runloop';
 import { compare, isEmpty, typeOf } from '@ember/utils';
 import $ from 'jquery';
 
@@ -39,7 +39,7 @@ export default Component.extend({
     },
     set: function (k, v) {
       this._columns.firstObject.set('filters', isEmpty(v) ? [] : [{ key: 'value', value: v }]);
-      run.debounce(this, this._doSearch, 1000);
+      debounce(this, this._doSearch, 1000);
       return v;
     }
   }),
@@ -106,7 +106,7 @@ export default Component.extend({
     return this.groupByClusteringKey(fields);
   }),
 
-  _loadingMore: computed.and('manager.hooks.onBottomReached', 'loadingMore'),
+  _loadingMore: and('manager.hooks.onBottomReached', 'loadingMore'),
 
   _setAllRowSelected(value) {
     this.manager.set('_allRowsSelected', value);
@@ -172,7 +172,7 @@ export default Component.extend({
     }
 
     // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
-    run.scheduleOnce('afterRender', this, () => {
+    scheduleOnce('afterRender', this, () => {
       let table = document.querySelector('.hypertable');
       $(table).scroll(() => {
         if (table.scrollLeft === table.scrollWidth - table.clientWidth) {

@@ -1,6 +1,7 @@
 import Mixin from '@ember/object/mixin';
 import EmberObject, { computed } from '@ember/object';
-import { run } from '@ember/runloop';
+import { equal } from '@ember/object/computed';
+import { scheduleOnce } from '@ember/runloop';
 
 export default Mixin.create({
   classNameBindings: ['editStatus.status', 'isUpsertable'],
@@ -9,11 +10,11 @@ export default Mixin.create({
     return this.manager.get('editStatus').findBy('id', this.element.id);
   }),
 
-  isSuccess: computed.equal('editStatus.status', 'success'),
-  isEditing: computed.equal('editStatus.status', 'editing'),
-  isSaving: computed.equal('editStatus.status', 'saving'),
-  isError: computed.equal('editStatus.status', 'error'),
-  isUpsertable: computed.equal('column.upsertable', true),
+  isSuccess: equal('editStatus.status', 'success'),
+  isEditing: equal('editStatus.status', 'editing'),
+  isSaving: equal('editStatus.status', 'saving'),
+  isError: equal('editStatus.status', 'error'),
+  isUpsertable: equal('column.upsertable', true),
 
   actions: {
     toggleEditing(value, autosave = false) {
@@ -72,7 +73,7 @@ export default Mixin.create({
 
       // automatically focuses the input
       // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
-      run.scheduleOnce('afterRender', this, () => {
+      scheduleOnce('afterRender', this, () => {
         this.$('.editing-input__field').focus();
       });
     },

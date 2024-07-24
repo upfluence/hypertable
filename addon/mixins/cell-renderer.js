@@ -1,6 +1,6 @@
 import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
-import { empty } from '@ember/object/computed';
+import { empty, oneWay } from '@ember/object/computed';
 
 export default Mixin.create({
   classNameBindings: ['emptyValue'],
@@ -10,6 +10,6 @@ export default Mixin.create({
     return this.item.get(this.column.key);
   }),
 
-  editableValue: computed.oneWay('value'),
+  editableValue: oneWay('value'),
   emptyValue: empty('value')
 });
