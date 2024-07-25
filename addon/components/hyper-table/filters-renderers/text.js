@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { observer, computed } from '@ember/object';
-import { run } from '@ember/runloop';
+import { debounce } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
@@ -41,7 +41,7 @@ export default Component.extend(FiltersRendererMixin, {
   },
 
   _searchQueryObserver: observer('_searchQuery', function () {
-    run.debounce(this, this._addSearchFilter, 1000);
+    debounce(this, this._addSearchFilter, 1000);
   }),
 
   init() {

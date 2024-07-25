@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { run } from '@ember/runloop';
+import { debounce } from '@ember/runloop';
 import { isPresent } from '@ember/utils';
 
 const SEARCH_DEBOUNCE = 500;
@@ -25,7 +25,7 @@ export default class ViewsComponent extends Component {
 
   @action
   onSearchChange() {
-    run.debounce(this, this.filterViews, SEARCH_DEBOUNCE);
+    debounce(this, this.filterViews, SEARCH_DEBOUNCE);
   }
 
   @action

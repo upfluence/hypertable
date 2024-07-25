@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { computed, observer } from '@ember/object';
-import { run } from '@ember/runloop';
+import { debounce } from '@ember/runloop';
 
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
 
@@ -32,7 +32,7 @@ export default Component.extend(FiltersRendererMixin, {
 
   _: observer('lowerBoundFilter', 'upperBoundFilter', function () {
     if (this.lowerBoundFilter || this.upperBoundFilter) {
-      run.debounce(this, this._addRangeFilter, 1000);
+      debounce(this, this._addRangeFilter, 1000);
     }
   }),
 

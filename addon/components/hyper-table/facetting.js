@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { isEmpty } from '@ember/utils';
-import { run } from '@ember/runloop';
+import { later } from '@ember/runloop';
 import { set } from '@ember/object';
 
 export default Component.extend({
@@ -21,7 +21,7 @@ export default Component.extend({
         this.onToggleAppliedFacet(facet);
       }
 
-      run.later(() => {
+      later(() => {
         this.column.applyFacets(
           this.filteringKey,
           this.facets.filter((f) => {
