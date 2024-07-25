@@ -1,9 +1,10 @@
-/* global Tether */
 import EmberObject, { computed } from '@ember/object';
 import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
 import { isEmpty, typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
+
+import Tether from 'tether';
 
 import Column from '@upfluence/hypertable/types/column';
 import { LocalStorageStore } from '@upfluence/hypertable/types/store';
