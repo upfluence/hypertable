@@ -47,7 +47,7 @@ export default class HyperTableV2FilteringRenderersOrdering extends Component<Hy
   }
 
   get currentOrderingDirection(): OrderDirection | null {
-    return this._selectedDirection || this.args.column.order?.direction || null;
+    return (this._selectedDirection || this.args.column.order?.direction) ?? null;
   }
 
   @action
