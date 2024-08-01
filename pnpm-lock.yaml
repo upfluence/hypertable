@@ -33,8 +33,8 @@ dependencies:
     specifier: ^0.2.5
     version: 0.2.5
   ember-sortable:
-    specifier: ^5.1.1
-    version: 5.1.1(@ember/test-helpers@2.6.0)(@ember/test-waiters@3.0.2)(ember-modifier@3.2.7)(ember-source@3.28.12)
+    specifier: ^4.0.3
+    version: 4.0.3(@babel/core@7.23.9)(@glint/template@1.2.1)
   ember-truth-helpers:
     specifier: ^3.1.1
     version: 3.1.1
@@ -1554,6 +1554,7 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+    dev: true
 
   /@ember/test-waiters@3.0.2:
     resolution: {integrity: sha512-H8Q3Xy9rlqhDKnQpwt2pzAYDouww4TZIGSI1pZJhM7mQIGufQKuB0ijzn/yugA6Z+bNdjYp1HioP8Y4hn2zazQ==}
@@ -1565,18 +1566,6 @@ packages:
       semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
-
-  /@embroider/addon-shim@1.8.9:
-    resolution: {integrity: sha512-qyN64T1jMHZ99ihlk7VFHCWHYZHLE1DOdHi0J7lmn5waV1DoW7gD8JLi1i7FregzXtKhbDc7shyEmTmWPTs8MQ==}
-    engines: {node: 12.* || 14.* || >= 16}
-    dependencies:
-      '@embroider/shared-internals': 2.6.2
-      broccoli-funnel: 3.0.8
-      common-ancestor-path: 1.0.1
-      semver: 7.5.4
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@embroider/core@0.33.0:
     resolution: {integrity: sha512-Kd3W4vBJCSwskVislwldhuoe1RtdA04lRr2r2ccnPI4msCXxLn292WBaS7/x0LdEu2EMO5ffRDeQva2/xoS4Yg==}
@@ -1706,24 +1695,6 @@ packages:
       typescript-memoize: 1.1.1
     transitivePeerDependencies:
       - supports-color
-
-  /@embroider/shared-internals@2.6.2:
-    resolution: {integrity: sha512-jL3Bjn8C73AUBlTex+VixP7YmqvPNN/BZFB85odTstzLFOuR8y2mmGiuWbq17qNuFyoxc6xtndMnAeqwCXBNkA==}
-    engines: {node: 12.* || 14.* || >= 16}
-    dependencies:
-      babel-import-util: 2.0.1
-      debug: 4.3.4
-      ember-rfc176-data: 0.3.18
-      fs-extra: 9.1.0
-      js-string-escape: 1.0.1
-      lodash: 4.17.21
-      minimatch: 3.1.2
-      resolve-package-path: 4.0.3
-      semver: 7.5.4
-      typescript-memoize: 1.1.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@embroider/test-setup@0.48.1:
     resolution: {integrity: sha512-MmYTgQMDVDrZPvxeT27LTUD/BOum21ip1tEYv5H/StSeTZyZQ861Q+8HXQUFTVF/HFjGAB1c/BAgnw+8hO1ueA==}
@@ -5253,10 +5224,6 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /common-ancestor-path@1.0.1:
-    resolution: {integrity: sha512-L3sHRo1pXXEqX8VU28kfgUY+YGsk09hPqZiZmLacNib6XNTCM8ubYeT7ryXQw8asB1sKgcU5lkB7ONug08aB8w==}
-    dev: false
-
   /common-tags@1.8.2:
     resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
     engines: {node: '>=4.0.0'}
@@ -6728,6 +6695,7 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
+    dev: true
 
   /ember-disable-prototype-extensions@1.1.3:
     resolution: {integrity: sha512-SB9NcZ27OtoUk+gfalsc3QU17+54OoqR668qHcuvHByk4KAhGxCKlkm9EBlKJcGr7yceOOAJqohTcCEBqfRw9g==}
@@ -6942,21 +6910,17 @@ packages:
       - supports-color
     dev: true
 
-  /ember-sortable@5.1.1(@ember/test-helpers@2.6.0)(@ember/test-waiters@3.0.2)(ember-modifier@3.2.7)(ember-source@3.28.12):
-    resolution: {integrity: sha512-UZMRE1mo4OfmfZpJlfJ+qc6b0ivk8vxnAE/pb2SH3+uNU+4DUrkywaymeDJOyH3HOUgg1SgsD1xRarnKusZfQg==}
+  /ember-sortable@4.0.3(@babel/core@7.23.9)(@glint/template@1.2.1):
+    resolution: {integrity: sha512-iZ898uEXhIe/ywmhU8ASJPOHU9HV77cCRcnls0QtFIdwHV6hOc5+yoNaySMsud563gPdo1kXbVClot30y9RCUQ==}
     engines: {node: 14.* || >= 16}
-    peerDependencies:
-      '@ember/test-helpers': ^2.6.0 || >= 3.0.0
-      '@ember/test-waiters': '>= 3.0.1'
-      ember-modifier: ^3.2.0 || >= 4.0.0
-      ember-source: ^3.28.0 || >= 4.0.0
     dependencies:
-      '@ember/test-helpers': 2.6.0(@babel/core@7.23.9)
       '@ember/test-waiters': 3.0.2
-      '@embroider/addon-shim': 1.8.9
+      '@embroider/macros': 1.13.4(@glint/template@1.2.1)
+      ember-cli-babel: 7.26.11
       ember-modifier: 3.2.7(@babel/core@7.23.9)
-      ember-source: 3.28.12(@babel/core@7.23.9)
     transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
       - supports-color
     dev: false
 
