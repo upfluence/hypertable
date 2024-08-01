@@ -28,11 +28,11 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     this.column = this.handler.columns[0];
   });
 
-  test('it has the right data-control-name', async function (assert: Assert) {
+  test('it is properly rendered', async function (assert: Assert) {
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Ordering @handler={{this.handler}} @column={{this.column}} />`
     );
-    assert.dom('.btn-group').exists();
+    assert.dom('.oss-toggle-buttons-container').exists();
   });
 
   test('it uses the default orderingOptions when no @orderingOptions are passed', async function (assert: Assert) {
@@ -40,10 +40,10 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
       hbs`<HyperTableV2::FilteringRenderers::Common::Ordering @handler={{this.handler}} @column={{this.column}} />`
     );
 
-    assert.dom('.btn-group').exists();
-    assert.dom('.btn-group .btn').exists({ count: 2 });
-    assert.dom('.btn-group .btn:nth-child(1)').hasText('A — Z');
-    assert.dom('.btn-group .btn:nth-child(2)').hasText('Z — A');
+    assert.dom('.oss-toggle-buttons-container').exists();
+    assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn').exists({ count: 2 });
+    assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(1)').hasText('A — Z');
+    assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(2)').hasText('Z — A');
   });
 
   test('it properly displays @orderingOptions when they are passed', async function (assert: Assert) {
@@ -56,10 +56,10 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
                                                               @orderingOptions={{this.orderingOptions}} />`
     );
 
-    assert.dom('.btn-group').exists();
-    assert.dom('.btn-group .btn').exists({ count: 2 });
-    assert.dom('.btn-group .btn:nth-child(1)').hasText('Oldest — Newest');
-    assert.dom('.btn-group .btn:nth-child(2)').hasText('Newest — Oldest');
+    assert.dom('.oss-toggle-buttons-container').exists();
+    assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn').exists({ count: 2 });
+    assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(1)').hasText('Oldest — Newest');
+    assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(2)').hasText('Newest — Oldest');
   });
 
   test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (assert: Assert) {
@@ -70,7 +70,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
 
     assert.equal(this.column.order, undefined);
 
-    await click('.upf-radio-btn:first-child');
+    await click('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(1)');
     //@ts-ignore
     assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
     assert.deepEqual(this.column.order, {
@@ -78,7 +78,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
       key: 'date'
     });
 
-    await click('.upf-radio-btn:last-child');
+    await click('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(2)');
     //@ts-ignore
     assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));
     assert.deepEqual(this.column.order, {

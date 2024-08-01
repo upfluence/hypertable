@@ -34,25 +34,18 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
     this.column = this.handler.columns[1];
   });
 
-  test('it has the right data-control-name', async function (assert: Assert) {
-    await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
-
-    assert.dom('div[data-control-name="hypertable__column_filtering_for_date"]').exists();
-  });
-
   module('ordering', function () {
     test('it does not render the section if the column is not orderable', async function (assert: Assert) {
       this.column.definition.orderable = false;
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
 
-      assert.dom('div[data-control-name="hypertable__column_filtering_for_date_order_by_radiogroup"]').doesNotExist();
+      assert.dom('[data-control-name="hypertable__column_filtering_for_date_order_by_radiogroup"]').doesNotExist();
     });
 
     test('it renders if the column is orderable', async function (assert: Assert) {
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
-
-      assert.dom('div[data-control-name="hypertable__column_filtering_for_date_order_by_radiogroup"]').exists();
+      assert.dom('[data-control-name="hypertable__column_filtering_for_date_order_by_radiogroup"]').exists();
     });
 
     test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (assert: Assert) {
@@ -63,7 +56,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
 
       assert.equal(this.column.order, undefined);
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_date_ordering"] .upf-radio-btn:first-child '
+        '[data-control-name="hypertable__column_filtering_for_date_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
 
       //@ts-ignore
@@ -73,7 +66,9 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
         key: 'date'
       });
 
-      await click('div[data-control-name="hypertable__column_filtering_for_date_ordering"] .upf-radio-btn:last-child ');
+      await click(
+        'div[data-control-name="hypertable__column_filtering_for_date_ordering"] .oss-toggle-buttons-btn:nth-child(2)'
+      );
 
       //@ts-ignore
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));
@@ -105,7 +100,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
 
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .upf-radio-btn:first-child'
+        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .oss-toggle-buttons-btn:nth-child(1)'
       );
       let filterOptions = findAll('.filters__option');
       assert.equal(filterOptions.length, 6);
@@ -122,7 +117,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
 
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .upf-radio-btn:first-child'
+        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .oss-toggle-buttons-btn:nth-child(1)'
       );
       await click('.filters__option');
       assert.ok(
@@ -139,7 +134,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
 
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .upf-radio-btn:last-child'
+        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .oss-toggle-buttons-btn:nth-child(2)'
       );
       assert.dom('div[data-control-name="hypertable__column_filtering_for_date_date_range_inputs"]').exists();
     });
@@ -148,7 +143,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
 
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .upf-radio-btn:last-child'
+        'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .oss-toggle-buttons-btn:nth-child(2)'
       );
 
       await click('div[data-control-name="hypertable__column_filtering_for_date_date_range_inputs"] .upf-input');

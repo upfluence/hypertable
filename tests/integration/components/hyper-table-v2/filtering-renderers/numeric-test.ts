@@ -66,7 +66,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
 
       assert.equal(this.column.order, undefined);
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .upf-radio-btn:first-child '
+        'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
 
       //@ts-ignore
@@ -77,7 +77,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       });
 
       await click(
-        'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .upf-radio-btn:last-child '
+        'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .oss-toggle-buttons-btn:nth-child(2)'
       );
 
       //@ts-ignore
