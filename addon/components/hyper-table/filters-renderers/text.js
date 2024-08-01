@@ -9,10 +9,10 @@ export default Component.extend(FiltersRendererMixin, {
   _searchQuery: null,
 
   orderingOptions: computed('column.orderKey', function () {
-    return {
-      'A — Z': `${this.column.orderKey}:asc`,
-      'Z — A': `${this.column.orderKey}:desc`
-    };
+    return [
+      { label: 'A — Z', value: `${this.column.orderKey}:asc` },
+      { label: 'Z — A', value: `${this.column.orderKey}:desc` }
+    ];
   }),
 
   existenceFilters: {

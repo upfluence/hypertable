@@ -29,16 +29,16 @@ export default class DateFiltersRenderer extends FiltersRenderer {
   }
 
   get orderingOptions() {
-    return {
-      'Oldest — Newest': `${this.args.column.orderKey}:asc`,
-      'Newest — Oldest': `${this.args.column.orderKey}:desc`
-    };
+    return [
+      { label: 'Oldest — Newest', value: `${this.args.column.orderKey}:asc` },
+      { label: 'Newest — Oldest', value: `${this.args.column.orderKey}:desc` }
+    ];
   }
 
-  filteringOptions = Object.freeze({
-    Moving: 'moving',
-    Fixed: 'fixed'
-  });
+  filteringOptions = [
+    { label: 'Moving', value: 'moving' },
+    { label: 'Fixed', value: 'fixed' }
+  ];
 
   movingDateOptions = Object.freeze({
     Today: 'today',
