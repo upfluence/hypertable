@@ -3,9 +3,11 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { isTesting } from '@embroider/macros';
 
+import { debounce } from '@ember/runloop';
+
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
-import { debounce } from '@ember/runloop';
+import { onlyNumeric } from '@upfluence/hypertable/utils';
 
 interface HyperTableV2FilteringRenderersNumericArgs {
   handler: TableHandler;
@@ -39,11 +41,14 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
     return this.lowerBoundFilter || this.upperBoundFilter ? true : false;
   }
 
-  private _addRangeFilter(): void {
-    this.args.handler.applyFilters(this.args.column, [
-      ...(this.lowerBoundFilter ? [{ key: 'lower_bound', value: this.lowerBoundFilter }] : []),
-      ...(this.upperBoundFilter ? [{ key: 'upper_bound', value: this.upperBoundFilter }] : [])
-    ]);
+  setupOnlyNumericListener(element: HTMLElement): void {
+    const input = element.querySelector('input');
+    input?.addEventListener('keydown', onlyNumeric);
+  }
+
+  teardownOnlyNumericListener(element: HTMLElement): void {
+    const input = element.querySelector('input');
+    input?.removeEventListener('keydown', onlyNumeric);
   }
 
   @action
@@ -60,5 +65,12 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
   private _resetStates(): void {
     this.lowerBoundFilter = '';
     this.upperBoundFilter = '';
+  }
+
+  private _addRangeFilter(): void {
+    this.args.handler.applyFilters(this.args.column, [
+      ...(this.lowerBoundFilter ? [{ key: 'lower_bound', value: this.lowerBoundFilter }] : []),
+      ...(this.upperBoundFilter ? [{ key: 'upper_bound', value: this.upperBoundFilter }] : [])
+    ]);
   }
 }

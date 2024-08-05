@@ -3,6 +3,7 @@ import { computed, observer } from '@ember/object';
 import { debounce } from '@ember/runloop';
 
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
+import { onlyNumeric } from '@upfluence/hypertable/utils';
 
 export default Component.extend(FiltersRendererMixin, {
   lowerBoundFilter: null,
@@ -14,10 +15,10 @@ export default Component.extend(FiltersRendererMixin, {
   },
 
   orderingOptions: computed('column.orderKey', function () {
-    return {
-      '0 — 9': `${this.column.orderKey}:asc`,
-      '9 — 0': `${this.column.orderKey}:desc`
-    };
+    return [
+      { label: '0 — 9', value: `${this.column.orderKey}:asc` },
+      { label: '9 — 0', value: `${this.column.orderKey}:desc` }
+    ];
   }),
 
   currentExistenceFilter: computed('column.filters.[]', 'lowerBoundFilter', 'upperBoundFilter', function () {
@@ -42,6 +43,16 @@ export default Component.extend(FiltersRendererMixin, {
       ...(this.upperBoundFilter ? [{ key: 'upper_bound', value: this.upperBoundFilter }] : [])
     ]);
     this.manager.hooks.onColumnsChange('columns:change');
+  },
+
+  setupOnlyNumericListener(element) {
+    const input = element.querySelector('input');
+    input?.addEventListener('keydown', onlyNumeric);
+  },
+
+  teardownOnlyNumericListener(element) {
+    const input = element.querySelector('input');
+    input?.removeEventListener('keydown', onlyNumeric);
   },
 
   didReceiveAttrs() {

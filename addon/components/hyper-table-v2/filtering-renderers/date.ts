@@ -20,10 +20,10 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
 
   private _calendarContainer: any = null;
 
-  filteringOptions = Object.freeze({
-    Moving: 'moving',
-    Fixed: 'fixed'
-  });
+  filteringOptions: { label: string; value: FilterOption }[] = [
+    { label: 'Moving', value: 'moving' },
+    { label: 'Fixed', value: 'fixed' }
+  ];
 
   movingDateOptions = Object.freeze({
     Today: 'today',

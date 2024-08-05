@@ -59,7 +59,9 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
 
       assert.equal(this.column.order, undefined);
-      await click('div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .upf-radio-btn:first-child ');
+      await click(
+        'div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
+      );
 
       //@ts-ignore
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
@@ -68,7 +70,9 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
         key: 'foo'
       });
 
-      await click('div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .upf-radio-btn:last-child ');
+      await click(
+        'div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .oss-toggle-buttons-btn:nth-child(2)'
+      );
 
       //@ts-ignore
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));

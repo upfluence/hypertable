@@ -1,51 +1,36 @@
-{{#if column.orderable}}
-  {{#input-wrapper}}
+{{#if this.column.orderable}}
+  <div class="fx-col">
     <label>Sort</label>
-    <div class="btn-group upf-radio-group" data-control-name={{concat _controlNamePrefix "_sort_radiogroup"}}>
-      {{#each-in orderingOptions as |label value|}}
-        {{radio-button
-          value=value
-          currentValue=column.orderBy
-          label=label
-          options=orderingOptions
-          onCheck="orderingOptionChanged"
-        }}
-      {{/each-in}}
-    </div>
-  {{/input-wrapper}}
+    <OSS::ToggleButtons
+      @toggles={{this.orderingOptions}}
+      @selectedToggle={{this.column.orderBy}}
+      @onSelection={{action "orderingOptionChanged"}}
+      data-control-name={{concat this._controlNamePrefix "_sort_radiogroup"}}
+    />
+  </div>
 {{/if}}
 
-{{#if column.filterable}}
-  {{#input-wrapper classNames=(if column.orderable "margin-top-xx-sm")}}
+{{#if this.column.filterable}}
+  <div class={{concat "fx-col" (if this.column.orderable " margin-top-px-12")}}>
     <label>Display</label>
-    <div
-      class="btn-group upf-radio-group upf-radio-group--block"
-      data-control-name={{concat _controlNamePrefix "_display_radiogroup"}}
-    >
-      {{#each-in existenceFilters as |label value|}}
-        {{radio-button
-          value=value
-          currentValue=currentExistenceFilter
-          label=label
-          options=existenceFilters
-          onCheck="existenceFilterChanged"
-        }}
+    <div class="fx-col fx-gap-px-3" data-control-name={{concat this._controlNamePrefix "_display_radiogroup"}}>
+      {{#each-in this.existenceFilters as |label value|}}
+        <div class="fx-row fx-gap-px-6" role="button" {{on "click" (action "existenceFilterChanged" value)}}>
+          <OSS::RadioButton @selected={{eq this.currentExistenceFilter value}} />
+          <span class="font-color-gray-900">{{label}}</span>
+        </div>
       {{/each-in}}
     </div>
-  {{/input-wrapper}}
+  </div>
 
-  {{#input-wrapper}}
+  <div class="fx-col margin-top-px-12">
     <label>Search</label>
-    <div>
-      <Input
-        type="text"
-        placeholder="Search..."
-        @value={{_searchQuery}}
-        data-control-name={{concat _controlNamePrefix "_search_input"}}
-        class="form-control upf-input"
-      />
-    </div>
-  {{/input-wrapper}}
+    <OSS::InputContainer
+      @value={{this._searchQuery}}
+      placeholder="Search..."
+      data-control-name={{concat this._controlNamePrefix "_search_input"}}
+    />
+  </div>
 
   <div class="margin-top-px-12 fx-row fx-malign-space-between">
     <OSS::Button @skin="destructive" @label="Remove field" {{action "removeColumn"}} />

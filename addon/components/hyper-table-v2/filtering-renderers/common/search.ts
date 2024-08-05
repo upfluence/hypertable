@@ -5,10 +5,12 @@ import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';
+import { onlyNumeric } from '@upfluence/hypertable/utils';
 
 interface HyperTableV2FilteringRenderersSearchArgs {
   handler: TableHandler;
   column: Column;
+  type?: string;
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
@@ -26,6 +28,16 @@ export default class HyperTableV2FilteringRenderersSearch extends Component<Hype
         this.searchQuery = '';
       }
     });
+  }
+
+  setupOnlyNumericListener(element: HTMLElement): void {
+    const input = element.querySelector('input');
+    input?.addEventListener('keydown', onlyNumeric);
+  }
+
+  teardownOnlyNumericListener(element: HTMLElement): void {
+    const input = element.querySelector('input');
+    input?.removeEventListener('keydown', onlyNumeric);
   }
 
   @action

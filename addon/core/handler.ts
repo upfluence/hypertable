@@ -67,6 +67,7 @@ export default class TableHandler {
       .fetchColumns()
       .then(({ columns }) => {
         this.columns = columns;
+        this._lastOrderedColumn = columns.find((column) => column.order);
       })
       .catch(() => {
         this.communicationError = true;

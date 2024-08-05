@@ -15,21 +15,13 @@
   {{#if @column.definition.filterable}}
     <div class="fx-col">
       <label>{{t "hypertable.column.filtering.label"}}</label>
-
-      <div
-        class="btn-group upf-radio-group"
+      <OSS::ToggleButtons
+        @toggles={{this.filteringOptions}}
+        @selectedToggle={{this.filterOption}}
+        @onSelection={{this.filterOptionChanged}}
         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filter_by_radiogroup"}}
-      >
-        {{#each-in this.filteringOptions as |label value|}}
-          <RadioButton
-            @value={{value}}
-            @currentValue={{this.filterOption}}
-            @label={{label}}
-            @options={{this.filteringOptions}}
-            @onCheck="filterOptionChanged"
-          />
-        {{/each-in}}
-      </div>
+      />
+
       <div
         class="filters"
         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_date_range_inputs"}}

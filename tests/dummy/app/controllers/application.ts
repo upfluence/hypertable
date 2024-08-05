@@ -27,6 +27,18 @@ const columns = [
   { key: 'time', extra: { orderable: true, filterable: true, category: 'influencer', type: 'timestamp' } },
   { key: 'total', extra: { orderable: true, filterable: true, category: 'influencer', type: 'integer' } },
   { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
+  { key: 'code', extra: { category: 'affiliation', clustering_key: '' } },
+
+  { key: 'foo', extra: { filterable: true, category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'time', extra: { orderable: true, filterable: true, category: 'influencer', type: 'timestamp' } },
+  { key: 'total', extra: { orderable: true, filterable: true, category: 'influencer', type: 'integer' } },
+  { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
+  { key: 'code', extra: { category: 'affiliation', clustering_key: '' } },
+
+  { key: 'foo', extra: { filterable: true, category: 'influencer', clustering_key: 'instagram' } },
+  { key: 'time', extra: { orderable: true, filterable: true, category: 'influencer', type: 'timestamp' } },
+  { key: 'total', extra: { orderable: true, filterable: true, category: 'influencer', type: 'integer' } },
+  { key: 'bar', extra: { category: 'influencer', clustering_key: 'youtube' } },
   { key: 'code', extra: { category: 'affiliation', clustering_key: '' } }
 ];
 

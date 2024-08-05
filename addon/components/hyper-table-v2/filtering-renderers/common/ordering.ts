@@ -20,24 +20,34 @@ const defaultOrderingDirections: { [key: string]: OrderDirection } = {
 const THROTTLE_TIME = 300;
 
 export default class HyperTableV2FilteringRenderersOrdering extends Component<HyperTableV2FilteringRenderersOrderingArgs> {
-  @tracked _selectedDirection: OrderDirection | undefined;
+  @tracked _selectedDirection?: OrderDirection | null;
 
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersOrderingArgs) {
     super(owner, args);
 
     args.handler.on('reset-columns', (columns) => {
       if (columns.includes(args.column)) {
-        this._selectedDirection = undefined;
+        this._selectedDirection = null;
       }
     });
   }
 
-  get orderingOptions() {
-    return this.args?.orderingOptions || defaultOrderingDirections;
+  get toggles(): { label: string; value: OrderDirection }[] {
+    return Object.keys(this.orderingOptions).reduce((acc: { label: string; value: OrderDirection }[], v: string) => {
+      acc.push({
+        label: v,
+        value: this.orderingOptions[v] as OrderDirection
+      });
+      return acc;
+    }, []);
   }
 
-  get currentOrderingDirection(): OrderDirection | undefined {
-    return this._selectedDirection || this.args.column.order?.direction;
+  get orderingOptions() {
+    return this.args.orderingOptions ?? defaultOrderingDirections;
+  }
+
+  get currentOrderingDirection(): OrderDirection | null {
+    return (this._selectedDirection || this.args.column.order?.direction) ?? null;
   }
 
   @action
