@@ -1,4 +1,9 @@
 <div class="hypertable-container" ...attributes>
+  {{#unless @handler.communicationError}}
+    <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
+      <OSS::Button @icon="fa fa-chevron-right" class="scroll-button is-visible" {{on "click" this.scrollToEnd}} />
+    </div>
+  {{/unless}}
   <div class="hypertable__upper-header">
     <div class="fx-row">
       <div class="left-side">
@@ -175,10 +180,6 @@
             </HyperTableV2::Column>
           {{/if}}
         {{/each}}
-      </div>
-
-      <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
-        <OSS::Button @icon="fa fa-chevron-right" class="scroll-button is-visible" {{on "click" this.scrollToEnd}} />
       </div>
     {{/if}}
   </div>

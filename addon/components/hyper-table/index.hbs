@@ -152,6 +152,14 @@
   />
 </div>
 
+<div class="scroll-button-container {{if this.manager.isScrollable 'is-visible'}}">
+  <OSS::Button
+    @label={{t "hypertable.column.scroll_to_end"}}
+    class="scroll-button {{if this.manager.isScrollable 'is-visible'}}"
+    {{action "scrollToEnd"}}
+  />
+</div>
+
 <div class="hypertable__table {{if (eq this._collection.length 0) 'hypertable__table--empty'}}">
   {{#if (and this.manager.tetherInstance this.manager.tetherBackdrop)}}
     <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
@@ -289,13 +297,6 @@
     {{/each}}
   </div>
 
-  <div class="scroll-button-container {{if this.manager.isScrollable 'is-visible'}}">
-    <OSS::Button
-      @label={{t "hypertable.column.scroll_to_end"}}
-      class="scroll-button {{if this.manager.isScrollable 'is-visible'}}"
-      {{action "scrollToEnd"}}
-    />
-  </div>
 </div>
 
 {{#if this.footer}}
