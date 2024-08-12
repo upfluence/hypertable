@@ -33,7 +33,7 @@
       </div>
     </div>
     <HyperTableV2::Selection
-      class={{if (gt selectionCount 0) "margin-top-px-18"}}
+      class={{if (gt this.selectionCount 0) "margin-top-px-18"}}
       @selected={{this.selectionCount}}
       @total={{@handler.rowsMeta.total}}
       @intlKeyPath={{@options.selectionIntlKeyPath}}
@@ -42,7 +42,11 @@
     />
   </div>
 
-  <div class="hypertable__table hypertable__table--v2" {{did-insert this.setupInnerTableElement}}>
+  <div
+    class="hypertable__table hypertable__table--v2"
+    {{did-insert this.setupInnerTableElement}}
+    {{on-bottom-reached this.onBottomReached}}
+  >
     {{#if @handler.communicationError}}
       <div class="hypertable__state hypertable__state--error padding-md fx-col fx-gap-px-20">
         <OSS::Badge @icon="fas fa-exclamation-triangle" @skin="error" @size="lg" />
@@ -77,7 +81,6 @@
       <div
         class="hypertable"
         {{sortable-group direction="x" onChange=this.reorderColumns groupName=this.hypertableInstanceID}}
-        {{on-bottom-reached this.onBottomReached}}
       >
         {{#each @handler.columns as |column index|}}
           {{#if (eq index 0)}}
@@ -175,10 +178,6 @@
             </HyperTableV2::Column>
           {{/if}}
         {{/each}}
-      </div>
-
-      <div class="scroll-button-container {{if this.scrollableTable 'is-visible'}}">
-        <OSS::Button @icon="fa fa-chevron-right" class="scroll-button is-visible" {{on "click" this.scrollToEnd}} />
       </div>
     {{/if}}
   </div>

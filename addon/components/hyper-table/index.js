@@ -173,7 +173,7 @@ export default Component.extend({
 
     // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
     scheduleOnce('afterRender', this, () => {
-      let table = document.querySelector('.hypertable');
+      let table = document.querySelector('.hypertable__table');
       $(table).scroll(() => {
         if (table.scrollLeft === table.scrollWidth - table.clientWidth) {
           this.manager.set('isScrollable', false);
@@ -250,7 +250,7 @@ export default Component.extend({
     },
 
     scrollToEnd() {
-      this._innerTable.firstElementChild.scrollLeft = this._innerTable.firstElementChild.scrollWidth;
+      this._innerTable.scrollLeft = this._innerTable.scrollWidth;
     },
 
     toggleHover(item, value) {

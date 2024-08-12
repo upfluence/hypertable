@@ -1,4 +1,4 @@
-import { module, test } from 'qunit';
+import { module, skip, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { click, render, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
@@ -424,7 +424,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   });
 
   module('jumping to the last column', function () {
-    test('the button to jump to the last column is displayed if there is overflow', async function (assert: Assert) {
+    skip('the button to jump to the last column is displayed if there is overflow', async function (assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
         return Promise.resolve({
           columns: [

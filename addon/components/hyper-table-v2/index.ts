@@ -71,7 +71,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   computeScrollableTable(): void {
-    const table = this.innerTableElement?.querySelector('.hypertable');
+    const table = this.innerTableElement;
 
     if (table) {
       this.scrollableTable = Math.ceil(table.scrollLeft) + table.clientWidth < table.scrollWidth;
@@ -85,10 +85,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   setupInnerTableElement(element: Element): void {
     this.innerTableElement = element;
 
-    const table = element.querySelector('.hypertable');
-
-    if (table) {
-      scheduleOnce('afterRender', this, this._setupInnerTableElement, table);
+    if (element) {
+      scheduleOnce('afterRender', this, this._setupInnerTableElement, this.innerTableElement);
     }
   }
 
@@ -133,7 +131,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   scrollToEnd(): void {
-    const table = this.innerTableElement?.querySelector('.hypertable');
+    const table = this.innerTableElement;
 
     if (table) {
       scheduleOnce('afterRender', this, this._scrollToEnd, table);
