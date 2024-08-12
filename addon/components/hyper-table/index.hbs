@@ -152,7 +152,10 @@
   />
 </div>
 
-<div class="hypertable__table {{if (eq this._collection.length 0) 'hypertable__table--empty'}}">
+<div
+  class="hypertable__table {{if (eq this._collection.length 0) 'hypertable__table--empty'}}"
+  {{on-bottom-reached this.manager.hooks.onBottomReached}}
+>
   {{#if (and this.manager.tetherInstance this.manager.tetherBackdrop)}}
     <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
   {{/if}}
@@ -170,7 +173,6 @@
   <div
     class="hypertable"
     {{sortable-group direction="x" onChange=(action "reorderColumns") groupName=this._hypertableInstanceID}}
-    {{on-bottom-reached this.manager.hooks.onBottomReached}}
   >
     {{#each this._columns as |column index|}}
       {{#if (eq index 0)}}
