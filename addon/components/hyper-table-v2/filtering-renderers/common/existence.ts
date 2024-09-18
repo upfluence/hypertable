@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
 import { tracked } from '@glimmer/tracking';
+import { IntlService } from 'ember-intl';
 
 interface HyperTableV2FilteringRenderersExistenceArgs {
   handler: TableHandler;
@@ -23,48 +24,48 @@ const defaultExistenceFilters = {
 };
 
 export default class HyperTableV2FilteringRenderersExistence extends Component<HyperTableV2FilteringRenderersExistenceArgs> {
-  @tracked _currentSelection: string | undefined;
-  @service declare intl: any;
+  @tracked private currentSelection: string | undefined;
+  @service declare intl: IntlService;
 
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersExistenceArgs) {
     super(owner, args);
 
     args.handler.on('reset-columns', (columns) => {
       if (columns.includes(args.column)) {
-        this._currentSelection = undefined;
+        this.currentSelection = undefined;
       }
     });
   }
 
   get label(): string {
-    return this.args.label || this.intl.t('hypertable.column.filtering.existence.label');
+    return this.args.label ?? this.intl.t('hypertable.column.filtering.existence.label');
   }
 
   get existenceFilters(): { [key: string]: string } {
-    return this.args.existenceFilters || defaultExistenceFilters;
+    return this.args.existenceFilters ?? defaultExistenceFilters;
   }
 
   get currentExistenceFilter(): string | null {
-    const _existenceFilter = this.args.column.filters.find((filter) => filter.key === 'existence');
+    const existenceFilter = this.args.column.filters.find((filter) => filter.key === this.filteringKey);
 
-    if (this._currentSelection) {
-      return this._currentSelection;
+    if (this.currentSelection) {
+      return this.currentSelection;
     }
-    if (_existenceFilter) {
-      return _existenceFilter.value;
+    if (existenceFilter) {
+      return existenceFilter.value;
     }
 
-    return this._currentSelection || this.args.activateWithValue ? 'with' : null;
-  }
-
-  get _filteringKey(): string {
-    return this.args.filteringKey || defaultFilteringKey;
+    return this.currentSelection ?? (this.args.activateWithValue ? 'with' : null);
   }
 
   @action
   existenceFilterChanged(value: string): void {
-    this.args.handler.applyFilters(this.args.column, [{ key: this._filteringKey, value }]).then(() => {
-      this._currentSelection = value;
+    this.args.handler.applyFilters(this.args.column, [{ key: this.filteringKey, value }]).then(() => {
+      this.currentSelection = value;
     });
+  }
+
+  private get filteringKey(): string {
+    return this.args.filteringKey ?? defaultFilteringKey;
   }
 }
