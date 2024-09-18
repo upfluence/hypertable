@@ -67,6 +67,16 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'without' }]));
   });
 
+  test('The component should select the proper radiobutton when rendered with a pre-applied filter', async function (assert: Assert) {
+    this.column.filters = [{ key: 'bozo', value: 'with' }];
+    await render(
+      hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} @filteringKey="bozo" />`
+    );
+
+    assert.dom('.fx-row:first-child .oss-radio-btn').hasClass('oss-radio-btn--selected');
+    assert.dom('.fx-row:last-child .oss-radio-btn').doesNotHaveClass('oss-radio-btn--selected');
+  });
+
   test('if a label is provided, it is displayed', async function (assert: Assert) {
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} @label="test" />`
