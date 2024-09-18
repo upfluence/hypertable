@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
 import { tracked } from '@glimmer/tracking';
+import { IntlService } from 'ember-intl';
 
 interface HyperTableV2FilteringRenderersExistenceArgs {
   handler: TableHandler;
@@ -24,7 +25,7 @@ const defaultExistenceFilters = {
 
 export default class HyperTableV2FilteringRenderersExistence extends Component<HyperTableV2FilteringRenderersExistenceArgs> {
   @tracked private currentSelection: string | undefined;
-  @service declare intl: any;
+  @service declare intl: IntlService;
 
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersExistenceArgs) {
     super(owner, args);
@@ -65,7 +66,6 @@ export default class HyperTableV2FilteringRenderersExistence extends Component<H
   }
 
   private get filteringKey(): string {
-    console.log(this.args.filteringKey ?? defaultFilteringKey);
     return this.args.filteringKey ?? defaultFilteringKey;
   }
 }
