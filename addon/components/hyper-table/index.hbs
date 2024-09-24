@@ -161,7 +161,7 @@
   {{/if}}
 
   {{#if (and (eq this._collection.length 0) (not this.loadingData))}}
-    <div class="hypertable__state hypertable__state--empty" {{did-insert (action "centerElement")}}>
+    <div class="hypertable__state hypertable__state--empty" {{did-insert (action "scrollToEmptyState")}}>
       {{#if (has-block "inverse")}}
         {{yield to="inverse"}}
       {{else}}

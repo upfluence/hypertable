@@ -212,7 +212,7 @@ export default Component.extend({
       this._doSearch();
     },
 
-    centerElement(element) {
+    scrollToEmptyState(element) {
       element?.scrollIntoView({ inline: 'center' });
     },
 
