@@ -212,6 +212,10 @@ export default Component.extend({
       this._doSearch();
     },
 
+    centerElement(element) {
+      element?.scrollIntoView({inline: 'center'})
+    },
+
     reorderColumns(itemModels) {
       let _cs = [this._columns[0]].concat(itemModels);
       let hasSameOrder = compare(_cs.mapBy('key'), this.manager.columns.mapBy('key')) === 0;
