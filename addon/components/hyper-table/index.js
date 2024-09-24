@@ -213,7 +213,7 @@ export default Component.extend({
     },
 
     centerElement(element) {
-      element?.scrollIntoView({inline: 'center'})
+      element?.scrollIntoView({ inline: 'center' })
     },
 
     reorderColumns(itemModels) {
