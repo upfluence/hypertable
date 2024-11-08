@@ -195,7 +195,6 @@
   .status-container {
     position: relative;
     .fa,
-    .upf-icon--check,
     .upf-loading {
       position: absolute;
       padding: var(--spacing-px-6);
@@ -225,11 +224,6 @@
     text-overflow: ellipsis;
     margin-right: var(--spacing-px-6);
     white-space: nowrap;
-  }
-
-  .upf-icon--check {
-    background-color: var(--color-white);
-    animation: fadeIn 1.5s ease forwards;
   }
 
   @keyframes fadeIn {
@@ -263,9 +257,6 @@
 .hypertable__cell--selected,
 .hypertable__cell--hovered {
   background-color: var(--color-gray-100);
-  .upf-icon--check {
-    background-color: var(--color-gray-100);
-  }
 }
 
 .hypertable__cell--deleted {
