@@ -198,11 +198,17 @@
                 {{/each}}
               {{else}}
                 {{#each this._collection as |item|}}
-                  <HyperTable::Cell @item={{item}} @manager={{this.manager}} selection={{true}}>
+                  <HyperTable::Cell
+                    @item={{item}}
+                    @manager={{this.manager}}
+                    selection={{true}}
+                    @loading={{item.loading}}
+                  >
                     <OSS::Checkbox
                       @checked={{item.selected}}
                       @size="sm"
                       @onChange={{action "toggleItem" item}}
+                      @loading={{item.loading}}
                       data-control-name="row_select_toggle_checkbox"
                     />
                   </HyperTable::Cell>
@@ -236,6 +242,7 @@
                     @column={{column}}
                     @manager={{this.manager}}
                     @renderingComponent={{cell-rendering-inferer column}}
+                    @loading={{item.loading}}
                   />
                 </div>
               {{/each}}
@@ -276,6 +283,7 @@
                   @column={{column}}
                   @manager={{this.manager}}
                   @renderingComponent={{cell-rendering-inferer column}}
+                  @loading={{item.loading}}
                 />
               </div>
             {{/each}}
