@@ -11,17 +11,21 @@ interface HyperTableV2FilteringRenderersDateArgs {
   column: Column;
 }
 
-type FilterOption = 'moving' | 'fixed';
+export type FilterOption = 'moving' | 'fixed';
+
+const DEFAULT_MOVING_OPTION_KEY: FilterOption = 'moving';
 
 export default class HyperTableV2FilteringRenderersDate extends Component<HyperTableV2FilteringRenderersDateArgs> {
   @tracked _currentDateValue: Date[] = [];
   @tracked _currentMovingDateOption: any;
   @tracked filterOption: FilterOption;
 
+  protected movingOptionKey = DEFAULT_MOVING_OPTION_KEY;
+
   private _calendarContainer: any = null;
 
   filteringOptions: { label: string; value: FilterOption }[] = [
-    { label: 'Moving', value: 'moving' },
+    { label: 'Moving', value: this.movingOptionKey },
     { label: 'Fixed', value: 'fixed' }
   ];
 
@@ -42,9 +46,9 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersDateArgs) {
     super(owner, args);
 
-    let filter = this.args.column.filters.find((f) => f.key === 'moving');
+    let filter = this.args.column.filters.find((f) => f.key === this.movingOptionKey);
     this._currentMovingDateOption = filter ? filter.value : null;
-    this.filterOption = this._currentMovingDateOption ? 'moving' : 'fixed';
+    this.filterOption = this._currentMovingDateOption ? this.movingOptionKey : 'fixed';
     args.handler.on('reset-columns', (columns) => {
       if (columns.includes(args.column)) {
         this._resetStates();
@@ -92,7 +96,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     this.args.handler.applyFilters(this.args.column, [
       { key: 'lower_bound', value: '' },
       { key: 'upper_bound', value: '' },
-      { key: 'moving', value: value }
+      { key: this.movingOptionKey, value: value }
     ]);
   }
 
@@ -102,7 +106,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
 
     if (fromDate && toDate) {
       this.args.handler.applyFilters(this.args.column, [
-        { key: 'moving', value: '' },
+        { key: this.movingOptionKey, value: '' },
         { key: 'lower_bound', value: (+fromDate / 1000).toString() },
         { key: 'upper_bound', value: (+toDate / 1000).toString() }
       ]);
