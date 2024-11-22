@@ -38,7 +38,7 @@ module('Unit | core/handler', function (hooks) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       assert.equal(handler.rows.length, 0);
       await handler.fetchRows();
-      assert.equal(handler.rows.length, 2);
+      assert.equal(handler.rows.length, 3);
     });
 
     test('it removes duplicated row by record_id', async function (assert: Assert) {
@@ -224,7 +224,7 @@ module('Unit | core/handler', function (hooks) {
       handler.applyOrder(handler.columns[1], 'asc');
       handler.toggleSelectAll(true);
 
-      assert.equal(handler.selection.length, 2);
+      assert.equal(handler.selection.length, 3);
 
       handler.resetColumns(handler.columns);
 
@@ -243,7 +243,7 @@ module('Unit | core/handler', function (hooks) {
     assert.ok(rowsFetcherSpy.fetch.calledTwice);
     // @ts-ignore
     assert.ok(rowsFetcherSpy.fetch.calledWithExactly(1, 20));
-    assert.equal(handler.rows.length, 2);
+    assert.equal(handler.rows.length, 3);
   });
 
   test('Handler#removeRow', async function (assert: Assert) {
@@ -251,10 +251,10 @@ module('Unit | core/handler', function (hooks) {
     const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
     await handler.fetchRows();
-    assert.equal(handler.rows.length, 2);
+    assert.equal(handler.rows.length, 3);
 
     handler.removeRow(12);
-    assert.equal(handler.rows.length, 1);
+    assert.equal(handler.rows.length, 2);
     assert.equal(handler.rows[0].recordId, 13);
     // @ts-ignore
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
@@ -302,7 +302,7 @@ module('Unit | core/handler', function (hooks) {
 
       await handler.fetchRows();
       handler.toggleSelectAll(true);
-      assert.equal(handler.selection.length, 2);
+      assert.equal(handler.selection.length, 3);
     });
 
     test('it selects all the rows', async function (assert: Assert) {

@@ -26,6 +26,17 @@ export default class RowsFetcher {
           bar: 'second bar',
           total: 123123,
           date: 0
+        },
+        {
+          influencerId: 44,
+          recordId: 14,
+          record_id: 14,
+          holderId: 58,
+          holderType: 'list',
+          foo: null,
+          bar: 'second bar',
+          total: null,
+          date: 0
         }
       ],
       meta: { total: 12 }
