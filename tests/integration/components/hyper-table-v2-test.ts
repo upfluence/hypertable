@@ -42,9 +42,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   test('it sets up the rows correctly', async function (assert: Assert) {
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
-    assert.dom('.hypertable__cell').exists({ count: 8 });
-    assert.dom('.hypertable__sticky-columns .hypertable__column .hypertable__cell').exists({ count: 2 });
-    assert.dom('.hypertable__column:nth-child(2) .hypertable__cell').exists({ count: 2 });
+    assert.dom('.hypertable__cell').exists({ count: 12 });
+    assert.dom('.hypertable__sticky-columns .hypertable__column .hypertable__cell').exists({ count: 3 });
+    assert.dom('.hypertable__column:nth-child(2) .hypertable__cell').exists({ count: 3 });
   });
 
   test('it resets the filters', async function (assert: Assert) {
@@ -155,7 +155,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
       assert.dom('.hypertable__column.hypertable__column--selection').exists();
-      assert.dom('.upf-checkbox').exists({ count: 3 });
+      assert.dom('.upf-checkbox').exists({ count: 4 });
     });
 
     test('the selection column is present when the feature is enabled', async function (assert: Assert) {
@@ -258,7 +258,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
         assert
           .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox')
-          .exists({ count: 2 });
+          .exists({ count: 3 });
         findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
           (checkbox) => {
             assert.dom(checkbox).isChecked();
@@ -309,7 +309,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
         assert
           .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox')
-          .exists({ count: 2 });
+          .exists({ count: 3 });
         findAll('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').forEach(
           (checkbox) => {
             assert.dom(checkbox).isChecked();
