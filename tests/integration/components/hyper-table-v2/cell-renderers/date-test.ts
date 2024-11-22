@@ -42,4 +42,16 @@ module('Integration | Component | hyper-table-v2/cell-renderers/date', function 
     assert.equal(this.row[this.column.definition.key], '0');
     assert.dom().hasText('—');
   });
+
+  test('it renders @column.definition.empty_state_message when present and the value is null', async function (assert) {
+    this.column = this.handler.columns[3];
+    this.column.definition.empty_state_message = 'No date';
+    this.row = this.handler.rows[1];
+
+    await render(
+      hbs`<HyperTableV2::CellRenderers::Date @handler={{this.handler}} @row={{this.row}} @column={{this.column}} />`
+    );
+
+    assert.dom().hasText('No date');
+  });
 });

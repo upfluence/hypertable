@@ -42,4 +42,27 @@ module('Integration | Component | hyper-table-v2/cell-renderers/numeric', functi
     assert.equal(this.row[this.column.definition.key], '123123');
     assert.dom().hasText('123k');
   });
+
+  test('it renders a default - when the value is null', async function (assert) {
+    this.column = this.handler.columns[2];
+    this.row = this.handler.rows[2];
+
+    await render(
+      hbs`<HyperTableV2::CellRenderers::Numeric @handler={{this.handler}} @row={{this.row}} @column={{this.column}} />`
+    );
+
+    assert.dom().hasText('—');
+  });
+
+  test('it renders @column.definition.empty_state_message when present and the value is null', async function (assert) {
+    this.column = this.handler.columns[2];
+    this.column.definition.empty_state_message = 'Custom empty';
+    this.row = this.handler.rows[2];
+
+    await render(
+      hbs`<HyperTableV2::CellRenderers::Numeric @handler={{this.handler}} @row={{this.row}} @column={{this.column}} />`
+    );
+
+    assert.dom().hasText('Custom empty');
+  });
 });
