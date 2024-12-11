@@ -1,11 +1,16 @@
 import NumericFilterRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers/numeric';
+import { isBlank } from '@ember/utils';
 
 export default NumericFilterRenderer.extend({
   _addRangeFilter() {
-    this.column.set('filters', [
-      { key: 'lower_bound', value: (this.lowerBoundFilter * 100).toString() },
-      { key: 'upper_bound', value: (this.upperBoundFilter * 100).toString() }
-    ]);
+    const filters = [];
+    if (!isBlank(this.lowerBoundFilter)) {
+      filters.push({ key: 'lower_bound', value: (this.lowerBoundFilter * 100).toString() });
+    }
+    if (!isBlank(this.upperBoundFilter)) {
+      filters.push({ key: 'upper_bound', value: (this.upperBoundFilter * 100).toString() });
+    }
+    this.column.set('filters', filters);
     this.manager.hooks.onColumnsChange('columns:change');
   },
 
