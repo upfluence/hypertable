@@ -1,5 +1,7 @@
 {{#if this.value}}
   {{this.formattedDate}}
 {{else}}
-  —
+  <span class="font-color-gray-500">
+    {{or @column.definition.empty_state_message "—"}}
+  </span>
 {{/if}}
