@@ -107,7 +107,6 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   toggleSelectAll(value: boolean): void {
-    debugger;
     this.args.handler.toggleSelectAll(value);
   }
 
