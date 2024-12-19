@@ -19,6 +19,7 @@ export type ColumnDefinition = {
   filterable_by: string[] | null;
   facetable: boolean;
   facetable_by: string[] | null;
+  empty_state_message?: string;
   position?: {
     sticky: boolean;
   };

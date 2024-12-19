@@ -6,6 +6,8 @@
   </div>
 {{else}}
   <div class="fx-row fx-1 fx-malign-start">
-    —
+    <span class="font-color-gray-500">
+      {{or @column.definition.empty_state_message "—"}}
+    </span>
   </div>
 {{/if}}
