@@ -87,7 +87,7 @@
             <div class="hypertable__sticky-columns">
               {{#if this.features.selection}}
                 <div class="hypertable__column hypertable__column--selection">
-                  <header>
+                  <header {{on "click" (fn this.toggleSelectAll (eq this.selectionCount 0))}} role="button">
                     <OSS::Checkbox
                       @checked={{gt this.selectionCount 0}}
                       @size="sm"
@@ -101,7 +101,7 @@
                       @handler={{@handler}}
                       @column={{column}}
                       @row={{row}}
-                      @onClick={{this.onRowClick}}
+                      @onClick={{fn this.toggleRowSelection row}}
                       @onHover={{this.onRowHover}}
                     >
                       <OSS::Checkbox
