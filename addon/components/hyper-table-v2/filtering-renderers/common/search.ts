@@ -10,10 +10,12 @@ import { onlyNumeric } from '@upfluence/hypertable/utils';
 interface HyperTableV2FilteringRenderersSearchArgs {
   handler: TableHandler;
   column: Column;
+  filterKey?: string;
   type?: string;
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
+const DEFAULT_FILTER_KEY: string = 'value';
 
 export default class HyperTableV2FilteringRenderersSearch extends Component<HyperTableV2FilteringRenderersSearchArgs> {
   @tracked searchQuery: string = '';
@@ -28,6 +30,10 @@ export default class HyperTableV2FilteringRenderersSearch extends Component<Hype
         this.searchQuery = '';
       }
     });
+  }
+
+  get filterKey(): string {
+    return this.args.filterKey ?? DEFAULT_FILTER_KEY;
   }
 
   setupOnlyNumericListener(element: HTMLElement): void {
@@ -55,7 +61,7 @@ export default class HyperTableV2FilteringRenderersSearch extends Component<Hype
   private _applyFilters(): void {
     this.args.handler.applyFilters(this.args.column, [
       {
-        key: 'value',
+        key: this.filterKey,
         value: this.searchQuery
       }
     ]);
