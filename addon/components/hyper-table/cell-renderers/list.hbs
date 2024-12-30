@@ -10,10 +10,19 @@
         <div class="expandable-list">
           {{#each this.value as |item|}}
             <div
-              class="expandable-list__item"
+              class="expandable-list__item fx-row fx-xalign-center fx-gap-px-6"
               {{on "click" (action "goToUrl" (concat this.url item.id) bubbles=false)}}
             >
+              {{log @column.key}}
               {{item.name}}
+              {{#if this.locked}}
+                <OSS::Tag
+                  @icon="far fa-lock"
+                  @size="xs"
+                  @skin="secondary"
+                  {{enable-tooltip title=(t (concat "hypertable.cell_renderers.no_permission." @column.key))}}
+                />
+              {{/if}}
             </div>
           {{/each}}
         </div>
