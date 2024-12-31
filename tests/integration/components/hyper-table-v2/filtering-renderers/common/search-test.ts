@@ -38,7 +38,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     assert.dom('.oss-input-container').exists();
   });
 
-  test('When text is inputed, the applyFilters is called', async function (assert: Assert) {
+  test('When text is inputted, the applyFilters is called', async function (assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
@@ -58,6 +58,32 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
       handlerSpy.applyFilters.calledWith(this.column, [
         {
           key: 'value',
+          value: 'test'
+        }
+      ])
+    );
+  });
+
+  test('the provided filter key is used when apply filters', async function (assert: Assert) {
+    const handlerSpy = sinon.spy(this.handler);
+    await render(
+      hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @filterKey="foobar" />`
+    );
+
+    await fillIn('.oss-input-container input', 'test');
+    await triggerKeyEvent(
+      '.oss-input-container input',
+      'keyup',
+      'Enter',
+      //@ts-ignore
+      { code: 'Enter' }
+    );
+
+    assert.ok(
+      //@ts-ignore
+      handlerSpy.applyFilters.calledWith(this.column, [
+        {
+          key: 'foobar',
           value: 'test'
         }
       ])

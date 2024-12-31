@@ -15,10 +15,11 @@ interface HyperTableV2FilteringRenderersNumericArgs {
 }
 
 const RANGE_DEBOUNCE_TIME = 500;
+const DEFAULT_MULTIPLIER = 1;
 
 export default class HyperTableV2FilteringRenderersNumeric extends Component<HyperTableV2FilteringRenderersNumericArgs> {
-  @tracked lowerBoundFilter = '';
-  @tracked upperBoundFilter = '';
+  @tracked lowerBoundFilter: string = '';
+  @tracked upperBoundFilter: string = '';
 
   orderingDirections: { [key: string]: OrderDirection } = Object.freeze({
     '0 — 9': 'asc',
@@ -27,14 +28,19 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
 
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersNumericArgs) {
     super(owner, args);
+
     args.handler.on('reset-columns', (columns) => {
       if (columns.includes(args.column)) {
         this._resetStates();
       }
     });
 
-    this.lowerBoundFilter = args.column.filters.find((filter) => filter.key === 'lower_bound')?.value || '';
-    this.upperBoundFilter = args.column.filters.find((filter) => filter.key === 'upper_bound')?.value || '';
+    this.initLowerBound();
+    this.initUpperBound();
+  }
+
+  get multiplier(): number {
+    return DEFAULT_MULTIPLIER;
   }
 
   get hasBoundFiltersDefined(): boolean {
@@ -69,8 +75,32 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
 
   private _addRangeFilter(): void {
     this.args.handler.applyFilters(this.args.column, [
-      ...(this.lowerBoundFilter ? [{ key: 'lower_bound', value: this.lowerBoundFilter }] : []),
-      ...(this.upperBoundFilter ? [{ key: 'upper_bound', value: this.upperBoundFilter }] : [])
+      ...(this.lowerBoundFilter
+        ? [{ key: 'lower_bound', value: (parseInt(this.lowerBoundFilter) * this.multiplier).toString() }]
+        : []),
+      ...(this.upperBoundFilter
+        ? [{ key: 'upper_bound', value: (parseInt(this.upperBoundFilter) * this.multiplier).toString() }]
+        : [])
     ]);
+  }
+
+  private initLowerBound(): void {
+    this.lowerBoundFilter = '';
+
+    if (this.args.column.filters.find((filter) => filter.key === 'lower_bound')?.value) {
+      this.lowerBoundFilter = (
+        parseInt(this.args.column.filters.find((filter) => filter.key === 'lower_bound')!.value) / this.multiplier
+      ).toString();
+    }
+  }
+
+  private initUpperBound(): void {
+    this.upperBoundFilter = '';
+
+    if (this.args.column.filters.find((filter) => filter.key === 'upper_bound')?.value) {
+      this.upperBoundFilter = (
+        parseInt(this.args.column.filters.find((filter) => filter.key === 'upper_bound')!.value) / this.multiplier
+      ).toString();
+    }
   }
 }

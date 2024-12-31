@@ -29,4 +29,15 @@ module('Integration | Component | hyper-table-v2/cell-renderers/text', function 
     assert.equal(this.row[this.column.definition.key], 'ekip');
     assert.dom('span').hasText('ekip');
   });
+
+  test('it renders a default - when the value is null', async function (assert) {
+    this.column = this.handler.columns[0];
+    this.row = this.handler.rows[2];
+
+    await render(
+      hbs`<HyperTableV2::CellRenderers::Text @handler={{this.handler}} @row={{this.row}} @column={{this.column}} />`
+    );
+
+    assert.dom().hasText('—');
+  });
 });
