@@ -20,7 +20,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   @tracked _currentMovingDateOption: any;
   @tracked filterOption: FilterOption;
 
-  protected movingOptionKey = DEFAULT_MOVING_OPTION_KEY;
+  protected movingOptionKey: FilterOption = DEFAULT_MOVING_OPTION_KEY;
 
   private _calendarContainer: any = null;
 
