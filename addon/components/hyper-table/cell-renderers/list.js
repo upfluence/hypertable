@@ -8,7 +8,10 @@ export default Component.extend(CellRendererMixin, {
   }),
 
   isEditing: false,
-  locked: this?.column?.locked ?? false,
+
+  locked: computed('column.locked', function () {
+    return this.column?.locked ?? true;
+  }),
 
   formattedList: computed('value', 'value.firstObject.name', function () {
     if (this.value.firstObject.name) {

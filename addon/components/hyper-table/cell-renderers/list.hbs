@@ -19,7 +19,7 @@
                   @icon="far fa-lock"
                   @size="xs"
                   @skin="secondary"
-                  {{enable-tooltip title=(t (concat "hypertable.cell_renderers.no_permission." @column.key))}}
+                  {{enable-tooltip title=this.lockedTooltipLabel}}
                 />
               {{/if}}
             </div>

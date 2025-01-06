@@ -86,10 +86,3 @@ hypertable:
     all_records_selected: All records (<b>{count}</b>) are selected
     select_all: '{count, plural, =1 {Select all {count} record} other {Select all {count} records}}'
     clear: Clear selection
-  cell_renderers:
-    no_permission: 
-      mailings: You don't have permission to access this mailing
-      lists: You don't have permission to access this list
-      campaigns: You don't have permission to access this campaign
-      tracking_plans: You don't have permission to access this tracking plan
-      acquisition_campaigns: You don't have permission to access this live capture campaign
