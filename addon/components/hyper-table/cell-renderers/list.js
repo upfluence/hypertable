@@ -10,7 +10,7 @@ export default Component.extend(CellRendererMixin, {
   isEditing: false,
 
   locked: computed('column.locked', function () {
-    return this.column?.locked ?? true;
+    return this.column?.locked ?? false;
   }),
 
   formattedList: computed('value', 'value.firstObject.name', function () {
