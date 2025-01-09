@@ -12,6 +12,7 @@ interface FacetsLoaderArgs {
   column: Column;
   facettingKey: string;
   searchEnabled: boolean;
+  sortCompareFn?(a: Facet, b: Facet): number;
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
@@ -45,6 +46,10 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   get skeletonStyle(): string {
     return ['width: 100%', 'height: 10px'].join(';');
+  }
+
+  get facetsSorter(): (a: Facet, b: Facet) => number {
+    return this.args.sortCompareFn ?? this.defaultSortCompareFn;
   }
 
   @action
@@ -123,7 +128,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         this.searchQuery
       )
       .then(({ facets, filtering_key }: FacetsResponse) => {
-        this.facets = facets;
+        this.facets = facets.sort(this.facetsSorter);
         this.filteringKey = filtering_key;
 
         const filterForKey = this.args.column.filters.find((v) => v.key === this.filteringKey);
@@ -137,5 +142,9 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       .finally(() => {
         this.loading = false;
       });
+  }
+
+  private defaultSortCompareFn(a: Facet, b: Facet): number {
+    return (b.count ?? 0) - (a.count ?? 0);
   }
 }
