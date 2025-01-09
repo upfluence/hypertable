@@ -14,7 +14,7 @@
               {{on "click" (action "goToUrl" (concat this.url item.id) bubbles=false)}}
             >
               {{item.name}}
-              {{#if this.locked}}
+              {{#if item.locked}}
                 <OSS::Tag
                   @icon="far fa-lock"
                   @size="xs"
