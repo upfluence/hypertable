@@ -295,6 +295,12 @@
     padding: var(--spacing-px-12) var(--spacing-px-18);
     cursor: pointer;
 
+    &-disabled {
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+
     &:hover {
       background-color: var(--color-gray-100);
     }

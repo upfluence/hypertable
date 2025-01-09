@@ -10,8 +10,9 @@
         <div class="expandable-list">
           {{#each this.value as |item|}}
             <div
-              class="expandable-list__item fx-row fx-xalign-center fx-gap-px-6"
-              {{on "click" (action "goToUrl" (concat this.url item.id) bubbles=false)}}
+              class="expandable-list__item
+                {{if item.locked 'expandable-list__item-disabled '}}fx-row fx-xalign-center fx-gap-px-6"
+              {{on "click" (action "goToUrl" (concat this.url item.id) item.locked bubbles=false)}}
             >
               {{item.name}}
               {{#if item.locked}}

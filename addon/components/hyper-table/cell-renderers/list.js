@@ -17,8 +17,8 @@ export default Component.extend(CellRendererMixin, {
   }),
 
   actions: {
-    goToUrl(url, event) {
-      if (!this.url) {
+    goToUrl(url, locked, event) {
+      if (!this.url || locked) {
         event.preventDefault();
         event.stopPropagation();
         return;
