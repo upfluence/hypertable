@@ -118,6 +118,26 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.dom('.oss-input-container').exists();
     });
 
+    test('the default search placeholder is displayed when no searchPlaceholder arg is provided', async function (assert: Assert) {
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}}/>`
+      );
+
+      assert.dom('.oss-input-container').exists();
+      assert
+        .dom('.oss-input-container input')
+        .hasAttribute('placeholder', this.intl.t('hypertable.column.filtering.search_term.placeholder'));
+    });
+
+    test('the search input has the provided searchPlaceholder arg properly used', async function (assert: Assert) {
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}} @searchPlaceholder="foobar..." />`
+      );
+
+      assert.dom('.oss-input-container').exists();
+      assert.dom('.oss-input-container input').hasAttribute('placeholder', 'foobar...');
+    });
+
     test('facets are fetched with the typed keyword when searching', async function (assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
 

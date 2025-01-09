@@ -5,7 +5,7 @@
       <OSS::InputContainer
         @value={{this.searchQuery}}
         @onChange={{this.onInputChanged}}
-        @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}
+        @placeholder={{this.searchPlaceholder}}
       >
         <:suffix>
           {{#if (gt this.searchQuery.length 0)}}

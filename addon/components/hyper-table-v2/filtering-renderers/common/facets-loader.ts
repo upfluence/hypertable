@@ -2,7 +2,10 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { debounce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
+
+import { IntlService } from 'ember-intl';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Facet, FacetsResponse, Filter } from '@upfluence/hypertable/core/interfaces';
@@ -12,6 +15,7 @@ interface FacetsLoaderArgs {
   column: Column;
   facettingKey: string;
   searchEnabled: boolean;
+  searchPlaceholder?: string;
   sortCompareFn?(a: Facet, b: Facet): number;
 }
 
@@ -19,6 +23,8 @@ const SEARCH_DEBOUNCE_TIME: number = 300;
 const FACET_APPLY_DEBOUNCE_TIME: number = 300;
 
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
+  @service declare intl: IntlService;
+
   @tracked loading = false;
   @tracked facets: Facet[] = [];
   @tracked appliedFacets: string[] = [];
@@ -42,6 +48,10 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   get searchEnabled(): boolean {
     return this.args.searchEnabled ?? false;
+  }
+
+  get searchPlaceholder(): string {
+    return this.args.searchPlaceholder ?? this.intl.t('hypertable.column.filtering.search_term.placeholder');
   }
 
   get skeletonStyle(): string {
