@@ -68,6 +68,13 @@ export default class TableManager implements ITableManager {
           payload: {
             name: 'The Foo Fighters'
           },
+          count: 29
+        },
+        {
+          identifier: 'band:2',
+          payload: {
+            name: 'Arctic Monkeys'
+          },
           count: 4
         }
       ],

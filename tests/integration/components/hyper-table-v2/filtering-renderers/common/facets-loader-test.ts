@@ -23,7 +23,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
   });
 
   module('facet display', function () {
-    test('the facets are displayed correctly using the dedicated named block', async function (assert: Assert) {
+    test('the facets are displayed correctly using the dedicated named block & are ordered by count value', async function (assert: Assert) {
       await render(
         hbs`
           <HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}>
@@ -33,8 +33,32 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
           </HyperTableV2::FilteringRenderers::Common::FacetsLoader>`
       );
 
-      assert.dom('.hypertable__facetting .item').exists({ count: 1 });
-      assert.dom('.hypertable__facetting .item').hasText('The Foo Fighters');
+      assert.dom('.hypertable__facetting .item').exists({ count: 2 });
+      assert.dom('.hypertable__facetting > div:nth-child(1) .item').hasText('The Foo Fighters');
+      assert.dom('.hypertable__facetting > div:nth-child(2) .item').hasText('Arctic Monkeys');
+    });
+
+    test('the facets are ordered using the @sortCompareFn arg function when provided', async function (assert: Assert) {
+      this.sortCompareFn = sinon.stub().callsFake((a, b) => {
+        if (a.payload.name < b.payload.name) return -1;
+        if (a.payload.name > b.payload.name) return 1;
+        return 0;
+      });
+
+      await render(
+        hbs`
+          <HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}} @sortCompareFn={{this.sortCompareFn}}>
+            <:facet-item as |facetting|>
+              {{facetting.facet.payload.name}}
+            </:facet-item>
+          </HyperTableV2::FilteringRenderers::Common::FacetsLoader>`
+      );
+
+      assert.dom('.hypertable__facetting .item').exists({ count: 2 });
+      assert.dom('.hypertable__facetting > div:nth-child(1) .item').hasText('Arctic Monkeys');
+      assert.dom('.hypertable__facetting > div:nth-child(2) .item').hasText('The Foo Fighters');
+
+      assert.ok(this.sortCompareFn.calledOnce);
     });
   });
 
@@ -92,6 +116,26 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       );
 
       assert.dom('.oss-input-container').exists();
+    });
+
+    test('the default search placeholder is displayed when no searchPlaceholder arg is provided', async function (assert: Assert) {
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}}/>`
+      );
+
+      assert.dom('.oss-input-container').exists();
+      assert
+        .dom('.oss-input-container input')
+        .hasAttribute('placeholder', this.intl.t('hypertable.column.filtering.search_term.placeholder'));
+    });
+
+    test('the search input has the provided searchPlaceholder arg properly used', async function (assert: Assert) {
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}} @searchPlaceholder="foobar..." />`
+      );
+
+      assert.dom('.oss-input-container').exists();
+      assert.dom('.oss-input-container input').hasAttribute('placeholder', 'foobar...');
     });
 
     test('facets are fetched with the typed keyword when searching', async function (assert: Assert) {

@@ -402,6 +402,13 @@ module('Unit | core/handler', function (hooks) {
             payload: {
               name: 'The Foo Fighters'
             },
+            count: 29
+          },
+          {
+            identifier: 'band:2',
+            payload: {
+              name: 'Arctic Monkeys'
+            },
             count: 4
           }
         ],
