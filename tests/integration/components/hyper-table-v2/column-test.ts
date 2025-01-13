@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { setupIntl } from 'ember-intl/test-support';
+import { setupIntl, type TestContext } from 'ember-intl/test-support';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -14,7 +14,7 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -30,7 +30,7 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
     assert.dom('.hypertable__column').exists();
   });
 
-  test('it has the right size class', async function (assert: Assert) {
+  test('it has the right size class', async function (this: TestContext, assert: Assert) {
     await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
 
     assert.equal(this.column.definition.size, 'M');
@@ -52,7 +52,7 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
     assert.dom('.hypertable__column div.yielded').hasText('foobar');
   });
 
-  test('it looks up the rendering component for the column header', async function (assert: Assert) {
+  test('it looks up the rendering component for the column header', async function (this: TestContext, assert: Assert) {
     const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
 
     await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
@@ -61,7 +61,7 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
     assert.ok(renderingResolverSpy.lookupHeaderComponent.calledOnceWithExactly(this.column.definition));
   });
 
-  test('it skips looking up the filtering renderer if the column is not filterable nor orderable', async function (assert: Assert) {
+  test('it skips looking up the filtering renderer if the column is not filterable nor orderable', async function (this: TestContext, assert: Assert) {
     const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
 
     await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
@@ -70,7 +70,7 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
     assert.ok(renderingResolverSpy.lookupFilteringComponent.neverCalledWith(this.column.definition));
   });
 
-  test('it looks up the rendering component for the filtering if the column is filterable or orderable', async function (assert: Assert) {
+  test('it looks up the rendering component for the filtering if the column is filterable or orderable', async function (this: TestContext, assert: Assert) {
     const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
     sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
       return Promise.resolve({

@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
-import { click, fillIn, render, triggerKeyEvent } from '@ember/test-helpers';
+import { click, fillIn, render, triggerKeyEvent, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -14,7 +14,7 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -40,7 +40,7 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
   });
 
   module('When text is inserted in the input', () => {
-    test('The handler.applyFilters is called', async function (assert) {
+    test('The handler.applyFilters is called', async function (this: TestContext, assert) {
       const handlerSpy = sinon.spy(this.handler);
 
       await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
@@ -70,7 +70,7 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
       assert.dom('.suffix .fa-times').exists();
     });
 
-    test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (assert: Assert) {
+    test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
       assert.dom('.oss-input-container').exists();
@@ -101,14 +101,14 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
       assert.dom('.oss-input-container input').hasAttribute('placeholder', 'placeholder from parameter');
     });
 
-    test('if the @placeholder is undefined and the first column definition has a name, its name is used as the placeholder', async function (assert) {
+    test('if the @placeholder is undefined and the first column definition has a name, its name is used as the placeholder', async function (this: TestContext, assert) {
       this.column.definition.name = 'profile name';
       await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
 
       assert.dom('.oss-input-container input').hasAttribute('placeholder', 'Search by profile name');
     });
 
-    test('when @placeholder is undefined and the first column definition does not have a name value, the default label is used as placeholder', async function (assert) {
+    test('when @placeholder is undefined and the first column definition does not have a name value, the default label is used as placeholder', async function (this: TestContext, assert) {
       this.column.definition.name = undefined;
       await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
 

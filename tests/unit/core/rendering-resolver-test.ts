@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
-import { getContext, setContext } from '@ember/test-helpers';
+import { getContext, setContext, type TestContext } from '@ember/test-helpers';
 import { ensureSafeComponent } from '@embroider/util';
 
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
@@ -11,7 +11,7 @@ module('Unit | core/rendering-resolver', function (hooks) {
   setupApplicationTest(hooks);
   setContext(hooks);
 
-  test('it works', function (assert) {
+  test('it works', function (this: TestContext, assert) {
     const renderingResolver = new BaseRenderingResolver(this);
     assert.ok(renderingResolver);
   });

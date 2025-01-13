@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
-import { click, fillIn, render, triggerKeyEvent } from '@ember/test-helpers';
+import { click, fillIn, render, triggerKeyEvent, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -15,7 +15,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -38,7 +38,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     assert.dom('.oss-input-container').exists();
   });
 
-  test('When text is inputted, the applyFilters is called', async function (assert: Assert) {
+  test('When text is inputted, the applyFilters is called', async function (this: TestContext, assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
@@ -64,7 +64,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     );
   });
 
-  test('the provided filter key is used when apply filters', async function (assert: Assert) {
+  test('the provided filter key is used when apply filters', async function (this: TestContext, assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @filterKey="foobar" />`
@@ -107,7 +107,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     assert.dom('.oss-input-container .suffix .fa-times').doesNotExist();
   });
 
-  test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (assert: Assert) {
+  test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (this: TestContext, assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
@@ -126,7 +126,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     );
   });
 
-  test('When the parent triggers the reset event, the text input is cleared', async function (assert: Assert) {
+  test('When the parent triggers the reset event, the text input is cleared', async function (this: TestContext, assert: Assert) {
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );

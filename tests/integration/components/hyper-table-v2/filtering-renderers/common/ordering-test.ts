@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click } from '@ember/test-helpers';
+import { render, click, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -12,7 +12,7 @@ import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 module('Integration | Component | hyper-table-v2/filtering-renderers/common/ordering', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -46,7 +46,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(2)').hasText('Z — A');
   });
 
-  test('it properly displays @orderingOptions when they are passed', async function (assert: Assert) {
+  test('it properly displays @orderingOptions when they are passed', async function (this: TestContext, assert: Assert) {
     this.orderingOptions = {
       'Oldest — Newest': 'asc',
       'Newest — Oldest': 'desc'
@@ -62,7 +62,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     assert.dom('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(2)').hasText('Newest — Oldest');
   });
 
-  test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (assert: Assert) {
+  test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (this: TestContext, assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Ordering @handler={{this.handler}} @column={{this.column}} />`

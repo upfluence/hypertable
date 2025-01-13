@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
-import { render, click, triggerKeyEvent, fillIn } from '@ember/test-helpers';
+import { render, click, triggerKeyEvent, fillIn, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -14,7 +14,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -40,7 +40,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
   });
 
   module('ordering', function () {
-    test('it does not render the section if the column is not orderable', async function (assert: Assert) {
+    test('it does not render the section if the column is not orderable', async function (this: TestContext, assert: Assert) {
       this.column.definition.orderable = false;
 
       await render(
@@ -58,7 +58,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       assert.dom('div[data-control-name="hypertable__column_filtering_for_total_ordering"]').exists();
     });
 
-    test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (assert: Assert) {
+    test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
@@ -90,7 +90,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
   });
 
   module('filtering', function () {
-    test('it does not render the section if the column is not filterable', async function (assert: Assert) {
+    test('it does not render the section if the column is not filterable', async function (this: TestContext, assert: Assert) {
       this.column.definition.filterable = false;
 
       await render(
@@ -100,7 +100,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       assert.dom('div[data-control-name="hypertable__column_filtering_for_total_existence_selector"]').doesNotExist();
     });
 
-    test('it renders if the column is filterable', async function (assert) {
+    test('it renders if the column is filterable', async function (this: TestContext, assert) {
       this.column.definition.filterable = true;
 
       await render(
@@ -109,7 +109,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       assert.dom('div[data-control-name="hypertable__column_filtering_for_total_existence_selector"]').exists();
     });
 
-    test('it handles with or without value options properly', async function (assert: Assert) {
+    test('it handles with or without value options properly', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
@@ -140,7 +140,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       ]);
     });
 
-    test('it triggers applyFilter when the range values are changed', async function (assert: Assert) {
+    test('it triggers applyFilter when the range values are changed', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
@@ -178,7 +178,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
     });
 
     module('with existing range value', function () {
-      test('it display range value', async function (assert: Assert) {
+      test('it display range value', async function (this: TestContext, assert: Assert) {
         this.column.filters = [
           { key: 'lower_bound', value: '10' },
           { key: 'upper_bound', value: '1000' }
@@ -195,7 +195,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
   });
 
   module('clear column', async function () {
-    test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (assert: Assert) {
+    test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       this.handler.applyFilters(this.column, [{ key: 'lower_bound', value: '10' }]);
       this.handler.applyOrder(this.column, 'asc');
@@ -213,7 +213,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
   });
 
   module('remove column', function () {
-    test('it calls the Handler#removeColumn with the column when the dedicated button is clicked', async function (assert: Assert) {
+    test('it calls the Handler#removeColumn with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
 
       await render(

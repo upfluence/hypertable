@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
-import { click, render } from '@ember/test-helpers';
+import { click, render, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -14,7 +14,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -37,7 +37,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     assert.dom('.oss-radio-btn').exists({ count: 2 });
   });
 
-  test('clicking on the buttons should trigger the applyFilters method', async function (assert: Assert) {
+  test('clicking on the buttons should trigger the applyFilters method', async function (this: TestContext, assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} />`
@@ -52,7 +52,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
   });
 
-  test('cliking on the buttons should trigger the applyFilters method with a custom filtering key', async function (assert: Assert) {
+  test('cliking on the buttons should trigger the applyFilters method with a custom filtering key', async function (this: TestContext, assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @filteringKey="bozo" @handler={{this.handler}} @column={{this.column}} />`
@@ -67,7 +67,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'without' }]));
   });
 
-  test('The component should select the proper radiobutton when rendered with a pre-applied filter', async function (assert: Assert) {
+  test('The component should select the proper radiobutton when rendered with a pre-applied filter', async function (this: TestContext, assert: Assert) {
     this.column.filters = [{ key: 'bozo', value: 'with' }];
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} @filteringKey="bozo" />`

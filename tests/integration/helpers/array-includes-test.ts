@@ -1,12 +1,12 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Helper | array-includes', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it returns the right value depending on the presence', async function (assert) {
+  test('it returns the right value depending on the presence', async function (this: TestContext, assert) {
     this.arr = [1, 2, 3];
     this.checkedElement = 1;
 

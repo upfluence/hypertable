@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
-import { click, render } from '@ember/test-helpers';
+import { click, render, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -14,7 +14,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -40,7 +40,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
   });
 
   module('ordering', function () {
-    test('it does not render the section if the column is not orderable', async function (assert: Assert) {
+    test('it does not render the section if the column is not orderable', async function (this: TestContext, assert: Assert) {
       this.column.definition.orderable = false;
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
@@ -54,7 +54,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       assert.dom('div[data-control-name="hypertable__column_filtering_for_foo_ordering"]').exists();
     });
 
-    test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (assert: Assert) {
+    test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
 
@@ -84,7 +84,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
   });
 
   module('filtering', function () {
-    test('it does not render the section if the column is not filterable', async function (assert: Assert) {
+    test('it does not render the section if the column is not filterable', async function (this: TestContext, assert: Assert) {
       this.column.definition.filterable = false;
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
@@ -100,7 +100,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
   });
 
   module('clear column', async function () {
-    test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (assert: Assert) {
+    test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       this.handler.applyFilters(this.column, [{ key: 'foo', value: 'bar' }]);
       this.handler.applyOrder(this.column, 'asc');
@@ -116,7 +116,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
   });
 
   module('remove column', function () {
-    test('it calls the Handler#removeColumn with the column when the dedicated button is clicked', async function (assert: Assert) {
+    test('it calls the Handler#removeColumn with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);

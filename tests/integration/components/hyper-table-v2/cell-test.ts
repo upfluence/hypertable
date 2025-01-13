@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, render, triggerEvent } from '@ember/test-helpers';
+import { click, render, triggerEvent, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -10,7 +10,7 @@ import sinon from 'sinon';
 module('Integration | Component | hyper-table-v2/cell', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -28,7 +28,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
     assert.dom('.hypertable__cell .upf-skeleton-effect').exists();
   });
 
-  test('it looks up the rendering component for the column', async function (assert: Assert) {
+  test('it looks up the rendering component for the column', async function (this: TestContext, assert: Assert) {
     const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
 
     await render(hbs`<HyperTableV2::Cell @handler={{this.handler}} @column={{this.column}} @row={{this.row}} />`);
@@ -38,7 +38,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
     assert.dom('.hypertable__cell').hasText('ekip');
   });
 
-  test('the onClick action is called when the cell is clicked', async function (assert: Assert) {
+  test('the onClick action is called when the cell is clicked', async function (this: TestContext, assert: Assert) {
     this.onClick = sinon.stub();
     await render(hbs`
       <HyperTableV2::Cell @handler={{this.handler}} @column={{this.column}} @row={{this.row}} @onClick={{this.onClick}} />
@@ -49,7 +49,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
     assert.ok(this.onClick.calledOnce);
   });
 
-  test('the onHover action is called when the cell is hovered with right params', async function (assert: Assert) {
+  test('the onHover action is called when the cell is hovered with right params', async function (this: TestContext, assert: Assert) {
     this.onHover = sinon.stub();
 
     await render(hbs`
@@ -64,7 +64,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
     assert.ok(this.onHover.calledWithExactly(this.row, false));
   });
 
-  test('the onClick action is never called when a loading cell is clicked', async function (assert: Assert) {
+  test('the onClick action is never called when a loading cell is clicked', async function (this: TestContext, assert: Assert) {
     this.onClick = sinon.stub();
     await render(hbs`<HyperTableV2::Cell @loading={{true}} @onClick={{this.onClick}} />`);
 

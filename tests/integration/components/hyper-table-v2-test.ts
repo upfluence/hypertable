@@ -1,6 +1,6 @@
 import { module, skip, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, render, findAll } from '@ember/test-helpers';
+import { click, render, findAll, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -10,14 +10,14 @@ import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
 
 module('Integration | Component | hyper-table-v2', function (hooks) {
   setupRenderingTest(hooks);
-  hooks.beforeEach(function () {
+  hooks.beforeEach(function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
     this.intlService = this.owner.lookup('service:intl');
   });
 
-  test('it fetches the columns and rows as expected', async function (assert) {
+  test('it fetches the columns and rows as expected', async function (this: TestContext, assert) {
     const handlerSpy = sinon.spy(this.handler);
 
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
@@ -47,7 +47,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     assert.dom('.hypertable__column:nth-child(2) .hypertable__cell').exists({ count: 3 });
   });
 
-  test('it resets the filters', async function (assert: Assert) {
+  test('it resets the filters', async function (this: TestContext, assert: Assert) {
     sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
       return Promise.resolve({
         columns: [
@@ -69,7 +69,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     assert.deepEqual(this.handler.columns[1].filters, []);
   });
 
-  test('it triggers the row-click event correctly', async function (assert: Assert) {
+  test('it triggers the row-click event correctly', async function (this: TestContext, assert: Assert) {
     const handlerSpy = sinon.spy(this.handler);
 
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
@@ -80,7 +80,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   });
 
   module('empty state', function (hooks) {
-    hooks.beforeEach(function () {
+    hooks.beforeEach(function (this: TestContext) {
       sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {
         return Promise.resolve({ rows: [], meta: { total: 0 } });
       });
@@ -112,7 +112,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   });
 
   module('error state', function () {
-    test('It displays an error state when the fetchRows call fails', async function (assert: Assert) {
+    test('It displays an error state when the fetchRows call fails', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.rowsFetcher, 'fetch').callsFake(() => {
         return Promise.reject(new Error());
       });
@@ -122,7 +122,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__state').containsText('An unexpected error has occured.');
     });
 
-    test('It displays an error state when the fetchColumns call fails', async function (assert: Assert) {
+    test('It displays an error state when the fetchColumns call fails', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
         return Promise.reject(new Error());
       });
@@ -132,7 +132,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__state').containsText('An unexpected error has occured.');
     });
 
-    test('It displays an error state when the fetchColumnDefinitions call fails', async function (assert: Assert) {
+    test('It displays an error state when the fetchColumnDefinitions call fails', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumnDefinitions').callsFake(() => {
         return Promise.reject(new Error());
       });
@@ -165,7 +165,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
 
     module('when clicking on the select-all checkbox with partial rows loaded', () => {
-      test('it triggers the handler SelectAll function', async function (assert: Assert) {
+      test('it triggers the handler SelectAll function', async function (this: TestContext, assert: Assert) {
         const toggleSelectAllStub = sinon.stub(this.handler, 'toggleSelectAll');
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -175,14 +175,14 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert.ok(toggleSelectAllStub.calledOnceWithExactly(true));
       });
 
-      test('it updates the selected count with correct number', async function (assert: Assert) {
+      test('it updates the selected count with correct number', async function (this: TestContext, assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
         assert.dom('.selected-count').hasText(this.handler.selection.length.toString());
       });
 
-      test('it renders the partial mode for the select-all checkbox', async function (assert: Assert) {
+      test('it renders the partial mode for the select-all checkbox', async function (this: TestContext, assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
@@ -191,7 +191,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           .hasClass('upf-checkbox__fake-checkbox--partial');
       });
 
-      test('HyperTableV2::Selection component renders correct value', async function (assert: Assert) {
+      test('HyperTableV2::Selection component renders correct value', async function (this: TestContext, assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
@@ -207,12 +207,12 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
 
     module('when clicking on the select-all checkbox all rows loaded', (hooks) => {
-      hooks.beforeEach(function () {
+      hooks.beforeEach(function (this: TestContext) {
         this.rowsFetcher = new AllRowsFetcher();
         this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
       });
 
-      test('it triggers the handler SelectAll function', async function (assert: Assert) {
+      test('it triggers the handler SelectAll function', async function (this: TestContext, assert: Assert) {
         const toggleSelectAllStub = sinon.stub(this.handler, 'toggleSelectAll');
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -222,7 +222,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert.ok(toggleSelectAllStub.calledOnceWithExactly(true));
       });
 
-      test('it updates the selected count with correct number', async function (assert: Assert) {
+      test('it updates the selected count with correct number', async function (this: TestContext, assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
@@ -239,7 +239,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert.dom('.hypertable__column.hypertable__column--selection header .upf-checkbox input').isChecked();
       });
 
-      test('HyperTableV2::Selection component renders correct value', async function (assert: Assert) {
+      test('HyperTableV2::Selection component renders correct value', async function (this: TestContext, assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
@@ -273,7 +273,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         );
       });
 
-      test('all checkboxes of new rows are not selected', async function (assert: Assert) {
+      test('all checkboxes of new rows are not selected', async function (this: TestContext, assert: Assert) {
         stubFetchMultipleRows(this.handler);
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
@@ -302,7 +302,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
 
     module('when the select-all checkbox is globally selected', () => {
-      test('all checkboxes of loaded rows are selected', async function (assert: Assert) {
+      test('all checkboxes of loaded rows are selected', async function (this: TestContext, assert: Assert) {
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
         await this.handler.selectAllGlobal();
@@ -324,7 +324,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         );
       });
 
-      test('all checkboxes of new rows are also selected', async function (assert: Assert) {
+      test('all checkboxes of new rows are also selected', async function (this: TestContext, assert: Assert) {
         stubFetchMultipleRows(this.handler);
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
         await this.handler.fetchRows();
@@ -348,7 +348,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       });
     });
 
-    test('clicking a one multiline checkbox toggles its selection status', async function (assert: Assert) {
+    test('clicking a one multiline checkbox toggles its selection status', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -374,7 +374,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.selected-count').hasText('0');
     });
 
-    test('clicking on all multiline checkbox toggles the global select', async function (assert: Assert) {
+    test('clicking on all multiline checkbox toggles the global select', async function (this: TestContext, assert: Assert) {
       this.rowsFetcher = new AllRowsFetcher();
       this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
       const handlerSpy = sinon.spy(this.handler);
@@ -394,7 +394,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.equal(this.handler.selection, 'all');
     });
 
-    test('clicking on one multiline checkbox toggles its exclusion status', async function (assert: Assert) {
+    test('clicking on one multiline checkbox toggles its exclusion status', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
@@ -424,7 +424,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   });
 
   module('jumping to the last column', function () {
-    skip('the button to jump to the last column is displayed if there is overflow', async function (assert: Assert) {
+    skip('the button to jump to the last column is displayed if there is overflow', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
         return Promise.resolve({
           columns: [
@@ -450,14 +450,14 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('div[data-control-name="table_search_input"]').exists();
     });
 
-    test('if searchable is enabled, the search input should be present', async function (assert: Assert) {
+    test('if searchable is enabled, the search input should be present', async function (this: TestContext, assert: Assert) {
       this.features = { searchable: true };
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
 
       assert.dom('div[data-control-name="table_search_input"]').exists();
     });
 
-    test('if searchable is disabled, the search input should not be present', async function (assert: Assert) {
+    test('if searchable is disabled, the search input should not be present', async function (this: TestContext, assert: Assert) {
       this.features = { searchable: false };
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
 

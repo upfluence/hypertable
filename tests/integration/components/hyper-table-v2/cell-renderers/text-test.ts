@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
@@ -8,7 +8,7 @@ import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 module('Integration | Component | hyper-table-v2/cell-renderers/text', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -17,7 +17,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/text', function 
     await this.handler.fetchRows();
   });
 
-  test('it renders', async function (assert) {
+  test('it renders', async function (this: TestContext, assert) {
     this.column = this.handler.columns[0];
     this.row = this.handler.rows[0];
 
@@ -30,7 +30,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/text', function 
     assert.dom('span').hasText('ekip');
   });
 
-  test('it renders a default - when the value is null', async function (assert) {
+  test('it renders a default - when the value is null', async function (this: TestContext, assert) {
     this.column = this.handler.columns[0];
     this.row = this.handler.rows[2];
 
