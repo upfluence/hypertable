@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
-import { click, fillIn, triggerKeyEvent, render } from '@ember/test-helpers';
+import { click, fillIn, triggerKeyEvent, render, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -12,7 +12,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
   setupRenderingTest(hooks);
   setupIntl(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -38,7 +38,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.dom('.hypertable__facetting > div:nth-child(2) .item').hasText('Arctic Monkeys');
     });
 
-    test('the facets are ordered using the @sortCompareFn arg function when provided', async function (assert: Assert) {
+    test('the facets are ordered using the @sortCompareFn arg function when provided', async function (this: TestContext, assert: Assert) {
       this.sortCompareFn = sinon.stub().callsFake((a, b) => {
         if (a.payload.name < b.payload.name) return -1;
         if (a.payload.name > b.payload.name) return 1;
@@ -63,7 +63,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
   });
 
   module('facet toggling', function () {
-    test('the selected facet is added to the filters if not already present', async function (assert: Assert) {
+    test('the selected facet is added to the filters if not already present', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
@@ -77,7 +77,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: 'band:1' }]));
     });
 
-    test('the facet is deleted from the filters if already present', async function (assert: Assert) {
+    test('the facet is deleted from the filters if already present', async function (this: TestContext, assert: Assert) {
       this.column.filters = [{ key: 'value', value: 'band:1' }];
       const handlerSpy = sinon.spy(this.handler);
 
@@ -90,7 +90,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: '' }]));
     });
 
-    test('facet identifiers that are already in the column are checked by default when rendering', async function (assert: Assert) {
+    test('facet identifiers that are already in the column are checked by default when rendering', async function (this: TestContext, assert: Assert) {
       this.column.filters = [{ key: 'value', value: 'band:1' }];
 
       await render(
@@ -118,7 +118,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.dom('.oss-input-container').exists();
     });
 
-    test('the default search placeholder is displayed when no searchPlaceholder arg is provided', async function (assert: Assert) {
+    test('the default search placeholder is displayed when no searchPlaceholder arg is provided', async function (this: TestContext, assert: Assert) {
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}}/>`
       );
@@ -138,7 +138,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.dom('.oss-input-container input').hasAttribute('placeholder', 'foobar...');
     });
 
-    test('facets are fetched with the typed keyword when searching', async function (assert: Assert) {
+    test('facets are fetched with the typed keyword when searching', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
 
       await render(
@@ -160,7 +160,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
   });
 
   module('empty state', function () {
-    test('the default empty state is displayed if there is no named-block passed', async function (assert: Assert) {
+    test('the default empty state is displayed if there is no named-block passed', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchFacets').callsFake(() => {
         return Promise.resolve({
           facets: [],
@@ -180,7 +180,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
         .hasText('Please update your filters.');
     });
 
-    test('the empty state named block is displayed if  passed', async function (assert: Assert) {
+    test('the empty state named block is displayed if  passed', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchFacets').callsFake(() => {
         return Promise.resolve({
           facets: [],

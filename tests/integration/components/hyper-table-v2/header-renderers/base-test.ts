@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, type TestContext } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
@@ -8,7 +8,7 @@ import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 module('Integration | Component | hyper-table-v2/header-renderers/base', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -16,7 +16,7 @@ module('Integration | Component | hyper-table-v2/header-renderers/base', functio
     await this.handler.fetchColumns();
   });
 
-  test('it renders', async function (assert) {
+  test('it renders', async function (this: TestContext, assert) {
     this.column = this.handler.columns[0];
 
     await render(hbs`<HyperTableV2::HeaderRenderers::Base @handler={{this.handler}} @column={{this.column}} />`);

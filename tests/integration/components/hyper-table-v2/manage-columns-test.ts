@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { setupIntl } from 'ember-intl/test-support';
+import { setupIntl, type TestContext } from 'ember-intl/test-support';
 import { click, fillIn, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
@@ -33,7 +33,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     return columnOptions.reduce((columns, column) => [...columns, ...[buildMethod(column.key, column.extra)]], []);
   }
 
-  hooks.beforeEach(async function () {
+  hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();
     this.rowsFetcher = new RowsFetcher();
     this.handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
@@ -186,7 +186,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
       });
     });
 
-    test('it removes the column in the table', async function (assert) {
+    test('it removes the column in the table', async function (this: TestContext, assert) {
       let upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
         assert.deepEqual(columns, [
           {
@@ -219,7 +219,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
       assert.ok(upsertColumnsMock.calledOnce);
     });
 
-    test('it adds the column in the table', async function (assert) {
+    test('it adds the column in the table', async function (this: TestContext, assert) {
       const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
         const updatedColumns = [
           {
