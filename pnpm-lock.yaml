@@ -55,7 +55,7 @@ importers:
         specifier: ^2.0.0
         version: 2.2.0
       '@ember/test-helpers':
-        specifier: ^2.6.0
+        specifier: ^2.9.4
         version: 2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@embroider/test-setup':
         specifier: ^0.48.1
@@ -123,9 +123,6 @@ importers:
       '@types/ember__test':
         specifier: ^3.16.1
         version: 3.16.7
-      '@types/ember__test-helpers':
-        specifier: ^2.6.0
-        version: 2.9.3(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@types/ember__utils':
         specifier: ^3.16.2
         version: 3.16.8
@@ -1201,10 +1198,6 @@ packages:
 
   '@types/ember__template@3.16.7':
     resolution: {integrity: sha512-Mj3BzTzXKrS2cX9rkUpsqnyCNnVUUJh6juhuJW9KleJNtrUdfGPPGkOonn+oXFKcWfxiRB15jx8Ypi668vDDQw==}
-
-  '@types/ember__test-helpers@2.9.3':
-    resolution: {integrity: sha512-GTucagS2Yqla9EkCe478DvF0n3SYaiJMf4v27SKw0DNm3JRoDGxfHp5guIKfoyeLH8yASl3RtsBwD5jNwM4qmw==}
-    deprecated: This is a stub types definition. @ember/test-helpers provides its own type definitions, so you do not need this installed.
 
   '@types/ember__test@3.16.7':
     resolution: {integrity: sha512-xB74tYOxokbMnSP6RFlFscQ9M1o9vi0aI1SClwyviz9c6u7qVhJhJWzctad1aAY3gRwFh25CbKpXEw5KkOk88w==}
@@ -8229,16 +8222,6 @@ snapshots:
       '@types/ember__template': 3.16.7
 
   '@types/ember__template@3.16.7': {}
-
-  '@types/ember__test-helpers@2.9.3(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))':
-    dependencies:
-      '@ember/test-helpers': 2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/environment-ember-loose'
-      - '@glint/template'
-      - ember-source
-      - supports-color
 
   '@types/ember__test@3.16.7':
     dependencies:
