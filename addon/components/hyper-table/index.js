@@ -29,6 +29,9 @@ export default Component.extend({
   _activeFieldCategory: null,
   _hypertableInstanceID: null,
 
+  _resizeListener: null,
+  _scrollListener: null,
+
   _searchQuery: computed('_columns.firstObject.filters.{[],@each.value}', {
     get: function () {
       if (isEmpty(this._columns)) return;
@@ -168,19 +171,21 @@ export default Component.extend({
     this.set('_hypertableInstanceID', crypto.randomUUID());
 
     if (!this.disableAutoResize) {
-      $(window).on('resize', this._resizeInnerTable.bind(this));
+      this._resizeListener = this._resizeInnerTable.bind(this);
+      window.addEventListener('resize', this._resizeListener);
     }
 
     // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
     scheduleOnce('afterRender', this, () => {
-      let table = document.querySelector('.hypertable__table');
-      $(table).scroll(() => {
+      const table = document.querySelector('.hypertable__table');
+      this._scrollListener = function () {
         if (table.scrollLeft === table.scrollWidth - table.clientWidth) {
           this.manager.set('isScrollable', false);
         } else if (!this.manager.isScrollable) {
           this.manager.set('isScrollable', true);
         }
-      });
+      }.bind(this);
+      table.addEventListener('scroll', this._scrollListener);
       this.manager.refreshScrollableStatus();
       this.manager.set('meta', this.meta);
       if (this._selectedCount > 0) {
@@ -203,7 +208,10 @@ export default Component.extend({
 
   willDestroyElement() {
     this._super(...arguments);
-    $(window).off('resize');
+    const table = document.querySelector('.hypertable__table');
+
+    window.removeEventListener('resize', this._resizeListener);
+    table.removeEventListener('scroll', this._scrollListener);
   },
 
   actions: {

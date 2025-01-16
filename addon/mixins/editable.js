@@ -74,7 +74,7 @@ export default Mixin.create({
       // automatically focuses the input
       // eslint-disable-next-line ember/no-incorrect-calls-with-inline-anonymous-functions
       scheduleOnce('afterRender', this, () => {
-        this.$('.editing-input__field').focus();
+        this.element.querySelector('.editing-input__field').focus();
       });
     },
 
