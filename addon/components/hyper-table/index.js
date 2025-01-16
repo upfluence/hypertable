@@ -4,7 +4,6 @@ import { computed, observer } from '@ember/object';
 import { alias, and, filterBy } from '@ember/object/computed';
 import { debounce, once, scheduleOnce } from '@ember/runloop';
 import { compare, isEmpty, typeOf } from '@ember/utils';
-import $ from 'jquery';
 
 export default Component.extend({
   classNames: ['hypertable-container'],
