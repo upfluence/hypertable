@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action, set } from '@ember/object';
 import { debounce, scheduleOnce } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
+import { htmlSafe } from '@ember/template';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
@@ -151,6 +152,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @action
   reloadPage(): void {
     window.location.reload();
+  }
+
+  get columnsCountStyle(): ReturnType<typeof htmlSafe> {
+    return htmlSafe(`--hypertable-responsive-columns-number: ${this.args.handler.columns.length - 1}`);
   }
 
   private _resetFilters(): void {
