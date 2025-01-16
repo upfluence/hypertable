@@ -80,6 +80,7 @@
 
       <div
         class="hypertable"
+        style={{this.columnsCountStyle}}
         {{sortable-group direction="x" onChange=this.reorderColumns groupName=this.hypertableInstanceID}}
       >
         {{#each @handler.columns as |column index|}}
