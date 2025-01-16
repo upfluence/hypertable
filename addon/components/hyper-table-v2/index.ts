@@ -154,7 +154,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     window.location.reload();
   }
 
-  get columnsCountStyle(): string {
+  get columnsCountStyle(): ReturnType<typeof htmlSafe> {
     return htmlSafe(`--hypertable-responsive-columns-number: ${this.args.handler.columns.length - 1}`);
   }
 
