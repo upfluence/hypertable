@@ -105,6 +105,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     let [fromDate, toDate] = value;
 
     if (fromDate && toDate) {
+      this.sendEndOfTheDayOnDate(toDate);
       this.args.handler.applyFilters(this.args.column, [
         { key: this.movingOptionKey, value: '' },
         { key: 'lower_bound', value: (+fromDate / 1000).toString() },
@@ -116,6 +117,10 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   @action
   removeColumn(): void {
     this.args.handler.removeColumn(this.args.column.definition);
+  }
+
+  private sendEndOfTheDayOnDate(date: Date): void {
+    date.setHours(23, 59, 59);
   }
 
   private _resetStates(): void {

@@ -86,6 +86,7 @@ export default class DateFiltersRenderer extends FiltersRenderer {
     let [fromDate, toDate] = value;
 
     if (fromDate && toDate) {
+      this._sendEndOfTheDayOnDate(toDate);
       this.args.column.set('filters', [
         { key: 'lower_bound', value: (+fromDate / 1000).toString() },
         { key: 'upper_bound', value: (+toDate / 1000).toString() }
@@ -101,5 +102,9 @@ export default class DateFiltersRenderer extends FiltersRenderer {
 
     this._currentDateValue = [];
     this._currentMovingDateOption = [];
+  }
+
+  _sendEndOfTheDayOnDate(date: Date): void {
+    date.setHours(23, 59, 59);
   }
 }
