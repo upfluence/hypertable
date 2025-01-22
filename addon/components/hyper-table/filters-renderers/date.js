@@ -9,6 +9,8 @@ export default class DateFiltersRenderer extends FiltersRenderer {
   @tracked _currentMovingDateOption;
   @tracked _currentDateValue;
 
+  timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   constructor(owner, args) {
     super(owner, args);
 
@@ -76,7 +78,7 @@ export default class DateFiltersRenderer extends FiltersRenderer {
 
   @action
   selectMovingDate(value) {
-    this.args.column.set('filters', [{ key: 'value', value: value }]);
+    this.args.column.set('filters', [{ key: 'value', value: value, extra: { timezone: this.timezone } }]);
     this._currentMovingDateOption = value;
     this.args.manager.hooks.onColumnsChange('columns:change');
   }
