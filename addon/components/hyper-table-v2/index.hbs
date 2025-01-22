@@ -29,6 +29,11 @@
           @loading={{this.loadingResetFilters}}
           data-control-name="hypertable_reset_filters_button"
         />
+
+        {{#if (has-block "table-actions")}}
+          {{yield to="table-actions"}}
+        {{/if}}
+
         <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
       </div>
     </div>
