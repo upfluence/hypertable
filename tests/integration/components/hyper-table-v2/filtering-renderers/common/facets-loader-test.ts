@@ -174,7 +174,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
 
       assert
         .dom('.hypertable__facetting .upf-align--center .text-color-default')
-        .hasText('There are no result for your current search.');
+        .hasText(this.intl.t('hypertable.column.facetting.empty_state.tagline'));
       assert
         .dom('.hypertable__facetting .upf-align--center .text-color-default-light')
         .hasText('Please update your filters.');
