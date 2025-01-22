@@ -1,4 +1,4 @@
-<div class="hypertable__manage-fields" {{on-click-outside this.closeAvailableFields}}>
+<div class="hypertable__manage-fields" {{on-click-outside this.closeAvailableFields useCapture=true}}>
   <OSS::Button
     @icon="fas fa-columns"
     @label={{t "hypertable.features.manage_fields.title"}}

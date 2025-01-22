@@ -34,7 +34,7 @@ hypertable:
           placeholder: Date Range
     facetting:
       empty_state:
-        tagline: There are no result for your current search.
+        tagline: There are no results for your current search.
         tagline_1: Please update your filters.
   rows:
     empty_content: Nothing here

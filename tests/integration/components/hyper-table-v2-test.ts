@@ -492,6 +492,20 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
   });
 
+  module('Table Actions named-block is displayed if defined', () => {
+    test('if a <:table-actions> named-block is passed to the component, then it should be visible in the table', async function (assert: Assert) {
+      await render(hbs`
+        <HyperTableV2 @handler={{this.handler}}>
+          <:table-actions>
+            <div id="example-table-action-named-block"></div>
+          </:table-actions>
+        </HyperTableV2>
+      `);
+
+      assert.dom('#example-table-action-named-block').exists();
+    });
+  });
+
   function stubFetchMultipleRows(handler: TableHandler): void {
     sinon
       .stub(handler.rowsFetcher, 'fetch')
