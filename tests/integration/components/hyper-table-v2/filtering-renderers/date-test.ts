@@ -110,7 +110,13 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       assert.dom(filterOptions[5]).hasText('This Year');
     });
 
-    test('when the filter is set to Moving, when clicking on a filter option, applyFilter is triggered', async function (this: TestContext, assert: Assert) {
+    test('when the filter is set to Moving, when clicking on a filter option, applyFilter is triggered with the proper timezone in the filter extras', async function (this: TestContext, assert: Assert) {
+      let intlTimezoneStub = sinon.stub(Intl, 'DateTimeFormat').returns({
+        // @ts-ignore
+        resolvedOptions: () => {
+          return { timeZone: 'Africa/Atlantis' };
+        }
+      });
       await render(hbs`<HyperTableV2::FilteringRenderers::Date @handler={{this.handler}} @column={{this.column}} />`);
 
       await click(
@@ -121,9 +127,10 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
         this.handlerSpy.applyFilters.calledWith(this.column, [
           { key: 'lower_bound', value: '' },
           { key: 'upper_bound', value: '' },
-          { key: 'moving', value: 'today' }
+          { key: 'moving', value: 'today', extra: { timezone: 'Africa/Atlantis' } }
         ])
       );
+      intlTimezoneStub.restore();
     });
 
     test('when the filter is set to Fixed, then it should show an input with the datepicker', async function (assert: Assert) {

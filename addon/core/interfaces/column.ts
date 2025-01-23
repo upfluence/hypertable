@@ -28,6 +28,7 @@ export type ColumnDefinition = {
 export type Filter = {
   key: string;
   value: string;
+  extra?: any;
 };
 
 export type OrderDirection = 'asc' | 'desc';

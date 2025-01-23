@@ -23,6 +23,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   protected movingOptionKey: FilterOption = DEFAULT_MOVING_OPTION_KEY;
 
   private _calendarContainer: any = null;
+  timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   filteringOptions: { label: string; value: FilterOption }[] = [
     { label: 'Moving', value: this.movingOptionKey },
@@ -96,7 +97,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     this.args.handler.applyFilters(this.args.column, [
       { key: 'lower_bound', value: '' },
       { key: 'upper_bound', value: '' },
-      { key: this.movingOptionKey, value: value }
+      { key: this.movingOptionKey, value: value, extra: { timezone: this.timezone } }
     ]);
   }
 
