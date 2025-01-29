@@ -32,7 +32,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
             </:facet-item>
           </HyperTableV2::FilteringRenderers::Common::FacetsLoader>`
       );
-      // await this.pauseTest();
+
       assert.dom('.hypertable__facetting .oss-scrollable-panel-content .item').exists({ count: 2 });
       assert
         .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(1) .item')
