@@ -73,6 +73,10 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
     return new Map([...map].sort((a, b) => a[0].localeCompare(b[0])));
   }
 
+  noop(event: Event) {
+    event.preventDefault();
+  }
+
   @action
   columnVisibilityUpdate(column: ManagedColumn, event: PointerEvent): void {
     set(column, 'isLoading', true);

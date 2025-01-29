@@ -45,7 +45,12 @@
             </div>
           {{/if}}
           {{#each fields as |field|}}
-            <div class="field" role="button" {{on "click" (fn this.columnVisibilityUpdate field)}}>
+            <div
+              class="field"
+              role="button"
+              {{on "mousedown" this.noop}}
+              {{on "click" (fn this.columnVisibilityUpdate field)}}
+            >
               {{#if field.isLoading}}
                 <div><OSS::Icon @icon="fa-spinner fa-spin" /></div>
               {{else}}
