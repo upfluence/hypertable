@@ -29,13 +29,19 @@
     </div>
     <div class="available-fields-wrapper__fields">
       <div class="search">
-        <Input
-          @type="text"
-          @value={{this._searchColumnDefinitionKeyword}}
-          data-control-name="column_definitions_search_input"
-          class="upf-input"
-          placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-        />
+        <OSS::InputContainer>
+          <:prefix>
+            <OSS::Icon @icon="fa-search" />
+          </:prefix>
+
+          <:input>
+            <Input
+              @value={{this._searchColumnDefinitionKeyword}}
+              placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+              data-control-name="column_definitions_search_input"
+            />
+          </:input>
+        </OSS::InputContainer>
       </div>
       <div class="fields-list">
         {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
