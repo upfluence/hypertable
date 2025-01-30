@@ -61,6 +61,18 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Package Version
+        id: pkg_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+      - name: Trigger upfluence-web/deploy
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          repo: upfluence/upfluence-web
+          ref: staging
+          workflow: Bump Dependency
+          token: ${{ secrets.PAT_TOKEN }}
+          inputs: |
+            {"package": "@upfluence/hypertable", "version": "${{ steps.pkg_version.outputs.VERSION }}", "user": "${{ github.event.pusher.name }}"}
 
   deploy:
     name: Deploy preview app
