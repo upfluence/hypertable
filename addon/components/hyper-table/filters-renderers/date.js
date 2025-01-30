@@ -106,7 +106,7 @@ export default class DateFiltersRenderer extends FiltersRenderer {
     this._currentMovingDateOption = [];
   }
 
-  _sendEndOfTheDayOnDate(date: Date): void {
+  _sendEndOfTheDayOnDate(date) {
     date.setHours(23, 59, 59);
   }
 }

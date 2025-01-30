@@ -21,41 +21,42 @@
       <div class="upf-skeleton-effect margin-top-px-6" style={{this.skeletonStyle}}></div>
     {{/each}}
   {{else}}
-    {{#each this.facets as |facet|}}
-      <div
-        class="fx-row fx-malign-space-between fx-xalign-center padding-xxx-sm"
-        role="button"
-        {{on "click" (fn this.toggleFacet facet)}}
-      >
-        <div class="fx-row item">
-          {{#if this.ongoingFacetApply}}
-            <span class="margin-right-px-12">
-              <OSS::Icon @icon="fa-spinner-third fa-spin" />
-            </span>
-          {{else}}
-            <OSS::Checkbox
-              @checked={{array-includes this.appliedFacets facet.identifier}}
-              @size="sm"
-              @onChange={{fn this.toggleFacet facet}}
-              class="margin-right-px-12"
-            />
-          {{/if}}
-          {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
+    <OSS::ScrollablePanel @plain={{true}}>
+      {{#each this.facets as |facet|}}
+        <div
+          class="fx-row fx-malign-space-between fx-xalign-center padding-xxx-sm"
+          role="button"
+          {{on "click" (fn this.toggleFacet facet)}}
+        >
+          <div class="fx-row item">
+            {{#if this.ongoingFacetApply}}
+              <span class="margin-right-px-12">
+                <OSS::Icon @icon="fa-spinner-third fa-spin" />
+              </span>
+            {{else}}
+              <OSS::Checkbox
+                @checked={{array-includes this.appliedFacets facet.identifier}}
+                @size="sm"
+                @onChange={{fn this.toggleFacet facet}}
+                class="margin-right-px-12"
+              />
+            {{/if}}
+            {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
+          </div>
+          <div class="count">
+            {{facet.count}}
+          </div>
         </div>
-
-        <div class="count">
-          {{facet.count}}
-        </div>
-      </div>
-    {{else}}
-      {{#if (has-block "empty-state")}}
-        {{yield to="empty-state"}}
       {{else}}
-        <div class="fx-col fx-1 fx-malign-center upf-align--center">
-          <p class="text-color-default">{{t "hypertable.column.facetting.empty_state.tagline"}}</p>
-          <p class="text-color-default-light">{{t "hypertable.column.facetting.empty_state.tagline_1"}}</p>
-        </div>
-      {{/if}}
-    {{/each}}
+        {{#if (has-block "empty-state")}}
+          {{yield to="empty-state"}}
+        {{else}}
+          <div class="fx-col fx-1 fx-malign-center upf-align--center">
+            <p class="text-color-default">{{t "hypertable.column.facetting.empty_state.tagline"}}</p>
+            <p class="text-color-default-light">{{t "hypertable.column.facetting.empty_state.tagline_1"}}</p>
+          </div>
+        {{/if}}
+      {{/each}}
+    </OSS::ScrollablePanel>
   {{/if}}
 </div>

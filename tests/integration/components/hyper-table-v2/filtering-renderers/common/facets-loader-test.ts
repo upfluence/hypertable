@@ -23,7 +23,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
   });
 
   module('facet display', function () {
-    test('the facets are displayed correctly using the dedicated named block & are ordered by count value', async function (assert: Assert) {
+    test('the facets are displayed correctly using the dedicated named block & are ordered by count value', async function (this: TestContext, assert: Assert) {
       await render(
         hbs`
           <HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}>
@@ -33,9 +33,13 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
           </HyperTableV2::FilteringRenderers::Common::FacetsLoader>`
       );
 
-      assert.dom('.hypertable__facetting .item').exists({ count: 2 });
-      assert.dom('.hypertable__facetting > div:nth-child(1) .item').hasText('The Foo Fighters');
-      assert.dom('.hypertable__facetting > div:nth-child(2) .item').hasText('Arctic Monkeys');
+      assert.dom('.hypertable__facetting .oss-scrollable-panel-content .item').exists({ count: 2 });
+      assert
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(1) .item')
+        .hasText('The Foo Fighters');
+      assert
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(2) .item')
+        .hasText('Arctic Monkeys');
     });
 
     test('the facets are ordered using the @sortCompareFn arg function when provided', async function (this: TestContext, assert: Assert) {
@@ -55,8 +59,12 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       );
 
       assert.dom('.hypertable__facetting .item').exists({ count: 2 });
-      assert.dom('.hypertable__facetting > div:nth-child(1) .item').hasText('Arctic Monkeys');
-      assert.dom('.hypertable__facetting > div:nth-child(2) .item').hasText('The Foo Fighters');
+      assert
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(1) .item')
+        .hasText('Arctic Monkeys');
+      assert
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(2) .item')
+        .hasText('The Foo Fighters');
 
       assert.ok(this.sortCompareFn.calledOnce);
     });
