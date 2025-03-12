@@ -109,7 +109,7 @@
                       @row={{row}}
                       @onClick={{fn this.toggleRowSelection row}}
                       @onHover={{this.onRowHover}}
-                      @loading={{row.isLoading}}
+                      @loading={{row._isLoading}}
                     >
                       <OSS::Checkbox
                         @checked={{if
@@ -139,7 +139,7 @@
                     @row={{row}}
                     @onClick={{this.onRowClick}}
                     @onHover={{this.onRowHover}}
-                    @loading={{row.isLoading}}
+                    @loading={{row._isLoading}}
                   />
                 {{/each}}
 
@@ -175,7 +175,7 @@
                   @row={{row}}
                   @onClick={{this.onRowClick}}
                   @onHover={{this.onRowHover}}
-                  @loading={{row.isLoading}}
+                  @loading={{row._isLoading}}
                 />
               {{/each}}
 

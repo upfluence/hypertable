@@ -450,18 +450,18 @@ module('Unit | core/handler', function (hooks) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       await handler.fetchRows();
 
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.isLoading, undefined);
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
       await handler.toggleRowLoadingState(667);
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.isLoading, undefined);
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
     });
 
-    test('it calls the toggleRowLoadingState method of the manager correctly', async function (this: TestContext, assert: Assert) {
+    test("calling the method properly updates the row's loading state", async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       await handler.fetchRows();
 
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.isLoading, undefined);
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
       await handler.toggleRowLoadingState(12);
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.isLoading, true);
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, true);
     });
   });
 

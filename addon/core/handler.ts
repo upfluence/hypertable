@@ -128,9 +128,9 @@ export default class TableHandler {
     });
   }
 
-  async toggleRowLoadingState(recordId: number): Promise<void | boolean> {
+  async toggleRowLoadingState(recordId: number): Promise<boolean> {
     return this.mutateRow(recordId, (row) => {
-      set(row, 'isLoading', !row.isLoading);
+      set(row, '_isLoading', !row._isLoading);
       return true;
     });
   }
