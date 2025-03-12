@@ -128,6 +128,13 @@ export default class TableHandler {
     });
   }
 
+  async toggleRowLoadingState(recordId: number): Promise<void | boolean> {
+    return this.mutateRow(recordId, (row) => {
+      set(row, 'isLoading', !row.isLoading);
+      return true;
+    });
+  }
+
   reorderColumns(columns: Column[]) {
     this.columns = columns;
     this.tableManager.upsertColumns({ columns: this.columns });

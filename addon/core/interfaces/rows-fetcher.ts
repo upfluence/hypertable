@@ -3,6 +3,7 @@ export type Row = {
   recordId: number;
   holderId: number;
   holderType: string;
+  isLoading?: boolean;
   [key: string]: any;
 };
 
