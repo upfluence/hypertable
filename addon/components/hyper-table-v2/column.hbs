@@ -20,30 +20,32 @@
       </div>
     </div>
 
-    <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
-      {{#if (or @column.definition.filterable @column.definition.orderable)}}
-        <OSS::Icon
-          @icon="fa-filter"
-          role="button"
-          {{on "click" this.toggleFilteringComponent}}
-          {{enable-tooltip title=(t "hypertable.column.filtering.label")}}
-        />
-      {{/if}}
+    <OSS::Icon @icon="fa-bars fa-rotate-90" {{sortable-handle}} />
 
-      {{#if (and this.filteringComponent (eq @handler.tetherOn @column.definition.key))}}
-        <div class="available-filters" {{on-click-outside this.toggleFilteringComponent}}>
-          <this.filteringComponent.component
-            @handler={{@handler}}
-            @column={{@column}}
-            @extra={{this.filteringComponent.args}}
-          />
-        </div>
-      {{/if}}
+    {{!-- <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}> --}}
+    {{!-- {{#if (or @column.definition.filterable @column.definition.orderable)}} --}}
+    {{! <OSS::Icon }}
+    {{! @icon="fa-filter" }}
+    {{! role="button" }}
+    {{!-- {{on "click" this.toggleFilteringComponent}} --}}
+    {{!-- {{enable-tooltip title=(t "hypertable.column.filtering.label")}} --}}
+    {{! /> }}
+    {{!-- {{/if}} --}}
 
-      {{#if this.displayMoveIndicator}}
-        <OSS::Icon @icon="fa-bars fa-rotate-90" />
-      {{/if}}
-    </div>
+    {{!-- {{#if (and this.filteringComponent (eq @handler.tetherOn @column.definition.key))}} --}}
+    {{!-- <div class="available-filters" {{on-click-outside this.toggleFilteringComponent}}> --}}
+    {{! <this.filteringComponent.component }}
+    {{!-- @handler={{@handler}} --}}
+    {{!-- @column={{@column}} --}}
+    {{!-- @extra={{this.filteringComponent.args}} --}}
+    {{! /> }}
+    {{! </div> }}
+    {{!-- {{/if}} --}}
+
+    {{!-- {{#if this.displayMoveIndicator}} --}}
+    {{! <OSS::Icon @icon="fa-bars fa-rotate-90" /> }}
+    {{!-- {{/if}} --}}
+    {{! </div> }}
   </header>
 
   {{yield}}
