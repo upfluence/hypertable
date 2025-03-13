@@ -445,6 +445,26 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
+  module('Handler#toggleRowLoadingState', function () {
+    test('it skips if the record_id is not loaded yet', async function (this: TestContext, assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      await handler.fetchRows();
+
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
+      await handler.toggleRowLoadingState(667);
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
+    });
+
+    test("calling the method properly updates the row's loading state", async function (this: TestContext, assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      await handler.fetchRows();
+
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
+      await handler.toggleRowLoadingState(12);
+      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, true);
+    });
+  });
+
   module('Events', function () {
     test('callbacks are called properly when an event is subscribed to', function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
