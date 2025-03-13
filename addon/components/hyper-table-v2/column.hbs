@@ -20,8 +20,6 @@
       </div>
     </div>
 
-    <OSS::Icon @icon="fa-bars fa-rotate-90" />
-
     <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
       {{#if (or @column.definition.filterable @column.definition.orderable)}}
         <OSS::Icon
