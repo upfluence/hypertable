@@ -353,7 +353,7 @@ export default class TableHandler {
   toggleSelectAll(toggled: boolean): void {
     if (toggled) {
       if (this.rowsMeta?.total === this.rows.length) {
-        this.selection = 'all';
+        this.selectAllGlobal();
       } else {
         this.selection = this.rows;
       }
