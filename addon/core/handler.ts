@@ -347,6 +347,7 @@ export default class TableHandler {
     if (toggled) {
       if (this.rowsMeta?.total === this.rows.length) {
         this.selection = 'all';
+        this.exclusion = [];
       } else {
         this.selection = this.rows;
       }
