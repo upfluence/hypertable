@@ -30,7 +30,7 @@
               placeholder={{t "hypertable.column.filtering.from"}}
               aria-label={{t "hypertable.column.filtering.from"}}
               autocomplete="off"
-              {{on "keydown" this.addRangeFilter}}
+              {{on "change" this.addRangeFilter}}
               {{did-insert this.setupOnlyNumericListener}}
               {{will-destroy this.teardownOnlyNumericListener}}
               data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_from"}}
@@ -47,7 +47,7 @@
               @value={{this.upperBoundFilter}}
               placeholder={{t "hypertable.column.filtering.to"}}
               autocomplete="off"
-              {{on "keydown" this.addRangeFilter}}
+              {{on "change" this.addRangeFilter}}
               {{did-insert this.setupOnlyNumericListener}}
               {{will-destroy this.teardownOnlyNumericListener}}
               data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_to"}}
