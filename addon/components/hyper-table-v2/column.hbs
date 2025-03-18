@@ -1,5 +1,5 @@
 <div id={{this.elementId}} class={{this.computedClasses}} ...attributes>
-  <header class="fx-row fx-malign-space-between">
+  <header class="fx-row fx-malign-space-between" {{sortable-handle}}>
     <div class="cell-header" role="button" {{on "click" this.orderColumn}}>
       <div class="header-title-container">
         {{#if this.loadingHeaderComponent}}
