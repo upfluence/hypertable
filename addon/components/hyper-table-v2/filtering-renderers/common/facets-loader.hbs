@@ -2,17 +2,11 @@
   {{#if this.searchEnabled}}
     <div class="margin-bottom-px-6">
       <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
-      <OSS::InputContainer
+      <OSS::SearchField
         @value={{this.searchQuery}}
         @onChange={{this.onInputChanged}}
         @placeholder={{this.searchPlaceholder}}
-      >
-        <:suffix>
-          {{#if (gt this.searchQuery.length 0)}}
-            <OSS::Icon @icon="fa-times" role="button" {{on "click" this.onClearSearch}} />
-          {{/if}}
-        </:suffix>
-      </OSS::InputContainer>
+      />
     </div>
   {{/if}}
 
