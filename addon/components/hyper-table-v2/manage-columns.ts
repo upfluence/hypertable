@@ -107,4 +107,9 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   closeAvailableFields(): void {
     this.displayAvailableFields = false;
   }
+
+  @action
+  onSearchUpdate(value: string): void {
+    this._searchColumnDefinitionKeyword = value;
+  }
 }
