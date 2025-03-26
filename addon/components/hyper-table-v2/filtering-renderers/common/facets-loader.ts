@@ -63,7 +63,9 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   }
 
   @action
-  onInputChanged(): void {
+  onInputChanged(value: string): void {
+    this.searchQuery = value;
+
     debounce(this, this.fetchFacets, SEARCH_DEBOUNCE_TIME);
   }
 
