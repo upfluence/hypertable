@@ -1,15 +1,6 @@
-<OSS::InputContainer
-  @value={{this.searchQuery}}
-  @placeholder={{this.searchPlaceholder}}
-  @onChange={{this.onSearchInput}}
+<OSS::SearchField
   data-control-name="table_search_input"
->
-  <:prefix>
-    <OSS::Icon @icon="fa-search" class="font-color-gray-500" />
-  </:prefix>
-  <:suffix>
-    {{#if (gt this.searchQuery.length 0)}}
-      <OSS::Icon @icon="fa-times" class="font-color-gray-500" role="button" {{on "click" this.onClearSearch}} />
-    {{/if}}
-  </:suffix>
-</OSS::InputContainer>
+  @placeholder={{this.searchPlaceholder}}
+  @value={{this.searchQuery}}
+  @onChange={{this.onSearchInput}}
+/>

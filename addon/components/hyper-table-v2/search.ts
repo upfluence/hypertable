@@ -42,7 +42,9 @@ export default class HyperTableV2Search extends Component<HyperTableV2SearchArgs
   }
 
   @action
-  onSearchInput(): void {
+  onSearchInput(value:string): void {
+    this.searchQuery = value;
+    
     debounce(this, this._applySearchFilter, SEARCH_DEBOUNCE_TIME);
   }
 
