@@ -5,7 +5,7 @@
       @value={{this.searchQuery}}
       @onChange={{this.onInputChanged}}
       @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}
-      @type="number"
+      @type={{if (eq @type "number") @type}}
       data-control-name="filter-renderers-common-search-input"
     />
   </div>
