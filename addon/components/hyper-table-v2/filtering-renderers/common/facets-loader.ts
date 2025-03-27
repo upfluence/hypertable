@@ -70,13 +70,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   }
 
   @action
-  onClearSearch(event: MouseEvent): void {
-    event.stopPropagation();
-    this.searchQuery = '';
-    this.fetchFacets();
-  }
-
-  @action
   toggleFacet(facet: Facet): void {
     if (this.ongoingFacetApply) return;
     debounce(
