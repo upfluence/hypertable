@@ -20,8 +20,8 @@ interface HyperTableV2ManageColumnsArgs {
 
 export default class HyperTableV2ManageColumns extends Component<HyperTableV2ManageColumnsArgs> {
   @tracked displayAvailableFields: boolean = false;
-  @tracked _activeColumnCategory: null | string = null;
-  @tracked _searchColumnDefinitionKeyword: null | string = null;
+  @tracked activeColumnCategory: null | string = null;
+  @tracked searchColumnDefinitionKeyword: null | string = null;
 
   get _columnCategories(): string[] {
     return (this.args.handler.columnDefinitions || [])
@@ -34,13 +34,13 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
       .sort((a, b) => a.localeCompare(b));
   }
 
-  get _orderedFilteredClusters(): Map<string, ManagedColumn[]> {
+  get orderedFilteredClusters(): Map<string, ManagedColumn[]> {
     let fields = A(
       (this.args.handler.columnDefinitions || []).filter((columnDefinition) => {
-        const search = (this._searchColumnDefinitionKeyword || '').toLowerCase();
+        const search = (this.searchColumnDefinitionKeyword || '').toLowerCase();
         const hasSearched =
-          !this._searchColumnDefinitionKeyword || columnDefinition.name.toLowerCase().indexOf(search) >= 0;
-        const hasActiveGroup = !this._activeColumnCategory || columnDefinition.category === this._activeColumnCategory;
+          !this.searchColumnDefinitionKeyword || columnDefinition.name.toLowerCase().indexOf(search) >= 0;
+        const hasActiveGroup = !this.activeColumnCategory || columnDefinition.category === this.activeColumnCategory;
         return hasActiveGroup && hasSearched;
       })
     ).sortBy('name');
@@ -95,7 +95,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
 
   @action
   setFieldCategory(category: string): void {
-    this._activeColumnCategory = category;
+    this.activeColumnCategory = category;
   }
 
   @action
@@ -110,6 +110,6 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
 
   @action
   onSearchUpdate(value: string): void {
-    this._searchColumnDefinitionKeyword = value;
+    this.searchColumnDefinitionKeyword = value;
   }
 }
