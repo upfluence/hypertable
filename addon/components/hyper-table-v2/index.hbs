@@ -1,51 +1,57 @@
 <div class="hypertable-container" {{will-destroy this.teardown}} ...attributes>
-  <div class="hypertable__upper-header">
-    <div class="fx-row">
-      <div class="left-side">
-        {{#if this.features.selection}}
-          <div class="selected-count">
-            {{format-number this.selectionCount}}
-          </div>
-        {{/if}}
+  {{#if (or (has-block "search") (has-block "contextual-actions") (has-block "table-actions") this.displayHeader)}}
+    <div class="hypertable__upper-header">
+      <div class="fx-row">
+        <div class="left-side">
+          {{#if this.features.selection}}
+            <div class="selected-count">
+              {{format-number this.selectionCount}}
+            </div>
+          {{/if}}
 
-        {{#if this.initialFetchColumnsDone}}
-          <div class="search">
-            {{#if (has-block "search")}}
-              {{yield to="search"}}
-            {{else if this.features.searchable}}
-              <HyperTableV2::Search @handler={{@handler}} />
-            {{/if}}
-          </div>
-        {{/if}}
-        {{#if (has-block "contextual-actions")}}
-          {{yield to="contextual-actions"}}
-        {{/if}}
+          {{#if this.initialFetchColumnsDone}}
+            <div class="search">
+              {{#if (has-block "search")}}
+                {{yield to="search"}}
+              {{else if this.features.searchable}}
+                <HyperTableV2::Search @handler={{@handler}} />
+              {{/if}}
+            </div>
+          {{/if}}
+          {{#if (has-block "contextual-actions")}}
+            {{yield to="contextual-actions"}}
+          {{/if}}
+        </div>
+        <div class="right-side">
+          {{#if this.features.global_filters_reset}}
+            <OSS::Button
+              class="margin-right-px-12"
+              @label={{t "hypertable.features.filtering.reset_all"}}
+              {{on "click" this.resetFilters}}
+              @loading={{this.loadingResetFilters}}
+              data-control-name="hypertable_reset_filters_button"
+            />
+          {{/if}}
+
+          {{#if (has-block "table-actions")}}
+            {{yield to="table-actions"}}
+          {{/if}}
+
+          {{#if this.features.manageable_fields}}
+            <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
+          {{/if}}
+        </div>
       </div>
-      <div class="right-side">
-        <OSS::Button
-          class="margin-right-xx-sm"
-          @label={{t "hypertable.features.filtering.reset_all"}}
-          {{on "click" this.resetFilters}}
-          @loading={{this.loadingResetFilters}}
-          data-control-name="hypertable_reset_filters_button"
-        />
-
-        {{#if (has-block "table-actions")}}
-          {{yield to="table-actions"}}
-        {{/if}}
-
-        <HyperTableV2::ManageColumns @handler={{@handler}} @didInsertColumn={{this.scrollToEnd}} />
-      </div>
+      <HyperTableV2::Selection
+        class={{if (gt this.selectionCount 0) "margin-top-px-18"}}
+        @selected={{this.selectionCount}}
+        @total={{@handler.rowsMeta.total}}
+        @intlKeyPath={{@options.selectionIntlKeyPath}}
+        @onSelectAll={{this.selectAllGlobal}}
+        @onClear={{this.clearSelection}}
+      />
     </div>
-    <HyperTableV2::Selection
-      class={{if (gt this.selectionCount 0) "margin-top-px-18"}}
-      @selected={{this.selectionCount}}
-      @total={{@handler.rowsMeta.total}}
-      @intlKeyPath={{@options.selectionIntlKeyPath}}
-      @onSelectAll={{this.selectAllGlobal}}
-      @onClear={{this.clearSelection}}
-    />
-  </div>
+  {{/if}}
 
   <div
     class="hypertable__table hypertable__table--v2"
@@ -131,7 +137,11 @@
                 </div>
               {{/if}}
 
-              <HyperTableV2::Column @handler={{@handler}} @column={{column}}>
+              <HyperTableV2::Column
+                @handler={{@handler}}
+                @column={{column}}
+                @delegatedFiltering={{@options.delegatedFiltering}}
+              >
                 {{#each @handler.rows as |row|}}
                   <HyperTableV2::Cell
                     @handler={{@handler}}
@@ -156,6 +166,7 @@
             <HyperTableV2::Column
               @handler={{@handler}}
               @column={{column}}
+              @delegatedFiltering={{@options.delegatedFiltering}}
               class={{if
                 column.definition.position.sticky
                 (concat "hypertable__column--sticky-" column.definition.position.side)

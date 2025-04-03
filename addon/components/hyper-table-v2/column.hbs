@@ -1,6 +1,10 @@
 <div id={{this.elementId}} class={{this.computedClasses}} ...attributes>
   <header class="fx-row fx-malign-space-between" {{sortable-handle}}>
-    <div class="cell-header" role="button" {{on "click" this.orderColumn}}>
+    <div
+      class={{concat "cell-header" (if @delegatedFiltering " cell-header--delegated-filtering")}}
+      role="button"
+      {{on "click" this.orderColumn}}
+    >
       <div class="header-title-container">
         {{#if this.loadingHeaderComponent}}
           <OSS::Icon @icon="fa-spinner fa-spin" />
@@ -10,7 +14,7 @@
             @column={{@column}}
             @extra={{this.headerComponent.args}}
           />
-          {{#if this.isOrderingIndicatorVisible}}
+          {{#if (and (not @delegatedFiltering) this.isOrderingIndicatorVisible)}}
             <OSS::Icon
               class="order-command"
               @icon="fa-arrow-down-arrow-up"
@@ -19,36 +23,43 @@
           {{/if}}
         {{/if}}
 
-        {{#if (eq @column.order.direction "asc")}}
-          <OSS::Icon class="font-color-primary-500" @icon="fa-long-arrow-up" />
-        {{else if (eq @column.order.direction "desc")}}
-          <OSS::Icon class="font-color-primary-500" @icon="fa-long-arrow-down" />
-        {{/if}}
+        {{#unless @delegatedFiltering}}
+          {{#if (eq @column.order.direction "asc")}}
+            <OSS::Icon class="font-color-primary-500" @icon="fa-long-arrow-up" />
+          {{else if (eq @column.order.direction "desc")}}
+            <OSS::Icon class="font-color-primary-500" @icon="fa-long-arrow-down" />
+          {{/if}}
+        {{/unless}}
       </div>
     </div>
 
-    <div data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
-      {{#if (or @column.definition.filterable @column.definition.orderable)}}
-        <OSS::Button
-          class={{concat "filter-command" (if (eq @handler.tetherOn @column.definition.key) " filter-command--opened")}}
-          @icon="fa-filter"
-          @square={{true}}
-          @size="xs"
-          {{on "click" this.toggleFilteringComponent}}
-          {{enable-tooltip title=(t "hypertable.column.filtering.tooltip") placement="top"}}
-        />
-      {{/if}}
-
-      {{#if (and this.filteringComponent (eq @handler.tetherOn @column.definition.key))}}
-        <div class="available-filters" {{on-click-outside this.toggleFilteringComponent}}>
-          <this.filteringComponent.component
-            @handler={{@handler}}
-            @column={{@column}}
-            @extra={{this.filteringComponent.args}}
+    {{#unless @delegatedFiltering}}
+      <div data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
+        {{#if (or @column.definition.filterable @column.definition.orderable)}}
+          <OSS::Button
+            class={{concat
+              "filter-command"
+              (if (eq @handler.tetherOn @column.definition.key) " filter-command--opened")
+            }}
+            @icon="fa-filter"
+            @square={{true}}
+            @size="xs"
+            {{on "click" this.toggleFilteringComponent}}
+            {{enable-tooltip title=(t "hypertable.column.filtering.tooltip") placement="top"}}
           />
-        </div>
-      {{/if}}
-    </div>
+        {{/if}}
+
+        {{#if (and this.filteringComponent (eq @handler.tetherOn @column.definition.key))}}
+          <div class="available-filters" {{on-click-outside this.toggleFilteringComponent}}>
+            <this.filteringComponent.component
+              @handler={{@handler}}
+              @column={{@column}}
+              @extra={{this.filteringComponent.args}}
+            />
+          </div>
+        {{/if}}
+      </div>
+    {{/unless}}
   </header>
 
   {{yield}}

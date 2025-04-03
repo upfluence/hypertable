@@ -45,7 +45,12 @@ export default class TableHandler {
 
   currentPage: number = 1;
 
-  constructor(emberContext: unknown, manager: TableManager, rowsFetcher: RowsFetcher, renderingResolver = undefined) {
+  constructor(
+    emberContext: unknown,
+    manager: TableManager,
+    rowsFetcher: RowsFetcher,
+    renderingResolver?: RendererResolver
+  ) {
     this._context = emberContext;
     this.tableManager = manager;
     this.rowsFetcher = rowsFetcher;
