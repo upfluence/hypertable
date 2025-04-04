@@ -465,6 +465,19 @@ module('Unit | core/handler', function (hooks) {
     });
   });
 
+  module('Handler#teardown', function () {
+    test('the currentPage is properly reset', function (this: TestContext, assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+
+      handler.currentPage = 2;
+      assert.equal(handler.currentPage, 2);
+
+      handler.teardown();
+
+      assert.equal(handler.currentPage, 1);
+    });
+  });
+
   module('Events', function () {
     test('callbacks are called properly when an event is subscribed to', function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);

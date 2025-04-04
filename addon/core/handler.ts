@@ -460,6 +460,10 @@ export default class TableHandler {
     }
   }
 
+  teardown(): void {
+    this.currentPage = 1;
+  }
+
   private _reinitColumnsAndRows(columns: Column[]): void {
     let shouldRedraw = false;
     columns.forEach((column) => {
