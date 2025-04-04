@@ -82,13 +82,11 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
   test('when destroyed, the table properly calls the handler teardown method', async function (this: TestContext, assert: Assert) {
     this.displayTable = true;
-
     const teardownStub = sinon.stub(this.handler, 'teardown');
 
     await render(hbs`{{#if this.displayTable}}<HyperTableV2 @handler={{this.handler}} />{{/if}}`);
 
     this.set('displayTable', false);
-
     assert.ok(teardownStub.calledOnce);
   });
 
