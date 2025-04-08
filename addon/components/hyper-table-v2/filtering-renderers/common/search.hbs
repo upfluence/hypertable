@@ -1,18 +1,12 @@
 <div data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_filters"}}>
   <div class="margin-top-xxx-sm">
     <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
-    <OSS::InputContainer
+    <OSS::SearchField
       @value={{this.searchQuery}}
       @onChange={{this.onInputChanged}}
       @placeholder={{t "hypertable.column.filtering.search_term.placeholder"}}
-      {{(if (eq @type "number") (modifier "did-insert" this.setupOnlyNumericListener))}}
-      {{(if (eq @type "number") (modifier "will-destroy" this.teardownOnlyNumericListener))}}
-    >
-      <:suffix>
-        {{#if (gt this.searchQuery.length 0)}}
-          <OSS::Icon @icon="fa-times" role="button" {{on "click" this.onClearSearch}} />
-        {{/if}}
-      </:suffix>
-    </OSS::InputContainer>
+      @type={{if (eq @type "number") @type}}
+      data-control-name="filter-renderers-common-search-input"
+    />
   </div>
 </div>
