@@ -101,9 +101,11 @@
 
         <div class="available-fields-wrapper__fields">
           <div class="search">
-            <OSS::InputContainer
-              @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+            <OSS::SearchField
               @value={{this._availableFieldsKeyword}}
+              @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+              @onChange={{fn (action "setSearchValue")}}
+              {{on "click" (stop-propagation (action "noop"))}}
               data-control-name="field_search_input"
             />
           </div>
