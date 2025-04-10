@@ -1,6 +1,6 @@
 import { A } from '@ember/array';
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
+import { computed, observer, set } from '@ember/object';
 import { alias, and, filterBy } from '@ember/object/computed';
 import { debounce, once, scheduleOnce } from '@ember/runloop';
 import { compare, isEmpty, typeOf } from '@ember/utils';
@@ -354,6 +354,12 @@ export default Component.extend({
       if (this._selectedCount === this.manager.meta.total) {
         this._setAllRowSelected(true);
       }
+    },
+
+    noop() {},
+
+    setSearchValue(value) {
+      set(this, '_availableFieldsKeyword', value);
     }
   }
 });
