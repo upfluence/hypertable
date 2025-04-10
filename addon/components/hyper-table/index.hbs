@@ -104,7 +104,7 @@
             <OSS::SearchField
               @value={{this._availableFieldsKeyword}}
               @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-              @onChange={{fn (action "setSearchValue")}}
+              @onChange={{action "setSearchValue"}}
               {{on "click" (stop-propagation (action "noop"))}}
               data-control-name="field_search_input"
             />
