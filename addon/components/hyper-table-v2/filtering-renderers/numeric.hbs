@@ -17,45 +17,48 @@
       @handler={{@handler}}
       @column={{@column}}
       @activateWithValue={{this.hasBoundFiltersDefined}}
+      @onChange={{this.onExistenceChange}}
       data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}}
     />
-    <div class="fx-row fx-gap-px-12">
-      <div class="fx-col">
-        <label>{{t "hypertable.column.filtering.from"}}</label>
-        <OSS::InputContainer>
-          <:input>
-            <Input
-              @value={{this.lowerBoundFilter}}
-              @type="number"
-              placeholder={{t "hypertable.column.filtering.from"}}
-              aria-label={{t "hypertable.column.filtering.from"}}
-              autocomplete="off"
-              {{on "change" this.addRangeFilter}}
-              {{did-insert this.setupOnlyNumericListener}}
-              {{will-destroy this.teardownOnlyNumericListener}}
-              data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_from"}}
-            />
-          </:input>
-        </OSS::InputContainer>
+    {{#if this.showBounds}}
+      <div class="fx-row fx-gap-px-12">
+        <div class="fx-col">
+          <label>{{t "hypertable.column.filtering.from"}}</label>
+          <OSS::InputContainer>
+            <:input>
+              <Input
+                @value={{this.lowerBoundFilter}}
+                @type="number"
+                placeholder={{t "hypertable.column.filtering.from"}}
+                aria-label={{t "hypertable.column.filtering.from"}}
+                autocomplete="off"
+                {{on "change" this.addRangeFilter}}
+                {{did-insert this.setupOnlyNumericListener}}
+                {{will-destroy this.teardownOnlyNumericListener}}
+                data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_from"}}
+              />
+            </:input>
+          </OSS::InputContainer>
+        </div>
+        <div class="fx-col">
+          <label>{{t "hypertable.column.filtering.to"}}</label>
+          <OSS::InputContainer>
+            <:input>
+              <Input
+                @type="number"
+                @value={{this.upperBoundFilter}}
+                placeholder={{t "hypertable.column.filtering.to"}}
+                autocomplete="off"
+                {{on "change" this.addRangeFilter}}
+                {{did-insert this.setupOnlyNumericListener}}
+                {{will-destroy this.teardownOnlyNumericListener}}
+                data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_to"}}
+              />
+            </:input>
+          </OSS::InputContainer>
+        </div>
       </div>
-      <div class="fx-col">
-        <label>{{t "hypertable.column.filtering.to"}}</label>
-        <OSS::InputContainer>
-          <:input>
-            <Input
-              @type="number"
-              @value={{this.upperBoundFilter}}
-              placeholder={{t "hypertable.column.filtering.to"}}
-              autocomplete="off"
-              {{on "change" this.addRangeFilter}}
-              {{did-insert this.setupOnlyNumericListener}}
-              {{will-destroy this.teardownOnlyNumericListener}}
-              data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_range_to"}}
-            />
-          </:input>
-        </OSS::InputContainer>
-      </div>
-    </div>
+    {{/if}}
   {{/if}}
   <HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{@handler}} @column={{@column}} />
 </div>

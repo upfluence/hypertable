@@ -14,6 +14,7 @@ interface HyperTableV2FilteringRenderersExistenceArgs {
   filteringKey?: string;
   existenceFilters?: { [key: string]: OrderDirection };
   activateWithValue?: boolean;
+  onChange?(value: string): void;
 }
 
 const defaultFilteringKey = 'existence';
@@ -60,9 +61,14 @@ export default class HyperTableV2FilteringRenderersExistence extends Component<H
 
   @action
   existenceFilterChanged(value: string): void {
-    this.args.handler.applyFilters(this.args.column, [{ key: this.filteringKey, value }]).then(() => {
+    if (this.args.onChange) {
+      this.args.onChange(value);
       this.currentSelection = value;
-    });
+    } else {
+      this.args.handler.applyFilters(this.args.column, [{ key: this.filteringKey, value }]).then(() => {
+        this.currentSelection = value;
+      });
+    }
   }
 
   private get filteringKey(): string {

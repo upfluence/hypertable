@@ -69,7 +69,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
 
-      //@ts-ignore
+      // @ts-ignore
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
       assert.deepEqual(this.column.order, {
         direction: 'asc',
@@ -114,12 +114,17 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
-
       await click(
         'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
       );
-      //@ts-ignore
-      assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'with' }]));
+      assert.ok(
+        //@ts-ignore
+        handlerSpy.applyFilters.calledWith(this.column, [
+          { key: 'existence', value: 'with' },
+          { key: 'lower_bound', value: '' },
+          { key: 'upper_bound', value: '' }
+        ])
+      );
       assert.deepEqual(this.column.filters, [
         {
           key: 'existence',
@@ -130,14 +135,38 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       await click(
         'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:last-child .oss-radio-btn'
       );
-      //@ts-ignore
-      assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
+
+      assert.ok(
+        //@ts-ignore
+        handlerSpy.applyFilters.calledWith(this.column, [
+          { key: 'existence', value: 'without' },
+          { key: 'lower_bound', value: '' },
+          { key: 'upper_bound', value: '' }
+        ])
+      );
       assert.deepEqual(this.column.filters, [
         {
           key: 'existence',
           value: 'without'
         }
       ]);
+    });
+
+    test('when clicking on without value option, the From & To inputs are not displayed', async function (this: TestContext, assert: Assert) {
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
+      );
+
+      await click(
+        'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
+      );
+      assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').exists();
+      assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').exists();
+      await click(
+        'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:last-child .oss-radio-btn'
+      );
+      assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').doesNotExist();
+      assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').doesNotExist();
     });
 
     test('it triggers applyFilter when the range values are changed', async function (this: TestContext, assert: Assert) {
@@ -177,19 +206,50 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       );
     });
 
-    module('with existing range value', function () {
-      test('it display range value', async function (this: TestContext, assert: Assert) {
+    module('with existing range value', function (hooks) {
+      hooks.beforeEach(async function (this: TestContext) {
         this.column.filters = [
           { key: 'lower_bound', value: '10' },
           { key: 'upper_bound', value: '1000' }
         ];
+      });
 
+      test('it displays range value', async function (this: TestContext, assert: Assert) {
         await render(
           hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
         );
 
         assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').hasValue('10');
         assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').hasValue('1000');
+      });
+
+      test('it automatically selects the with option ', async function (this: TestContext, assert: Assert) {
+        await render(
+          hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
+        );
+
+        assert
+          .dom(
+            'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
+          )
+          .hasClass('oss-radio-btn--selected');
+      });
+
+      test('the values are reset when switching between the with and without options', async function (this: TestContext, assert: Assert) {
+        await render(
+          hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
+        );
+
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').hasValue('10');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').hasValue('1000');
+        await click(
+          'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:last-child .oss-radio-btn'
+        );
+        await click(
+          'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
+        );
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').hasValue('');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').hasValue('');
       });
     });
   });
