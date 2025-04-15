@@ -49,7 +49,7 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
 
   @computed('args.column.filters.[]')
   get showBounds(): boolean {
-    return this.args.column.filters[0]?.value !== 'without';
+    return this.args.column.filters[0]?.value === 'with';
   }
 
   setupOnlyNumericListener(element: HTMLElement): void {
