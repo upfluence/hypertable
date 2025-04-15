@@ -59,7 +59,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
     });
 
     test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const handlerSpy = sinon.spy(this.handler as TableHandler);
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
@@ -69,7 +69,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
 
-      // @ts-ignore
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
       assert.deepEqual(this.column.order, {
         direction: 'asc',
@@ -80,7 +79,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .oss-toggle-buttons-btn:nth-child(2)'
       );
 
-      //@ts-ignore
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));
       assert.deepEqual(this.column.order, {
         direction: 'desc',
@@ -110,7 +108,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
     });
 
     test('it handles with or without value options properly', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const handlerSpy = sinon.spy(this.handler as TableHandler);
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
@@ -118,7 +116,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
       );
       assert.ok(
-        //@ts-ignore
         handlerSpy.applyFilters.calledWith(this.column, [
           { key: 'existence', value: 'with' },
           { key: 'lower_bound', value: '' },
@@ -137,7 +134,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       );
 
       assert.ok(
-        //@ts-ignore
         handlerSpy.applyFilters.calledWith(this.column, [
           { key: 'existence', value: 'without' },
           { key: 'lower_bound', value: '' },
@@ -170,11 +166,14 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
     });
 
     test('it triggers applyFilter when the range values are changed', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const handlerSpy = sinon.spy(this.handler as TableHandler);
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
 
+      await click(
+        'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
+      );
       await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_from"]', '1');
       await triggerKeyEvent(
         '[data-control-name="hypertable__column_filtering_for_total_range_from"]',
@@ -183,10 +182,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         //@ts-ignore
         { code: 'Enter' }
       );
-      assert.ok(
-        //@ts-ignore
-        handlerSpy.applyFilters.calledWith(this.column, [{ key: 'lower_bound', value: '1' }])
-      );
+      assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'lower_bound', value: '1' }]));
 
       await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_to"]', '9');
       await triggerKeyEvent(
@@ -198,7 +194,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       );
 
       assert.ok(
-        //@ts-ignore
         handlerSpy.applyFilters.calledWith(this.column, [
           { key: 'lower_bound', value: '1' },
           { key: 'upper_bound', value: '9' }
@@ -209,6 +204,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
     module('with existing range value', function (hooks) {
       hooks.beforeEach(async function (this: TestContext) {
         this.column.filters = [
+          { key: 'existence', value: 'with' },
           { key: 'lower_bound', value: '10' },
           { key: 'upper_bound', value: '1000' }
         ];
@@ -256,7 +252,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
 
   module('clear column', async function () {
     test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const handlerSpy = sinon.spy(this.handler as TableHandler);
       this.handler.applyFilters(this.column, [{ key: 'lower_bound', value: '10' }]);
       this.handler.applyOrder(this.column, 'asc');
 
@@ -265,7 +261,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       );
       await click('[data-control-name="hypertable__column_filtering_for_total_clear_filters"]');
 
-      //@ts-ignore
       assert.ok(handlerSpy.resetColumns.calledWith([this.column]));
       assert.equal(this.column.order, undefined);
       assert.deepEqual(this.column.filters, []);
@@ -274,14 +269,13 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
 
   module('remove column', function () {
     test('it calls the Handler#removeColumn with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const handlerSpy = sinon.spy(this.handler as TableHandler);
 
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
       await click('[data-control-name="hypertable__column_filtering_for_total_remove_column"]');
 
-      //@ts-ignore
       assert.ok(handlerSpy.removeColumn.calledWith(this.column.definition));
     });
   });

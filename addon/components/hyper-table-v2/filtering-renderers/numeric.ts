@@ -63,11 +63,11 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
   }
 
   @action
-  onExistenceChange(value: string): void {
+  onExistenceFilterChange(value: string): Promise<void> {
     if (value === 'without') {
       this._resetStates();
     }
-    this.args.handler.applyFilters(this.args.column, [
+    return this.args.handler.applyFilters(this.args.column, [
       { key: 'existence', value },
       { key: 'lower_bound', value: this.lowerBoundFilter },
       { key: 'upper_bound', value: this.upperBoundFilter }

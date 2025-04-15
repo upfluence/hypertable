@@ -17,7 +17,7 @@
       @handler={{@handler}}
       @column={{@column}}
       @activateWithValue={{this.hasBoundFiltersDefined}}
-      @onChange={{this.onExistenceChange}}
+      @onExistenceFilterChange={{this.onExistenceFilterChange}}
       data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_existence_selector"}}
     />
     {{#if this.showBounds}}
