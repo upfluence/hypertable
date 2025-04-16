@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { isTesting } from '@embroider/macros';
 
 import { debounce } from '@ember/runloop';
@@ -47,6 +47,11 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
     return this.lowerBoundFilter || this.upperBoundFilter ? true : false;
   }
 
+  @computed('args.column.filters.[]')
+  get showBounds(): boolean {
+    return this.args.column.filters[0]?.value === 'with';
+  }
+
   setupOnlyNumericListener(element: HTMLElement): void {
     const input = element.querySelector('input');
     input?.addEventListener('keydown', onlyNumeric);
@@ -55,6 +60,18 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
   teardownOnlyNumericListener(element: HTMLElement): void {
     const input = element.querySelector('input');
     input?.removeEventListener('keydown', onlyNumeric);
+  }
+
+  @action
+  onExistenceFilterChange(value: string): Promise<void> {
+    if (value === 'without') {
+      this._resetStates();
+    }
+    return this.args.handler.applyFilters(this.args.column, [
+      { key: 'existence', value },
+      { key: 'lower_bound', value: this.lowerBoundFilter },
+      { key: 'upper_bound', value: this.upperBoundFilter }
+    ]);
   }
 
   @action
