@@ -28,6 +28,8 @@
       "@upfluence/hypertable/*": ["addon/*"],
       "@upfluence/hypertable/test-support": ["addon-test-support"],
       "@upfluence/hypertable/test-support/*": ["addon-test-support/*"],
+      "@upfluence/oss-components": ["node_modules/@upfluence/oss-components/addon"],
+      "@upfluence/oss-components/*": ["node_modules/@upfluence/oss-components/addon/*"],
       "*": ["types/*"]
     }
   },
