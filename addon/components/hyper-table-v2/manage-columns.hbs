@@ -7,7 +7,7 @@
   <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
     <div class="available-fields-wrapper__categories">
       <div
-        class={{concat "field-category" (unless this._activeColumnCategory " field-category--active")}}
+        class={{concat "field-category" (unless this.activeColumnCategory " field-category--active")}}
         role="button"
         {{on "click" (fn this.setFieldCategory null)}}
         data-control-name="field_category_toggle_all_fields"
@@ -17,7 +17,7 @@
       </div>
       {{#each this._columnCategories as |category|}}
         <div
-          class={{concat "field-category" (if (eq this._activeColumnCategory category) " field-category--active")}}
+          class={{concat "field-category" (if (eq this.activeColumnCategory category) " field-category--active")}}
           role="button"
           data-control-name={{concat "field_category_toggle_" category}}
           {{on "click" (fn this.setFieldCategory category)}}
@@ -29,22 +29,15 @@
     </div>
     <div class="available-fields-wrapper__fields">
       <div class="search">
-        <OSS::InputContainer>
-          <:prefix>
-            <OSS::Icon @icon="fa-search" />
-          </:prefix>
-
-          <:input>
-            <Input
-              @value={{this._searchColumnDefinitionKeyword}}
-              placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-              data-control-name="column_definitions_search_input"
-            />
-          </:input>
-        </OSS::InputContainer>
+        <OSS::SearchField
+          @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
+          @value={{this.searchColumnDefinitionKeyword}}
+          @onChange={{this.onSearchUpdate}}
+          data-control-name="column_definitions_search_input"
+        />
       </div>
       <div class="fields-list">
-        {{#each-in this._orderedFilteredClusters as |clusterName fields|}}
+        {{#each-in this.orderedFilteredClusters as |clusterName fields|}}
           {{#if clusterName}}
             <div class="cluster-name font-weight-semibold margin-top-px-6">
               {{clusterName}}

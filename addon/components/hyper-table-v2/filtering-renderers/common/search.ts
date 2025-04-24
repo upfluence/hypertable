@@ -47,7 +47,9 @@ export default class HyperTableV2FilteringRenderersSearch extends Component<Hype
   }
 
   @action
-  onInputChanged(): void {
+  onInputChanged(value: string): void {
+    this.searchQuery = value;
+
     debounce(this, this._applyFilters, SEARCH_DEBOUNCE_TIME);
   }
 
