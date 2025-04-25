@@ -13,7 +13,7 @@
         data-control-name="field_category_toggle_all_fields"
       >
         <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
-        <div><OSS::Icon @icon="fa-caret-right" /></div>
+        <OSS::Icon @icon="fa-chevron-right" />
       </div>
       {{#each this._columnCategories as |category|}}
         <div
@@ -23,7 +23,7 @@
           {{on "click" (fn this.setFieldCategory category)}}
         >
           <div>{{category}}</div>
-          <div><OSS::Icon @icon="fa-caret-right" /></div>
+          <OSS::Icon @icon="fa-chevron-right" />
         </div>
       {{/each}}
     </div>
