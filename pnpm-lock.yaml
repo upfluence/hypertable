@@ -148,8 +148,8 @@ importers:
         specifier: ^5.32.0
         version: 5.62.0(eslint@7.32.0)(typescript@4.9.5)
       '@upfluence/oss-components':
-        specifier: ^3.75.0
-        version: 3.75.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
+        specifier: ^3.76.0
+        version: 3.76.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
       broccoli-asset-rev:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1332,8 +1332,8 @@ packages:
     resolution: {integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@upfluence/oss-components@3.75.0':
-    resolution: {integrity: sha512-+WhFGgybydHxGkoOYJr2YiWCgGJeE/o4LYcdNfGfNl1PQ705BZwejcPpxr9qjeDyw7vnHCv8hIY+F5uUvYhumA==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.75.0/a1718fd63194fbd376ab2554d35ca5e833f497e6}
+  '@upfluence/oss-components@3.76.0':
+    resolution: {integrity: sha512-ROWRLWXqaoekcbFen6mEKwoCHTOucZZFx4Fv98D9jv9VURl9FUQGjMoU46L9cxOLiBygzIqPp20H17wCCs902g==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.76.0/3062a1b734953ab5f35409226554e1babcaca9a3}
     engines: {node: 12.* || 14.* || >= 16}
     peerDependencies:
       qunit: ^2.x
@@ -8380,7 +8380,7 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
-  '@upfluence/oss-components@3.75.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
+  '@upfluence/oss-components@3.76.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
     dependencies:
       '@ember/render-modifiers': 2.1.0(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@embroider/macros': 1.16.10(@glint/template@1.5.1)
