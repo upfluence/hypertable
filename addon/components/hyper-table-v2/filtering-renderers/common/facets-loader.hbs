@@ -1,7 +1,9 @@
 <div class="hypertable__facetting fx-col">
   {{#if this.searchEnabled}}
     <div class="margin-bottom-px-6">
-      <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
+      {{#if this.displaySearchLabel}}
+        <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
+      {{/if}}
       <OSS::SearchField
         @value={{this.searchQuery}}
         @onChange={{this.onInputChanged}}

@@ -16,6 +16,7 @@ interface FacetsLoaderArgs {
   facettingKey: string;
   searchEnabled: boolean;
   searchPlaceholder?: string;
+  displaySearchLabel?: boolean;
   sortCompareFn?(a: Facet, b: Facet): number;
 }
 
@@ -48,6 +49,10 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   get searchEnabled(): boolean {
     return this.args.searchEnabled ?? false;
+  }
+
+  get displaySearchLabel(): boolean {
+    return this.args.displaySearchLabel ?? true;
   }
 
   get searchPlaceholder(): string {
