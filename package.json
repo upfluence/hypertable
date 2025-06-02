@@ -27,6 +27,7 @@
     "test": "npm-run-all lint test:*",
     "test:ember": "ember test -r dot",
     "test:ember-compatibility": "ember try:each",
+    "test:coverage": "COVERAGE=true pnpm test:ember",
     "prepack": "ember ts:precompile",
     "postpack": "ember ts:clean",
     "install-pre-push-hook": "cp ./scripts/pre-push ./.git/hooks/pre-push",
