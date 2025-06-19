@@ -125,6 +125,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   toggleRowSelection(row: Row): void {
     if (this.args.handler.selection === 'all') {
       this.args.handler.updateExclusion(row);
+      this.resetSelectionOnFullExclusion();
     } else {
       this.args.handler.updateSelection(row);
     }
@@ -185,5 +186,11 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     });
 
     this.computeScrollableTable();
+  }
+
+  private resetSelectionOnFullExclusion(): void {
+    if ((this.args.handler.rowsMeta?.total ?? 0) === this.args.handler.exclusion.length) {
+      this.args.handler.clearSelection();
+    }
   }
 }
