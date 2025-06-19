@@ -357,6 +357,26 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           }
         );
       });
+
+      test('When all rows are excluded, it resets the selection', async function (this: any, assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+        this.handler.rowsMeta.total = 3;
+        await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
+        assert.deepEqual(this.handler.selection, 'all');
+
+        await click('.hypertable__column.hypertable__column--selection .hypertable__cell:nth-of-type(1) .upf-checkbox');
+        assert.deepEqual(this.handler.selection, 'all');
+        assert.deepEqual(this.handler.exclusion.length, 1);
+
+        await click('.hypertable__column.hypertable__column--selection .hypertable__cell:nth-of-type(2) .upf-checkbox');
+        assert.deepEqual(this.handler.selection, 'all');
+        assert.deepEqual(this.handler.exclusion.length, 2);
+
+        await click('.hypertable__column.hypertable__column--selection .hypertable__cell:nth-of-type(3) .upf-checkbox');
+
+        assert.deepEqual(this.handler.selection, []);
+        assert.deepEqual(this.handler.exclusion, []);
+      });
     });
 
     test('clicking a one multiline checkbox toggles its selection status', async function (this: TestContext, assert: Assert) {
