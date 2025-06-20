@@ -9,6 +9,7 @@ import { Column, FieldSize, ResolvedRenderingComponent } from '@upfluence/hypert
 interface HyperTableV2ColumnArgs {
   handler: TableHandler;
   column: Column;
+  delegatedFiltering?: boolean;
 }
 
 export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs> {

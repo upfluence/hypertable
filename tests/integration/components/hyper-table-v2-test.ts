@@ -122,6 +122,12 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
   });
 
+  test('the actions header is completely missing if all of its features are disabled and no named block is passed', async function (this: TestContext, assert: Assert) {
+    this.features = { selection: false, searchable: false, manageable_fields: false, global_filters_reset: false };
+    await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+    assert.dom('.hypertable__upper-header').doesNotExist();
+  });
+
   module('error state', function () {
     test('It displays an error state when the fetchRows call fails', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.rowsFetcher, 'fetch').callsFake(() => {
@@ -506,6 +512,32 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       assert.dom('div[data-control-name="table_search_input"]').doesNotExist();
       assert.dom('#example-search-named-block').exists();
+    });
+  });
+
+  module('FeatureSet: manageable_fields', () => {
+    test('the Manage field button is displayed by default', async function (assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('.hypertable__manage-fields').exists();
+    });
+
+    test('the Manage field button is not displayed if the feature is disabled', async function (this: TestContext, assert) {
+      this.features = { manageable_fields: false };
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('.hypertable__manage-fields').doesNotExist();
+    });
+  });
+
+  module('FeatureSet: global_filters_reset', () => {
+    test('the global Reset all button is displayed by default', async function (assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('[data-control-name="hypertable_reset_filters_button"]').exists();
+    });
+
+    test('the global Reset all button is not displayed if the feature is disabled', async function (this: TestContext, assert) {
+      this.features = { global_filters_reset: false };
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('[data-control-name="hypertable_reset_filters_button"]').doesNotExist();
     });
   });
 
