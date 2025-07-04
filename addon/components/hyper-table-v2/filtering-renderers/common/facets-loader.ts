@@ -138,7 +138,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         this.searchQuery
       )
       .then(({ facets, filtering_key }: FacetsResponse) => {
-        this.facets = facets.sort(this.facetsSorter);
+        this.facets = (facets ?? []).sort(this.facetsSorter);
         this.filteringKey = filtering_key;
 
         const filterForKey = this.args.column.filters.find((v) => v.key === this.filteringKey);
