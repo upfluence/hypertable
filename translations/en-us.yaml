@@ -18,10 +18,11 @@ hypertable:
     scroll_to_end: More
     ordering:
       label: Order By
+      tooltip: Order
     filtering:
       from: From
       to: To
-      label: Filter
+      label: Filters
       clear: Clear Filters
       existence:
         label: Display
