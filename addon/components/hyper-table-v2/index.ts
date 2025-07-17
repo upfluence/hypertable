@@ -11,10 +11,13 @@ import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 type FeatureSet = {
   selection: boolean;
   searchable: boolean;
+  manageable_fields: boolean;
+  global_filters_reset: boolean;
 };
 
 type OptionSet = {
   selectionIntlKeyPath?: string;
+  delegatedFiltering?: boolean;
 };
 
 interface HyperTableV2Args {
@@ -23,7 +26,12 @@ interface HyperTableV2Args {
   options?: OptionSet;
 }
 
-const DEFAULT_FEATURES_SET: FeatureSet = { selection: false, searchable: true };
+const DEFAULT_FEATURES_SET: FeatureSet = {
+  selection: false,
+  searchable: true,
+  manageable_fields: true,
+  global_filters_reset: true
+};
 const RESET_DEBOUNCE_TIME = 300;
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
@@ -53,6 +61,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       ...DEFAULT_FEATURES_SET,
       ...(this.args.features || {})
     };
+  }
+
+  get displayHeader(): boolean {
+    return Object.keys(this.features).some((key) => this.features[key as keyof FeatureSet]);
   }
 
   get selectionCount(): number {
