@@ -35,10 +35,10 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
 
       assert.dom('.hypertable__facetting .oss-scrollable-panel-content .item').exists({ count: 2 });
       assert
-        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(1) .item')
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div > div:nth-child(1) .item')
         .hasText('The Foo Fighters');
       assert
-        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(2) .item')
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div > div:nth-child(2) .item')
         .hasText('Arctic Monkeys');
     });
 
@@ -60,10 +60,10 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
 
       assert.dom('.hypertable__facetting .item').exists({ count: 2 });
       assert
-        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(1) .item')
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div > div:nth-child(1) .item')
         .hasText('Arctic Monkeys');
       assert
-        .dom('.hypertable__facetting .oss-scrollable-panel-content > div:nth-child(2) .item')
+        .dom('.hypertable__facetting .oss-scrollable-panel-content > div > div:nth-child(2) .item')
         .hasText('The Foo Fighters');
 
       assert.ok(this.sortCompareFn.calledOnce);
