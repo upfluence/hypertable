@@ -72,6 +72,11 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     return `hypertable__column--size-${size}`;
   }
 
+  @computed('args.column.order.direction')
+  get isOrderingIndicatorVisible(): boolean {
+    return this.args.column.definition.orderable && !this.args.column.order?.direction;
+  }
+
   @action
   orderColumn(e: MouseEvent): void {
     e.stopPropagation();

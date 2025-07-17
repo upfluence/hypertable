@@ -10,13 +10,7 @@
             @column={{@column}}
             @extra={{this.headerComponent.args}}
           />
-          {{#if
-            (and
-              (or @column.definition.filterable @column.definition.orderable)
-              (not-eq @column.order.direction "asc")
-              (not-eq @column.order.direction "desc")
-            )
-          }}
+          {{#if this.isOrderingIndicatorVisible}}
             <OSS::Icon
               class="order-command"
               @icon="fa-arrow-down-arrow-up"
