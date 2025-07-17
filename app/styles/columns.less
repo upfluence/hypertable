@@ -52,15 +52,6 @@
 
     header {
       cursor: grabbing;
-
-      .drag-and-drop-command {
-        cursor: grabbing;
-        box-shadow: 0px 0px 0px 2px var(--color-primary-100);
-
-        &:hover {
-          box-shadow: 0px 0px 0px 2px var(--color-primary-100);
-        }
-      }
     }
   }
 
@@ -123,9 +114,11 @@
   }
 
   .filter-command {
+    display: none;
     margin-left: var(--spacing-px-6);
 
     &--opened {
+      display: flex;
       box-shadow: 0px 0px 0px 2px var(--color-primary-100);
 
       i {
@@ -145,34 +138,12 @@
   &:hover {
     background-color: var(--color-gray-200);
 
-    .drag-and-drop-command {
-      opacity: 1;
-    }
-
     .order-command {
       display: flex;
     }
-  }
 
-  .drag-and-drop-command {
-    position: absolute;
-    top: -1px;
-    left: calc(50% - 24px);
-    display: flex;
-    opacity: 0;
-    align-items: center;
-    cursor: grab;
-    justify-content: center;
-    border: 1px solid var(--color-border-default);
-    border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
-    width: 48px;
-    height: 12px;
-    background-color: var(--color-white);
-    z-index: 1;
-    transition: all 0.25s ease-in-out;
-
-    &:hover {
-      box-shadow: 0px 0px 0px 2px var(--color-gray-100);
+    .filter-command {
+      display: flex;
     }
   }
 }
@@ -192,12 +163,10 @@
   }
 }
 
-//.hypertable__column--ordered {
-//}
-
 .hypertable__column--filtered header,
 .hypertable__column--ordered header {
   .filter-command {
+    display: flex;
     position: relative;
     border-color: var(--color-primary-500);
     background-color: var(--color-primary-50);

@@ -22,7 +22,8 @@ hypertable:
     filtering:
       from: From
       to: To
-      label: Filters
+      label: Filter
+      tooltip: Filters
       clear: Clear Filters
       existence:
         label: Display

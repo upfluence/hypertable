@@ -31,11 +31,6 @@
           <OSS::Icon class="font-color-primary-500" @icon="fa-long-arrow-down" />
         {{/if}}
       </div>
-      {{#if this.displayMoveIndicator}}
-        <div class="drag-and-drop-command" {{attach-element to=this.columnElement placement="top" offset=-9 width=24}}>
-          <OSS::Icon @icon="fa-grip-dots" />
-        </div>
-      {{/if}}
     </div>
 
     <div data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
@@ -46,7 +41,7 @@
           @square={{true}}
           @size="xs"
           {{on "click" this.toggleFilteringComponent}}
-          {{enable-tooltip title=(t "hypertable.column.filtering.label") placement="top"}}
+          {{enable-tooltip title=(t "hypertable.column.filtering.tooltip") placement="top"}}
         />
       {{/if}}
 
