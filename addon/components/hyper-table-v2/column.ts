@@ -19,8 +19,6 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   @tracked filteringComponent?: ResolvedRenderingComponent;
   @tracked displayFilteringComponent: boolean = false;
 
-  displayMoveIndicator: boolean;
-
   constructor(owner: unknown, args: HyperTableV2ColumnArgs) {
     super(owner, args);
 
@@ -32,8 +30,6 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
       .finally(() => {
         this.loadingHeaderComponent = false;
       });
-
-    this.displayMoveIndicator = !args.column.definition.position?.sticky;
 
     if (args.column.definition.orderable || args.column.definition.filterable) {
       args.handler.renderingResolver
@@ -74,6 +70,11 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     }
 
     return `hypertable__column--size-${size}`;
+  }
+
+  @computed('args.column.order.direction')
+  get isOrderingIndicatorVisible(): boolean {
+    return this.args.column.definition.orderable && !this.args.column.order?.direction;
   }
 
   @action

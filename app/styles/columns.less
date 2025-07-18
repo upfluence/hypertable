@@ -1,4 +1,5 @@
 .hypertable__column {
+  position: relative;
   opacity: 1;
   transition: all 0.125s;
   height: fit-content;
@@ -31,23 +32,6 @@
     }
   }
 
-  // Animate Columns Drag & Drop
-  &.is-dragging {
-    transition-duration: 0s;
-    background-color: var(--color-white);
-    z-index: 17;
-    box-shadow: var(--box-shadow-lg);
-    border-right: 1px solid var(--color-border-default);
-  }
-
-  &.is-dropping {
-    opacity: 1;
-  }
-
-  header {
-    border-left: 1px solid var(--color-border-default);
-    border-bottom: 1px solid var(--color-border-default);
-  }
   &:nth-child(2) header {
     border-left: none;
   }
@@ -57,6 +41,23 @@
     right: 0;
     z-index: 20;
   }
+
+  // Animate Columns Drag & Drop
+  &.is-dragging {
+    transition-duration: 0s;
+    background-color: var(--color-white);
+    z-index: 17;
+    box-shadow: var(--box-shadow-lg);
+    border-right: 1px solid var(--color-border-default);
+
+    header {
+      cursor: grabbing;
+    }
+  }
+
+  &.is-dropping {
+    opacity: 1;
+  }
 }
 
 .hypertable__column header {
@@ -65,21 +66,25 @@
   z-index: 15;
   height: @cell-height;
   max-height: @cell-height;
-  padding: var(--spacing-px-12);
+  padding: var(--spacing-px-12) var(--spacing-px-18);
+  border-left: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-default);
   width: 100%;
 
   background-color: var(--color-gray-100);
-  cursor: pointer;
+  cursor: grab;
   text-transform: capitalize;
 
   justify-content: space-between;
   position: sticky;
   top: 0;
 
+  transition: all 0.25s ease-in-out;
+
   & > .cell-header {
-    color: var(--color-gray-500);
+    color: var(--color-gray-600);
     font-size: 16 / @rem;
-    font-weight: bold;
+    font-weight: var(--font-weight-semibold);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -87,12 +92,12 @@
     .header-title-container {
       display: flex;
       align-items: center;
+      gap: var(--spacing-px-6);
 
       .field-title {
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-right: var(--spacing-px-6);
       }
     }
 
@@ -108,43 +113,44 @@
     }
   }
 
-  & > .icon-commands {
-    position: absolute;
-    right: var(--spacing-px-12);
-    color: var(--color-gray-400);
+  .filter-command {
+    display: none;
+    margin-left: var(--spacing-px-6);
 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    &--opened {
+      display: flex;
+      box-shadow: 0px 0px 0px 2px var(--color-primary-100);
 
-    i {
-      opacity: 0;
-      font-size: 16 / @rem;
-      &.fa-filter {
-        padding: var(--spacing-px-12);
+      i {
+        color: var(--color-gray-900);
+      }
+
+      &::after {
+        display: none;
       }
     }
+  }
 
-    i:hover,
-    i:active {
-      color: var(--color-gray-900);
-      cursor: pointer;
-    }
-
-    i.fa-bars {
-      cursor: move;
-    }
+  .order-command {
+    display: none;
   }
 
   &:hover {
     background-color: var(--color-gray-200);
-    .cell-header {
-      margin-right: 55px;
+
+    .order-command {
+      display: flex;
     }
-    .icon-commands i {
-      opacity: 1;
-      display: block;
+
+    .filter-command {
+      display: flex;
     }
+  }
+}
+
+.hypertable__column--sticky-right {
+  header {
+    cursor: pointer;
   }
 }
 
@@ -155,6 +161,7 @@
 
   header {
     border-right: none;
+    padding: var(--spacing-px-12);
   }
 
   .hypertable__cell {
@@ -162,39 +169,47 @@
   }
 }
 
-.hypertable__column--ordered {
-  & > header {
-    .fa-filter {
-      opacity: 1;
-      display: inline-block;
-      color: var(--color-gray-900);
+.hypertable__column--filtered header,
+.hypertable__column--ordered header {
+  .filter-command {
+    display: flex;
+    position: relative;
+    border-color: var(--color-primary-500);
+    background-color: var(--color-primary-50);
+
+    &::after {
+      content: '';
+      position: absolute;
+      border: 1px solid var(--color-gray-100);
+      top: -4px;
+      right: -5px;
+      width: 10px;
+      height: 10px;
+      background: var(--color-primary-500);
+      border-radius: 50%;
     }
 
-    .fa-bars {
-      color: var(--color-gray-900);
+    i {
+      color: var(--color-primary-500);
     }
 
-    .cell-header {
-      margin-right: 40px;
-      .order-direction {
-        color: var(--color-gray-900);
-        font-family: 'FontAwesome';
-        font-size: 20 / @rem;
+    &:hover {
+      box-shadow: 0px 0px 0px 2px var(--color-primary-100);
+      background-color: var(--color-primary-500);
+
+      i {
+        color: var(--color-white);
       }
     }
-  }
-}
 
-.hypertable__column--filtered {
-  & > header {
-    .icon-commands .fa-filter {
-      color: var(--color-gray-900);
-      display: block;
-      opacity: 1;
-    }
+    &--opened {
+      i {
+        color: var(--color-primary-500);
+      }
 
-    .cell-header {
-      margin-right: 55px;
+      &::after {
+        display: block;
+      }
     }
   }
 }

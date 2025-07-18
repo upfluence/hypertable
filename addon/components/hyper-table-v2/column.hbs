@@ -10,23 +10,32 @@
             @column={{@column}}
             @extra={{this.headerComponent.args}}
           />
+          {{#if this.isOrderingIndicatorVisible}}
+            <OSS::Icon
+              class="order-command"
+              @icon="fa-arrow-down-arrow-up"
+              {{enable-tooltip title=(t "hypertable.column.ordering.tooltip") placement="top"}}
+            />
+          {{/if}}
         {{/if}}
 
         {{#if (eq @column.order.direction "asc")}}
-          <span class="margin-left-px-6 text-color-default"><OSS::Icon @icon="fa-long-arrow-up" /></span>
+          <OSS::Icon class="font-color-primary-500" @icon="fa-long-arrow-up" />
         {{else if (eq @column.order.direction "desc")}}
-          <span class="margin-left-px-6 text-color-default"><OSS::Icon @icon="fa-long-arrow-down" /></span>
+          <OSS::Icon class="font-color-primary-500" @icon="fa-long-arrow-down" />
         {{/if}}
       </div>
     </div>
 
-    <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
+    <div data-control-name={{concat "table_column_filter_sort_toggle_" @column.definition.key}}>
       {{#if (or @column.definition.filterable @column.definition.orderable)}}
-        <OSS::Icon
+        <OSS::Button
+          class={{concat "filter-command" (if (eq @handler.tetherOn @column.definition.key) " filter-command--opened")}}
           @icon="fa-filter"
-          role="button"
+          @square={{true}}
+          @size="xs"
           {{on "click" this.toggleFilteringComponent}}
-          {{enable-tooltip title=(t "hypertable.column.filtering.label")}}
+          {{enable-tooltip title=(t "hypertable.column.filtering.tooltip") placement="top"}}
         />
       {{/if}}
 
@@ -38,10 +47,6 @@
             @extra={{this.filteringComponent.args}}
           />
         </div>
-      {{/if}}
-
-      {{#if this.displayMoveIndicator}}
-        <OSS::Icon @icon="fa-bars fa-rotate-90" />
       {{/if}}
     </div>
   </header>

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, click } from '@ember/test-helpers';
 import { setupIntl, type TestContext } from 'ember-intl/test-support';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
@@ -52,37 +52,130 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
     assert.dom('.hypertable__column div.yielded').hasText('foobar');
   });
 
-  test('it looks up the rendering component for the column header', async function (this: TestContext, assert: Assert) {
-    const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
+  test('it renders the loading state', async function (this: TestContext, assert: Assert) {
+    sinon.stub(this.handler.renderingResolver, 'lookupHeaderComponent').resolves(new Promise(() => {}));
+    await render(hbs`
+      <HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />
+    `);
 
-    await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
-
-    // @ts-ignore
-    assert.ok(renderingResolverSpy.lookupHeaderComponent.calledOnceWithExactly(this.column.definition));
+    assert.dom('.hypertable__column .far.fa-spinner.fa-spin').exists();
   });
 
-  test('it skips looking up the filtering renderer if the column is not filterable nor orderable', async function (this: TestContext, assert: Assert) {
-    const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
-
-    await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
-
-    // @ts-ignore
-    assert.ok(renderingResolverSpy.lookupFilteringComponent.neverCalledWith(this.column.definition));
-  });
-
-  test('it looks up the rendering component for the filtering if the column is filterable or orderable', async function (this: TestContext, assert: Assert) {
-    const renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
-    sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
-      return Promise.resolve({
-        columns: [buildColumn('foo', { size: FieldSize.Large, filterable: true })]
-      });
+  module('For the rendering components', (hooks) => {
+    hooks.beforeEach(async function (this: TestContext) {
+      this.renderingResolverSpy = sinon.spy(this.handler.renderingResolver);
     });
-    await this.handler.fetchColumns();
-    this.column = this.handler.columns[0];
 
-    await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+    test('it looks up it for the column header', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.ok(this.renderingResolverSpy.lookupHeaderComponent.calledOnceWithExactly(this.column.definition));
+    });
 
-    // @ts-ignore
-    assert.ok(renderingResolverSpy.lookupFilteringComponent.calledOnceWithExactly(this.column.definition));
+    test('it skips looking up the filtering renderer if the column is not filterable nor orderable', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.ok(this.renderingResolverSpy.lookupFilteringComponent.neverCalledWith(this.column.definition));
+    });
+
+    test('it looks up it for the filtering if the column is filterable or orderable', async function (this: TestContext, assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+        return Promise.resolve({
+          columns: [buildColumn('foo', { size: FieldSize.Large, filterable: true })]
+        });
+      });
+      await this.handler.fetchColumns();
+      this.column = this.handler.columns[0];
+
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+
+      assert.ok(this.renderingResolverSpy.lookupFilteringComponent.calledOnceWithExactly(this.column.definition));
+    });
+  });
+
+  module('For orderable indicator', (hooks) => {
+    hooks.beforeEach(function (this: TestContext) {
+      this.column.definition.orderable = true;
+      this.column.order = { direction: undefined };
+    });
+
+    test("when the column isn't orderable, it doesn't render the double arrow icon", async function (this: TestContext, assert: Assert) {
+      this.column.definition.orderable = false;
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.order-command').doesNotExist();
+      assert.dom('.far.fa-long-arrow-up').doesNotExist();
+      assert.dom('.far.fa-long-arrow-down').doesNotExist();
+    });
+
+    test('when column is orderable, it renders the double arrow icon', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.order-command').exists();
+      assert.dom('.far.fa-long-arrow-up').doesNotExist();
+      assert.dom('.far.fa-long-arrow-down').doesNotExist();
+    });
+
+    test('it renders the correct tooltip for the double arrow icon', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      // @ts-ignore
+      await assert.tooltip('.order-command').hasTitle('Order');
+    });
+
+    test('it renders the asc arrow up icon', async function (this: TestContext, assert: Assert) {
+      this.column.order.direction = 'asc';
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.order-command').doesNotExist();
+      assert.dom('.far.fa-long-arrow-up').exists();
+      assert.dom('.far.fa-long-arrow-down').doesNotExist();
+    });
+
+    test('it renders the desc arrow down icon', async function (this: TestContext, assert: Assert) {
+      this.column.order.direction = 'desc';
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.order-command').doesNotExist();
+      assert.dom('.far.fa-long-arrow-up').doesNotExist();
+      assert.dom('.far.fa-long-arrow-down').exists();
+    });
+  });
+
+  module('for filtering button', (hooks) => {
+    hooks.beforeEach(function (this: TestContext) {
+      this.column.definition.filterable = true;
+      this.column.definition.orderable = true;
+    });
+
+    test('it renders it', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.filter-command').exists();
+      assert.dom('.filter-command').doesNotHaveClass('filter-command--opened');
+    });
+
+    test('it renders the correct tooltip', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      // @ts-ignore
+      await assert.tooltip('.filter-command').hasTitle('Filters');
+    });
+
+    test('when column is not orderable, it renders', async function (this: TestContext, assert: Assert) {
+      this.column.definition.orderable = false;
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.filter-command').exists();
+    });
+
+    test('when column is not filterable, it renders', async function (this: TestContext, assert: Assert) {
+      this.column.definition.filterable = false;
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.filter-command').exists();
+    });
+
+    test("when column is not filterable & not orderable, it doesn't render it", async function (this: TestContext, assert: Assert) {
+      this.column.definition.filterable = false;
+      this.column.definition.orderable = false;
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      assert.dom('.filter-command').doesNotExist();
+    });
+
+    test('when clicking on it, it renders the correct class', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
+      await click('.filter-command');
+      assert.dom('.filter-command').hasClass('filter-command--opened');
+    });
   });
 });
