@@ -90,7 +90,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     const colHeaderTop = colHeader.getBoundingClientRect().top;
     const tableBottom = table.getBoundingClientRect().bottom;
 
-    const availableHeight = tableBottom - colHeaderTop - 100; // 10px pour un peu d'espace
+    const availableHeight = tableBottom - colHeaderTop - 100;
 
     dropdown.style.height = `${availableHeight}px`;
     dropdown.style.overflowY = 'auto';
