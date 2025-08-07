@@ -178,4 +178,12 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
       assert.dom('.filter-command').hasClass('filter-command--opened');
     });
   });
+
+  test('the icon commands are not displayed if the @delegatedFiltering arg is truthy', async function (assert) {
+    await render(hbs`
+      <HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} @delegatedFiltering={{true}} />
+    `);
+
+    assert.dom('.hypertable__column .icon-commands').doesNotExist();
+  });
 });
