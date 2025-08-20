@@ -148,8 +148,8 @@ importers:
         specifier: ^5.32.0
         version: 5.62.0(eslint@7.32.0)(typescript@4.9.5)
       '@upfluence/oss-components':
-        specifier: ^3.79.0
-        version: 3.79.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
+        specifier: ^3.81.1
+        version: 3.81.1(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
       broccoli-asset-rev:
         specifier: ^3.0.0
         version: 3.0.0
@@ -996,9 +996,9 @@ packages:
       typescript:
         optional: true
 
-  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#2151d30ec8f1c1db594035ee504ea985b4e962c9':
-    resolution: {commit: 2151d30ec8f1c1db594035ee504ea985b4e962c9, repo: git@github.com:upfluence/fontawesome-pro.git, type: git}
-    version: 6.5.1
+  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#2ae6c0044b34d06543101723202e117125257264':
+    resolution: {commit: 2ae6c0044b34d06543101723202e117125257264, repo: git@github.com:upfluence/fontawesome-pro.git, type: git}
+    version: 6.7.2
     engines: {node: '>=6'}
 
   '@glimmer/component@1.1.2':
@@ -1345,8 +1345,8 @@ packages:
     resolution: {integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@upfluence/oss-components@3.79.0':
-    resolution: {integrity: sha512-knG0sEPyj6nbDPIjVPDfRtjgU54kPLRoaTnAU26FtZeP4LZEl7VK7akhw9IHgMwom39408cDfmsxdwKLjmermQ==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.79.0/56161dbca59e5771eb09040d4c1dd7329de8373a}
+  '@upfluence/oss-components@3.81.1':
+    resolution: {integrity: sha512-qERzhdIJtZGcoRpM5J7gq9hHkdfixyAt8qtZLbrxsu+kvcpZA4SHsCt8XMBJEvBl0MwQTsPNtSBTa9TmVTAykQ==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.81.1/a5be47f63b2e12cb05c48936151d232c75134829}
     engines: {node: 12.* || 14.* || >= 16}
     peerDependencies:
       qunit: ^2.x
@@ -7933,7 +7933,7 @@ snapshots:
     optionalDependencies:
       typescript: 4.9.5
 
-  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#2151d30ec8f1c1db594035ee504ea985b4e962c9': {}
+  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#2ae6c0044b34d06543101723202e117125257264': {}
 
   '@glimmer/component@1.1.2(@babel/core@7.26.0)':
     dependencies:
@@ -8404,13 +8404,13 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
-  '@upfluence/oss-components@3.79.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
+  '@upfluence/oss-components@3.81.1(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
     dependencies:
       '@ember/render-modifiers': 2.1.0(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@embroider/macros': 1.16.10(@glint/template@1.5.1)
       '@embroider/util': 1.13.3(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@floating-ui/dom': 1.7.2
-      '@fortawesome/fontawesome-pro': git+https://git@github.com:upfluence/fontawesome-pro.git#2151d30ec8f1c1db594035ee504ea985b4e962c9
+      '@fortawesome/fontawesome-pro': git+https://git@github.com:upfluence/fontawesome-pro.git#2ae6c0044b34d06543101723202e117125257264
       babel-plugin-debug-macros: 0.3.4(@babel/core@7.26.0)
       bootstrap: 3.4.1
       broccoli-funnel: 3.0.8
