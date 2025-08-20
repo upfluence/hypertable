@@ -11,7 +11,7 @@
 {{/if}}
 
 {{#if this.column.filterable}}
-  <div class={{concat "fx-col" (if this.column.orderable " margin-top-px-12")}}>
+  <div class={{concat "fx-col fx-gap-px-6" (if this.column.orderable " margin-top-px-12")}}>
     <label>Display</label>
     <div class="fx-col fx-gap-px-3" data-control-name={{concat this._controlNamePrefix "_display_radiogroup"}}>
       {{#each-in this.existenceFilters as |label value|}}
@@ -27,7 +27,7 @@
     class="fx-row fx-gap-px-12 margin-top-px-12"
     data-control-name={{concat this._controlNamePrefix "_range_inputs"}}
   >
-    <div class="fx-col">
+    <div class="fx-col fx-gap-px-6">
       <label>From</label>
       <OSS::InputContainer>
         <:input>
@@ -44,7 +44,7 @@
       </OSS::InputContainer>
     </div>
 
-    <div class="fx-col">
+    <div class="fx-col fx-gap-px-6">
       <label>To</label>
       <OSS::InputContainer>
         <:input>

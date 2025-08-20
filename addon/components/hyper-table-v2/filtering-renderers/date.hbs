@@ -13,7 +13,7 @@
   {{/if}}
 
   {{#if @column.definition.filterable}}
-    <div class="fx-col">
+    <div class="fx-col fx-gap-px-6">
       <label>{{t "hypertable.column.filtering.label"}}</label>
       <OSS::ToggleButtons
         @toggles={{this.filteringOptions}}
@@ -27,18 +27,20 @@
         data-control-name={{concat "hypertable__column_filtering_for_" @column.definition.key "_date_range_inputs"}}
       >
         {{#if (eq this.filterOption "fixed")}}
-          <label>{{t "hypertable.column.filtering.date.range.label"}}</label>
-          <EmberFlatpickr
-            @onChange={{this.selectFixedDate}}
-            @dateFormat="M/D/Y"
-            @placeholder={{t "hypertable.column.filtering.date.range.label"}}
-            @mode="range"
-            @date={{readonly this._currentDateValue}}
-            @altInput={{true}}
-            @altInputClass="upf-input"
-            @onOpen={{this.openedFlatpickr}}
-            @onClose={{this.closedFlatpickr}}
-          />
+          <div class="fx-col fx-gap-px-6">
+            <label>{{t "hypertable.column.filtering.date.range.label"}}</label>
+            <EmberFlatpickr
+              @onChange={{this.selectFixedDate}}
+              @dateFormat="M/D/Y"
+              @placeholder={{t "hypertable.column.filtering.date.range.label"}}
+              @mode="range"
+              @date={{readonly this._currentDateValue}}
+              @altInput={{true}}
+              @altInputClass="upf-input"
+              @onOpen={{this.openedFlatpickr}}
+              @onClose={{this.closedFlatpickr}}
+            />
+          </div>
         {{else}}
           {{#each-in this.movingDateOptions as |label value|}}
             <div
