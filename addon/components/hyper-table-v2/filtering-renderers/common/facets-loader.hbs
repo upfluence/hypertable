@@ -1,7 +1,9 @@
 <div class="hypertable__facetting fx-col">
   {{#if this.searchEnabled}}
     <div class="fx-col fx-gap-px-6 margin-bottom-px-6">
-      <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
+      {{#if this.displaySearchLabel}}
+        <label>{{t "hypertable.column.filtering.search_term.label"}}</label>
+      {{/if}}
       <OSS::SearchField
         @value={{this.searchQuery}}
         @onChange={{this.onInputChanged}}
@@ -38,7 +40,7 @@
             {{/if}}
             {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
           </div>
-          <div class="count">
+          <div class="font-color-gray-400">
             {{facet.count}}
           </div>
         </div>

@@ -71,13 +71,12 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   });
 
   test('it triggers the row-click event correctly', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
+    const triggerEventSpy = sinon.spy(this.handler, 'triggerEvent');
 
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
     await click('.hypertable__sticky-columns > .hypertable__column .hypertable__cell');
 
-    // @ts-ignore
-    assert.ok(handlerSpy.triggerEvent.calledOnceWithExactly('row-click', this.handler.rows[0]));
+    assert.ok(triggerEventSpy.calledWithExactly('row-click', this.handler.rows[0]));
   });
 
   test('when destroyed, the table properly calls the handler teardown method', async function (this: TestContext, assert: Assert) {
@@ -120,6 +119,12 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__state.hypertable__state--empty .custom-empty-state').exists();
       assert.dom('.hypertable__state.hypertable__state--empty .custom-empty-state').hasText('foo');
     });
+  });
+
+  test('the actions header is completely missing if all of its features are disabled and no named block is passed', async function (this: TestContext, assert: Assert) {
+    this.features = { selection: false, searchable: false, manageable_fields: false, global_filters_reset: false };
+    await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+    assert.dom('.hypertable__upper-header').doesNotExist();
   });
 
   module('error state', function () {
@@ -506,6 +511,32 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       assert.dom('div[data-control-name="table_search_input"]').doesNotExist();
       assert.dom('#example-search-named-block').exists();
+    });
+  });
+
+  module('FeatureSet: manageable_fields', () => {
+    test('the Manage field button is displayed by default', async function (assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('.hypertable__manage-fields').exists();
+    });
+
+    test('the Manage field button is not displayed if the feature is disabled', async function (this: TestContext, assert) {
+      this.features = { manageable_fields: false };
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('.hypertable__manage-fields').doesNotExist();
+    });
+  });
+
+  module('FeatureSet: global_filters_reset', () => {
+    test('the global Reset all button is displayed by default', async function (assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('[data-control-name="hypertable_reset_filters_button"]').exists();
+    });
+
+    test('the global Reset all button is not displayed if the feature is disabled', async function (this: TestContext, assert) {
+      this.features = { global_filters_reset: false };
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('[data-control-name="hypertable_reset_filters_button"]').doesNotExist();
     });
   });
 

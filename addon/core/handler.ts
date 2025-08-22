@@ -45,7 +45,12 @@ export default class TableHandler {
 
   currentPage: number = 1;
 
-  constructor(emberContext: unknown, manager: TableManager, rowsFetcher: RowsFetcher, renderingResolver = undefined) {
+  constructor(
+    emberContext: unknown,
+    manager: TableManager,
+    rowsFetcher: RowsFetcher,
+    renderingResolver?: RendererResolver
+  ) {
     this._context = emberContext;
     this.tableManager = manager;
     this.rowsFetcher = rowsFetcher;
@@ -68,6 +73,7 @@ export default class TableHandler {
       .then(({ columns }) => {
         this.columns = columns;
         this._lastOrderedColumn = columns.find((column) => column.order);
+        this.triggerEvent('columns-loaded');
       })
       .catch(() => {
         this.communicationError = true;
