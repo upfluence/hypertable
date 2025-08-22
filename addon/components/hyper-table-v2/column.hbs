@@ -50,7 +50,11 @@
         {{/if}}
 
         {{#if (and this.filteringComponent (eq @handler.tetherOn @column.definition.key))}}
-          <div class="available-filters" {{on-click-outside this.toggleFilteringComponent}}>
+          <div
+            class="available-filters"
+            {{on-click-outside this.toggleFilteringComponent}}
+            {{did-insert this.setDropdownHeight}}
+          >
             <this.filteringComponent.component
               @handler={{@handler}}
               @column={{@column}}

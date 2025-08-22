@@ -19,6 +19,9 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   @tracked headerComponent?: ResolvedRenderingComponent;
   @tracked filteringComponent?: ResolvedRenderingComponent;
   @tracked displayFilteringComponent: boolean = false;
+  @tracked dropdownHeight: string = '300px';
+
+  private resizeHandler?: () => void;
 
   constructor(owner: unknown, args: HyperTableV2ColumnArgs) {
     super(owner, args);
@@ -46,7 +49,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     this.elementId = guidFor(args.column.definition.key);
   }
 
-  @computed('args.column.filters.[]', 'args.column.order')
+  @computed('args.column.filters.[]', 'args.column.order.direction', 'sizeClass')
   get computedClasses(): string {
     const classes = ['hypertable__column'];
 
@@ -79,6 +82,28 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   }
 
   @action
+  setDropdownHeight(): void {
+    const dropdown = document.querySelector(`#${this.elementId} .available-filters`) as HTMLElement;
+    const colHeader = document.querySelector(`#${this.elementId} .tether-target`) as HTMLElement;
+    const table = document.querySelector('.hypertable') as HTMLElement;
+
+    if (!dropdown || !colHeader || !table) return;
+
+    const colHeaderTop = colHeader.getBoundingClientRect().top;
+    const tableBottom = table.getBoundingClientRect().bottom;
+
+    const availableHeight = tableBottom - colHeaderTop - 100;
+
+    dropdown.style.height = `${availableHeight}px`;
+    dropdown.style.overflowY = 'auto';
+
+    if (!this.resizeHandler) {
+      this.resizeHandler = () => this.setDropdownHeight();
+      window.addEventListener('resize', this.resizeHandler);
+    }
+  }
+
+  @action
   orderColumn(e: MouseEvent): void {
     e.stopPropagation();
 
@@ -104,8 +129,12 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   }
 
   willDestroy() {
+    super.willDestroy();
     if (this.args.handler.tetherOn !== this.args.column.definition.key) {
       this.args.handler.destroyTetherInstance();
+    }
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler);
     }
   }
 }
