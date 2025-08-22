@@ -71,13 +71,12 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   });
 
   test('it triggers the row-click event correctly', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
+    const triggerEventSpy = sinon.spy(this.handler, 'triggerEvent');
 
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
     await click('.hypertable__sticky-columns > .hypertable__column .hypertable__cell');
 
-    // @ts-ignore
-    assert.ok(handlerSpy.triggerEvent.calledOnceWithExactly('row-click', this.handler.rows[0]));
+    assert.ok(triggerEventSpy.calledWithExactly('row-click', this.handler.rows[0]));
   });
 
   test('when destroyed, the table properly calls the handler teardown method', async function (this: TestContext, assert: Assert) {
