@@ -182,7 +182,12 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         //@ts-ignore
         { code: 'Enter' }
       );
-      assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'lower_bound', value: '1' }]));
+      assert.ok(
+        handlerSpy.applyFilters.calledWith(this.column, [
+          { key: 'lower_bound', value: '1' },
+          { key: 'existence', value: 'with' }
+        ])
+      );
 
       await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_to"]', '9');
       await triggerKeyEvent(
@@ -196,7 +201,8 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       assert.ok(
         handlerSpy.applyFilters.calledWith(this.column, [
           { key: 'lower_bound', value: '1' },
-          { key: 'upper_bound', value: '9' }
+          { key: 'upper_bound', value: '9' },
+          { key: 'existence', value: 'with' }
         ])
       );
     });

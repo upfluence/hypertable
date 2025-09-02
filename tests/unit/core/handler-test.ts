@@ -182,6 +182,18 @@ module('Unit | core/handler', function (hooks) {
         { key: 'fizz', value: 'buzz' }
       ]);
     });
+
+    test('removing filters are removed', function (this: TestContext, assert: Assert) {
+      this.handler.columns[0].filters = [
+        { key: 'foo', value: 'bar' },
+        { key: 'fizz', value: 'buzz' }
+      ];
+
+      this.handler.applyFilters(this.handler.columns[0], [{ key: 'fizz', value: 'buzz' }]);
+
+      assert.equal(this.handler.columns[0].filters.length, 1);
+      assert.deepEqual(this.handler.columns[0].filters, [{ key: 'fizz', value: 'buzz' }]);
+    });
   });
 
   module('Handler#resetColumns', function () {
