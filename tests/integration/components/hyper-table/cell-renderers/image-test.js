@@ -12,9 +12,7 @@ module('Integration | Component | hyper-table/cell-renderers/image', function (h
 
     await render(hbs`<HyperTable::CellRenderers::Image @item={{this.item}} @column={{this.column}} />`);
 
-    assert
-      .dom('div.upf-image.upf-image--round-24')
-      .hasAttribute('style', 'background-image: url("foo.png"), url("assets/images/no-image.svg");');
+    assert.dom('.upf-avatar.upf-avatar--sm img').hasAttribute('src', 'foo.png');
   });
 
   module('it has labels to show', function () {
@@ -24,9 +22,7 @@ module('Integration | Component | hyper-table/cell-renderers/image', function (h
 
       await render(hbs`<HyperTable::CellRenderers::Image @item={{this.item}} @column={{this.column}} />`);
 
-      assert
-        .dom('div.upf-image.upf-image--round-24')
-        .hasAttribute('style', 'background-image: url("foo.png"), url("assets/images/no-image.svg");');
+      assert.dom('.upf-avatar.upf-avatar--sm img').exists();
 
       assert.dom('span.margin-left-xx-sm.text-ellipsis-160').hasText('FooBar');
     });
@@ -39,9 +35,7 @@ module('Integration | Component | hyper-table/cell-renderers/image', function (h
 
       await render(hbs`<HyperTable::CellRenderers::Image @item={{this.item}} @column={{this.column}} />`);
 
-      assert
-        .dom('div.upf-image.upf-image--round-24')
-        .hasAttribute('style', 'background-image: url("foo.png"), url("assets/images/no-image.svg");');
+      assert.dom('.upf-avatar.upf-avatar--sm img').exists();
 
       assert.dom('span.margin-left-xx-sm.text-ellipsis-160').hasText('FooBar');
       assert.dom('span.upf-notification--inline').exists();
