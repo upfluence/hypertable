@@ -183,7 +183,7 @@ module('Unit | core/handler', function (hooks) {
       ]);
     });
 
-    test('removing filters are removed', function (this: TestContext, assert: Assert) {
+    test('removed filters are cleared', function (this: TestContext, assert: Assert) {
       this.handler.columns[0].filters = [
         { key: 'foo', value: 'bar' },
         { key: 'fizz', value: 'buzz' }
