@@ -14,6 +14,8 @@ interface HyperTableV2FilteringRenderersNumericArgs {
   column: Column;
 }
 
+export type FilterUpdateIntentStatus = 'pending' | 'fulfilled' | 'rejected';
+
 const RANGE_DEBOUNCE_TIME = 500;
 const DEFAULT_MULTIPLIER = 1;
 
