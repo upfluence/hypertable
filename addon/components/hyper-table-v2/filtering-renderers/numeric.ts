@@ -97,7 +97,8 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
         : []),
       ...(this.upperBoundFilter
         ? [{ key: 'upper_bound', value: (parseInt(this.upperBoundFilter) * this.multiplier).toString() }]
-        : [])
+        : []),
+      ...(this.lowerBoundFilter || this.upperBoundFilter ? [{ key: 'existence', value: 'with' }] : [])
     ]);
   }
 
