@@ -14,6 +14,8 @@ interface HyperTableV2FilteringRenderersNumericArgs {
   column: Column;
 }
 
+export type FilterUpdateIntentStatus = 'pending' | 'fulfilled' | 'rejected';
+
 const RANGE_DEBOUNCE_TIME = 500;
 const DEFAULT_MULTIPLIER = 1;
 
@@ -77,6 +79,7 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
   @action
   addRangeFilter(): void {
     debounce(this, this._addRangeFilter, isTesting() ? 0 : RANGE_DEBOUNCE_TIME);
+    this.args.handler.triggerEvent('filterUpdateIntent', this.args.column, 'pending');
   }
 
   @action
@@ -91,14 +94,18 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
   }
 
   private _addRangeFilter(): void {
-    this.args.handler.applyFilters(this.args.column, [
-      ...(this.lowerBoundFilter
-        ? [{ key: 'lower_bound', value: (parseInt(this.lowerBoundFilter) * this.multiplier).toString() }]
-        : []),
-      ...(this.upperBoundFilter
-        ? [{ key: 'upper_bound', value: (parseInt(this.upperBoundFilter) * this.multiplier).toString() }]
-        : [])
-    ]);
+    this.args.handler
+      .applyFilters(this.args.column, [
+        ...(this.lowerBoundFilter
+          ? [{ key: 'lower_bound', value: (parseInt(this.lowerBoundFilter) * this.multiplier).toString() }]
+          : []),
+        ...(this.upperBoundFilter
+          ? [{ key: 'upper_bound', value: (parseInt(this.upperBoundFilter) * this.multiplier).toString() }]
+          : []),
+        ...(this.lowerBoundFilter || this.upperBoundFilter ? [{ key: 'existence', value: 'with' }] : [])
+      ])
+      .then(() => this.args.handler.triggerEvent('filterUpdateIntent', this.args.column, 'fulfilled'))
+      .catch(() => this.args.handler.triggerEvent('filterUpdateIntent', this.args.column, 'rejected'));
   }
 
   private initLowerBound(): void {

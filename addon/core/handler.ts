@@ -265,17 +265,20 @@ export default class TableHandler {
       column,
       'filters',
       filters
-        .reduce((acc, v) => {
-          const filterWithSameKey = acc.find((filter) => filter.key === v.key);
+        .reduce(
+          (acc, v) => {
+            const filterWithSameKey = acc.find((filter) => filter.key === v.key);
 
-          if (filterWithSameKey) {
-            filterWithSameKey.value = v.value;
-          } else {
-            acc.push(v);
-          }
+            if (filterWithSameKey) {
+              filterWithSameKey.value = v.value;
+            } else {
+              acc.push(v);
+            }
 
-          return acc;
-        }, column.filters)
+            return acc;
+          },
+          column.filters.filter((f) => filters.find((nf) => nf.key === f.key))
+        )
         .filter((f) => !isEmpty(f.key) && !isEmpty(f.value))
     );
 
