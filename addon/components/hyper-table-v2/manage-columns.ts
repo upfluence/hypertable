@@ -111,6 +111,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   @action
   closeAvailableFields(): void {
     this.displayAvailableFields = false;
+    this.dropdownVisibility = 'invisible';
   }
 
   @action
