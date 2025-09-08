@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl, type TestContext } from 'ember-intl/test-support';
-import { click, fillIn, render } from '@ember/test-helpers';
+import { click, fillIn, render, waitFor } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -56,6 +56,8 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
   test('it renders', async function (assert) {
     await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
+    await waitFor('.available-fields-wrapper.invisible');
+
     assert.dom('.available-fields-wrapper.invisible').exists({ count: 1 });
   });
 
@@ -63,6 +65,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     test('it should open the available columns', async function (assert) {
       await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
       await click('.upf-btn.upf-btn--default');
+      await waitFor('.available-fields-wrapper.visible');
 
       assert.dom('.available-fields-wrapper.visible').exists({ count: 1 });
     });
