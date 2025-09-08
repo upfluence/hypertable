@@ -4,7 +4,7 @@
     @label={{t "hypertable.features.manage_fields.title"}}
     {{on "click" this.toggleAvailableFields}}
   />
-  <div class={{concat "available-fields-wrapper" (if this.displayAvailableFields " visible" " invisible")}}>
+  <div class={{concat "available-fields-wrapper " this.dropdownVisibility}}>
     <div class="available-fields-wrapper__categories">
       <div
         class={{concat "field-category" (unless this.activeColumnCategory " field-category--active")}}

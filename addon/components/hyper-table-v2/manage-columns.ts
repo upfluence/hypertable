@@ -22,6 +22,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   @tracked displayAvailableFields: boolean = false;
   @tracked activeColumnCategory: null | string = null;
   @tracked searchColumnDefinitionKeyword: null | string = null;
+  @tracked dropdownVisibility: 'visible' | 'invisible' = 'invisible';
 
   get _columnCategories(): string[] {
     return (this.args.handler.columnDefinitions || [])
@@ -101,6 +102,10 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   @action
   toggleAvailableFields(): void {
     this.displayAvailableFields = !this.displayAvailableFields;
+
+    setTimeout(() => {
+      this.dropdownVisibility = this.displayAvailableFields ? 'visible' : 'invisible';
+    }, 100);
   }
 
   @action
