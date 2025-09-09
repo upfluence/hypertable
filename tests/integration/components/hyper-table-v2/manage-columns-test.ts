@@ -54,14 +54,13 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     await this.handler.fetchColumns();
   });
 
-  test('it renders', async function (assert) {
+  test('fields are not rendered in the DOM initially', async function (assert) {
     await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-    await waitFor('.available-fields-wrapper.invisible');
 
-    assert.dom('.available-fields-wrapper.invisible').exists({ count: 1 });
+    assert.dom('.available-fields-wrapper').doesNotExist();
   });
 
-  module('when a user clicks on manage column button', function () {
+  module('when a user clicks on manage column button, it is rendered', function () {
     test('it should open the available columns', async function (assert) {
       await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
       await click('.upf-btn.upf-btn--default');

@@ -6,6 +6,7 @@ import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
+import { later, next } from '@ember/runloop';
 
 type ManagedColumn = {
   definition: ColumnDefinition;
@@ -98,19 +99,22 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   setFieldCategory(category: string): void {
     this.activeColumnCategory = category;
   }
-
   @action
   toggleAvailableFields(): void {
     if (this.displayAvailableFields) {
       this.dropdownVisibility = 'invisible';
-      setTimeout(() => {
-        this.displayAvailableFields = false;
-      }, 300);
+      later(
+        this,
+        () => {
+          this.displayAvailableFields = false;
+        },
+        300
+      );
     } else {
       this.displayAvailableFields = true;
-      setTimeout(() => {
+      next(this, () => {
         this.dropdownVisibility = 'visible';
-      }, 10);
+      });
     }
   }
 
