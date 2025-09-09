@@ -6,6 +6,7 @@ import { action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
+import { later, next } from '@ember/runloop';
 
 type ManagedColumn = {
   definition: ColumnDefinition;
@@ -22,6 +23,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   @tracked displayAvailableFields: boolean = false;
   @tracked activeColumnCategory: null | string = null;
   @tracked searchColumnDefinitionKeyword: null | string = null;
+  @tracked dropdownVisibility: 'visible' | 'invisible' = 'invisible';
 
   get _columnCategories(): string[] {
     return (this.args.handler.columnDefinitions || [])
@@ -100,12 +102,26 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
 
   @action
   toggleAvailableFields(): void {
-    this.displayAvailableFields = !this.displayAvailableFields;
+    if (this.displayAvailableFields) {
+      this.closeAvailableFields();
+    } else {
+      this.displayAvailableFields = true;
+      next(this, () => {
+        this.dropdownVisibility = 'visible';
+      });
+    }
   }
 
   @action
   closeAvailableFields(): void {
-    this.displayAvailableFields = false;
+    this.dropdownVisibility = 'invisible';
+    later(
+      this,
+      () => {
+        this.displayAvailableFields = false;
+      },
+      300
+    );
   }
 
   @action

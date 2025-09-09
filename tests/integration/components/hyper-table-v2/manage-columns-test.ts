@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl, type TestContext } from 'ember-intl/test-support';
-import { click, fillIn, render } from '@ember/test-helpers';
+import { click, fillIn, render, waitFor } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -54,15 +54,17 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     await this.handler.fetchColumns();
   });
 
-  test('it renders', async function (assert) {
+  test('fields are not rendered in the DOM initially', async function (assert) {
     await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-    assert.dom('.available-fields-wrapper.invisible').exists({ count: 1 });
+
+    assert.dom('.available-fields-wrapper').doesNotExist();
   });
 
-  module('when a user clicks on manage column button', function () {
+  module('when a user clicks on manage column button, it is rendered', function () {
     test('it should open the available columns', async function (assert) {
       await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
       await click('.upf-btn.upf-btn--default');
+      await waitFor('.available-fields-wrapper.visible');
 
       assert.dom('.available-fields-wrapper.visible').exists({ count: 1 });
     });
