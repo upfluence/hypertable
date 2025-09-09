@@ -99,23 +99,29 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   setFieldCategory(category: string): void {
     this.activeColumnCategory = category;
   }
+
   @action
   toggleAvailableFields(): void {
     if (this.displayAvailableFields) {
-      this.dropdownVisibility = 'invisible';
-      later(
-        this,
-        () => {
-          this.displayAvailableFields = false;
-        },
-        300
-      );
+      this.closeAvailableFields();
     } else {
       this.displayAvailableFields = true;
       next(this, () => {
         this.dropdownVisibility = 'visible';
       });
     }
+  }
+
+  @action
+  closeAvailableFields(): void {
+    this.dropdownVisibility = 'invisible';
+    later(
+      this,
+      () => {
+        this.displayAvailableFields = false;
+      },
+      300
+    );
   }
 
   @action
