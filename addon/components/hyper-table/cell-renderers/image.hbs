@@ -1,5 +1,5 @@
 <div>
-  {{upf-image src=this.imageURL classNames="upf-image--round-36"}}
+  <OSS::Avatar @image={{this.imageURL}} @size="sm" @initials={{this.initials}} />
 </div>
 
 {{#if (gt @column.labels.length 0)}}

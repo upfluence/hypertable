@@ -21,6 +21,8 @@ import { isEmpty } from '@ember/utils';
 
 export type RowMutator = (row: Row) => boolean;
 
+const ROWS_PER_PAGE = 30;
+
 export default class TableHandler {
   private _context: unknown;
   private _renderingResolver?: RendererResolver;
@@ -103,7 +105,7 @@ export default class TableHandler {
     this.loadingRows = true;
 
     return this.rowsFetcher
-      .fetch(this.currentPage, 20)
+      .fetch(this.currentPage, ROWS_PER_PAGE)
       .then(({ rows, meta }) => {
         this.rows = [...this.rows, ...rows.filter((row) => !this.rows.map((r) => r.record_id).includes(row.record_id))];
         this.rowsMeta = meta;

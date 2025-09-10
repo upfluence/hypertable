@@ -254,7 +254,7 @@ module('Unit | core/handler', function (hooks) {
     // @ts-ignore
     assert.ok(rowsFetcherSpy.fetch.calledTwice);
     // @ts-ignore
-    assert.ok(rowsFetcherSpy.fetch.calledWithExactly(1, 20));
+    assert.ok(rowsFetcherSpy.fetch.calledWithExactly(1, 30));
     assert.equal(handler.rows.length, 3);
   });
 
