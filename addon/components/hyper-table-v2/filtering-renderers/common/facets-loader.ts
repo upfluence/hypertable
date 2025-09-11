@@ -17,6 +17,7 @@ interface FacetsLoaderArgs {
   searchEnabled: boolean;
   searchPlaceholder?: string;
   displaySearchLabel?: boolean;
+  exclusive?: boolean;
   sortCompareFn?(a: Facet, b: Facet): number;
 }
 
@@ -79,7 +80,9 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     if (this.ongoingFacetApply) return;
     debounce(
       this,
-      this.appliedFacets.includes(facet.identifier) ? this.removeFacet : this.addFacet,
+      () => {
+        this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
+      },
       facet,
       FACET_APPLY_DEBOUNCE_TIME
     );
@@ -89,7 +92,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     let facetFilter: Filter = { key: this.filteringKey, value: facet.identifier };
     const existingFilter = this.args.column.filters.find((filter) => filter.key === this.filteringKey);
 
-    if (existingFilter) {
+    if (existingFilter && !this.args.exclusive) {
       facetFilter = { key: this.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
 
@@ -97,14 +100,14 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     this.args.handler
       .applyFilters(this.args.column, [facetFilter])
       .then(() => {
-        this.appliedFacets = [...this.appliedFacets, ...[facet.identifier]];
+        this.appliedFacets = [...(this.args.exclusive ? [] : this.appliedFacets), ...[facet.identifier]];
       })
       .finally(() => {
         this.ongoingFacetApply = false;
       });
   }
 
-  private removeFacet(facet: Facet): void {
+  private removeFacet(facet: Facet): Promise<void> {
     const existingFilter = this.args.column.filters.find((filter) => filter.key === this.filteringKey);
 
     if (existingFilter) {
@@ -118,7 +121,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       }
 
       this.ongoingFacetApply = true;
-      this.args.handler
+      return this.args.handler
         .applyFilters(this.args.column, [facetFilter])
         .then(() => {
           this.appliedFacets = this.appliedFacets.filter((x) => x !== facet.identifier);
@@ -127,6 +130,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
           this.ongoingFacetApply = false;
         });
     }
+    return Promise.resolve();
   }
 
   private fetchFacets(): void {
