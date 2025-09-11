@@ -10,7 +10,7 @@ hypertable:
     manage_fields:
       title: Manage Fields
       all_fields: All Fields
-      search_placeholder: Search Fields
+      search_placeholder: Search...
       no_columns: No columns found
   column:
     remove: Remove Field

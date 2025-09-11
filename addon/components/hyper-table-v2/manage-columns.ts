@@ -108,6 +108,14 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
       this.displayAvailableFields = true;
       next(this, () => {
         this.dropdownVisibility = 'visible';
+
+        later(
+          this,
+          () => {
+            document.querySelector<HTMLInputElement>('.available-fields-wrapper input')?.focus();
+          },
+          300
+        );
       });
     }
   }
