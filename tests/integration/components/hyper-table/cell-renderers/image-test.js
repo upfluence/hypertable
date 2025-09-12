@@ -7,8 +7,8 @@ module('Integration | Component | hyper-table/cell-renderers/image', function (h
   setupRenderingTest(hooks);
 
   test('it renders', async function (assert) {
-    this.item = { imageURL: 'foo.png' };
-    this.column = { key: 'imageURL' };
+    this.item = { imageURL: 'foo.png', name: 'FooBar' };
+    this.column = { key: 'imageURL', labels: ['name'] };
 
     await render(hbs`<HyperTable::CellRenderers::Image @item={{this.item}} @column={{this.column}} />`);
 

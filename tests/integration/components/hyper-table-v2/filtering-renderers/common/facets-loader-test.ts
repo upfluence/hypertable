@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { setupIntl } from 'ember-intl/test-support';
-import { click, fillIn, triggerKeyEvent, render, type TestContext } from '@ember/test-helpers';
+import { click, fillIn, triggerKeyEvent, render, type TestContext, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -210,6 +210,46 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       );
 
       assert.dom('.hypertable__facetting').hasText('nothing here');
+    });
+  });
+
+  module('@exclusive mode', function () {
+    test('When @exclusive is true, facets are displayed as radio buttons', async function (this: TestContext, assert: Assert) {
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}} @exclusive={true}/>`
+      );
+
+      assert.dom('.hypertable__facetting .item').exists({ count: 2 });
+      assert.dom('.hypertable__facetting .item .oss-radio-btn').exists({ count: 2 });
+      assert.dom('.hypertable__facetting .item .upf-checkbox').doesNotExist();
+    });
+
+    test('when @exclusive is true, selecting a facet removes previously applied facets', async function (this: TestContext, assert: Assert) {
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}} @exclusive={true}/>`
+      );
+
+      const radioRows = findAll('.hypertable__facetting .item');
+      await click(radioRows[0]);
+      assert.dom('.hypertable__facetting .item:nth-child(1) .oss-radio-btn--selected').exists();
+
+      await click(radioRows[1]);
+      assert.dom(radioRows[1].querySelector('.oss-radio-btn--selected')).exists();
+      assert.dom(radioRows[0].querySelector('.oss-radio-btn--selected')).doesNotExist();
+    });
+
+    test('when @exclusive is true, selecting a facet calls the applyFilters method of the table handler', async function (this: TestContext, assert: Assert) {
+      const applyFiltersSpy = sinon.spy(this.handler, 'applyFilters');
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}} @exclusive={true}/>`
+      );
+
+      const radioRows = findAll('.hypertable__facetting .item');
+      await click(radioRows[0]);
+      assert.ok(applyFiltersSpy.calledWithExactly(this.column, [{ key: 'value', value: 'band:1' }]));
+
+      await click(radioRows[1]);
+      assert.ok(applyFiltersSpy.calledWithExactly(this.column, [{ key: 'value', value: 'band:2' }]));
     });
   });
 });

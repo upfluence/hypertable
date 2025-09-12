@@ -31,12 +31,19 @@
                 <OSS::Icon @icon="fa-spinner-third fa-spin" />
               </span>
             {{else}}
-              <OSS::Checkbox
-                @checked={{array-includes this.appliedFacets facet.identifier}}
-                @size="sm"
-                @onChange={{fn this.toggleFacet facet}}
-                class="margin-right-px-12"
-              />
+              {{#if @exclusive}}
+                <OSS::RadioButton
+                  @selected={{array-includes this.appliedFacets facet.identifier}}
+                  class="margin-right-px-12"
+                />
+              {{else}}
+                <OSS::Checkbox
+                  @checked={{array-includes this.appliedFacets facet.identifier}}
+                  @size="sm"
+                  @onChange={{fn this.toggleFacet facet}}
+                  class="margin-right-px-12"
+                />
+              {{/if}}
             {{/if}}
             {{yield (hash appliedFacets=this.appliedFacets facet=facet) to="facet-item"}}
           </div>
