@@ -127,6 +127,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
       this,
       () => {
         this.displayAvailableFields = false;
+        this.searchColumnDefinitionKeyword = '';
       },
       300
     );
