@@ -32,7 +32,10 @@
               </span>
             {{else}}
               {{#if @exclusive}}
-                <OSS::RadioButton @selected={{array-includes this.appliedFacets facet.identifier}} class="margin-right-px-12"/>
+                <OSS::RadioButton
+                  @selected={{array-includes this.appliedFacets facet.identifier}}
+                  class="margin-right-px-12"
+                />
               {{else}}
                 <OSS::Checkbox
                   @checked={{array-includes this.appliedFacets facet.identifier}}
