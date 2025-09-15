@@ -2,7 +2,7 @@ import { A } from '@ember/array';
 import Component from '@ember/component';
 import { computed, observer, set } from '@ember/object';
 import { alias, and, filterBy } from '@ember/object/computed';
-import { debounce, once, scheduleOnce } from '@ember/runloop';
+import { debounce, later, once, scheduleOnce } from '@ember/runloop';
 import { compare, isEmpty, typeOf } from '@ember/utils';
 
 export default Component.extend({
@@ -242,10 +242,20 @@ export default Component.extend({
       }
       this.manager.toggleProperty('availableFieldsPanel');
       this.manager.set('availableTableViews', false);
+
+      later(
+        this,
+        () => {
+          document.querySelector('.available-fields-wrapper input').focus();
+        },
+        150
+      );
     },
 
     closeAvailableFields() {
       this.manager.set('availableFieldsPanel', false);
+      this.set('_availableFieldsKeyword', '');
+      this.notifyPropertyChange('_orderedFilteredClusters');
     },
 
     openAvailableViews() {

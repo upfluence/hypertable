@@ -114,7 +114,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
           () => {
             document.querySelector<HTMLInputElement>('.available-fields-wrapper input')?.focus();
           },
-          300
+          150
         );
       });
     }
