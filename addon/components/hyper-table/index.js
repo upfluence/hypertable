@@ -246,7 +246,8 @@ export default Component.extend({
       later(
         this,
         () => {
-          document.querySelector('.available-fields-wrapper input').focus();
+          const searchInput = document.querySelector('.available-fields-wrapper input');
+          if (searchInput !== null) searchInput.focus();
         },
         150
       );
