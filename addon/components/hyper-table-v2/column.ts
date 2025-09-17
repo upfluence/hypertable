@@ -94,7 +94,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
 
     const availableHeight = tableBottom - colHeaderTop - 100;
 
-    dropdown.style.height = `${availableHeight}px`;
+    dropdown.style.maxHeight = `${availableHeight}px`;
     dropdown.style.overflowY = 'auto';
 
     if (!this.resizeHandler) {

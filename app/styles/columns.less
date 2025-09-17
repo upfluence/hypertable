@@ -40,6 +40,10 @@
     position: sticky;
     right: 0;
     z-index: 20;
+
+    header {
+      cursor: pointer;
+    }
   }
 
   // Animate Columns Drag & Drop
@@ -81,7 +85,7 @@
 
   transition: all 0.25s ease-in-out;
 
-  & > .cell-header {
+  &>.cell-header {
     color: var(--color-gray-600);
     font-size: 16 / @rem;
     font-weight: var(--font-weight-semibold);
@@ -150,12 +154,6 @@
     .filter-command {
       display: flex;
     }
-  }
-}
-
-.hypertable__column--sticky-right {
-  header {
-    cursor: pointer;
   }
 }
 
@@ -235,6 +233,7 @@
 }
 
 .hypertable__column--text .hypertable__cell {
+
   .editing-input,
   .text-value {
     display: -webkit-box;
@@ -245,7 +244,7 @@
 }
 
 .hypertable__column--list .hypertable__cell {
-  & > div:first-child {
+  &>div:first-child {
     width: 100%;
   }
 
@@ -259,7 +258,7 @@
   display: flex;
   align-items: center;
 
-  & > div:nth-child(2) {
+  &>div:nth-child(2) {
     margin-left: var(--spacing-px-12);
 
     span {
@@ -329,11 +328,13 @@
     10% {
       opacity: 1;
     }
+
     99% {
       opacity: 1;
       max-height: 500px;
       overflow: hidden;
     }
+
     100% {
       opacity: 1;
       max-height: 500px;

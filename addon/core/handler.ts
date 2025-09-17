@@ -64,7 +64,8 @@ export default class TableHandler {
       return this._renderingResolver;
     }
 
-    return (this._renderingResolver = new BaseRenderingResolver(this._context));
+    this._renderingResolver = new BaseRenderingResolver(this._context)
+    return this._renderingResolver;
   }
 
   async fetchColumns(): Promise<void> {
