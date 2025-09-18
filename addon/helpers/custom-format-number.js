@@ -1,6 +1,6 @@
 import { helper } from '@ember/component/helper';
 
-var formats = [
+const formats = [
   {
     value: 1e3,
     sym: 'k'
@@ -16,13 +16,13 @@ var formats = [
 ];
 
 export function customFormatNumber(params) {
-  var number = params[0];
+  const number = params[0];
 
   if (number === null || number === undefined || isNaN(number)) {
     return '-';
   }
 
-  var format = formats
+  const format = formats
     .filter((format) => {
       return format.value < number;
     })

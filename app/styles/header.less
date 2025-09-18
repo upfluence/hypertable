@@ -30,6 +30,11 @@
   .left-side {
     display: flex;
     flex-grow: 1;
+
+    input {
+      max-width: 250px;
+      min-width: 100px;
+    }
   }
 
   /*
@@ -37,13 +42,6 @@
    * ======
    *
    */
-  .left-side {
-    input {
-      max-width: 250px;
-      min-width: 100px;
-    }
-  }
-
   .left-side .selected-count {
     background-color: var(--color-gray-400);
     border-radius: var(--border-radius-sm);
@@ -185,6 +183,7 @@
       from {
         transform: scale(0);
       }
+
       to {
         transform: scale(1);
       }
@@ -194,6 +193,7 @@
       0% {
         transform: scale(1);
       }
+
       100% {
         transform: scale(0);
       }

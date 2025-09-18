@@ -1,8 +1,7 @@
 import { A } from '@ember/array';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { set } from '@ember/object';
-import { action } from '@ember/object';
+import { set, action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
