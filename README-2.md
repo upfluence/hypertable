@@ -1,55 +1,56 @@
-Hypertable
-
-==============================================================================
+# Hypertable
 
 To follow the early life of this project, see
 [oss-components#pn-flexbox-tables](https://github.com/upfluence/oss-components/pull/54/files)
 
-# Compatibility
+## Table of Contents
+
+- [Compatibility](#compatibility)
+- [Installation](#installation)
+- [Architecture](#architecture)
+- [Quick Start](#quick-start)
+- [Core Concepts](#core-concepts)
+- [Rendering System](#rendering-system)
+- [Built-in Components](#built-in-components)
+- [Events](#events)
+- [Contributing](#contributing)
+
+## Compatibility
 
 - Ember.js v3.24 or above
 - Ember CLI v3.24 or above
 - Node.js v12 or above
 
-# Installation
+## Installation
 
 ```
 ember install hypertable
 ```
 
-# Usage
-
 ## Architecture
 
-- **TableHandler** : The core system that manages data state, columns, filters, and selections
-- **TableManager** : Interface for fetching and persisting column definitions
-- **RowsFetcher** : Interface for fetching data in a paginated manner
-- **Renderers** : Modular components for displaying cells and headers
+- **TableHandler** - The core system that manages data state, columns, filters, and selections
+- **TableManager** - Interface for fetching and persisting column definitions and configurations
+- **RowsFetcher** - Interface for fetching paginated data
+- **RenderingResolver** - Maps column definitions to appropriate cell, header, and filter renderers
+- **Renderers** - Modular components for displaying cells, headers, and filters
 
-## Basic Usage
+## Quick Start
 
-### Quick Start
+### 1. Implement Required Interfaces
 
-Follow these steps in order to set up Hypertable:
+Create implementations for the two required interfaces and add a rendering resolver if needed:
 
-- **Create a TableManager implementation**
-- **Create a RowsFetcher implementation**
-- **Create a RenderingResolver implementation and custom rendering resolvers**
-- **Initialize the TableHandler**
-- **Use the HyperTableV2 component in the template**
-
-```typescript
+```ts
 export default class MyController extends Controller {
-  @tracked tableHandler: TableHandler;
-
   constructor() {
     super(...arguments);
 
     const manager = new MyTableManager();
     const fetcher = new MyRowsFetcher();
-    const renderingResolver = new MyRenderingResolver();
+    const renderingResolver = new MyRenderingResolver(); // Optional
 
-    this.tableHandler = new TableHandler(this, manager, fetcher, renderingResolver);
+    this.handler = new TableHandler(this, manager, fetcher, renderingResolver);
   }
 
   features = {
@@ -61,9 +62,9 @@ export default class MyController extends Controller {
 }
 ```
 
-### Template Usage
+### 2. Use HyperTableV2 Component in template
 
-```handlebars
+```hbs
 <HyperTableV2 @handler={{this.tableHandler}} @features={{this.features}} @options={{this.options}}>
   {{! Custom search block (optional) }}
   <:search>
@@ -87,15 +88,11 @@ export default class MyController extends Controller {
 </HyperTableV2>
 ```
 
-### Implementation Details
+### 3. Interface Implementations
 
-To use Hypertable, `TableManager` and `RowsFetcher` classes must be implemented to define how Hypertable interacts with data.
-
-#### TableManager Implementation
+#### TableManager
 
 ```typescript
-import { TableManager, ColumnDefinition, Column } from '@upfluence/hypertable/core/interfaces';
-
 class MyTableManager implements TableManager {
   async fetchColumnDefinitions(): Promise<{ column_definitions: ColumnDefinition[] }> {
     // Fetch available column definitions from API
@@ -126,18 +123,16 @@ class MyTableManager implements TableManager {
 }
 ```
 
-Methods available on TableManager:
+**Available methods:**
 
 - `fetchColumnDefinitions()` - Returns available column definitions
 - `fetchColumns()` - Returns current column configuration
-- `upsertColumns()` - Saves column configuration
-- `fetchFacets()` - Optional: provides faceted filtering
+- `upsertColumns(request)` - Saves column configuration
+- `fetchFacets(columnKey, filteringKey, searchValue)` - Optional: provides faceted filtering
 
-#### RowsFetcher Implementation
+#### RowsFetcher
 
-```typescript
-import { RowsFetcher, Row } from '@upfluence/hypertable/core/interfaces';
-
+```ts
 class MyRowsFetcher implements RowsFetcher {
   async fetch(page: number, perPage: number): Promise<{ rows: Row[]; meta: { total: number } }> {
     // Fetch paginated data from API
@@ -153,131 +148,20 @@ class MyRowsFetcher implements RowsFetcher {
 }
 ```
 
-Methods available on RowsFetcher:
+**Available methods:**
 
 - `fetch(page, perPage)` - Returns paginated data
 - `fetchById(id)` - Optional: fetches individual rows
 
-## Core Concepts
+#### Custom rendering resolver (Optional)
 
-### Column Definitions
-
-Column definitions describe the structure and capabilities of table columns. See `@upfluence/hypertable/core/interfaces/column.ts` for the complete type definition:
-
-```typescript
-type ColumnDefinition = {
-  key: string; // Unique identifier
-  type: string; // Data type (text, numeric, date)
-  name: string; // Display name
-  category: string; // Grouping identifier
-  clustering_key: string; // Grouping identifier within a category
-  size: FieldSize; // Column width (XS, S, M, L, XL)
-  orderable: boolean; // Can be sorted
-  orderable_by: string[] | null; // Fields to sort by
-  filterable: boolean; // Can be filtered
-  filterable_by: string[] | null; // Fields to filter by
-  facetable: boolean; // Supports faceted search
-  facetable_by: string[] | null; // Fields for facets
-  empty_state_message?: string; // Message for empty values
-  position?: {
-    sticky: boolean; // Sticky column
-    side?: 'left' | 'right'; // Which side to stick to
-  };
-};
-```
-
-### Row Data Structure
-
-Row data is used by cell renderers to display values and by the selection system to identify records. See `@upfluence/hypertable/core/interfaces/rows-fetcher.ts` for the complete type definition:
-
-```typescript
-type Row = {
-  influencerId: number;
-  recordId: number;
-  holderId: number;
-  holderType: string;
-  [key: string]: any; // Additional dynamic fields based on column definitions
-};
-```
-
-### Filters and Ordering
-
-Filter and order structures are used internally by the TableHandler to manage table state and are passed to the TableManager for persistence. See `@upfluence/hypertable/core/interfaces/column.ts` for complete type definitions:
-
-```typescript
-// Filter structure - used when applying column filters
-type Filter = {
-  key: string; // Field to filter on
-  value: string; // Filter value
-  extra?: any; // Additional filter parameters
-};
-
-// Ordering structure - used when sorting columns
-type Order = {
-  key: string; // Field to order by
-  direction: 'asc' | 'desc'; // Sort direction
-};
-```
-
-## Header Renderers
-
-Header renderers provide functionality for column headers:
-
-- **base** : Basic header with sorting
-- **cell** : Individual cell header
-- **column** : Column management
-- **index** : Main header component
-- **manage-columns** : Column visibility management
-- **search** : Column-specific search
-- **selection** : Column selection functionality
-
-## Cell Renderers
-
-Hypertable includes built-in cell renderers for common data types:
-
-- **text** : Basic text, with ellipsis and tooltip
-- **numeric** : Numbers, formatted
-- **date** : Date, formatted
-
-## Filtering Renderers
-
-Filtering Renderers provide functionality for column filters:
-
-- **text** : Text input filtering
-- **numeric** : Numeric range filtering
-- **date** : Date range filtering
-
-## Custom Renderers
-
-Create custom cell, header or filter renderers by extending the base component:
-
-```typescript
-// addon/components/my-custom-renderer.ts
-interface MyCustomRendererArgs {
-  handler: TableHandler;
-  column: Column;
-  row: Row;
-  extra?: { [key: string]: any };
-}
-
-export default class MyCustomRenderer extends Component<MyCustomRendererArgs> {}
-```
-
-```handlebars
-{{! addon/components/my-custom-renderer.hbs }}
-<div class='custom-renderer'>
-  <div>{{this.value}}</div>
-</div>
-```
-
-### Custom rendering resolver for header, cells, filters mapping
-
-The Rendering Resolver extends BaseRenderingResolver from @upfluence/hypertable/core/rendering-resolver and determines which component should be used to render each cell, filter, and header.
+If no RenderingResolver is provided, Hypertable uses a default resolver with built-in renderers.
+The Rendering Resolver extends BaseRenderingResolver from @upfluence/hypertable/core/rendering-resolver and determines which component should be used to render each cell, filter, and header according to column key.
 
 ```typescript
 type RendererDictionaryItem = { cell?: any; header?: any; filter?: any };
 
-// Define mapping dictionary : all the custom columns and their renderers
+// Define mapping dictionary: all the custom columns and their renderers
 const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
   columnName: {
     cell: CustomCellRenderer,
@@ -314,7 +198,7 @@ export default class MyRenderingResolver extends BaseRenderingResolver {
 
     if (rendererMatch && rendererMatch[type]) {
       return Promise.resolve({
-        component: ensureSafeComponent(rendererMatch[type], this.context) as GlimmerComponent
+        component: ensureSafeComponent(rendererMatch[type], this.context)
       });
     }
 
@@ -323,41 +207,142 @@ export default class MyRenderingResolver extends BaseRenderingResolver {
 }
 ```
 
-## Built-in Components
+## Core Concepts
 
-HyperTableV2 includes several built-in components that provide table-level functionality. These components are used automatically based on the `@features` configuration and are not directly interacted with by the user:
+### Column Definitions
 
-### Automatic Components
+Column definitions describe the structure and capabilities of table columns. See `@upfluence/hypertable/core/interfaces/column.ts` for the complete type definition:
 
-- **HyperTableV2::Search** : Global search functionality - automatically included when `features.searchable: true`
-- **HyperTableV2::Selection** : Row selection controls and display - automatically included when `features.selection: true`
-- **HyperTableV2::ManageColumns** : Column visibility management interface - automatically included when `features.manageable_fields: true`
-- **HyperTableV2::Column** : Column wrapper with header rendering - used internally for each table column
-- **HyperTableV2::Cell** : Individual cell component with data rendering - used internally for each table cell
-
-### User Interaction
-
-These components are controlled through the `@features` parameter:
-
-```typescript
-features = {
-  selection: true, // Enables HyperTableV2::Selection
-  searchable: true, // Enables HyperTableV2::Search
-  manageable_fields: true, // Enables HyperTableV2::ManageColumns
-  global_filters_reset: true // Enables reset filters button
+```ts
+type ColumnDefinition = {
+  key: string; // Unique identifier
+  type: string; // Data type (text, numeric, date)
+  name: string; // Display name
+  category: string; // Grouping identifier
+  clustering_key: string; // Grouping identifier within a category
+  size: FieldSize; // Column width (XS, S, M, L, XL)
+  orderable: boolean; // Can be sorted
+  orderable_by: string[] | null; // Fields to sort by
+  filterable: boolean; // Can be filtered
+  filterable_by: string[] | null; // Fields to filter by
+  facetable: boolean; // Supports faceted search
+  facetable_by: string[] | null; // Fields for facets
+  empty_state_message?: string; // Message for empty values
+  position?: {
+    sticky: boolean; // Sticky column
+    side?: 'left' | 'right'; // Which side to stick to
+  };
 };
 ```
 
-Users interact with these components through:
+### Row Data Structure
 
-- **Search**: Typing in the search input (when searchable is enabled)
-- **Selection**: Clicking checkboxes to select rows (when selection is enabled)
-- **ManageColumns**: Clicking the manage columns button to show/hide columns (when manageable_fields is enabled)
-- **Reset Filters**: Clicking the reset button to clear all filters (when global_filters_reset is enabled)
+Row data is used by cell renderers to display values and by the selection system to identify records. See `@upfluence/hypertable/core/interfaces/rows-fetcher.ts` for the complete type definition:
 
-The components handle their own internal state and communicate with the TableHandler automatically.
+```ts
+type Row = {
+  influencerId: number;
+  recordId: number;
+  holderId: number;
+  holderType: string;
+  [key: string]: any; // Additional dynamic fields based on column definitions
+};
+```
 
-## Faceted Filtering
+### Column Management
+
+```typescript
+// Add a column to the table
+await this.handler.addColumn(columnDefinition);
+
+// Remove a column from the table
+await this.handler.removeColumn(columnDefinition);
+
+// Reorder columns
+this.handler.reorderColumns(newColumnOrder);
+
+// Reset column filters and ordering
+await this.handler.resetColumns(columnsToReset);
+```
+
+### Row Management
+
+```typescript
+// Update a specific row from the data source
+await this.handler.updateRowById(123);
+
+// Remove a row from the table
+this.handler.removeRow(123);
+
+// Mutate a row in place and trigger redraw
+this.handler.mutateRow(123, (row) => {
+  row.someField = 'new value';
+  return true; // Return true to trigger table redraw
+});
+
+// Toggle loading state for a specific row
+this.handler.toggleRowLoadingState(123);
+
+// Reset all rows and refetch
+await this.handler.resetRows();
+```
+
+### Selection Management
+
+Hypertable supports two selection modes:
+
+1. **Array mode**: `selection` contains selected rows
+2. **Global mode**: `selection = 'all'` with `exclusion` containing unselected rows
+
+```ts
+// Select all visible rows
+this.tableHandler.toggleSelectAll(true);
+
+// Select all rows globally (including those not currently loaded)
+this.tableHandler.selectAllGlobal();
+
+// Clear all selections
+this.tableHandler.clearSelection();
+
+// Update individual row selection
+this.tableHandler.updateSelection(row);
+
+// Access current selection state
+const selection = this.handler.selection; // Row[] | 'all'
+const exclusions = this.handler.exclusion; // Row[] (when selection is 'all')
+```
+
+### Filtering and Ordering
+
+Filter and order structures are used internally by the TableHandler to manage table state and are passed to the TableManager for persistence. See `@upfluence/hypertable/core/interfaces/column.ts` for complete type definitions:
+
+```typescript
+// Filter structure - used when applying column filters
+type Filter = {
+  key: string; // Field to filter on
+  value: string; // Filter value
+  extra?: any; // Additional filter parameters
+};
+
+// Ordering structure - used when sorting columns
+type Order = {
+  key: string; // Field to order by
+  direction: 'asc' | 'desc'; // Sort direction
+};
+```
+
+```ts
+// Apply filters to a column
+await this.handler.applyFilters(column, [{ key: 'name', value: 'value' }]);
+
+// Apply ordering to a column
+await this.handler.applyOrder(column, 'asc'); // or 'desc'
+
+// Fetch facets for filtering (requires TableManager.fetchFacets)
+const facets = await this.handler.fetchFacets('value', 'name', 'searchValue');
+```
+
+#### Faceted Filtering
 
 Hypertable provides built-in support for **faceted filtering**, allowing users to select multiple values for a column filter from a dynamic list of facets.
 
@@ -413,81 +398,130 @@ When a user toggles a facet:
 
 This behavior is automatic and does not require additional setup.
 
+## Rendering System
+
+### Built-in Renderers
+
+Hypertable includes built-in renderers for common data types:
+
+#### Cell Renderers
+
+- **text** - Basic text with ellipsis and tooltip
+- **numeric** - Formatted numbers
+- **date** - Formatted dates
+
+#### Filter Renderers
+
+- **text** - Text input filtering
+- **numeric** - Numeric range filtering
+- **date** - Date range filtering
+
+#### Header Renderers
+
+- **base** - Basic header with sorting capabilities
+- **cell** - Individual cell header functionality
+- **column** - Column management features
+- **index** - Main header component
+- **manage-columns** - Column visibility management
+- **search** - Column-specific search
+- **selection** - Column selection functionality
+
+### Custom Renderers
+
+Create custom renderers by extending base components:
+
+```ts
+// addon/components/my-custom-renderer.ts
+interface MyCustomRendererArgs {
+  handler: TableHandler;
+  column: Column;
+  row: Row;
+  extra?: { [key: string]: any };
+}
+
+export default class MyCustomRenderer extends Component<MyCustomRendererArgs> {}
+```
+
+```hbs
+{{! Template }}
+<div class='custom-cell'>
+  <div>{{this.value}}</div>
+</div>
+```
+
+Then register it in the RenderingResolver:
+
+```typescript
+const rendererMatchers = {
+  my_column_key: {
+    cell: MyCustomCellRenderer,
+    filter: MyCustomFilterRenderer,
+    header: MyCustomHeaderRenderer
+  }
+};
+```
+
+### Built-in Components
+
+HyperTableV2 includes several automatic components controlled by the `@features` configuration:
+
+### Feature-Controlled Components
+
+```ts
+features = {
+  selection: true, // Enables row selection checkboxes
+  searchable: true, // Enables global search input
+  manageable_fields: true, // Enables column visibility management
+  global_filters_reset: true // Enables reset filters button
+};
+```
+
+These components are automatically included and handle their own state:
+
+- **HyperTableV2::Search** - Global search across all data
+- **HyperTableV2::Selection** - Row selection controls and display
+- **HyperTableV2::ManageColumns** - Column visibility management
+- **HyperTableV2::Column** - Column wrapper with header rendering
+- **HyperTableV2::Cell** - Individual cell component
+
+Users interact with these components through:
+
+- **Search**: Typing in the search input (when searchable is enabled)
+- **Selection**: Clicking checkboxes to select rows (when selection is enabled)
+- **ManageColumns**: Clicking the manage columns button to show/hide columns (when manageable_fields is enabled)
+- **Reset Filters**: Clicking the reset button to clear all filters (when global_filters_reset is enabled)
+
+The components handle their own internal state and communicate with the TableHandler automatically.
+
 ## Events
 
-The TableHandler emits events throughout its lifecycle:
+TableHandler emits events throughout its lifecycle. Listen to them using the `on` method:
 
-```typescript
-this.tableHandler.on('columns-loaded', () => {
-  console.log('Columns have been loaded');
+```ts
+// Listen to specific events
+this.handler.on('row-click', (row) => {
+  console.log('Row clicked:', row);
 });
 
-// Available events:
-// - 'columns-loaded'
-// - 'row-click'
-// - 'apply-filters'
-// - 'reset-columns'
-// - 'remove-column'
-// - 'remove-row'
-// - 'mutate-rows'
-// - 'reset-rows'
-```
-
-## Advanced Usage
-
-### Row Methods
-
-Methods available on TableHandler for row manipulation:
-
-```typescript
-// Update a specific row from the data source
-await this.tableHandler.updateRowById(123);
-
-// Remove a row from the table
-this.tableHandler.removeRow(123);
-
-// Mutate a row in place
-this.tableHandler.mutateRow(123, (row) => {
-  row.someField = 'new value';
-  return true; // Return true to trigger table redraw
+this.handler.on('apply-filters', (column, filters) => {
+  console.log('Filters applied:', column.definition.key, filters);
 });
 
-// Toggle loading state for a specific row
-this.tableHandler.toggleRowLoadingState(123);
+this.handler.on('columns-loaded', () => {
+  console.log('Columns have been loaded and are ready');
+});
 ```
 
-### Column Methods
+**Available events:**
 
-Methods available on TableHandler for column management:
-
-```typescript
-// Add a column to the table
-await this.tableHandler.addColumn(column);
-
-// Remove a column from the table
-await this.tableHandler.removeColumn(columnDefinition);
-
-// Reorder columns
-this.tableHandler.reorderColumns(newColumnOrder);
-```
-
-### Selection Methods
-
-Methods available on TableHandler for selection management:
-
-```typescript
-// Select all visible rows
-this.tableHandler.toggleSelectAll(true);
-
-// Select all rows globally (including those not currently loaded)
-this.tableHandler.selectAllGlobal();
-
-// Clear all selections
-this.tableHandler.clearSelection();
-
-// Update individual row selection
-this.tableHandler.updateSelection(row);
-```
+- `'columns-loaded'` - When columns are fetched and ready
+- `'row-click'` - When a user clicks on a row
+- `'apply-filters'` - When filters are applied to a column
+- `'reset-columns'` - When columns are reset
+- `'remove-column'` - When a column is removed
+- `'remove-row'` - When a row is removed
+- `'mutate-rows'` - When rows are mutated
+- `'reset-rows'` - When rows are reset
 
 ## Contributing
 
@@ -516,6 +550,6 @@ this.tableHandler.updateSelection(row);
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
 
-## License
+### License
 
 This project is licensed under the [MIT License](LICENSE.md).
