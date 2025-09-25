@@ -13,8 +13,8 @@ hypertable:
       search_placeholder: Search...
       no_columns: No columns found
   column:
-    remove: Remove Field
-    clear_filters: Clear Filters
+    remove: Remove field
+    clear_filters: Clear filters
     scroll_to_end: More
     ordering:
       label: Order By
