@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action, set } from '@ember/object';
+import { action, computed, set } from '@ember/object';
 import { debounce, scheduleOnce } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { htmlSafe } from '@ember/template';
@@ -61,6 +61,12 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       ...DEFAULT_FEATURES_SET,
       ...(this.args.features || {})
     };
+  }
+
+  @computed('args.handler.columns.@each.{filters,order}')
+  get displayResetButton(): boolean {
+    const filtersApplied: boolean = this.args.handler.columns.some((col) => col.filters?.length || col.order);
+    return filtersApplied && this.features.global_filters_reset;
   }
 
   get displayHeader(): boolean {
