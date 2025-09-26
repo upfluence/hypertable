@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';
@@ -12,6 +12,11 @@ interface HyperTableV2FilteringRenderersCommonColumnActionsArgs {
 export default class HyperTableV2FilteringRenderersCommonColumnActions extends Component<HyperTableV2FilteringRenderersCommonColumnActionsArgs> {
   get shouldDisplay(): boolean {
     return !this.args.column.definition.position?.sticky;
+  }
+
+  @computed('args.column.filters.[]', 'args.column.order')
+  get displayClearButton(): boolean {
+    return (this.args.column.filters?.length ?? 0) > 0 || this.args.column.order !== undefined;
   }
 
   @action
