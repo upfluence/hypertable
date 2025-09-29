@@ -110,6 +110,15 @@ export default Component.extend({
 
   _loadingMore: and('manager.hooks.onBottomReached', 'loadingMore'),
 
+  _displayResetButton: computed('manager.options.features.filtering', '_columns.@each.filters', function () {
+    return (
+      this.manager.options.features.filtering &&
+      this._columns.some((column) => {
+        return column.filters && column.filters.length > 0;
+      })
+    );
+  }),
+
   _setAllRowSelected(value) {
     this.manager.set('_allRowsSelected', value);
   },

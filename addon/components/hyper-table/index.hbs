@@ -46,7 +46,7 @@
       {{/if}}
     </div>
     <div class="right-side">
-      {{#if this.manager.options.features.filtering}}
+      {{#if this._displayResetButton}}
         <OSS::Button
           @label={{t "hypertable.features.filtering.reset_all"}}
           class="margin-right-px-12"

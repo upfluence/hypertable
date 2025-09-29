@@ -23,7 +23,7 @@
           {{/if}}
         </div>
         <div class="right-side">
-          {{#if this.features.global_filters_reset}}
+          {{#if this.displayResetButton}}
             <OSS::Button
               class="margin-right-px-12"
               @label={{t "hypertable.features.filtering.reset_all"}}

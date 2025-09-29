@@ -4,7 +4,7 @@ hypertable:
     search: Search...
   features:
     filtering:
-      reset_all: Reset Filters
+      reset_all: Reset filters
     table_views:
       title: Table Views
     manage_fields:
