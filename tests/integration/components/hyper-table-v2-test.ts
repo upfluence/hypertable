@@ -527,8 +527,21 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
   });
 
-  module('FeatureSet: global_filters_reset', () => {
-    test('the global Reset all button is displayed by default', async function (assert) {
+  module('FeatureSet: global_filters_reset', function () {
+    test('the global Reset all button is not displayed when no filtering or ordering is applied', async function (assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
+      assert.dom('[data-control-name="hypertable_reset_filters_button"]').doesNotExist();
+    });
+
+    test('the global Reset all button is displayed when filtering is applied', async function (this: TestContext, assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+        return Promise.resolve({
+          columns: [buildColumn('foo', { filters: [{ key: 'filter1', value: 'toto' }] })]
+        });
+      });
+
+      await this.handler.fetchColumns();
+
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} />`);
       assert.dom('[data-control-name="hypertable_reset_filters_button"]').exists();
     });

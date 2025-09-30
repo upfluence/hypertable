@@ -39,12 +39,12 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     this.column = this.handler.columns[1];
   });
 
-  test('it renders', async function (assert) {
+  test('When no filtering or ordering is applied, it renders with remove field button', async function (assert) {
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
     );
-    assert.dom('.upf-btn').exists({ count: 2 });
-    assert.dom('.upf-btn--destructive').exists();
+
+    assert.dom('.upf-btn').exists({ count: 1 });
     assert.dom('.upf-btn--default').exists();
   });
 
@@ -53,35 +53,63 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/colu
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
     );
-    assert.dom('.upf-btn').exists({ count: 1 });
-    assert.dom('.upf-btn--destructive').doesNotExist();
+    assert.dom('.upf-btn').doesNotExist();
+  });
+
+  test('Clear and remove buttons are rendered when filtering is applied', async function (this: TestContext, assert) {
+    this.column.filters = [{ key: 'existence', value: 'without' }];
+
+    await render(
+      hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
+    );
+
+    assert.dom('.upf-btn').exists({ count: 2 });
+    assert.dom('.upf-btn--secondary').exists();
     assert.dom('.upf-btn--default').exists();
   });
 
-  test('Clicking on the clear button calls the #handler.resetColumns method', async function (this: TestContext, assert) {
-    const handlerSpy = sinon.spy(this.handler, 'resetColumns');
+  test('Clear and remove buttons are rendered when ordering is applied', async function (this: TestContext, assert) {
+    this.column.order = { key: 'email', direction: 'asc' };
+
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
     );
-    await click('.upf-btn--default');
-    assert.ok(handlerSpy.calledOnce);
+
+    assert.dom('.upf-btn').exists({ count: 2 });
+    assert.dom('.upf-btn--secondary').exists();
+    assert.dom('.upf-btn--default').exists();
   });
 
-  test('Clicking on the remove button calls the #handler.removeColumn method', async function (this: TestContext, assert) {
-    const handlerSpy = sinon.spy(this.handler, 'removeColumn');
-    await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
-    );
-    await click('.upf-btn--destructive');
-    assert.ok(handlerSpy.calledOnce);
-  });
+  module('Buttons call the right handler functions', function (this: TestContext, hooks) {
+    hooks.beforeEach(async function (this: TestContext) {
+      this.column.filters = [{ key: 'existence', value: 'without' }];
+    });
 
-  test('Clicking on the clear button calls the #handler.triggerEvent with the reset-columns event', async function (this: TestContext, assert) {
-    const handlerSpy = sinon.spy(this.handler, 'triggerEvent');
-    await render(
-      hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
-    );
-    await click('.upf-btn--default');
-    assert.ok(handlerSpy.calledOnceWith('reset-columns'));
+    test('Clicking on the clear button calls the #handler.resetColumns method', async function (this: TestContext, assert) {
+      const handlerSpy = sinon.spy(this.handler, 'resetColumns');
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
+      );
+      await click('.upf-btn--secondary');
+      assert.ok(handlerSpy.calledOnceWithExactly([this.column]));
+    });
+
+    test('Clicking on the remove button calls the #handler.removeColumn method', async function (this: TestContext, assert) {
+      const handlerSpy = sinon.spy(this.handler, 'removeColumn');
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
+      );
+      await click('.upf-btn--default');
+      assert.ok(handlerSpy.calledOnceWithExactly(this.column.definition));
+    });
+
+    test('Clicking on the clear button calls the #handler.triggerEvent with the reset-columns event', async function (this: TestContext, assert) {
+      const handlerSpy = sinon.spy(this.handler, 'triggerEvent');
+      await render(
+        hbs`<HyperTableV2::FilteringRenderers::Common::ColumnActions @handler={{this.handler}} @column={{this.column}} />`
+      );
+      await click('.upf-btn--secondary');
+      assert.ok(handlerSpy.calledOnceWith('reset-columns'));
+    });
   });
 });
