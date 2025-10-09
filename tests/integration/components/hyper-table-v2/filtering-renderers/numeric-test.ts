@@ -174,9 +174,9 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       await click(
         'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
       );
-      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_from"]', '1');
+      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_from"] input', '1');
       await triggerKeyEvent(
-        '[data-control-name="hypertable__column_filtering_for_total_range_from"]',
+        '[data-control-name="hypertable__column_filtering_for_total_range_from"] input',
         'keydown',
         'Enter',
         //@ts-ignore
@@ -189,7 +189,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         ])
       );
 
-      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_to"]', '9');
+      await fillIn('[data-control-name="hypertable__column_filtering_for_total_range_to"] input', '9');
       await triggerKeyEvent(
         '[data-control-name="hypertable__column_filtering_for_total_range_to"]',
         'keydown',
@@ -221,8 +221,8 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
           hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
         );
 
-        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').hasValue('10');
-        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').hasValue('1000');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"] input').hasValue('10');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"] input').hasValue('1000');
       });
 
       test('it automatically selects the with option ', async function (this: TestContext, assert: Assert) {
@@ -242,16 +242,16 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
           hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
         );
 
-        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').hasValue('10');
-        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').hasValue('1000');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"] input').hasValue('10');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"] input').hasValue('1000');
         await click(
           'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:last-child .oss-radio-btn'
         );
         await click(
           'div[data-control-name="hypertable__column_filtering_for_total_existence_selector"] .fx-row:first-child .oss-radio-btn'
         );
-        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"]').hasValue('');
-        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"]').hasValue('');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_from"] input').hasValue('');
+        assert.dom('[data-control-name="hypertable__column_filtering_for_total_range_to"] input').hasValue('');
       });
     });
   });
