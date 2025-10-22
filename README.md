@@ -419,12 +419,6 @@ Hypertable includes built-in renderers for common data types:
 #### Header Renderers
 
 - **base** - Basic header with sorting capabilities
-- **cell** - Individual cell header functionality
-- **column** - Column management features
-- **index** - Main header component
-- **manage-columns** - Column visibility management
-- **search** - Column-specific search
-- **selection** - Column selection functionality
 
 ### Custom Renderers
 
