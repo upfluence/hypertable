@@ -3,6 +3,13 @@
 To follow the early life of this project, see
 [oss-components#pn-flexbox-tables](https://github.com/upfluence/oss-components/pull/54/files)
 
+## Abstract
+
+Hypertable is an Ember.js library designed to simplify the creation and management of complex data tables.
+It separates concerns between data handling (TableHandler), configuration persistence (TableManager), and data retrieval (RowsFetcher), ensuring consistent and predictable state management across all table operations such as filtering, sorting, selection, and pagination.
+Rendering is managed through a resolver system that maps each column to its corresponding header, cell, and filter component — built-in or custom.
+The goal is to provide a consistent and maintainable way to build tables across projects, without duplicating logic or UI patterns.
+
 ## Table of Contents
 
 - [Compatibility](#compatibility)
