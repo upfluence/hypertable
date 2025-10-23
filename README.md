@@ -14,7 +14,6 @@ The goal is to provide a consistent and maintainable way to build tables across 
 
 - [Compatibility](#compatibility)
 - [Installation](#installation)
-- [Architecture](#architecture)
 - [Quick Start](#quick-start)
 - [Core Concepts](#core-concepts)
 - [Rendering System](#rendering-system)
@@ -31,141 +30,60 @@ The goal is to provide a consistent and maintainable way to build tables across 
 ## Installation
 
 ```
-ember install hypertable
+pnpm install @upfluence/hypertable
 ```
 
-## Architecture
+Additionally, the following registry should be added to the `.npmrc` file:
 
-- **TableHandler** - The core system that manages data state, columns, filters, and selections
-- **TableManager** - Interface for fetching and persisting column definitions and configurations
-- **RowsFetcher** - Interface for fetching paginated data
-- **RenderingResolver** - Maps column definitions to appropriate cell, header, and filter renderers
-- **Renderers** - Modular components for displaying cells, headers, and filters
+```
+@upfluence:registry=https://npm.pkg.github.com
+```
 
 ## Quick Start
 
-### 1. Implement Required Interfaces
+### 1. Required Interfaces
 
-Create implementations for the two required interfaces and add a rendering resolver if needed:
-
-```ts
-export default class MyController extends Controller {
-  constructor() {
-    super(...arguments);
-
-    const manager = new MyTableManager();
-    const fetcher = new MyRowsFetcher();
-    const renderingResolver = new MyRenderingResolver(); // Optional
-
-    this.handler = new TableHandler(this, manager, fetcher, renderingResolver);
-  }
-
-  features = {
-    selection: true,
-    searchable: true,
-    manageable_fields: true,
-    global_filters_reset: true
-  };
-}
-```
-
-### 2. Use HyperTableV2 Component in template
-
-```hbs
-<HyperTableV2 @handler={{this.tableHandler}} @features={{this.features}} @options={{this.options}}>
-  {{! Custom search block (optional) }}
-  <:search>
-    <MyCustomSearch @onSearch={{this.handleSearch}} />
-  </:search>
-
-  {{! Contextual actions (optional) }}
-  <:contextual-actions>
-    <button {{on 'click' this.doSomething}}>Contextual Action</button>
-  </:contextual-actions>
-
-  {{! Table actions (optional) }}
-  <:table-actions>
-    <button {{on 'click' this.doSomething}}>Table Action</button>
-  </:table-actions>
-
-  {{! Custom empty state (optional) }}
-  <:empty-state>
-    <div class='custom-empty-state'>This is an empty state</div>
-  </:empty-state>
-</HyperTableV2>
-```
-
-### 3. Interface Implementations
+Hypertable requires implementations for two interfaces — `TableManager` and `RowsFetcher` — and optionally a custom `RenderingResolver`. These classes define how the table fetches data, stores configuration, and resolves which components to render.
 
 #### TableManager
 
-```typescript
-class MyTableManager implements TableManager {
-  async fetchColumnDefinitions(): Promise<{ column_definitions: ColumnDefinition[] }> {
-    // Fetch available column definitions from API
-    const response = await fetch('/api/column-definitions');
-    return response.json();
-  }
+The `TableManager` interface handles column configuration and persistence. It defines how the table fetches available column definitions, retrieves the current column setup, and saves column changes.
 
-  async fetchColumns(): Promise<{ columns: Column[] }> {
-    // Fetch current column configuration from API
-    const response = await fetch('/api/columns');
-    return response.json();
-  }
+**Required methods:**
 
-  async upsertColumns(request: { columns: Column[] }): Promise<{ columns: Column[] }> {
-    // Save column configuration to API
-    const response = await fetch('/api/columns', {
-      method: 'POST',
-      body: JSON.stringify(request)
-    });
-    return response.json();
-  }
+- `fetchColumnDefinitions()` - Returns all available column definitions that can be added to the table. This typically comes from your API and defines the structure, type, and capabilities of each column.
+- `fetchColumns()` - Returns the current column configuration (which columns are visible, their order, applied filters, and sorting). This represents the user's saved table state.
+- `upsertColumns(request)` - Saves the column configuration to persist user preferences. Called whenever columns are added, removed, reordered, or have their filters/sorting modified.
 
-  // Optional: for faceted filtering
-  async fetchFacets(columnKey: string, filteringKey: string, searchValue?: string): Promise<FacetsResponse> {
-    const response = await fetch(`/api/facets/${columnKey}?filtering_key=${filteringKey}&search=${searchValue}`);
-    return response.json();
-  }
-}
-```
+**Optional methods:**
 
-**Available methods:**
-
-- `fetchColumnDefinitions()` - Returns available column definitions
-- `fetchColumns()` - Returns current column configuration
-- `upsertColumns(request)` - Saves column configuration
-- `fetchFacets(columnKey, filteringKey, searchValue)` - Optional: provides faceted filtering
+- `fetchFacets(columnKey, filteringKey, searchValue)` - Provides faceted filtering by returning a list of available filter values for a given column. Only needed if you want to enable faceted filtering (see [Faceted Filtering](#faceted-filtering)).
 
 #### RowsFetcher
 
-```ts
-class MyRowsFetcher implements RowsFetcher {
-  async fetch(page: number, perPage: number): Promise<{ rows: Row[]; meta: { total: number } }> {
-    // Fetch paginated data from API
-    const response = await fetch(`/api/data?page=${page}&per_page=${perPage}`);
-    return response.json();
-  }
+The `RowsFetcher` interface handles data retrieval. It defines how the table fetches paginated rows and optionally updates individual rows.
 
-  // Optional: for individual row updates
-  async fetchById(recordId: number): Promise<Row> {
-    const response = await fetch(`/api/data/${recordId}`);
-    return response.json();
-  }
-}
-```
+**Required methods:**
 
-**Available methods:**
+- `fetch(page, perPage)` - Returns paginated data for the table. Called whenever the table needs to load or refresh its data (pagination, filtering, sorting changes). Must return both the rows and a total count for pagination.
 
-- `fetch(page, perPage)` - Returns paginated data
-- `fetchById(id)` - Optional: fetches individual rows
+**Optional methods:**
+
+- `fetchById(recordId)` - Fetches a single row by its ID to refresh its data without reloading the entire table. Useful when a row is updated externally and needs to be refreshed in place.
 
 #### Custom rendering resolver (Optional)
 
-If no RenderingResolver is provided, Hypertable uses a default resolver with built-in renderers.
+If no RenderingResolver is provided, Hypertable uses a default resolver with built-in renderers with built-in renderers that support:
+
+- `integer` type: this will properly format numbers in cells and brings range-based filtering
+- `timestamp` type: properly displays dates and brings calendar-based filtering
+- a default `text` renderer to display textual content and filter using a typeahead input
+
 The Rendering Resolver extends BaseRenderingResolver from `@upfluence/hypertable/core/rendering-resolver` and determines which component should be used to render each cell, filter, and header according to column key.
 
 ```typescript
+import { ResolvedRenderingComponent } from '@upfluence/hypertable/core/interfaces';
+
 type RendererDictionaryItem = { cell?: any; header?: any; filter?: any };
 
 // Define mapping dictionary: all the custom columns and their renderers
@@ -214,47 +132,74 @@ export default class MyRenderingResolver extends BaseRenderingResolver {
 }
 ```
 
+### 2. Integration example
+
+#### Controller
+
+```ts
+import { TableHandler } from '@upfluence/hypertable/core/handler';
+import { MyTableManager } from './table-manager';
+import { MyRowsFetcher } from './rows-fetcher';
+import { MyRenderingResolver } from './rendering-resolver';
+
+export default class MyController extends Controller {
+  constructor() {
+    super(...arguments);
+
+    const manager = new MyTableManager();
+    const fetcher = new MyRowsFetcher();
+    const renderingResolver = new MyRenderingResolver(); // Optional
+
+    this.handler = new TableHandler(this, manager, fetcher, renderingResolver);
+  }
+
+  features = {
+    selection: true,
+    searchable: true,
+    manageable_fields: true,
+    global_filters_reset: true
+  };
+}
+```
+
+#### Template
+
+HyperTableV2 supports several named blocks that allow you to customize specific areas of the table interface. These blocks are optional and can be used to inject custom content or components into predefined slots.
+
+- **`:search`** - For a custom search behavior or UI that differs from the default search input
+- **`:contextual-actions`** - For bulk operations that only make sense when items are selected (export, delete, bulk edit)
+- **`:table-actions`** - For actions that are always relevant (create new, import, settings)
+- **`:empty-state`** - For a custom messaging or actions when no data is available
+
+```hbs
+<HyperTableV2 @handler={{this.tableHandler}} @features={{this.features}} @options={{this.options}}>
+  <:search>
+    <MyCustomSearch @onSearch={{this.handleSearch}} />
+  </:search>
+
+  <:contextual-actions>
+    <button {{on 'click' this.doSomething}}>Contextual Action</button>
+  </:contextual-actions>
+
+  <:table-actions>
+    <button {{on 'click' this.doSomething}}>Table Action</button>
+  </:table-actions>
+
+  <:empty-state>
+    <div class='custom-empty-state'>This is an empty state</div>
+  </:empty-state>
+</HyperTableV2>
+```
+
 ## Core Concepts
 
 ### Column Definitions
 
-Column definitions describe the structure and capabilities of table columns. See `@upfluence/hypertable/core/interfaces/column.ts` for the complete type definition:
-
-```ts
-type ColumnDefinition = {
-  key: string; // Unique identifier
-  type: string; // Data type (text, numeric, date)
-  name: string; // Display name
-  category: string; // Grouping identifier
-  clustering_key: string; // Grouping identifier within a category
-  size: FieldSize; // Column width (XS, S, M, L, XL)
-  orderable: boolean; // Can be sorted
-  orderable_by: string[] | null; // Fields to sort by
-  filterable: boolean; // Can be filtered
-  filterable_by: string[] | null; // Fields to filter by
-  facetable: boolean; // Supports faceted search
-  facetable_by: string[] | null; // Fields for facets
-  empty_state_message?: string; // Message for empty values
-  position?: {
-    sticky: boolean; // Sticky column
-    side?: 'left' | 'right'; // Which side to stick to
-  };
-};
-```
+Column definitions describe the structure and capabilities of table columns. See `@upfluence/hypertable/core/interfaces/column.ts` for the complete type definition.
 
 ### Row Data Structure
 
-Row data is used by cell renderers to display values and by the selection system to identify records. See `@upfluence/hypertable/core/interfaces/rows-fetcher.ts` for the complete type definition:
-
-```ts
-type Row = {
-  influencerId: number;
-  recordId: number;
-  holderId: number;
-  holderType: string;
-  [key: string]: any; // Additional dynamic fields based on column definitions
-};
-```
+Row data is used by cell renderers to display values and by the selection system to identify records. See `@upfluence/hypertable/core/interfaces/rows-fetcher.ts` for the complete type definition.
 
 ### Column Management
 
