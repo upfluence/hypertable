@@ -39,7 +39,7 @@ module('Unit | core/handler', function (hooks) {
 
     await handler.fetchColumns();
 
-    assert.ok(handlerSpy.calledWith('columns-loaded'));
+    assert.ok(handlerSpy.calledOnceWithExactly('columns-loaded'));
   });
 
   module('Handler#fetchRows', () => {
@@ -227,7 +227,7 @@ module('Unit | core/handler', function (hooks) {
       await handler.fetchColumns();
       await handler.resetColumns(handler.columns);
 
-      assert.ok(handlerSpy.calledWith('reset-columns', handler.columns));
+      assert.ok(handlerSpy.calledWithExactly('reset-columns', handler.columns));
     });
 
     test('if all items where globally selected, the selection is properly reset', async function (this: TestContext, assert: Assert) {
@@ -284,7 +284,7 @@ module('Unit | core/handler', function (hooks) {
     await handler.fetchRows();
     await handler.resetRows();
 
-    assert.ok(handlerSpy.calledWith('reset-rows'));
+    assert.ok(handlerSpy.calledOnceWithExactly('reset-rows'));
   });
 
   test('Handler#removeRow', async function (this: TestContext, assert: Assert) {
@@ -343,7 +343,7 @@ module('Unit | core/handler', function (hooks) {
     await handler.fetchColumns();
     await handler.applyOrder(handler.columns[0], 'asc');
 
-    assert.ok(handlerSpy.calledWith('apply-order', handler.columns[0], 'asc'));
+    assert.ok(handlerSpy.calledWithExactly('apply-order', handler.columns[0], 'asc'));
   });
 
   module('Handler#toggleSelectAll', () => {
