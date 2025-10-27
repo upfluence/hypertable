@@ -33,6 +33,15 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.columns.length, 4);
   });
 
+  test('Handler#fetchColumns triggers the columns-loaded event', async function (this: TestContext, assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const handlerSpy = sinon.spy(handler, 'triggerEvent');
+
+    await handler.fetchColumns();
+
+    assert.ok(handlerSpy.calledWith('columns-loaded'));
+  });
+
   module('Handler#fetchRows', () => {
     test('it adds the correct number of rows', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
@@ -211,6 +220,16 @@ module('Unit | core/handler', function (hooks) {
       assert.equal(handler.columns[1].order, undefined);
     });
 
+    test('it triggers the reset-columns event', async function (this: TestContext, assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const handlerSpy = sinon.spy(handler, 'triggerEvent');
+
+      await handler.fetchColumns();
+      await handler.resetColumns(handler.columns);
+
+      assert.ok(handlerSpy.calledWith('reset-columns', handler.columns));
+    });
+
     test('if all items where globally selected, the selection is properly reset', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       await handler.fetchColumns();
@@ -256,6 +275,16 @@ module('Unit | core/handler', function (hooks) {
     // @ts-ignore
     assert.ok(rowsFetcherSpy.fetch.calledWithExactly(1, 30));
     assert.equal(handler.rows.length, 3);
+  });
+
+  test('Handler#resetRows triggers the reset-rows event', async function (this: TestContext, assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const handlerSpy = sinon.spy(handler, 'triggerEvent');
+
+    await handler.fetchRows();
+    await handler.resetRows();
+
+    assert.ok(handlerSpy.calledWith('reset-rows'));
   });
 
   test('Handler#removeRow', async function (this: TestContext, assert: Assert) {
