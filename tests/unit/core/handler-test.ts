@@ -307,6 +307,16 @@ module('Unit | core/handler', function (hooks) {
     assert.equal(handler.currentPage, 1);
   });
 
+  test('Handler#applyOrder triggers the apply-order event', async function (this: TestContext, assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    const handlerSpy = sinon.spy(handler, 'triggerEvent');
+
+    await handler.fetchColumns();
+    await handler.applyOrder(handler.columns[0], 'asc');
+
+    assert.ok(handlerSpy.calledWith('apply-order', handler.columns[0], 'asc'));
+  });
+
   module('Handler#toggleSelectAll', () => {
     test('it selects all the loaded rows', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);

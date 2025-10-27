@@ -64,7 +64,7 @@ export default class TableHandler {
       return this._renderingResolver;
     }
 
-    this._renderingResolver = new BaseRenderingResolver(this._context)
+    this._renderingResolver = new BaseRenderingResolver(this._context);
     return this._renderingResolver;
   }
 
@@ -308,6 +308,7 @@ export default class TableHandler {
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._lastOrderedColumn = column;
       this._reinitColumnsAndRows(columns);
+      this.triggerEvent('apply-order', column, direction);
     });
   }
 
