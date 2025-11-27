@@ -73,9 +73,9 @@ The `RowsFetcher` interface handles data retrieval. It defines how the table fet
 
 #### Custom rendering resolver (Optional)
 
-If no RenderingResolver is provided, Hypertable uses a default resolver with built-in renderers with built-in renderers that support:
+If no RenderingResolver is provided, Hypertable uses a default resolver with built-in renderers that support:
 
-- `integer` type: this will properly format numbers in cells and brings range-based filtering
+- `integer` type: properly formats numbers in cells and brings range-based filtering
 - `timestamp` type: properly displays dates and brings calendar-based filtering
 - a default `text` renderer to display textual content and filter using a typeahead input
 
@@ -119,7 +119,7 @@ export default class MyRenderingResolver extends BaseRenderingResolver {
     columnDef: ColumnDefinition,
     type: 'header' | 'filter' | 'cell'
   ): Promise<ResolvedRenderingComponent> {
-    let rendererMatch = rendererMatchers[camelize(columnDef.key)];
+    const rendererMatch = rendererMatchers[camelize(columnDef.key)];
 
     if (rendererMatch && rendererMatch[type]) {
       return Promise.resolve({
