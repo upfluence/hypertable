@@ -264,26 +264,21 @@ export default class TableHandler {
    * @returns {Promise<void>}
    */
   async applyFilters(column: Column, filters: Filter[]): Promise<void> {
-    set(
-      column,
-      'filters',
-      filters
-        .reduce(
-          (acc, v) => {
-            const filterWithSameKey = acc.find((filter) => filter.key === v.key);
+    const initialFiltersWithoutDuplicates = column.filters.filter((f) => filters.find((nf) => nf.key !== f.key));
+    const newFilters = filters
+      .reduce((acc, v) => {
+        const filterWithSameKey = acc.find((filter) => filter.key === v.key);
 
-            if (filterWithSameKey) {
-              filterWithSameKey.value = v.value;
-            } else {
-              acc.push(v);
-            }
+        if (filterWithSameKey) {
+          filterWithSameKey.value = v.value;
+        } else {
+          acc.push(v);
+        }
 
-            return acc;
-          },
-          column.filters.filter((f) => filters.find((nf) => nf.key === f.key))
-        )
-        .filter((f) => !isEmpty(f.key) && !isEmpty(f.value))
-    );
+        return acc;
+      }, initialFiltersWithoutDuplicates)
+      .filter((f) => !isEmpty(f.key) && !isEmpty(f.value));
+    set(column, 'filters', newFilters);
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._reinitColumnsAndRows(columns);
