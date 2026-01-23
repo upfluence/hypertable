@@ -88,6 +88,15 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
     });
   });
 
+  test('On init, the input value is set by checking the first column filters and matching the "value" key', async function (this: TestContext, assert) {
+    this.column.filters = [
+      { key: 'otherkey', value: 'random' },
+      { key: 'value', value: 'initial search' }
+    ];
+    await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
+    assert.dom('.oss-input-container input').hasValue('initial search');
+  });
+
   test('The remove icon is hidden when the input is empty', async function (assert) {
     await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
     assert.dom('.oss-input-container').exists();
