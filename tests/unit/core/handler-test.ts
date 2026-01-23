@@ -157,10 +157,16 @@ module('Unit | core/handler', function (hooks) {
     });
 
     test('new filters are added to the column', async function (this: TestContext, assert: Assert) {
+      this.handler.columns[0].filters = [{ key: 'fizz', value: 'buzz' }];
+
       this.handler.applyFilters(this.handler.columns[0], [{ key: 'foo', value: 'bar' }]);
 
-      assert.equal(this.handler.columns[0].filters.length, 1);
+      assert.equal(this.handler.columns[0].filters.length, 2);
       assert.deepEqual(this.handler.columns[0].filters, [
+        {
+          key: 'fizz',
+          value: 'buzz'
+        },
         {
           key: 'foo',
           value: 'bar'
@@ -192,13 +198,16 @@ module('Unit | core/handler', function (hooks) {
       ]);
     });
 
-    test('removed filters are cleared', function (this: TestContext, assert: Assert) {
+    test('Empty values in filters are cleared', function (this: TestContext, assert: Assert) {
       this.handler.columns[0].filters = [
         { key: 'foo', value: 'bar' },
         { key: 'fizz', value: 'buzz' }
       ];
 
-      this.handler.applyFilters(this.handler.columns[0], [{ key: 'fizz', value: 'buzz' }]);
+      this.handler.applyFilters(this.handler.columns[0], [
+        { key: 'foo', value: null },
+        { key: 'fizz', value: 'buzz' }
+      ]);
 
       assert.equal(this.handler.columns[0].filters.length, 1);
       assert.deepEqual(this.handler.columns[0].filters, [{ key: 'fizz', value: 'buzz' }]);
