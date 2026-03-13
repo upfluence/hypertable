@@ -281,8 +281,9 @@ export default class TableHandler {
     set(column, 'filters', newFilters);
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
-      this._reinitColumnsAndRows(columns);
-      this.triggerEvent('apply-filters', column, filters);
+      return this._reinitColumnsAndRows(columns).then(() => {
+        this.triggerEvent('apply-filters', column, filters);
+      });
     });
   }
 
@@ -472,7 +473,7 @@ export default class TableHandler {
     this.currentPage = 1;
   }
 
-  private _reinitColumnsAndRows(columns: Column[]): void {
+  private _reinitColumnsAndRows(columns: Column[]): Promise<void> {
     let shouldRedraw = false;
     columns.forEach((column) => {
       let existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
@@ -488,6 +489,6 @@ export default class TableHandler {
 
     this.rows = [];
     this.currentPage = 1;
-    this.fetchRows();
+    return this.fetchRows();
   }
 }

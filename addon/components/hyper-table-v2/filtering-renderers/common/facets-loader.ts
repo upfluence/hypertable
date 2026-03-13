@@ -81,6 +81,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     debounce(
       this,
       () => {
+        this.ongoingFacetApply = true;
         this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
       },
       facet,
@@ -96,7 +97,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       facetFilter = { key: this.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
 
-    this.ongoingFacetApply = true;
     this.args.handler
       .applyFilters(this.args.column, [facetFilter])
       .then(() => {
@@ -120,7 +120,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         facetFilter = { key: this.filteringKey, value: '' };
       }
 
-      this.ongoingFacetApply = true;
       return this.args.handler
         .applyFilters(this.args.column, [facetFilter])
         .then(() => {
