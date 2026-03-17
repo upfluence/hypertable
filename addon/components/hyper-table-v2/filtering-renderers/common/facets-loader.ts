@@ -22,7 +22,6 @@ interface FacetsLoaderArgs {
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
-const FACET_APPLY_DEBOUNCE_TIME: number = 300;
 
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
   @service declare intl: IntlService;
@@ -78,15 +77,9 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   @action
   toggleFacet(facet: Facet): void {
     if (this.ongoingFacetApply) return;
-    debounce(
-      this,
-      () => {
-        this.ongoingFacetApply = true;
-        this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
-      },
-      facet,
-      FACET_APPLY_DEBOUNCE_TIME
-    );
+
+    this.ongoingFacetApply = true;
+    this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
   }
 
   private addFacet(facet: Facet): void {
