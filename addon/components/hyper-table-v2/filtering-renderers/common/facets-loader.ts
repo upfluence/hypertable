@@ -22,7 +22,6 @@ interface FacetsLoaderArgs {
 }
 
 const SEARCH_DEBOUNCE_TIME: number = 300;
-const FACET_APPLY_DEBOUNCE_TIME: number = 300;
 
 export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs> {
   @service declare intl: IntlService;
@@ -78,14 +77,9 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
   @action
   toggleFacet(facet: Facet): void {
     if (this.ongoingFacetApply) return;
-    debounce(
-      this,
-      () => {
-        this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
-      },
-      facet,
-      FACET_APPLY_DEBOUNCE_TIME
-    );
+
+    this.ongoingFacetApply = true;
+    this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
   }
 
   private addFacet(facet: Facet): void {
@@ -96,7 +90,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
       facetFilter = { key: this.filteringKey, value: [existingFilter.value, facet.identifier].join(',') };
     }
 
-    this.ongoingFacetApply = true;
     this.args.handler
       .applyFilters(this.args.column, [facetFilter])
       .then(() => {
@@ -120,7 +113,6 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
         facetFilter = { key: this.filteringKey, value: '' };
       }
 
-      this.ongoingFacetApply = true;
       return this.args.handler
         .applyFilters(this.args.column, [facetFilter])
         .then(() => {
