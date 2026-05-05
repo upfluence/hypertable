@@ -182,14 +182,6 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     return htmlSafe(`--hypertable-responsive-columns-number: ${this.args.handler.columns.length - 1}`);
   }
 
-  getStickyColumnClass(column: Column): string | undefined {
-    const position = column.definition?.position;
-
-    if (!position?.sticky) return;
-
-    return `hypertable__column--sticky-${position.side ?? 'left'}`;
-  }
-
   private _resetFilters(): void {
     this.loadingResetFilters = true;
     this.args.handler.resetColumns(this.args.handler.columns).finally(() => {

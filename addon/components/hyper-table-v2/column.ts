@@ -49,7 +49,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     this.elementId = guidFor(args.column.definition.key);
   }
 
-  @computed('args.column.filters.[]', 'args.column.order.direction', 'sizeClass')
+  @computed('args.column.filters.[]', 'args.column.order.direction', 'sizeClass', 'stickyColumnClass')
   get computedClasses(): string {
     const classes = ['hypertable__column'];
 
@@ -61,6 +61,10 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
 
     if (this.args.column.filters.length > 0) {
       classes.push('hypertable__column--filtered');
+    }
+
+    if (this.stickyColumnClass) {
+      classes.push(this.stickyColumnClass);
     }
 
     return classes.join(' ');
@@ -79,6 +83,15 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   @computed('args.column.order.direction')
   get isOrderingIndicatorVisible(): boolean {
     return this.args.column.definition.orderable && !this.args.column.order?.direction;
+  }
+
+  @computed('args.column.definition.position')
+  get stickyColumnClass(): string | undefined {
+    const position = this.args.column.definition?.position;
+
+    if (!position?.sticky) return undefined;
+
+    return `hypertable__column--sticky-${position.side ?? 'left'}`;
   }
 
   @action
