@@ -20,9 +20,14 @@ export type ColumnDefinition = {
   facetable: boolean;
   facetable_by: string[] | null;
   empty_state_message?: string;
-  position?: {
-    sticky: boolean;
-  };
+  position?:
+    | {
+        sticky: false;
+      }
+    | {
+        sticky: true;
+        side?: 'left' | 'right';
+      };
 };
 
 export type Filter = {
