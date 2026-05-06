@@ -63,6 +63,10 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
       classes.push('hypertable__column--filtered');
     }
 
+    if (this.stickyColumnClass) {
+      classes.push(this.stickyColumnClass);
+    }
+
     return classes.join(' ');
   }
 
@@ -79,6 +83,14 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
   @computed('args.column.order.direction')
   get isOrderingIndicatorVisible(): boolean {
     return this.args.column.definition.orderable && !this.args.column.order?.direction;
+  }
+
+  get stickyColumnClass(): string | undefined {
+    const position = this.args.column.definition?.position;
+
+    if (!position?.sticky) return undefined;
+
+    return `hypertable__column--sticky-${position.side ?? 'left'}`;
   }
 
   @action

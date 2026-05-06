@@ -641,4 +641,55 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         meta: { total: 12 }
       });
   }
+
+  module('sticky column class', function () {
+    test('Sticky attribute not provided - column renders without sticky class', async function (this: TestContext, assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() =>
+        Promise.resolve({
+          columns: [buildColumn('foo', { position: undefined }), buildColumn('bar', { position: undefined })]
+        })
+      );
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.hypertable__column--sticky-left').doesNotExist();
+      assert.dom('.hypertable__column--sticky-right').doesNotExist();
+    });
+
+    test('Sticky attribute provided with no side - column renders with sticky-left class', async function (this: TestContext, assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() =>
+        Promise.resolve({
+          columns: [buildColumn('foo'), buildColumn('bar', { position: { sticky: true } })]
+        })
+      );
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.hypertable__column--sticky-left').exists();
+    });
+
+    test('Sticky attribute provided with right side - column renders with sticky-right class', async function (this: TestContext, assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+        return Promise.resolve({
+          columns: [buildColumn('foo'), buildColumn('bar', { position: { sticky: true, side: 'right' } })]
+        });
+      });
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.hypertable__column--sticky-right').exists();
+    });
+
+    test('Sticky attribute provided with left side - column renders with sticky-left class', async function (this: TestContext, assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+        return Promise.resolve({
+          columns: [buildColumn('foo'), buildColumn('bar', { position: { sticky: true, side: 'left' } })]
+        });
+      });
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.hypertable__column--sticky-left').exists();
+    });
+  });
 });

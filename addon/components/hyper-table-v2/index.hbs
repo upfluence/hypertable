@@ -167,10 +167,6 @@
               @handler={{@handler}}
               @column={{column}}
               @delegatedFiltering={{@options.delegatedFiltering}}
-              class={{if
-                column.definition.position.sticky
-                (concat "hypertable__column--sticky-" column.definition.position.side)
-              }}
               {{sortable-item
                 groupName=this.hypertableInstanceID
                 model=column
