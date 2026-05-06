@@ -643,7 +643,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   }
 
   module('sticky column class', function () {
-    test('no sticky - column renders without sticky class', async function (this: TestContext, assert: Assert) {
+    test('Sticky attribute not provided - column renders without sticky class', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumns').callsFake(() =>
         Promise.resolve({
           columns: [buildColumn('foo', { position: undefined }), buildColumn('bar', { position: undefined })]
@@ -656,7 +656,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__column--sticky-right').doesNotExist();
     });
 
-    test('sticky with no side - column renders with sticky-left class', async function (this: TestContext, assert: Assert) {
+    test('Sticky attribute provided with no side - column renders with sticky-left class', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumns').callsFake(() =>
         Promise.resolve({
           columns: [buildColumn('foo'), buildColumn('bar', { position: { sticky: true } })]
@@ -668,7 +668,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__column--sticky-left').exists();
     });
 
-    test('sticky with right side - column renders with sticky-right class', async function (this: TestContext, assert: Assert) {
+    test('Sticky attribute provided with right side - column renders with sticky-right class', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
         return Promise.resolve({
           columns: [buildColumn('foo'), buildColumn('bar', { position: { sticky: true, side: 'right' } })]
