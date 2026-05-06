@@ -679,5 +679,17 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       assert.dom('.hypertable__column--sticky-right').exists();
     });
+
+    test('Sticky attribute provided with left side - column renders with sticky-left class', async function (this: TestContext, assert: Assert) {
+      sinon.stub(this.tableManager, 'fetchColumns').callsFake(() => {
+        return Promise.resolve({
+          columns: [buildColumn('foo'), buildColumn('bar', { position: { sticky: true, side: 'left' } })]
+        });
+      });
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.hypertable__column--sticky-left').exists();
+    });
   });
 });
