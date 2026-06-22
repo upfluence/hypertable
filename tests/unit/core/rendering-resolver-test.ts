@@ -1,11 +1,12 @@
-import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
 import { getContext, setContext, type TestContext } from '@ember/test-helpers';
 import { ensureSafeComponent } from '@embroider/util';
 
+import { setupApplicationTest } from 'ember-qunit';
+import { module, test } from 'qunit';
+
+import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 import { buildColumnDefinition } from '@upfluence/hypertable/test-support/table-manager';
-import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
 
 module('Unit | core/rendering-resolver', function (hooks) {
   setupApplicationTest(hooks);

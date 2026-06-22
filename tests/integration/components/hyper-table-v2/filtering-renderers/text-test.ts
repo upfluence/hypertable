@@ -1,14 +1,15 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { setupIntl } from 'ember-intl/test-support';
 import { click, render, type TestContext } from '@ember/test-helpers';
+
+import { setupIntl } from 'ember-intl/test-support';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
+import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
-import { FieldSize } from '@upfluence/hypertable/core/interfaces';
 
 module('Integration | Component | hyper-table-v2/filtering-renderers/text', function (hooks) {
   setupRenderingTest(hooks);

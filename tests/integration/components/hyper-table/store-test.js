@@ -1,8 +1,8 @@
-import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
+import { module, test } from 'qunit';
 
-import { LocalStorageStore } from '@upfluence/hypertable/types/store';
 import Column from '@upfluence/hypertable/types/column';
+import { LocalStorageStore } from '@upfluence/hypertable/types/store';
 
 module('Integration | Component | hyper-table/localstorage', function (hooks) {
   setupRenderingTest(hooks);

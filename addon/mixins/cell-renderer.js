@@ -1,6 +1,6 @@
-import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
 import { empty, oneWay } from '@ember/object/computed';
+import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
   classNameBindings: ['emptyValue'],

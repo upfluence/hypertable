@@ -1,11 +1,12 @@
 import { A } from '@ember/array';
+import { set, action } from '@ember/object';
+import { later, next } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { set, action } from '@ember/object';
-import { isEmpty } from '@ember/utils';
+
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
-import { later, next } from '@ember/runloop';
 
 type ManagedColumn = {
   definition: ColumnDefinition;

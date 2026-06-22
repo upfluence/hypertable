@@ -1,5 +1,5 @@
-import Component from '@glimmer/component';
 import { computed, defineProperty } from '@ember/object';
+import Component from '@glimmer/component';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
@@ -18,7 +18,7 @@ export default class HyperTableV2CellRenderersText extends Component<HyperTableV
     defineProperty(
       this,
       'value',
-      computed(`args.row.${args.column.definition.key}`, function() {
+      computed(`args.row.${args.column.definition.key}`, function () {
         return this.args.row[this.args.column.definition.key];
       })
     );

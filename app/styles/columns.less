@@ -85,7 +85,7 @@
 
   transition: all 0.25s ease-in-out;
 
-  &>.cell-header {
+  & > .cell-header {
     color: var(--color-gray-600);
     font-size: 16 / @rem;
     font-weight: var(--font-weight-semibold);
@@ -233,7 +233,6 @@
 }
 
 .hypertable__column--text .hypertable__cell {
-
   .editing-input,
   .text-value {
     display: -webkit-box;
@@ -244,7 +243,7 @@
 }
 
 .hypertable__column--list .hypertable__cell {
-  &>div:first-child {
+  & > div:first-child {
     width: 100%;
   }
 
@@ -258,7 +257,7 @@
   display: flex;
   align-items: center;
 
-  &>div:nth-child(2) {
+  & > div:nth-child(2) {
     margin-left: var(--spacing-px-12);
 
     span {

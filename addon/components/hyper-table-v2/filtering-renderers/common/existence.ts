@@ -1,11 +1,12 @@
 import { action } from '@ember/object';
-import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+
+import { IntlService } from 'ember-intl';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
-import { tracked } from '@glimmer/tracking';
-import { IntlService } from 'ember-intl';
 
 interface HyperTableV2FilteringRenderersExistenceArgs {
   handler: TableHandler;

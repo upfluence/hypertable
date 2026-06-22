@@ -1,9 +1,9 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action, computed, set } from '@ember/object';
 import { debounce, scheduleOnce } from '@ember/runloop';
-import { isEmpty } from '@ember/utils';
 import { htmlSafe } from '@ember/template';
+import { isEmpty } from '@ember/utils';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
@@ -42,7 +42,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
 
-  private declare hypertableInstanceID: string;
+  declare private hypertableInstanceID: string;
 
   constructor(owner: unknown, args: HyperTableV2Args) {
     super(owner, args);

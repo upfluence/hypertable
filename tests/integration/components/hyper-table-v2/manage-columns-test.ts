@@ -1,13 +1,15 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { setupIntl, type TestContext } from 'ember-intl/test-support';
 import { click, fillIn, render, waitFor } from '@ember/test-helpers';
+
+import { setupIntl, type TestContext } from 'ember-intl/test-support';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
-import TableHandler from '@upfluence/hypertable/core/handler';
+import { module, test } from 'qunit';
 import sinon from 'sinon';
-import { buildColumn, buildColumnDefinition } from '@upfluence/hypertable/test-support/table-manager';
+
+import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
+import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
+import { buildColumn, buildColumnDefinition } from '@upfluence/hypertable/test-support/table-manager';
 
 const COLUMN_DEFINITIONS = [
   { key: 'alone', extra: { category: '', clustering_key: '', position: { sticky: true } } },

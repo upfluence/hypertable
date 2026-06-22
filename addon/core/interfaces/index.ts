@@ -8,8 +8,8 @@ import {
   FacetsResponse,
   TableManager
 } from './manager';
-import { Row, RowsFetcherMetadata, RowsFetcherResponse, RowsFetcher } from './rows-fetcher';
 import { ResolvedRenderingComponent, RendererResolver } from './rendering-resolver';
+import { Row, RowsFetcherMetadata, RowsFetcherResponse, RowsFetcher } from './rows-fetcher';
 
 export {
   FieldSize,

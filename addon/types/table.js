@@ -1,8 +1,8 @@
 import EmberObject, { computed } from '@ember/object';
 import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
-import { isEmpty, typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
+import { isEmpty, typeOf } from '@ember/utils';
 
 import Tether from 'tether';
 

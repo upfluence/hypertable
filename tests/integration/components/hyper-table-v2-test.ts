@@ -1,7 +1,8 @@
-import { module, skip, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
 import { click, render, findAll, type TestContext } from '@ember/test-helpers';
+
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { module, skip, test } from 'qunit';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';

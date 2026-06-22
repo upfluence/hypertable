@@ -1,17 +1,14 @@
-import GlimmerComponent from '@glimmer/component';
 import { ensureSafeComponent } from '@embroider/util';
-import { RendererResolver, ResolvedRenderingComponent, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
-
-import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
-
-import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
-import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
-
-import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
-import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
+import GlimmerComponent from '@glimmer/component';
 
 import DateCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/date';
+import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
+import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
 import DateFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/date';
+import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
+import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
+import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
+import { RendererResolver, ResolvedRenderingComponent, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 
 type RendererDictionaryItem = { cell: any; header?: any; filter: any };
 const rendererMatchers: { [key: string]: RendererDictionaryItem } = {

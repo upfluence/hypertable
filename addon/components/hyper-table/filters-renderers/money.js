@@ -1,5 +1,6 @@
-import NumericFilterRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers/numeric';
 import { isBlank } from '@ember/utils';
+
+import NumericFilterRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers/numeric';
 
 export default NumericFilterRenderer.extend({
   _addRangeFilter() {
