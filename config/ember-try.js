@@ -10,6 +10,11 @@ module.exports = async function () {
       },
       {
         name: 'ember-4.12',
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'jquery-integration': false // Disable per https://deprecations.emberjs.com/id/optional-feature-jquery-integration
+          })
+        },
         npm: {
           devDependencies: {
             'ember-source': '~4.12.3',
