@@ -10,6 +10,9 @@ overrides:
 importers:
   .:
     dependencies:
+      '@ember/string':
+        specifier: ^4.0.1
+        version: 4.0.1
       '@embroider/macros':
         specifier: ^1.7.1
         version: 1.16.10(@glint/template@1.5.1)
@@ -150,8 +153,8 @@ importers:
         specifier: ^5.32.0
         version: 5.62.0(eslint@7.32.0)(typescript@4.9.5)
       '@upfluence/oss-components':
-        specifier: ^3.81.1
-        version: 3.81.1(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
+        specifier: ^3.97.4
+        version: 3.97.4(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
       '@upfluence/w-conf':
         specifier: ^0.2.0
         version: 0.2.0(@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.4))(prettier@3.8.4)
@@ -1035,6 +1038,10 @@ packages:
       '@glint/template':
         optional: true
 
+  '@ember/string@4.0.1':
+    resolution:
+      { integrity: sha512-VWeng8BSWrIsdPfffOQt/bKwNKJL7+37gPFh/6iZZ9bke+S83kKqkS30poo4bTGfRcMnvAE0ie7txom+iDu81Q== }
+
   '@ember/test-helpers@2.9.4':
     resolution:
       { integrity: sha512-z+Qs1NYWyIVDmrY6WdmOS5mdG1lJ5CFfzh6dRhLfs9lq45deDaDrVNcaCYhnNeJZTvUBK2XR2SvPcZm0RloXdA== }
@@ -1191,14 +1198,14 @@ packages:
       typescript:
         optional: true
 
-  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#2ae6c0044b34d06543101723202e117125257264':
+  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#c639fe415de762c946eaebf4cc4e815ce3ede420':
     resolution:
       {
-        commit: 2ae6c0044b34d06543101723202e117125257264,
+        commit: c639fe415de762c946eaebf4cc4e815ce3ede420,
         repo: git@github.com:upfluence/fontawesome-pro.git,
         type: git
       }
-    version: 6.7.2
+    version: 7.0.1
     engines: { node: '>=6' }
 
   '@glimmer/component@1.1.2':
@@ -1652,6 +1659,10 @@ packages:
     resolution:
       { integrity: sha512-ugBFJlmykvwofTYZIci+5oixX2aqw/3lMqYN90v3NRupTgpVLa16StBgewjSXe/I5tWSiGrttlb66iBeDgPQgg== }
 
+  '@types/trusted-types@2.0.7':
+    resolution:
+      { integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw== }
+
   '@typescript-eslint/parser@5.62.0':
     resolution:
       { integrity: sha512-VlJEV0fOQ7BExOsHYAGrgbEiZoi8D+Bl2+f6V2RrXerRSylnp+ZBHmPvaIa8cz0Ajx7WO7Z5RqfgYg7ED1nRhA== }
@@ -1688,11 +1699,11 @@ packages:
       { integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw== }
     engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
 
-  '@upfluence/oss-components@3.81.1':
+  '@upfluence/oss-components@3.97.4':
     resolution:
       {
-        integrity: sha512-qERzhdIJtZGcoRpM5J7gq9hHkdfixyAt8qtZLbrxsu+kvcpZA4SHsCt8XMBJEvBl0MwQTsPNtSBTa9TmVTAykQ==,
-        tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.81.1/a5be47f63b2e12cb05c48936151d232c75134829
+        integrity: sha512-JESHwfWlzLYtfaoK/MhNxOmEpnjUqTTV7MHpkC/o2AMJMEAwYCiR9U54Y9PijXjeMFf8Y80w+ZODzD/bAPys5Q==,
+        tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.97.4/68029be86ea8e3d2aa5b433591552218bf3c82b6
       }
     engines: { node: 12.* || 14.* || >= 16 }
     peerDependencies:
@@ -3698,6 +3709,10 @@ packages:
     resolution:
       { integrity: sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA== }
     engines: { node: '>=0.4', npm: '>=1.2' }
+
+  dompurify@3.4.11:
+    resolution:
+      { integrity: sha512-zhlUV12GsaRzMsf9q5M254YhA4+VuF0fG+QFqu6aYpoGlKtz+w8//jBcGVYBgQkR5GHjUomejY84AV+/uPbWdw== }
 
   dot-case@3.0.4:
     resolution:
@@ -9438,6 +9453,8 @@ snapshots:
       - '@babel/core'
       - supports-color
 
+  '@ember/string@4.0.1': {}
+
   '@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))':
     dependencies:
       '@ember/test-waiters': 3.1.0
@@ -9666,7 +9683,7 @@ snapshots:
     optionalDependencies:
       typescript: 4.9.5
 
-  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#2ae6c0044b34d06543101723202e117125257264':
+  '@fortawesome/fontawesome-pro@git+https://git@github.com:upfluence/fontawesome-pro.git#c639fe415de762c946eaebf4cc4e815ce3ede420':
     {}
 
   '@glimmer/component@1.1.2(@babel/core@7.26.0)':
@@ -10130,6 +10147,9 @@ snapshots:
 
   '@types/tether@1.4.9': {}
 
+  '@types/trusted-types@2.0.7':
+    optional: true
+
   '@typescript-eslint/parser@5.62.0(eslint@7.32.0)(typescript@4.9.5)':
     dependencies:
       '@typescript-eslint/scope-manager': 5.62.0
@@ -10168,18 +10188,19 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
-  '@upfluence/oss-components@3.81.1(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
+  '@upfluence/oss-components@3.97.4(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
     dependencies:
       '@ember/render-modifiers': 2.1.0(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@embroider/macros': 1.16.10(@glint/template@1.5.1)
       '@embroider/util': 1.13.3(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@floating-ui/dom': 1.7.2
-      '@fortawesome/fontawesome-pro': git+https://git@github.com:upfluence/fontawesome-pro.git#2ae6c0044b34d06543101723202e117125257264
+      '@fortawesome/fontawesome-pro': git+https://git@github.com:upfluence/fontawesome-pro.git#c639fe415de762c946eaebf4cc4e815ce3ede420
       babel-plugin-debug-macros: 0.3.4(@babel/core@7.26.0)
       bootstrap: 3.4.1
       broccoli-funnel: 3.0.8
       broccoli-merge-trees: 4.2.0
       calculate-cache-key-for-tree: 2.0.0
+      dompurify: 3.4.11
       ember-auto-import: 2.10.0(@glint/template@1.5.1)(webpack@5.97.1)
       ember-cli-babel: 7.26.11
       ember-cli-htmlbars: 6.3.0
@@ -12392,6 +12413,10 @@ snapshots:
       esutils: 2.0.3
 
   domain-browser@1.2.0: {}
+
+  dompurify@3.4.11:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
 
   dot-case@3.0.4:
     dependencies:

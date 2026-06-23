@@ -34,6 +34,7 @@
     "remove-pre-push-hook": "rm -rf ./.git/hooks/pre-push"
   },
   "dependencies": {
+    "@ember/string": "^4.0.1",
     "@embroider/macros": "^1.7.1",
     "@embroider/util": "^0.50.0",
     "ember-auto-import": "^2.2.4",
@@ -85,7 +86,7 @@
     "@types/sinon": "^10.0.6",
     "@types/tether": "^1.4.6",
     "@typescript-eslint/parser": "^5.32.0",
-    "@upfluence/oss-components": "^3.81.1",
+    "@upfluence/oss-components": "^3.97.4",
     "@upfluence/w-conf": "^0.2.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~3.28.6",
