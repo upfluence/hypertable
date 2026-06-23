@@ -1,7 +1,9 @@
-import { tracked } from '@glimmer/tracking';
 import { set } from '@ember/object';
 import { addListener, sendEvent } from '@ember/object/events';
 import { scheduleOnce } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
+import { tracked } from '@glimmer/tracking';
+
 import Tether from 'tether';
 
 import {
@@ -17,7 +19,6 @@ import {
   FacetsResponse
 } from './interfaces';
 import BaseRenderingResolver from './rendering-resolver';
-import { isEmpty } from '@ember/utils';
 
 export type RowMutator = (row: Row) => boolean;
 

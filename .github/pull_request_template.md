@@ -5,6 +5,7 @@
 Related to : #<!-- enter issue number here -->
 
 ### What are the observable changes?
+
 <!-- This question could be adequate with multiple use cases, for example: -->
 
 <!-- Frontend: explain the feature created / updated, give instructions telling how to see the change in staging -->
@@ -15,8 +16,9 @@ Related to : #<!-- enter issue number here -->
 ### 🧑‍💻 Developer Heads Up
 
 ⚡ Since we are using [Ember Octane](https://blog.emberjs.com/octane-is-here/) now:
-* Feel free to migrate existing components to Glimmer Components.
-* Write new ones exclusively in it.
+
+- Feel free to migrate existing components to Glimmer Components.
+- Write new ones exclusively in it.
 
 Useful Resource : [Ember Octane vs Classic Cheat Sheet](https://ember-learn.github.io/ember-octane-vs-classic-cheat-sheet/)
 

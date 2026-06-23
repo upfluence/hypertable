@@ -1,10 +1,11 @@
+import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
+
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';
-import { action } from '@ember/object';
 
 interface HyperTableV2FilteringRenderersDateArgs {
   handler: TableHandler;

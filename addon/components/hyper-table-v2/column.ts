@@ -1,7 +1,7 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { action, computed } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, FieldSize, ResolvedRenderingComponent } from '@upfluence/hypertable/core/interfaces';

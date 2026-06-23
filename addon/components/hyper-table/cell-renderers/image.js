@@ -1,5 +1,5 @@
-import Component from '@glimmer/component';
 import { get } from '@ember/object';
+import Component from '@glimmer/component';
 
 export default class ImageCellRenderer extends Component {
   get imageURL() {

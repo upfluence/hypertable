@@ -1,4 +1,5 @@
 import Component from '@glimmer/component';
+
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';

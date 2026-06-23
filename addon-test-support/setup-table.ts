@@ -1,8 +1,9 @@
 import { type TestContext } from '@ember/test-helpers';
 
+import sinon from 'sinon';
+
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
-import sinon from 'sinon';
 
 export function setupTable(hooks: NestedHooks): void {
   hooks.beforeEach(function (this: TestContext) {

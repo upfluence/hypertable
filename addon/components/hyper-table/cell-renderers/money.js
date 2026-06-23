@@ -1,8 +1,8 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 
-import EditableMixin from '@upfluence/hypertable/mixins/editable';
 import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
+import EditableMixin from '@upfluence/hypertable/mixins/editable';
 
 export default Component.extend(EditableMixin, CellRendererMixin, {
   amount: computed('value', 'value.cents', function () {

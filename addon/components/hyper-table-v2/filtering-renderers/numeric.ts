@@ -1,9 +1,8 @@
+import { action, computed } from '@ember/object';
+import { debounce } from '@ember/runloop';
+import { isTesting } from '@embroider/macros';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action, computed } from '@ember/object';
-import { isTesting } from '@embroider/macros';
-
-import { debounce } from '@ember/runloop';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';

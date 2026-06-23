@@ -1,4 +1,5 @@
 import GlimmerComponent from '@glimmer/component';
+
 import { ColumnDefinition } from './column';
 
 // Args can be useful to:

@@ -1,11 +1,12 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
 import { click, render, triggerEvent, type TestContext } from '@ember/test-helpers';
+
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
+import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
-import sinon from 'sinon';
 
 module('Integration | Component | hyper-table-v2/cell', function (hooks) {
   setupRenderingTest(hooks);

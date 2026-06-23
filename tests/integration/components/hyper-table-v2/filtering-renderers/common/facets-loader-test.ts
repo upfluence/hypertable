@@ -1,8 +1,9 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { setupIntl } from 'ember-intl/test-support';
 import { click, fillIn, triggerKeyEvent, render, type TestContext, findAll } from '@ember/test-helpers';
+
+import { setupIntl } from 'ember-intl/test-support';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';

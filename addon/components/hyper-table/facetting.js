@@ -1,7 +1,7 @@
 import Component from '@ember/component';
-import { isEmpty } from '@ember/utils';
-import { later } from '@ember/runloop';
 import { set } from '@ember/object';
+import { later } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
 
 export default Component.extend({
   classNames: ['hypertable__facetting'],

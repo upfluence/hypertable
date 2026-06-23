@@ -43,8 +43,7 @@ module.exports = {
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js',
-        './.prettierrc.js'
+        'tests/dummy/config/**/*.js'
       ],
       excludedFiles: ['addon/**', 'addon-test-support/**', 'app/**', 'tests/dummy/app/**'],
       parserOptions: {

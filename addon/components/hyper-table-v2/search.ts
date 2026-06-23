@@ -1,9 +1,10 @@
+import { action } from '@ember/object';
+import { debounce } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
+
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { inject as service } from '@ember/service';
-import { debounce } from '@ember/runloop';
 
 interface HyperTableV2SearchArgs {
   handler: TableHandler;

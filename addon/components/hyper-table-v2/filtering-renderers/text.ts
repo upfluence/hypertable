@@ -1,5 +1,5 @@
-import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import Component from '@glimmer/component';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';

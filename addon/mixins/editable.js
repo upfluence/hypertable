@@ -1,6 +1,6 @@
-import Mixin from '@ember/object/mixin';
 import EmberObject, { computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
+import Mixin from '@ember/object/mixin';
 import { scheduleOnce } from '@ember/runloop';
 
 export default Mixin.create({

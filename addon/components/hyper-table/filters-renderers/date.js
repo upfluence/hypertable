@@ -1,5 +1,6 @@
-import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+
 import moment from 'moment';
 
 import FiltersRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers';

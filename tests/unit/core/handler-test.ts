@@ -1,12 +1,13 @@
-import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
 import { getContext, type TestContext } from '@ember/test-helpers';
+
+import { setupApplicationTest } from 'ember-qunit';
+import { module, test } from 'qunit';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { FieldSize, Row } from '@upfluence/hypertable/core/interfaces';
-import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
+import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 
 module('Unit | core/handler', function (hooks) {
   setupApplicationTest(hooks);

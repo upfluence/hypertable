@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
+
 import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
 
 export default Component.extend(CellRendererMixin, {
