@@ -2,7 +2,7 @@ import EmberObject from '@ember/object';
 import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
 import { dasherize } from '@ember/string';
-import { isEmpty, typeOf } from '@ember/utils';
+import { typeOf } from '@ember/utils';
 
 import Tether from 'tether';
 

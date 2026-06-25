@@ -3,14 +3,13 @@ import { setApplication } from '@ember/test-helpers';
 
 import registerAssertions from '@upfluence/oss-components/test-support/register-assertions';
 // @ts-ignore
+import Application from 'dummy/app';
+import config from 'dummy/config/environment';
+// @ts-ignore
 import { forceModulesToBeLoaded, sendCoverage } from 'ember-cli-code-coverage/test-support';
 import { start } from 'ember-qunit';
 import QUnit from 'qunit';
 import { setup } from 'qunit-dom';
-
-import Application from '../app';
-// @ts-ignore
-import config from '../config/environment';
 
 setup(QUnit.assert);
 registerAssertions(QUnit.assert);
