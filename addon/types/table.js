@@ -1,7 +1,6 @@
 import EmberObject from '@ember/object';
 import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
-import { typeOf } from '@ember/utils';
 import { dasherize } from '@ember/string';
 import { isEmpty, typeOf } from '@ember/utils';
 
