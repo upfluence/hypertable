@@ -90,7 +90,7 @@
           {{#each this._fieldCategories as |category|}}
             <div
               class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
-              data-control-name={{concat "field_category_toggle_" category.key}}
+              data-control-name={{concat "field_category_toggle_" (normalize-category-name category.key)}}
               {{action "setFieldCategory" category.key}}
             >
               <div>{{category.label}}</div>
