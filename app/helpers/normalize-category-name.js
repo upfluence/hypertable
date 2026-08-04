@@ -1,1 +1,1 @@
-export { default, normalizeCategoryNameHelper } from '@upfluence/hypertable/helpers/normalize-category-name';
+export { default } from '@upfluence/hypertable/helpers/normalize-category-name';

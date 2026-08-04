@@ -1,8 +1,5 @@
 import { helper } from '@ember/component/helper';
 
-export function normalizeCategoryNameHelper(params: any[]) {
-  const [category] = params;
+export default helper(([category]: [string]): string => {
   return category.toLowerCase().replace(/\s+/g, '_');
-}
-
-export default helper(normalizeCategoryNameHelper);
+});
