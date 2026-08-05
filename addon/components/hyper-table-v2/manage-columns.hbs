@@ -20,7 +20,7 @@
           <div
             class={{concat "field-category" (if (eq this.activeColumnCategory category) " field-category--active")}}
             role="button"
-            data-control-name={{concat "field_category_toggle_" category}}
+            data-control-name={{concat "field_category_toggle_" (normalize-category-name category)}}
             {{on "click" (fn this.setFieldCategory category)}}
           >
             <div>{{category}}</div>
