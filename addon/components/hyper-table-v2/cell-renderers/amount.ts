@@ -7,7 +7,6 @@ interface HyperTableV2CellRenderersAmountArgs {
   handler: TableHandler;
   column: Column;
   row: Row;
-  extra?: { [key: string]: any };
 }
 
 export type Amount = {
