@@ -1,6 +1,7 @@
 import { ensureSafeComponent } from '@embroider/util';
 import GlimmerComponent from '@glimmer/component';
 
+import AmountCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/amount';
 import DateCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/date';
 import NumericCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/numeric';
 import TextCellRenderer from '@upfluence/hypertable/components/hyper-table-v2/cell-renderers/text';
@@ -19,6 +20,10 @@ const rendererMatchers: { [key: string]: RendererDictionaryItem } = {
   },
   integer: {
     cell: NumericCellRenderer,
+    filter: NumericFilteringRenderer
+  },
+  money: {
+    cell: AmountCellRenderer,
     filter: NumericFilteringRenderer
   },
   timestamp: {
