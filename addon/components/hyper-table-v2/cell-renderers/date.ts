@@ -12,7 +12,7 @@ interface HyperTableV2RenderersDateArgs {
   extra?: { [key: string]: any };
 }
 
-const DEFAULT_DATE_FORMAT = 'MMM. DD, YYYY';
+const DEFAULT_DATE_FORMAT = 'MMM DD, YYYY';
 
 export default class HyperTableV2CellRenderersDate extends Component<HyperTableV2RenderersDateArgs> {
   get value() {
