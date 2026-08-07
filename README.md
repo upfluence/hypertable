@@ -77,6 +77,7 @@ If no RenderingResolver is provided, Hypertable uses a default resolver with bui
 
 - `integer` type: properly formats numbers in cells and brings range-based filtering
 - `timestamp` type: properly displays dates and brings calendar-based filtering
+- `money` type: properly formats amounts expressed in cents and brings range-based filtering
 - a default `text` renderer to display textual content and filter using a typeahead input
 
 The Rendering Resolver extends BaseRenderingResolver from `@upfluence/hypertable/core/rendering-resolver` and determines which component should be used to render each cell, filter, and header according to column key.
@@ -361,6 +362,7 @@ Hypertable includes built-in renderers for common data types:
 - **text** - Basic text with ellipsis and tooltip
 - **numeric** - Formatted numbers
 - **date** - Formatted dates
+- **amount** - Formatted monetary amounts, expecting a `{ cents, currency }` value
 
 #### Filter Renderers
 
