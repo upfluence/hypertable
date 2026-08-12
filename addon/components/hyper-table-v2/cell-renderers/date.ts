@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 
+import { DEFAULT_DATE_FORMAT } from '@upfluence/oss-components/utils/constants';
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -11,8 +12,6 @@ interface HyperTableV2RenderersDateArgs {
   row: Row;
   extra?: { [key: string]: any };
 }
-
-const DEFAULT_DATE_FORMAT = 'MMMM D, YYYY';
 
 export default class HyperTableV2CellRenderersDate extends Component<HyperTableV2RenderersDateArgs> {
   get value() {
