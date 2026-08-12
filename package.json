@@ -86,7 +86,7 @@
     "@types/sinon": "^10.0.6",
     "@types/tether": "^1.4.6",
     "@typescript-eslint/parser": "^5.32.0",
-    "@upfluence/oss-components": "^3.97.4",
+    "@upfluence/oss-components": "^3.98.16",
     "@upfluence/w-conf": "^0.2.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~3.28.6",
