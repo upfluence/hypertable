@@ -1,3 +1,4 @@
+import { get } from '@ember/object';
 import Component from '@glimmer/component';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -12,6 +13,6 @@ interface HyperTableV2RenderersNumericArgs {
 
 export default class HyperTableV2CellRenderersNumeric extends Component<HyperTableV2RenderersNumericArgs> {
   get value() {
-    return this.args.row[this.args.column.definition.key];
+    return get(this.args.row, this.args.column.definition.key);
   }
 }
