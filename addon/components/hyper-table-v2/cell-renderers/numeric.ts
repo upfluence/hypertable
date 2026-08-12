@@ -1,4 +1,4 @@
-import { computed, defineProperty } from '@ember/object';
+import { get } from '@ember/object';
 import Component from '@glimmer/component';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -12,15 +12,7 @@ interface HyperTableV2RenderersNumericArgs {
 }
 
 export default class HyperTableV2CellRenderersNumeric extends Component<HyperTableV2RenderersNumericArgs> {
-  constructor(owner: unknown, args: HyperTableV2RenderersNumericArgs) {
-    super(owner, args);
-
-    defineProperty(
-      this,
-      'value',
-      computed(`args.row.${args.column.definition.key}`, function () {
-        return this.args.row[this.args.column.definition.key];
-      })
-    );
+  get value() {
+    return get(this.args.row, this.args.column.definition.key);
   }
 }
