@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 
-import { DEFAULT_DATE_FORMAT_WITH_TIME } from '@upfluence/oss-components/utils/constants';
+import { DEFAULT_DATE_FORMAT } from '@upfluence/oss-components/utils/constants';
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
@@ -19,6 +19,6 @@ export default class HyperTableV2CellRenderersDate extends Component<HyperTableV
   }
 
   get formattedDate() {
-    return moment.unix(this.value).format(DEFAULT_DATE_FORMAT_WITH_TIME);
+    return moment.unix(this.value).format(DEFAULT_DATE_FORMAT);
   }
 }

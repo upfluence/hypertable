@@ -1,6 +1,6 @@
 import { render, type TestContext } from '@ember/test-helpers';
 
-import { DEFAULT_DATE_FORMAT_WITH_TIME } from '@upfluence/oss-components/utils/constants';
+import { DEFAULT_DATE_FORMAT } from '@upfluence/oss-components/utils/constants';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import moment from 'moment';
@@ -31,7 +31,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/date', function 
 
     assert.equal(this.column.definition.key, 'date');
     assert.equal(this.row[this.column.definition.key], '1643386394');
-    assert.dom().hasText(moment.unix(this.row[this.column.definition.key]).format(DEFAULT_DATE_FORMAT_WITH_TIME));
+    assert.dom().hasText(moment.unix(this.row[this.column.definition.key]).format(DEFAULT_DATE_FORMAT));
   });
 
   test('it renders a default - when the value is null', async function (this: TestContext, assert) {
