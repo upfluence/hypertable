@@ -8,17 +8,32 @@ import { tracked } from '@glimmer/tracking';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
-type FeatureSet = {
+export type FeatureSet = {
   selection: boolean;
   searchable: boolean;
   manageable_fields: boolean;
   global_filters_reset: boolean;
 };
 
-type OptionSet = {
+export type OptionSet = {
   selectionIntlKeyPath?: string;
   delegatedFiltering?: boolean;
+  initialRowsAnimation?: InitialRowsAnimationOption;
 };
+
+export type InitialRowsAnimationConfig = {
+  delayMs: number;
+  staggerMs: number;
+  maxAnimationDurationMs: number;
+  extraColumnCellEffectDelayMs?: number;
+  extraColumnCellEffectClass?: string;
+  columns?: string[];
+  includeSelectionColumnInExtraEffect?: boolean;
+};
+
+export type InitialRowsAnimationContext = InitialRowsAnimationConfig & { active: boolean };
+
+type InitialRowsAnimationOption = Partial<InitialRowsAnimationConfig>;
 
 interface HyperTableV2Args {
   handler: TableHandler;
@@ -32,7 +47,14 @@ const DEFAULT_FEATURES_SET: FeatureSet = {
   manageable_fields: true,
   global_filters_reset: true
 };
+
 const RESET_DEBOUNCE_TIME = 300;
+const DEFAULT_INITIAL_LOAD_ANIMATION_DELAY_MS = 300;
+const DEFAULT_INITIAL_LOAD_ANIMATION_DURATION_MS = 1500;
+const DEFAULT_INITIAL_LOAD_ANIMATION_STAGGER_MS = 40;
+const DEFAULT_INITIAL_LOAD_ANIMATION_EXTRA_EFFECT_DELAY_MS = 0;
+const DEFAULT_INITIAL_LOAD_ANIMATION_INCLUDE_SELECTION_COLUMN_IN_EXTRA_EFFECT = false;
+const MAX_INITIAL_LOAD_ANIMATION_WINDOW_MS = 5000;
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
@@ -41,6 +63,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked loadingResetFilters = false;
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
+  @tracked initialRowsAnimationActive: boolean = false;
+  @tracked initialRowsAnimationPlayed: boolean = false;
+
+  private initialRowsAnimationTimeout?: number;
 
   declare private hypertableInstanceID: string;
 
@@ -49,7 +75,9 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     args.handler.fetchColumnDefinitions();
     args.handler.fetchColumns().then(() => {
       this.initialFetchColumnsDone = true;
-      args.handler.fetchRows();
+      args.handler.fetchRows().finally(() => {
+        this.activateInitialRowsAnimationIfNeeded();
+      });
       this.computeScrollableTable();
     });
 
@@ -61,6 +89,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       ...DEFAULT_FEATURES_SET,
       ...(this.args.features || {})
     };
+  }
+
+  get disableInitialRowsAnimationExtraEffectOnSelectionCells(): boolean {
+    return !this.initialRowsAnimation?.includeSelectionColumnInExtraEffect;
   }
 
   @computed('args.handler.columns.@each.{filters,order}')
@@ -86,6 +118,44 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     } else {
       return this.args.handler.selection.length;
     }
+  }
+
+  get initialRowsAnimationContext(): InitialRowsAnimationContext | null {
+    if (!this.initialRowsAnimation) {
+      return null;
+    }
+
+    return {
+      active: this.initialRowsAnimationActive,
+      delayMs: this.initialRowsAnimation.delayMs,
+      staggerMs: this.initialRowsAnimation.staggerMs,
+      maxAnimationDurationMs: this.initialRowsAnimation.maxAnimationDurationMs,
+      extraColumnCellEffectDelayMs: this.initialRowsAnimation.extraColumnCellEffectDelayMs,
+      extraColumnCellEffectClass: this.initialRowsAnimation.extraColumnCellEffectClass,
+      columns: this.initialRowsAnimation.columns,
+      includeSelectionColumnInExtraEffect: this.initialRowsAnimation.includeSelectionColumnInExtraEffect
+    };
+  }
+
+  private get initialRowsAnimation(): InitialRowsAnimationConfig | null {
+    const options = this.args.options?.initialRowsAnimation;
+
+    if (!options) {
+      return null;
+    }
+
+    return {
+      delayMs: options.delayMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_DELAY_MS,
+      staggerMs: options.staggerMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_STAGGER_MS,
+      maxAnimationDurationMs: options.maxAnimationDurationMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_DURATION_MS,
+      extraColumnCellEffectDelayMs:
+        options.extraColumnCellEffectDelayMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_EXTRA_EFFECT_DELAY_MS,
+      extraColumnCellEffectClass: options.extraColumnCellEffectClass,
+      columns: options.columns,
+      includeSelectionColumnInExtraEffect:
+        options.includeSelectionColumnInExtraEffect ??
+        DEFAULT_INITIAL_LOAD_ANIMATION_INCLUDE_SELECTION_COLUMN_IN_EXTRA_EFFECT
+    };
   }
 
   @action
@@ -175,6 +245,11 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   teardown(): void {
+    if (this.initialRowsAnimationTimeout) {
+      window.clearTimeout(this.initialRowsAnimationTimeout);
+      this.initialRowsAnimationTimeout = undefined;
+    }
+
     this.args.handler.teardown();
   }
 
@@ -204,6 +279,30 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     });
 
     this.computeScrollableTable();
+  }
+
+  private activateInitialRowsAnimationIfNeeded(): void {
+    if (this.initialRowsAnimationPlayed || !this.initialRowsAnimation) {
+      return;
+    }
+
+    if (this.args.handler.communicationError || this.args.handler.rows.length === 0) {
+      return;
+    }
+
+    this.initialRowsAnimationPlayed = true;
+    this.initialRowsAnimationActive = true;
+
+    const rowsAnimationWindowMs = Math.max(this.args.handler.rows.length - 1, 0) * this.initialRowsAnimation.staggerMs;
+    const activeDurationMs = Math.min(
+      this.initialRowsAnimation.delayMs + rowsAnimationWindowMs + this.initialRowsAnimation.maxAnimationDurationMs,
+      MAX_INITIAL_LOAD_ANIMATION_WINDOW_MS
+    );
+
+    this.initialRowsAnimationTimeout = window.setTimeout(() => {
+      this.initialRowsAnimationActive = false;
+      this.initialRowsAnimationTimeout = undefined;
+    }, activeDurationMs);
   }
 
   private resetSelectionOnFullExclusion(): void {

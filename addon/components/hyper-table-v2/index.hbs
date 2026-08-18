@@ -108,11 +108,14 @@
                     />
                   </header>
 
-                  {{#each @handler.rows as |row|}}
+                  {{#each @handler.rows as |row rowIndex|}}
                     <HyperTableV2::Cell
                       @handler={{@handler}}
                       @column={{column}}
                       @row={{row}}
+                      @rowIndex={{rowIndex}}
+                      @initialRowsAnimation={{this.initialRowsAnimationContext}}
+                      @disableInitialRowsAnimationExtraEffect={{this.disableInitialRowsAnimationExtraEffectOnSelectionCells}}
                       @onClick={{fn this.toggleRowSelection row}}
                       @onHover={{this.onRowHover}}
                       @loading={{row._isLoading}}
@@ -142,11 +145,13 @@
                 @column={{column}}
                 @delegatedFiltering={{@options.delegatedFiltering}}
               >
-                {{#each @handler.rows as |row|}}
+                {{#each @handler.rows as |row rowIndex|}}
                   <HyperTableV2::Cell
                     @handler={{@handler}}
                     @column={{column}}
                     @row={{row}}
+                    @rowIndex={{rowIndex}}
+                    @initialRowsAnimation={{this.initialRowsAnimationContext}}
                     @onClick={{this.onRowClick}}
                     @onHover={{this.onRowHover}}
                     @loading={{row._isLoading}}
@@ -175,11 +180,13 @@
                 disabled=column.definition.position.sticky
               }}
             >
-              {{#each @handler.rows as |row|}}
+              {{#each @handler.rows as |row rowIndex|}}
                 <HyperTableV2::Cell
                   @handler={{@handler}}
                   @column={{column}}
                   @row={{row}}
+                  @rowIndex={{rowIndex}}
+                  @initialRowsAnimation={{this.initialRowsAnimationContext}}
                   @onClick={{this.onRowClick}}
                   @onHover={{this.onRowHover}}
                   @loading={{row._isLoading}}

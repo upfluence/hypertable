@@ -192,6 +192,89 @@ HyperTableV2 supports several named blocks that allow you to customize specific 
 </HyperTableV2>
 ```
 
+#### HyperTableV2 options
+
+`@options` lets you configure optional component behaviors.
+
+##### selectionIntlKeyPath
+
+- Type: `string`
+- Required: no
+
+Custom base i18n key path used by `HyperTableV2::Selection` for:
+
+- `<path>.all_records_selected`
+- `<path>.records_selected`
+- `<path>.select_all`
+
+Default path: `hypertable.selection`.
+Note: the clear action label currently uses `hypertable.selection.clear` directly.
+
+```ts
+options = {
+  selectionIntlKeyPath: 'my.table.selection'
+};
+```
+
+##### delegatedFiltering
+
+- Type: `boolean`
+- Required: no
+
+Disables built-in column filter UI and ordering indicators in `HyperTableV2::Column`.
+Use this when filtering and sorting are handled by external controls.
+
+```ts
+options = {
+  delegatedFiltering: true
+};
+```
+
+##### initialRowsAnimation
+
+- Type: `object`
+- Required: no
+
+Enables a one-time animation sequence on the first successful non-empty rows load.
+
+Behavior:
+
+- Base behavior: rows are revealed with a staggered sequence across all non-loading cells.
+- Extra class behavior: when `extraColumnCellEffectClass` is set, that class is added on top of the base sequence on each cell that matches the columns specified in `columns`.
+- Selection column behavior: by default, the extra class does not apply on selection checkbox cells. Set `includeSelectionColumnInExtraEffect` to `true` to include them.
+- Extra class delay behavior: `extraColumnCellEffectDelayMs` adds an extra delay before the extra class effect starts.
+- If `columns` is omitted or empty, `extraColumnCellEffectClass` is applied to cells from all columns.
+
+
+```ts
+options = {
+  initialRowsAnimation: {
+    delayMs: 300,
+    staggerMs: 40,
+    maxAnimationDurationMs: 1500,
+    extraColumnCellEffectDelayMs: 120,
+    extraColumnCellEffectClass: 'smart-rotating-gradient',
+    columns: ['foo', 'bar'],
+    includeSelectionColumnInExtraEffect: false
+  }
+};
+```
+
+Fields:
+
+- `delayMs` (number): Delay before the sequence starts. Default: `300`.
+- `staggerMs` (number): Extra delay applied per row (`rowIndex * staggerMs`). Default: `40`.
+- `maxAnimationDurationMs` (number): Max duration used by the animation window timing. Default: `1500`.
+- `extraColumnCellEffectDelayMs` (number, optional): Extra delay applied before the `extraColumnCellEffectClass` effect starts. Default: `0`.
+- `extraColumnCellEffectClass` (string): Optional extra CSS class added to targeted cells while animation is active.
+- `columns` (string[]): Column keys that receive `extraColumnCellEffectClass`. If omitted or empty, the extra class is applied to all columns.
+- `includeSelectionColumnInExtraEffect` (boolean): Whether the extra class should also be applied on selection checkbox cells when selection is enabled. Default: `false`.
+
+Notes:
+
+- The sequence runs once per component lifecycle.
+- The active window is capped internally to avoid overly long animations on large datasets.
+
 ## Core Concepts
 
 ### Column Definitions

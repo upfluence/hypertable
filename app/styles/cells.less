@@ -277,6 +277,23 @@
   cursor: pointer;
 }
 
+.hypertable__cell--initial-load-sequence {
+  opacity: 0;
+  animation-name: initial-load-cell;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-delay: var(--hypertable-initial-rows-animation-delay, 0ms);
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hypertable__cell--initial-load-sequence {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 .expandable-list {
   position: absolute;
   left: 0;
