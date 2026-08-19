@@ -21,19 +21,19 @@ export type OptionSet = {
   initialLoadAnimation?: InitialLoadAnimationOption;
 };
 
-export type InitialLoadAnimationConfig = {
-  delayMs?: number;
-  staggerMs?: number;
-  maxAnimationDurationMs?: number;
+export type InitialLoadAnimationContext = InitialLoadAnimationConfig & { active: boolean };
+
+export type InitialLoadAnimationOption = Partial<InitialLoadAnimationConfig>;
+
+type InitialLoadAnimationConfig = {
+  delayMs: number;
+  staggerMs: number;
+  maxAnimationDurationMs: number;
   extraColumnCellEffectDelayMs?: number;
   extraColumnCellEffectClass?: string;
   columns?: string[];
   includeSelectionColumnInExtraEffect?: boolean;
 };
-
-export type InitialLoadAnimationContext = InitialLoadAnimationConfig & { active: boolean };
-
-type InitialLoadAnimationOption = Partial<InitialLoadAnimationConfig>;
 
 interface HyperTableV2Args {
   handler: TableHandler;
@@ -126,10 +126,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     return this.initialLoadAnimation ? { active: this.initialLoadAnimationActive, ...this.initialLoadAnimation } : null;
   }
 
-  private get initialLoadAnimation(): Required<
-    Omit<InitialLoadAnimationConfig, 'extraColumnCellEffectClass' | 'columns'>
-  > {
+  private get initialLoadAnimation(): InitialLoadAnimationConfig | null {
     const options = this.args.options?.initialLoadAnimation;
+
+    if (!options) return null;
 
     return { ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG, ...options };
   }
