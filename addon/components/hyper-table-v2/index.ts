@@ -5,24 +5,8 @@ import { isEmpty } from '@ember/utils';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-
-
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export type FeatureSet = {
   selection: boolean;
@@ -38,9 +22,9 @@ export type OptionSet = {
 };
 
 export type InitialLoadAnimationConfig = {
-  delayMs: number;
-  staggerMs: number;
-  maxAnimationDurationMs: number;
+  delayMs?: number;
+  staggerMs?: number;
+  maxAnimationDurationMs?: number;
   extraColumnCellEffectDelayMs?: number;
   extraColumnCellEffectClass?: string;
   columns?: string[];
@@ -142,10 +126,12 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     return this.initialLoadAnimation ? { active: this.initialLoadAnimationActive, ...this.initialLoadAnimation } : null;
   }
 
-  private get initialLoadAnimation(): InitialLoadAnimationConfig | null {
+  private get initialLoadAnimation(): Required<
+    Omit<InitialLoadAnimationConfig, 'extraColumnCellEffectClass' | 'columns'>
+  > {
     const options = this.args.options?.initialLoadAnimation;
 
-    return options ? { ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG, ...options } : null;
+    return { ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG, ...options };
   }
 
   @action

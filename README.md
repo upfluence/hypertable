@@ -230,7 +230,7 @@ options = {
 };
 ```
 
-##### initialLoadAnimation
+##### initialRowsAnimation
 
 - Type: `object`
 - Required: no
@@ -248,7 +248,7 @@ Behavior:
 
 ```ts
 options = {
-  initialLoadAnimation: {
+  initialRowsAnimation: {
     delayMs: 300,
     staggerMs: 40,
     maxAnimationDurationMs: 1500,
@@ -265,7 +265,7 @@ Fields:
 - `delayMs` (number): Delay before the sequence starts. Default: `300`.
 - `staggerMs` (number): Extra delay applied per row (`rowIndex * staggerMs`). Default: `40`.
 - `maxAnimationDurationMs` (number): Max duration used by the animation window timing. Default: `1500`.
-- `extraColumnCellEffectDelayMs` (number, optional): Extra delay applied before the `extraColumnCellEffectClass` effect starts. Default: `0`.
+- `extraColumnCellEffectDelayMs` (number): Extra delay applied before the `extraColumnCellEffectClass` effect starts. Default: `0`.
 - `extraColumnCellEffectClass` (string): Optional extra CSS class added to targeted cells while animation is active.
 - `columns` (string[]): Column keys that receive `extraColumnCellEffectClass`. If omitted or empty, the extra class is applied to all columns.
 - `includeSelectionColumnInExtraEffect` (boolean): Whether the extra class should also be applied on selection checkbox cells when selection is enabled. Default: `false`.
