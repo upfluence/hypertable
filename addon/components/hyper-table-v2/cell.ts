@@ -104,11 +104,9 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   private get isInitialLoadAnimationTargetedColumn(): boolean {
-    const columns = this.args.initialLoadAnimation?.columns;
+    const columns = this.args.initialLoadAnimation?.columns ?? [];
 
-    if (!columns || columns.length === 0) {
-      return true;
-    }
+    if (columns.length === 0) return true;
 
     return columns.includes(this.args.column.definition.key);
   }
@@ -127,6 +125,25 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
 
   private get extraEffectActivationDelayMs(): number {
     return this.rowAnimationDelayMs + (this.args.initialLoadAnimation?.extraColumnCellEffectDelayMs ?? 0);
+  }
+
+  @action
+  clickedCell(event: MouseEvent) {
+    event.stopPropagation();
+
+    if (!this.args.loading) {
+      this.args.onClick?.(this.args.row);
+    }
+  }
+
+  @action
+  toggleHover(row: Row, hovered: boolean) {
+    this.args.onHover?.(row, hovered);
+  }
+
+  @action
+  teardown() {
+    this.resetExtraEffectState();
   }
 
   private scheduleExtraEffectIfNeeded(): void {
@@ -154,24 +171,5 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
     }
 
     this.extraEffectReady = false;
-  }
-
-  @action
-  clickedCell(event: MouseEvent) {
-    event.stopPropagation();
-
-    if (!this.args.loading) {
-      this.args.onClick?.(this.args.row);
-    }
-  }
-
-  @action
-  toggleHover(row: Row, hovered: boolean) {
-    this.args.onHover?.(row, hovered);
-  }
-
-  @action
-  teardown() {
-    this.resetExtraEffectState();
   }
 }
