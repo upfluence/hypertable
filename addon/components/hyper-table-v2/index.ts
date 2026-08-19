@@ -49,12 +49,18 @@ const DEFAULT_FEATURES_SET: FeatureSet = {
 };
 
 const RESET_DEBOUNCE_TIME = 300;
-const DEFAULT_INITIAL_LOAD_ANIMATION_DELAY_MS = 300;
-const DEFAULT_INITIAL_LOAD_ANIMATION_DURATION_MS = 1500;
-const DEFAULT_INITIAL_LOAD_ANIMATION_STAGGER_MS = 40;
-const DEFAULT_INITIAL_LOAD_ANIMATION_EXTRA_EFFECT_DELAY_MS = 0;
-const DEFAULT_INITIAL_LOAD_ANIMATION_INCLUDE_SELECTION_COLUMN_IN_EXTRA_EFFECT = false;
 const MAX_INITIAL_LOAD_ANIMATION_WINDOW_MS = 5000;
+
+const DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG: Omit<
+  InitialRowsAnimationConfig,
+  'extraColumnCellEffectClass' | 'columns'
+> = {
+  delayMs: 300,
+  staggerMs: 40,
+  maxAnimationDurationMs: 1500,
+  extraColumnCellEffectDelayMs: 0,
+  includeSelectionColumnInExtraEffect: false
+};
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
@@ -91,8 +97,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     };
   }
 
-  get disableInitialRowsAnimationExtraEffectOnSelectionCells(): boolean {
-    return !this.initialRowsAnimation?.includeSelectionColumnInExtraEffect;
+  get enableInitialRowsAnimationExtraEffectOnSelectionCells(): boolean {
+    return !!this.initialRowsAnimation?.includeSelectionColumnInExtraEffect;
   }
 
   @computed('args.handler.columns.@each.{filters,order}')
@@ -125,16 +131,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       return null;
     }
 
-    return {
-      active: this.initialRowsAnimationActive,
-      delayMs: this.initialRowsAnimation.delayMs,
-      staggerMs: this.initialRowsAnimation.staggerMs,
-      maxAnimationDurationMs: this.initialRowsAnimation.maxAnimationDurationMs,
-      extraColumnCellEffectDelayMs: this.initialRowsAnimation.extraColumnCellEffectDelayMs,
-      extraColumnCellEffectClass: this.initialRowsAnimation.extraColumnCellEffectClass,
-      columns: this.initialRowsAnimation.columns,
-      includeSelectionColumnInExtraEffect: this.initialRowsAnimation.includeSelectionColumnInExtraEffect
-    };
+    return { active: this.initialRowsAnimationActive, ...this.initialRowsAnimation };
   }
 
   private get initialRowsAnimation(): InitialRowsAnimationConfig | null {
@@ -144,18 +141,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       return null;
     }
 
-    return {
-      delayMs: options.delayMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_DELAY_MS,
-      staggerMs: options.staggerMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_STAGGER_MS,
-      maxAnimationDurationMs: options.maxAnimationDurationMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_DURATION_MS,
-      extraColumnCellEffectDelayMs:
-        options.extraColumnCellEffectDelayMs ?? DEFAULT_INITIAL_LOAD_ANIMATION_EXTRA_EFFECT_DELAY_MS,
-      extraColumnCellEffectClass: options.extraColumnCellEffectClass,
-      columns: options.columns,
-      includeSelectionColumnInExtraEffect:
-        options.includeSelectionColumnInExtraEffect ??
-        DEFAULT_INITIAL_LOAD_ANIMATION_INCLUDE_SELECTION_COLUMN_IN_EXTRA_EFFECT
-    };
+    return { ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG, ...options };
   }
 
   @action

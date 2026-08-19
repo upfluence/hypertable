@@ -115,7 +115,7 @@
                       @row={{row}}
                       @rowIndex={{rowIndex}}
                       @initialRowsAnimation={{this.initialRowsAnimationContext}}
-                      @disableInitialRowsAnimationExtraEffect={{this.disableInitialRowsAnimationExtraEffectOnSelectionCells}}
+                      @enableInitialRowsAnimationExtraEffect={{this.enableInitialRowsAnimationExtraEffectOnSelectionCells}}
                       @onClick={{fn this.toggleRowSelection row}}
                       @onHover={{this.onRowHover}}
                       @loading={{row._isLoading}}
@@ -152,6 +152,7 @@
                     @row={{row}}
                     @rowIndex={{rowIndex}}
                     @initialRowsAnimation={{this.initialRowsAnimationContext}}
+                    @enableInitialRowsAnimationExtraEffect={{true}}
                     @onClick={{this.onRowClick}}
                     @onHover={{this.onRowHover}}
                     @loading={{row._isLoading}}
@@ -187,6 +188,7 @@
                   @row={{row}}
                   @rowIndex={{rowIndex}}
                   @initialRowsAnimation={{this.initialRowsAnimationContext}}
+                  @enableInitialRowsAnimationExtraEffect={{true}}
                   @onClick={{this.onRowClick}}
                   @onHover={{this.onRowHover}}
                   @loading={{row._isLoading}}

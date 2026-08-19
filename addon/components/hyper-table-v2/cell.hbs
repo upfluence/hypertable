@@ -1,11 +1,5 @@
 <div
-  class={{concat
-    "hypertable__cell"
-    (if this.loading " hypertable__cell--loading")
-    (if @row.hovered " hypertable__cell--hovered")
-    (if this.initialRowsAnimationSequenceClass (concat " " this.initialRowsAnimationSequenceClass))
-    (if this.initialRowsAnimationCellClass (concat " " this.initialRowsAnimationCellClass))
-  }}
+  class={{this.computedClass}}
   style={{this.initialRowsAnimationCellStyle}}
   role="button"
   {{will-destroy this.teardown}}

@@ -1,4 +1,5 @@
 import { action } from '@ember/object';
+import { htmlSafe } from '@ember/template';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
@@ -12,7 +13,7 @@ interface HyperTableV2CellArgs {
   row: Row;
   rowIndex?: number;
   initialRowsAnimation?: InitialRowsAnimationContext | null;
-  disableInitialRowsAnimationExtraEffect?: boolean;
+  enableInitialRowsAnimationExtraEffect?: boolean;
   loading: boolean;
   onClick?(row: Row): void;
   onHover?(row: Row, hovered: boolean): void;
@@ -44,6 +45,28 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
     return this.args.loading || this.loadingCellComponent;
   }
 
+  get computedClass(): string {
+    const classes = ['hypertable__cell'];
+
+    if (this.loading) {
+      classes.push('hypertable__cell--loading');
+    }
+
+    if (this.args.row?.hovered) {
+      classes.push('hypertable__cell--hovered');
+    }
+
+    if (this.initialRowsAnimationSequenceClass) {
+      classes.push(this.initialRowsAnimationSequenceClass);
+    }
+
+    if (this.initialRowsAnimationCellClass) {
+      classes.push(this.initialRowsAnimationCellClass);
+    }
+
+    return classes.join(' ');
+  }
+
   get initialRowsAnimationCellClass(): string {
     const extraColumnCellEffectClass = this.args.initialRowsAnimation?.extraColumnCellEffectClass;
 
@@ -62,14 +85,10 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   get initialRowsAnimationSequenceClass(): string {
-    if (!this.shouldApplyInitialRowsAnimationSequence) {
-      return '';
-    }
-
-    return 'hypertable__cell--initial-load-sequence';
+    return this.shouldApplyInitialRowsAnimationSequence ? 'hypertable__cell--initial-load-sequence' : '';
   }
 
-  get initialRowsAnimationCellStyle(): string | undefined {
+  get initialRowsAnimationCellStyle(): ReturnType<typeof htmlSafe> | undefined {
     if (!this.shouldApplyInitialRowsAnimationSequence) {
       return undefined;
     }
@@ -78,7 +97,9 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
     const staggeredDelayMs = this.rowAnimationDelayMs;
     const extraEffectDelayMs = staggeredDelayMs + extraColumnCellEffectDelayMs;
 
-    return `--hypertable-initial-rows-animation-delay: ${staggeredDelayMs}ms; --hypertable-initial-rows-extra-effect-delay: ${extraEffectDelayMs}ms;`;
+    return htmlSafe(
+      `--hypertable-initial-rows-animation-delay: ${staggeredDelayMs}ms; --hypertable-initial-rows-extra-effect-delay: ${extraEffectDelayMs}ms;`
+    );
   }
 
   private get rowAnimationDelayMs(): number {
@@ -108,7 +129,7 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   private get shouldApplyInitialRowsAnimationCustomEffect(): boolean {
-    if (this.args.disableInitialRowsAnimationExtraEffect) {
+    if (!this.args.enableInitialRowsAnimationExtraEffect) {
       return false;
     }
 
