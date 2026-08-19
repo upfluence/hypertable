@@ -5,8 +5,24 @@ import { isEmpty } from '@ember/utils';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
+
+
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export type FeatureSet = {
   selection: boolean;
@@ -18,10 +34,10 @@ export type FeatureSet = {
 export type OptionSet = {
   selectionIntlKeyPath?: string;
   delegatedFiltering?: boolean;
-  initialRowsAnimation?: InitialRowsAnimationOption;
+  initialLoadAnimation?: InitialLoadAnimationOption;
 };
 
-export type InitialRowsAnimationConfig = {
+export type InitialLoadAnimationConfig = {
   delayMs: number;
   staggerMs: number;
   maxAnimationDurationMs: number;
@@ -31,9 +47,9 @@ export type InitialRowsAnimationConfig = {
   includeSelectionColumnInExtraEffect?: boolean;
 };
 
-export type InitialRowsAnimationContext = InitialRowsAnimationConfig & { active: boolean };
+export type InitialLoadAnimationContext = InitialLoadAnimationConfig & { active: boolean };
 
-type InitialRowsAnimationOption = Partial<InitialRowsAnimationConfig>;
+type InitialLoadAnimationOption = Partial<InitialLoadAnimationConfig>;
 
 interface HyperTableV2Args {
   handler: TableHandler;
@@ -49,18 +65,14 @@ const DEFAULT_FEATURES_SET: FeatureSet = {
 };
 
 const RESET_DEBOUNCE_TIME = 300;
-const MAX_INITIAL_LOAD_ANIMATION_WINDOW_MS = 5000;
 
-const DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG: Omit<
-  InitialRowsAnimationConfig,
-  'extraColumnCellEffectClass' | 'columns'
-> = {
+const DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG = {
   delayMs: 300,
   staggerMs: 40,
   maxAnimationDurationMs: 1500,
   extraColumnCellEffectDelayMs: 0,
   includeSelectionColumnInExtraEffect: false
-};
+} as const satisfies Omit<InitialLoadAnimationConfig, 'extraColumnCellEffectClass' | 'columns'>;
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
@@ -69,10 +81,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked loadingResetFilters = false;
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
-  @tracked initialRowsAnimationActive: boolean = false;
-  @tracked initialRowsAnimationPlayed: boolean = false;
+  @tracked initialLoadAnimationActive: boolean = false;
+  @tracked initialLoadAnimationPlayed: boolean = false;
 
-  private initialRowsAnimationTimeout?: number;
+  private initialLoadAnimationTimeout?: number;
 
   declare private hypertableInstanceID: string;
 
@@ -82,7 +94,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     args.handler.fetchColumns().then(() => {
       this.initialFetchColumnsDone = true;
       args.handler.fetchRows().finally(() => {
-        this.activateInitialRowsAnimationIfNeeded();
+        this.activateInitialLoadAnimationIfNeeded();
       });
       this.computeScrollableTable();
     });
@@ -97,8 +109,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     };
   }
 
-  get enableInitialRowsAnimationExtraEffectOnSelectionCells(): boolean {
-    return !!this.initialRowsAnimation?.includeSelectionColumnInExtraEffect;
+  get enableInitialLoadAnimationExtraEffectOnSelectionCells(): boolean {
+    return !!this.initialLoadAnimation?.includeSelectionColumnInExtraEffect;
   }
 
   @computed('args.handler.columns.@each.{filters,order}')
@@ -126,22 +138,14 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     }
   }
 
-  get initialRowsAnimationContext(): InitialRowsAnimationContext | null {
-    if (!this.initialRowsAnimation) {
-      return null;
-    }
-
-    return { active: this.initialRowsAnimationActive, ...this.initialRowsAnimation };
+  get initialLoadAnimationContext(): InitialLoadAnimationContext | null {
+    return this.initialLoadAnimation ? { active: this.initialLoadAnimationActive, ...this.initialLoadAnimation } : null;
   }
 
-  private get initialRowsAnimation(): InitialRowsAnimationConfig | null {
-    const options = this.args.options?.initialRowsAnimation;
+  private get initialLoadAnimation(): InitialLoadAnimationConfig | null {
+    const options = this.args.options?.initialLoadAnimation;
 
-    if (!options) {
-      return null;
-    }
-
-    return { ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG, ...options };
+    return options ? { ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG, ...options } : null;
   }
 
   @action
@@ -231,9 +235,9 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   teardown(): void {
-    if (this.initialRowsAnimationTimeout) {
-      window.clearTimeout(this.initialRowsAnimationTimeout);
-      this.initialRowsAnimationTimeout = undefined;
+    if (this.initialLoadAnimationTimeout) {
+      window.clearTimeout(this.initialLoadAnimationTimeout);
+      this.initialLoadAnimationTimeout = undefined;
     }
 
     this.args.handler.teardown();
@@ -267,8 +271,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     this.computeScrollableTable();
   }
 
-  private activateInitialRowsAnimationIfNeeded(): void {
-    if (this.initialRowsAnimationPlayed || !this.initialRowsAnimation) {
+  private activateInitialLoadAnimationIfNeeded(): void {
+    if (this.initialLoadAnimationPlayed || !this.initialLoadAnimation) {
       return;
     }
 
@@ -276,18 +280,16 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       return;
     }
 
-    this.initialRowsAnimationPlayed = true;
-    this.initialRowsAnimationActive = true;
+    this.initialLoadAnimationPlayed = true;
+    this.initialLoadAnimationActive = true;
 
-    const rowsAnimationWindowMs = Math.max(this.args.handler.rows.length - 1, 0) * this.initialRowsAnimation.staggerMs;
-    const activeDurationMs = Math.min(
-      this.initialRowsAnimation.delayMs + rowsAnimationWindowMs + this.initialRowsAnimation.maxAnimationDurationMs,
-      MAX_INITIAL_LOAD_ANIMATION_WINDOW_MS
-    );
+    const rowsAnimationWindowMs = Math.max(this.args.handler.rows.length - 1, 0) * this.initialLoadAnimation.staggerMs;
+    const activeDurationMs =
+      this.initialLoadAnimation.delayMs + rowsAnimationWindowMs + this.initialLoadAnimation.maxAnimationDurationMs;
 
-    this.initialRowsAnimationTimeout = window.setTimeout(() => {
-      this.initialRowsAnimationActive = false;
-      this.initialRowsAnimationTimeout = undefined;
+    this.initialLoadAnimationTimeout = window.setTimeout(() => {
+      this.initialLoadAnimationActive = false;
+      this.initialLoadAnimationTimeout = undefined;
     }, activeDurationMs);
   }
 

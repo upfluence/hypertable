@@ -230,7 +230,7 @@ export default class Application extends Controller {
 
   get tableOptions() {
     return {
-      initialRowsAnimation: {
+      initialLoadAnimation: {
         delayMs: 300,
         staggerMs: 40,
         maxAnimationDurationMs: 5000,

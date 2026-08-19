@@ -3,7 +3,7 @@ import { htmlSafe } from '@ember/template';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import type { InitialRowsAnimationContext } from '@upfluence/hypertable/components/hyper-table-v2';
+import type { InitialLoadAnimationContext } from '@upfluence/hypertable/components/hyper-table-v2';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, ResolvedRenderingComponent, Row } from '@upfluence/hypertable/core/interfaces';
 
@@ -12,8 +12,8 @@ interface HyperTableV2CellArgs {
   column: Column;
   row: Row;
   rowIndex?: number;
-  initialRowsAnimation?: InitialRowsAnimationContext | null;
-  enableInitialRowsAnimationExtraEffect?: boolean;
+  initialLoadAnimation?: InitialLoadAnimationContext | null;
+  enableInitialLoadAnimationExtraEffect?: boolean;
   loading: boolean;
   onClick?(row: Row): void;
   onHover?(row: Row, hovered: boolean): void;
@@ -48,29 +48,18 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   get computedClass(): string {
     const classes = ['hypertable__cell'];
 
-    if (this.loading) {
-      classes.push('hypertable__cell--loading');
-    }
-
-    if (this.args.row?.hovered) {
-      classes.push('hypertable__cell--hovered');
-    }
-
-    if (this.initialRowsAnimationSequenceClass) {
-      classes.push(this.initialRowsAnimationSequenceClass);
-    }
-
-    if (this.initialRowsAnimationCellClass) {
-      classes.push(this.initialRowsAnimationCellClass);
-    }
+    if (this.loading) classes.push('hypertable__cell--loading');
+    if (this.args.row?.hovered) classes.push('hypertable__cell--hovered');
+    if (this.initialLoadAnimationSequenceClass) classes.push(this.initialLoadAnimationSequenceClass);
+    if (this.initialLoadAnimationCellClass) classes.push(this.initialLoadAnimationCellClass);
 
     return classes.join(' ');
   }
 
-  get initialRowsAnimationCellClass(): string {
-    const extraColumnCellEffectClass = this.args.initialRowsAnimation?.extraColumnCellEffectClass;
+  get initialLoadAnimationCellClass(): string {
+    const extraColumnCellEffectClass = this.args.initialLoadAnimation?.extraColumnCellEffectClass;
 
-    if (!this.shouldApplyInitialRowsAnimationCustomEffect || !extraColumnCellEffectClass) {
+    if (!this.shouldApplyInitialLoadAnimationCustomEffect || !extraColumnCellEffectClass) {
       this.resetExtraEffectState();
       return '';
     }
@@ -84,16 +73,16 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
     return this.extraEffectReady ? extraColumnCellEffectClass : '';
   }
 
-  get initialRowsAnimationSequenceClass(): string {
-    return this.shouldApplyInitialRowsAnimationSequence ? 'hypertable__cell--initial-load-sequence' : '';
+  get initialLoadAnimationSequenceClass(): string {
+    return this.shouldApplyInitialLoadAnimationSequence ? 'hypertable__cell--initial-load-sequence' : '';
   }
 
-  get initialRowsAnimationCellStyle(): ReturnType<typeof htmlSafe> | undefined {
-    if (!this.shouldApplyInitialRowsAnimationSequence) {
+  get initialLoadAnimationCellStyle(): ReturnType<typeof htmlSafe> | undefined {
+    if (!this.shouldApplyInitialLoadAnimationSequence) {
       return undefined;
     }
 
-    const extraColumnCellEffectDelayMs = this.args.initialRowsAnimation?.extraColumnCellEffectDelayMs ?? 0;
+    const extraColumnCellEffectDelayMs = this.args.initialLoadAnimation?.extraColumnCellEffectDelayMs ?? 0;
     const staggeredDelayMs = this.rowAnimationDelayMs;
     const extraEffectDelayMs = staggeredDelayMs + extraColumnCellEffectDelayMs;
 
@@ -103,19 +92,19 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   private get rowAnimationDelayMs(): number {
-    const delayMs = this.args.initialRowsAnimation?.delayMs ?? 0;
-    const staggerMs = this.args.initialRowsAnimation?.staggerMs ?? 0;
+    const delayMs = this.args.initialLoadAnimation?.delayMs ?? 0;
+    const staggerMs = this.args.initialLoadAnimation?.staggerMs ?? 0;
     const rowIndex = this.args.rowIndex ?? 0;
 
     return delayMs + rowIndex * staggerMs;
   }
 
-  private get isInitialRowsAnimationEnabled(): boolean {
-    return this.args.initialRowsAnimation?.active === true;
+  private get isInitialLoadAnimationEnabled(): boolean {
+    return this.args.initialLoadAnimation?.active === true;
   }
 
-  private get isInitialRowsAnimationTargetedColumn(): boolean {
-    const columns = this.args.initialRowsAnimation?.columns;
+  private get isInitialLoadAnimationTargetedColumn(): boolean {
+    const columns = this.args.initialLoadAnimation?.columns;
 
     if (!columns || columns.length === 0) {
       return true;
@@ -124,21 +113,20 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
     return columns.includes(this.args.column.definition.key);
   }
 
-  private get shouldApplyInitialRowsAnimationSequence(): boolean {
-    return this.isInitialRowsAnimationEnabled && !this.loading;
+  private get shouldApplyInitialLoadAnimationSequence(): boolean {
+    return this.isInitialLoadAnimationEnabled && !this.loading;
   }
 
-  private get shouldApplyInitialRowsAnimationCustomEffect(): boolean {
-    if (!this.args.enableInitialRowsAnimationExtraEffect) {
+  private get shouldApplyInitialLoadAnimationCustomEffect(): boolean {
+    if (!this.args.enableInitialLoadAnimationExtraEffect) {
       return false;
     }
 
-    return this.shouldApplyInitialRowsAnimationSequence && this.isInitialRowsAnimationTargetedColumn;
+    return this.shouldApplyInitialLoadAnimationSequence && this.isInitialLoadAnimationTargetedColumn;
   }
 
   private get extraEffectActivationDelayMs(): number {
-    const extraColumnCellEffectDelayMs = this.args.initialRowsAnimation?.extraColumnCellEffectDelayMs ?? 0;
-    return this.rowAnimationDelayMs + extraColumnCellEffectDelayMs;
+    return this.rowAnimationDelayMs + (this.args.initialLoadAnimation?.extraColumnCellEffectDelayMs ?? 0);
   }
 
   private scheduleExtraEffectIfNeeded(): void {

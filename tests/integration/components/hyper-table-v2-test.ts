@@ -90,7 +90,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     assert.ok(teardownStub.calledOnce);
   });
 
-  module('initialRowsAnimation', function () {
+  module('initialLoadAnimation', function () {
     test('it does not apply animation classes when the option is not provided', async function (this: TestContext, assert: Assert) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
@@ -99,7 +99,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     });
 
     test('it applies the stagger sequence class to all non-loading cells', async function (this: TestContext, assert: Assert) {
-      this.options = { initialRowsAnimation: { delayMs: 300, staggerMs: 40, maxAnimationDurationMs: 1500 } };
+      this.options = { initialLoadAnimation: { delayMs: 300, staggerMs: 40, maxAnimationDurationMs: 1500 } };
 
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
 
@@ -108,7 +108,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     test('it applies per-row delay with delayMs and staggerMs', async function (this: TestContext, assert: Assert) {
       this.options = {
-        initialRowsAnimation: { delayMs: 120, staggerMs: 30, maxAnimationDurationMs: 1500 }
+        initialLoadAnimation: { delayMs: 120, staggerMs: 30, maxAnimationDurationMs: 1500 }
       };
 
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
@@ -123,7 +123,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     test('it applies extraColumnCellEffectDelayMs on top of row stagger delay', async function (this: TestContext, assert: Assert) {
       this.options = {
-        initialRowsAnimation: {
+        initialLoadAnimation: {
           delayMs: 120,
           staggerMs: 30,
           maxAnimationDurationMs: 1500,
@@ -144,7 +144,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     test('it applies the extra effect class only on targeted column cells', async function (this: TestContext, assert: Assert) {
       this.options = {
-        initialRowsAnimation: {
+        initialLoadAnimation: {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
@@ -162,7 +162,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     test('it applies the extra effect class to all columns when columns is omitted', async function (this: TestContext, assert: Assert) {
       this.options = {
-        initialRowsAnimation: {
+        initialLoadAnimation: {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
@@ -178,7 +178,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     test('it applies base stagger but not extra effect class on selection checkbox cells', async function (this: TestContext, assert: Assert) {
       this.features = { selection: true };
       this.options = {
-        initialRowsAnimation: {
+        initialLoadAnimation: {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
@@ -198,7 +198,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     test('it can apply the extra effect class on selection checkbox cells when enabled', async function (this: TestContext, assert: Assert) {
       this.features = { selection: true };
       this.options = {
-        initialRowsAnimation: {
+        initialLoadAnimation: {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
@@ -217,7 +217,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     test('it applies the extra effect class to all columns when columns is empty', async function (this: TestContext, assert: Assert) {
       this.options = {
-        initialRowsAnimation: {
+        initialLoadAnimation: {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,

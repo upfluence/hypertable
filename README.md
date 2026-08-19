@@ -230,7 +230,7 @@ options = {
 };
 ```
 
-##### initialRowsAnimation
+##### initialLoadAnimation
 
 - Type: `object`
 - Required: no
@@ -248,7 +248,7 @@ Behavior:
 
 ```ts
 options = {
-  initialRowsAnimation: {
+  initialLoadAnimation: {
     delayMs: 300,
     staggerMs: 40,
     maxAnimationDurationMs: 1500,
