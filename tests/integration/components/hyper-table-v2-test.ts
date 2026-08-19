@@ -145,8 +145,8 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     test('it applies the extra effect class only on targeted column cells', async function (this: TestContext, assert: Assert) {
       this.options = {
         initialRowsAnimation: {
-          delayMs: 300,
-          staggerMs: 40,
+          delayMs: 0,
+          staggerMs: 0,
           maxAnimationDurationMs: 1500,
           extraColumnCellEffectClass: 'smart-rotating-gradient',
           columns: ['foo']
@@ -163,8 +163,8 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     test('it applies the extra effect class to all columns when columns is omitted', async function (this: TestContext, assert: Assert) {
       this.options = {
         initialRowsAnimation: {
-          delayMs: 300,
-          staggerMs: 40,
+          delayMs: 0,
+          staggerMs: 0,
           maxAnimationDurationMs: 1500,
           extraColumnCellEffectClass: 'smart-rotating-gradient'
         }
@@ -179,8 +179,8 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       this.features = { selection: true };
       this.options = {
         initialRowsAnimation: {
-          delayMs: 300,
-          staggerMs: 40,
+          delayMs: 0,
+          staggerMs: 0,
           maxAnimationDurationMs: 1500,
           extraColumnCellEffectClass: 'smart-rotating-gradient'
         }
@@ -199,8 +199,8 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       this.features = { selection: true };
       this.options = {
         initialRowsAnimation: {
-          delayMs: 300,
-          staggerMs: 40,
+          delayMs: 0,
+          staggerMs: 0,
           maxAnimationDurationMs: 1500,
           extraColumnCellEffectClass: 'smart-rotating-gradient',
           includeSelectionColumnInExtraEffect: true
@@ -218,8 +218,8 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     test('it applies the extra effect class to all columns when columns is empty', async function (this: TestContext, assert: Assert) {
       this.options = {
         initialRowsAnimation: {
-          delayMs: 300,
-          staggerMs: 40,
+          delayMs: 0,
+          staggerMs: 0,
           maxAnimationDurationMs: 1500,
           extraColumnCellEffectClass: 'smart-rotating-gradient',
           columns: []
