@@ -90,6 +90,181 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
     assert.ok(teardownStub.calledOnce);
   });
 
+  module('initialLoadAnimation', function () {
+    test('it does not apply animation classes when the option is not provided', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+      assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      assert.dom('.hypertable__cell.smart-rotating-gradient').doesNotExist();
+    });
+
+    test('it does not apply animation classes when the option is false', async function (this: TestContext, assert: Assert) {
+      this.options = { initialLoadAnimation: false };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      assert.dom('.hypertable__cell.smart-rotating-gradient').doesNotExist();
+    });
+
+    test('it applies default animation values when the option is true', async function (this: TestContext, assert: Assert) {
+      this.options = { initialLoadAnimation: true };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      const stickyColumnCells = findAll('.hypertable__sticky-columns .hypertable__column .hypertable__cell');
+      const firstCellStyle = stickyColumnCells[0].getAttribute('style') ?? '';
+
+      assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+      assert.ok(firstCellStyle.includes('--hypertable-initial-rows-animation-delay: 300ms;'));
+    });
+
+    test('it applies the stagger sequence class to all non-loading cells', async function (this: TestContext, assert: Assert) {
+      this.options = { initialLoadAnimation: { delayMs: 300, staggerMs: 40, maxAnimationDurationMs: 1500 } };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+    });
+
+    test('it applies per-row delay with delayMs and staggerMs', async function (this: TestContext, assert: Assert) {
+      this.options = {
+        initialLoadAnimation: { delayMs: 120, staggerMs: 30, maxAnimationDurationMs: 1500 }
+      };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      const stickyColumnCells = findAll('.hypertable__sticky-columns .hypertable__column .hypertable__cell');
+      const firstCellStyle = stickyColumnCells[0].getAttribute('style') ?? '';
+      const secondCellStyle = stickyColumnCells[1].getAttribute('style') ?? '';
+
+      assert.ok(firstCellStyle.includes('--hypertable-initial-rows-animation-delay: 120ms;'));
+      assert.ok(secondCellStyle.includes('--hypertable-initial-rows-animation-delay: 150ms;'));
+    });
+
+    test('it applies extraColumnEffect.delayMs on top of row stagger delay', async function (this: TestContext, assert: Assert) {
+      this.options = {
+        initialLoadAnimation: {
+          delayMs: 120,
+          staggerMs: 30,
+          maxAnimationDurationMs: 1500,
+          extraColumnEffect: {
+            delayMs: 70,
+            class: 'smart-rotating-gradient'
+          }
+        }
+      };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      const stickyColumnCells = findAll('.hypertable__sticky-columns .hypertable__column .hypertable__cell');
+      const firstCellStyle = stickyColumnCells[0].getAttribute('style') ?? '';
+      const secondCellStyle = stickyColumnCells[1].getAttribute('style') ?? '';
+
+      assert.ok(firstCellStyle.includes('--hypertable-initial-rows-extra-effect-delay: 190ms;'));
+      assert.ok(secondCellStyle.includes('--hypertable-initial-rows-extra-effect-delay: 220ms;'));
+    });
+
+    test('it applies the extra effect class only on targeted column cells', async function (this: TestContext, assert: Assert) {
+      this.options = {
+        initialLoadAnimation: {
+          delayMs: 0,
+          staggerMs: 0,
+          maxAnimationDurationMs: 1500,
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient',
+            columns: ['foo']
+          }
+        }
+      };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+      assert.dom('.hypertable__cell.smart-rotating-gradient').exists({ count: 3 });
+      assert.dom('.hypertable__column:nth-child(2) .hypertable__cell.smart-rotating-gradient').doesNotExist();
+    });
+
+    test('it applies the extra effect class to all columns when columns is omitted', async function (this: TestContext, assert: Assert) {
+      this.options = {
+        initialLoadAnimation: {
+          delayMs: 0,
+          staggerMs: 0,
+          maxAnimationDurationMs: 1500,
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient'
+          }
+        }
+      };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      assert.dom('.hypertable__cell.smart-rotating-gradient').exists({ count: 12 });
+    });
+
+    test('it applies base stagger but not extra effect class on selection checkbox cells', async function (this: TestContext, assert: Assert) {
+      this.features = { selection: true };
+      this.options = {
+        initialLoadAnimation: {
+          delayMs: 0,
+          staggerMs: 0,
+          maxAnimationDurationMs: 1500,
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient'
+          }
+        }
+      };
+
+      await render(
+        hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} @options={{this.options}} />`
+      );
+
+      assert.dom('.hypertable__column--selection .hypertable__cell--initial-load-sequence').exists({ count: 3 });
+      assert.dom('.hypertable__column--selection .hypertable__cell.smart-rotating-gradient').doesNotExist();
+      assert.dom('.hypertable__cell.smart-rotating-gradient').exists({ count: 12 });
+    });
+
+    test('it can apply the extra effect class on selection checkbox cells when enabled', async function (this: TestContext, assert: Assert) {
+      this.features = { selection: true };
+      this.options = {
+        initialLoadAnimation: {
+          delayMs: 0,
+          staggerMs: 0,
+          maxAnimationDurationMs: 1500,
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient'
+          },
+          includeSelectionColumnInExtraEffect: true
+        }
+      };
+
+      await render(
+        hbs`<HyperTableV2 @handler={{this.handler}} @features={{this.features}} @options={{this.options}} />`
+      );
+
+      assert.dom('.hypertable__column--selection .hypertable__cell.smart-rotating-gradient').exists({ count: 3 });
+      assert.dom('.hypertable__cell.smart-rotating-gradient').exists({ count: 15 });
+    });
+
+    test('it applies the extra effect class to all columns when columns is empty', async function (this: TestContext, assert: Assert) {
+      this.options = {
+        initialLoadAnimation: {
+          delayMs: 0,
+          staggerMs: 0,
+          maxAnimationDurationMs: 1500,
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient',
+            columns: []
+          }
+        }
+      };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      assert.dom('.hypertable__cell.smart-rotating-gradient').exists({ count: 12 });
+    });
+  });
+
   module('empty state', function (hooks) {
     hooks.beforeEach(function (this: TestContext) {
       sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {

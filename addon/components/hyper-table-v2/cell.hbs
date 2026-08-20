@@ -1,10 +1,8 @@
 <div
-  class={{concat
-    "hypertable__cell"
-    (if this.loading " hypertable__cell--loading")
-    (if @row.hovered " hypertable__cell--hovered")
-  }}
+  class={{this.computedClass}}
+  style={{this.initialLoadAnimationCellStyle}}
   role="button"
+  {{will-destroy this.teardown}}
   {{on "click" this.clickedCell}}
   {{on "mouseenter" (fn this.toggleHover @row true)}}
   {{on "mouseleave" (fn this.toggleHover @row false)}}

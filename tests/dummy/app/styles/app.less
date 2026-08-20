@@ -4,3 +4,29 @@
 body {
   background-color: white;
 }
+
+// Apply stacking fixes only on cells that actually get the custom effect class.
+// This would typically be defined in the parent application / engine
+// It's defined in the dummy less file for testing purposes.
+.hypertable__cell.hypertable__cell--initial-load-sequence.smart-rotating-gradient {
+  position: relative;
+  z-index: 0;
+}
+
+.hypertable__cell.hypertable__cell--initial-load-sequence.smart-rotating-gradient::after {
+  z-index: -2;
+  animation-delay: var(
+    --hypertable-initial-rows-extra-effect-delay,
+    var(--hypertable-initial-rows-animation-delay, 0ms)
+  );
+  animation-fill-mode: both;
+}
+
+.hypertable__cell.hypertable__cell--initial-load-sequence.smart-rotating-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  background: #fff;
+  border-radius: 4px;
+}

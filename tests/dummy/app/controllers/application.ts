@@ -228,6 +228,21 @@ export default class Application extends Controller {
     });
   }
 
+  get tableOptions() {
+    return {
+      initialLoadAnimation: {
+        delayMs: 50,
+        staggerMs: 150,
+        maxAnimationDurationMs: 5000,
+        extraColumnEffect: {
+          class: 'smart-rotating-gradient',
+          delayMs: 250,
+          columns: ['foo']
+        }
+      }
+    };
+  }
+
   @action
   onCustomSearchInput() {
     this.handler.applyFilters(this.handler.columns[0], [

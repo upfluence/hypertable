@@ -8,16 +8,35 @@ import { tracked } from '@glimmer/tracking';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
-type FeatureSet = {
+export type FeatureSet = {
   selection: boolean;
   searchable: boolean;
   manageable_fields: boolean;
   global_filters_reset: boolean;
 };
 
-type OptionSet = {
+export type OptionSet = {
   selectionIntlKeyPath?: string;
   delegatedFiltering?: boolean;
+  initialLoadAnimation?: boolean | InitialLoadAnimationOption;
+};
+
+export type InitialLoadAnimationContext = InitialLoadAnimationConfig & { active: boolean };
+
+export type InitialLoadAnimationOption = Partial<InitialLoadAnimationConfig>;
+
+type InitialLoadAnimationExtraColumnEffect = {
+  class?: string;
+  delayMs?: number;
+  columns?: string[];
+};
+
+type InitialLoadAnimationConfig = {
+  delayMs: number;
+  staggerMs: number;
+  maxAnimationDurationMs: number;
+  extraColumnEffect?: InitialLoadAnimationExtraColumnEffect;
+  includeSelectionColumnInExtraEffect?: boolean;
 };
 
 interface HyperTableV2Args {
@@ -32,7 +51,21 @@ const DEFAULT_FEATURES_SET: FeatureSet = {
   manageable_fields: true,
   global_filters_reset: true
 };
+
 const RESET_DEBOUNCE_TIME = 300;
+
+const DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG = {
+  delayMs: 300,
+  staggerMs: 40,
+  maxAnimationDurationMs: 5000,
+  extraColumnEffect: {
+    delayMs: 0
+  },
+  includeSelectionColumnInExtraEffect: false
+} as const satisfies Omit<InitialLoadAnimationConfig, 'extraColumnEffect' | 'includeSelectionColumnInExtraEffect'> & {
+  extraColumnEffect: Pick<InitialLoadAnimationExtraColumnEffect, 'delayMs'>;
+  includeSelectionColumnInExtraEffect: boolean;
+};
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
@@ -41,6 +74,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked loadingResetFilters = false;
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
+  @tracked initialLoadAnimationActive: boolean = false;
+  @tracked initialLoadAnimationPlayed: boolean = false;
+
+  private initialLoadAnimationTimeout?: number;
 
   declare private hypertableInstanceID: string;
 
@@ -49,7 +86,9 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     args.handler.fetchColumnDefinitions();
     args.handler.fetchColumns().then(() => {
       this.initialFetchColumnsDone = true;
-      args.handler.fetchRows();
+      args.handler.fetchRows().finally(() => {
+        this.activateInitialLoadAnimationIfNeeded();
+      });
       this.computeScrollableTable();
     });
 
@@ -61,6 +100,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       ...DEFAULT_FEATURES_SET,
       ...(this.args.features || {})
     };
+  }
+
+  get enableInitialLoadAnimationExtraEffectOnSelectionCells(): boolean {
+    return !!this.initialLoadAnimation?.includeSelectionColumnInExtraEffect;
   }
 
   @computed('args.handler.columns.@each.{filters,order}')
@@ -86,6 +129,27 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     } else {
       return this.args.handler.selection.length;
     }
+  }
+
+  get initialLoadAnimationContext(): InitialLoadAnimationContext | null {
+    return this.initialLoadAnimation ? { active: this.initialLoadAnimationActive, ...this.initialLoadAnimation } : null;
+  }
+
+  private get initialLoadAnimation(): InitialLoadAnimationConfig | null {
+    const option = this.args.options?.initialLoadAnimation;
+
+    if (!option) return null;
+
+    const options = option === true ? {} : option;
+
+    return {
+      ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG,
+      ...options,
+      extraColumnEffect: {
+        ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG.extraColumnEffect,
+        ...options.extraColumnEffect
+      }
+    };
   }
 
   @action
@@ -175,6 +239,11 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   teardown(): void {
+    if (this.initialLoadAnimationTimeout) {
+      window.clearTimeout(this.initialLoadAnimationTimeout);
+      this.initialLoadAnimationTimeout = undefined;
+    }
+
     this.args.handler.teardown();
   }
 
@@ -204,6 +273,28 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     });
 
     this.computeScrollableTable();
+  }
+
+  private activateInitialLoadAnimationIfNeeded(): void {
+    if (this.initialLoadAnimationPlayed || !this.initialLoadAnimation) {
+      return;
+    }
+
+    if (this.args.handler.communicationError || this.args.handler.rows.length === 0) {
+      return;
+    }
+
+    this.initialLoadAnimationPlayed = true;
+    this.initialLoadAnimationActive = true;
+
+    const rowsAnimationWindowMs = Math.max(this.args.handler.rows.length - 1, 0) * this.initialLoadAnimation.staggerMs;
+    const activeDurationMs =
+      this.initialLoadAnimation.delayMs + rowsAnimationWindowMs + this.initialLoadAnimation.maxAnimationDurationMs;
+
+    this.initialLoadAnimationTimeout = window.setTimeout(() => {
+      this.initialLoadAnimationActive = false;
+      this.initialLoadAnimationTimeout = undefined;
+    }, activeDurationMs);
   }
 
   private resetSelectionOnFullExclusion(): void {
