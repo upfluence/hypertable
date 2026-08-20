@@ -233,7 +233,10 @@ export default class Application extends Controller {
       initialLoadAnimation: {
         delayMs: 50,
         staggerMs: 150,
-        maxAnimationDurationMs: 5000
+        maxAnimationDurationMs: 5000,
+        extraColumnCellEffectClass: 'smart-rotating-gradient',
+        extraColumnCellEffectDelayMs: 250,
+        columns: ['foo']
       }
     };
   }
