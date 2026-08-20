@@ -98,6 +98,27 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.hypertable__cell.smart-rotating-gradient').doesNotExist();
     });
 
+    test('it does not apply animation classes when the option is false', async function (this: TestContext, assert: Assert) {
+      this.options = { initialLoadAnimation: false };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      assert.dom('.hypertable__cell.smart-rotating-gradient').doesNotExist();
+    });
+
+    test('it applies default animation values when the option is true', async function (this: TestContext, assert: Assert) {
+      this.options = { initialLoadAnimation: true };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      const stickyColumnCells = findAll('.hypertable__sticky-columns .hypertable__column .hypertable__cell');
+      const firstCellStyle = stickyColumnCells[0].getAttribute('style') ?? '';
+
+      assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+      assert.ok(firstCellStyle.includes('--hypertable-initial-rows-animation-delay: 300ms;'));
+    });
+
     test('it applies the stagger sequence class to all non-loading cells', async function (this: TestContext, assert: Assert) {
       this.options = { initialLoadAnimation: { delayMs: 300, staggerMs: 40, maxAnimationDurationMs: 1500 } };
 
@@ -121,14 +142,16 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.ok(secondCellStyle.includes('--hypertable-initial-rows-animation-delay: 150ms;'));
     });
 
-    test('it applies extraColumnCellEffectDelayMs on top of row stagger delay', async function (this: TestContext, assert: Assert) {
+    test('it applies extraColumnEffect.delayMs on top of row stagger delay', async function (this: TestContext, assert: Assert) {
       this.options = {
         initialLoadAnimation: {
           delayMs: 120,
           staggerMs: 30,
           maxAnimationDurationMs: 1500,
-          extraColumnCellEffectDelayMs: 70,
-          extraColumnCellEffectClass: 'smart-rotating-gradient'
+          extraColumnEffect: {
+            delayMs: 70,
+            class: 'smart-rotating-gradient'
+          }
         }
       };
 
@@ -148,8 +171,10 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
-          extraColumnCellEffectClass: 'smart-rotating-gradient',
-          columns: ['foo']
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient',
+            columns: ['foo']
+          }
         }
       };
 
@@ -166,7 +191,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
-          extraColumnCellEffectClass: 'smart-rotating-gradient'
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient'
+          }
         }
       };
 
@@ -182,7 +209,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
-          extraColumnCellEffectClass: 'smart-rotating-gradient'
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient'
+          }
         }
       };
 
@@ -202,7 +231,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
-          extraColumnCellEffectClass: 'smart-rotating-gradient',
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient'
+          },
           includeSelectionColumnInExtraEffect: true
         }
       };
@@ -221,8 +252,10 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           delayMs: 0,
           staggerMs: 0,
           maxAnimationDurationMs: 1500,
-          extraColumnCellEffectClass: 'smart-rotating-gradient',
-          columns: []
+          extraColumnEffect: {
+            class: 'smart-rotating-gradient',
+            columns: []
+          }
         }
       };
 

@@ -234,9 +234,11 @@ export default class Application extends Controller {
         delayMs: 50,
         staggerMs: 150,
         maxAnimationDurationMs: 5000,
-        extraColumnCellEffectClass: 'smart-rotating-gradient',
-        extraColumnCellEffectDelayMs: 250,
-        columns: ['foo']
+        extraColumnEffect: {
+          class: 'smart-rotating-gradient',
+          delayMs: 250,
+          columns: ['foo']
+        }
       }
     };
   }

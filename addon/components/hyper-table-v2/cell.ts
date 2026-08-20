@@ -57,20 +57,20 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   get initialLoadAnimationCellClass(): string {
-    const extraColumnCellEffectClass = this.args.initialLoadAnimation?.extraColumnCellEffectClass;
+    const extraColumnEffectClass = this.args.initialLoadAnimation?.extraColumnEffect?.class;
 
-    if (!this.shouldApplyInitialLoadAnimationCustomEffect || !extraColumnCellEffectClass) {
+    if (!this.shouldApplyInitialLoadAnimationCustomEffect || !extraColumnEffectClass) {
       this.resetExtraEffectState();
       return '';
     }
 
     if (this.extraEffectActivationDelayMs <= 0) {
-      return extraColumnCellEffectClass;
+      return extraColumnEffectClass;
     }
 
     this.scheduleExtraEffectIfNeeded();
 
-    return this.extraEffectReady ? extraColumnCellEffectClass : '';
+    return this.extraEffectReady ? extraColumnEffectClass : '';
   }
 
   get initialLoadAnimationSequenceClass(): string {
@@ -82,9 +82,9 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
       return undefined;
     }
 
-    const extraColumnCellEffectDelayMs = this.args.initialLoadAnimation?.extraColumnCellEffectDelayMs ?? 0;
+    const extraColumnEffectDelayMs = this.args.initialLoadAnimation?.extraColumnEffect?.delayMs ?? 0;
     const staggeredDelayMs = this.rowAnimationDelayMs;
-    const extraEffectDelayMs = staggeredDelayMs + extraColumnCellEffectDelayMs;
+    const extraEffectDelayMs = staggeredDelayMs + extraColumnEffectDelayMs;
 
     return htmlSafe(
       `--hypertable-initial-rows-animation-delay: ${staggeredDelayMs}ms; --hypertable-initial-rows-extra-effect-delay: ${extraEffectDelayMs}ms;`
@@ -104,7 +104,7 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   private get isInitialLoadAnimationTargetedColumn(): boolean {
-    const columns = this.args.initialLoadAnimation?.columns ?? [];
+    const columns = this.args.initialLoadAnimation?.extraColumnEffect?.columns ?? [];
 
     if (columns.length === 0) return true;
 
@@ -124,7 +124,7 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   private get extraEffectActivationDelayMs(): number {
-    return this.rowAnimationDelayMs + (this.args.initialLoadAnimation?.extraColumnCellEffectDelayMs ?? 0);
+    return this.rowAnimationDelayMs + (this.args.initialLoadAnimation?.extraColumnEffect?.delayMs ?? 0);
   }
 
   @action

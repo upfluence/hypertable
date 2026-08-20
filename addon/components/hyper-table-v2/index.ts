@@ -18,20 +18,24 @@ export type FeatureSet = {
 export type OptionSet = {
   selectionIntlKeyPath?: string;
   delegatedFiltering?: boolean;
-  initialLoadAnimation?: InitialLoadAnimationOption;
+  initialLoadAnimation?: boolean | InitialLoadAnimationOption;
 };
 
 export type InitialLoadAnimationContext = InitialLoadAnimationConfig & { active: boolean };
 
 export type InitialLoadAnimationOption = Partial<InitialLoadAnimationConfig>;
 
+type InitialLoadAnimationExtraColumnEffect = {
+  class?: string;
+  delayMs?: number;
+  columns?: string[];
+};
+
 type InitialLoadAnimationConfig = {
   delayMs: number;
   staggerMs: number;
   maxAnimationDurationMs: number;
-  extraColumnCellEffectDelayMs?: number;
-  extraColumnCellEffectClass?: string;
-  columns?: string[];
+  extraColumnEffect?: InitialLoadAnimationExtraColumnEffect;
   includeSelectionColumnInExtraEffect?: boolean;
 };
 
@@ -53,10 +57,15 @@ const RESET_DEBOUNCE_TIME = 300;
 const DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG = {
   delayMs: 300,
   staggerMs: 40,
-  maxAnimationDurationMs: 1500,
-  extraColumnCellEffectDelayMs: 0,
+  maxAnimationDurationMs: 5000,
+  extraColumnEffect: {
+    delayMs: 0
+  },
   includeSelectionColumnInExtraEffect: false
-} as const satisfies Omit<InitialLoadAnimationConfig, 'extraColumnCellEffectClass' | 'columns'>;
+} as const satisfies Omit<InitialLoadAnimationConfig, 'extraColumnEffect' | 'includeSelectionColumnInExtraEffect'> & {
+  extraColumnEffect: Pick<InitialLoadAnimationExtraColumnEffect, 'delayMs'>;
+  includeSelectionColumnInExtraEffect: boolean;
+};
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
@@ -127,11 +136,20 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   private get initialLoadAnimation(): InitialLoadAnimationConfig | null {
-    const options = this.args.options?.initialLoadAnimation;
+    const option = this.args.options?.initialLoadAnimation;
 
-    if (!options) return null;
+    if (!option) return null;
 
-    return { ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG, ...options };
+    const options: InitialLoadAnimationOption = option === true ? {} : option;
+
+    return {
+      ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG,
+      ...options,
+      extraColumnEffect: {
+        ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG.extraColumnEffect,
+        ...options.extraColumnEffect
+      }
+    };
   }
 
   @action
