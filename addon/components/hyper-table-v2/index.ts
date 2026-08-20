@@ -140,7 +140,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
     if (!option) return null;
 
-    const options: InitialLoadAnimationOption = option === true ? {} : option;
+    const options = option === true ? {} : option;
 
     return {
       ...DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG,
