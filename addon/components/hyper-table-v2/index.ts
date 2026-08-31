@@ -75,8 +75,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
   @tracked initialLoadAnimationActive: boolean = false;
-  @tracked initialLoadAnimationPlayed: boolean = false;
 
+  private initialLoadAnimationPlayed: boolean = false;
   private initialLoadAnimationTimeout?: number;
 
   declare private hypertableInstanceID: string;
