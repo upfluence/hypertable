@@ -399,7 +399,7 @@ module('Unit | core/handler', function (hooks) {
     assert.deepEqual(handler.exclusion, []);
   });
 
-  test('Handler#selectAllGlobal', async function (this: TestContext, assert) {
+  test('Handler#clearSelection', async function (this: TestContext, assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     populateSelectionAndExclusionHandler(handler);
     assert.strictEqual(handler.selection.length, 1);

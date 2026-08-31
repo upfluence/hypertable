@@ -2,7 +2,7 @@ import { Row, RowsFetcherResponse } from '@upfluence/hypertable/core/interfaces'
 
 export default class RowsFetcher {
   // @ts-ignore
-  fetch(page: number, perPage: number): Promise<RowsFetcherResponse> {
+  fetch(_page: number, _perPage: number): Promise<RowsFetcherResponse> {
     return Promise.resolve({
       rows: [
         {
@@ -60,7 +60,7 @@ export default class RowsFetcher {
 
 export class AllRowsFetcher {
   // @ts-ignore
-  fetch(page: number, perPage: number): Promise<RowsFetcherResponse> {
+  fetch(_page: number, _perPage: number): Promise<RowsFetcherResponse> {
     return Promise.resolve({
       rows: [
         {

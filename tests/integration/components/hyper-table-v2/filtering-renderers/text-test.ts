@@ -100,7 +100,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
     });
   });
 
-  module('clear column', async function () {
+  module('clear column', function () {
     test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler);
       this.handler.applyFilters(this.column, [{ key: 'foo', value: 'bar' }]);

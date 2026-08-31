@@ -350,7 +350,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.upf-checkbox').exists({ count: 4 });
     });
 
-    test('the selection column is present when the feature is enabled', async function (assert: Assert) {
+    test('the selection column selected count is present when the feature is enabled', async function (assert: Assert) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
       assert.dom('.selected-count').exists();

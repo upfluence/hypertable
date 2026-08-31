@@ -257,7 +257,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
     });
   });
 
-  module('clear column', async function () {
+  module('clear column', function () {
     test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
       const handlerSpy = sinon.spy(this.handler as TableHandler);
       this.handler.applyFilters(this.column, [{ key: 'lower_bound', value: '10' }]);

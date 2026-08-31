@@ -98,7 +98,7 @@ class Manager implements TableManager {
 
 class RowsFetcher {
   // @ts-ignore
-  fetch(page: number, perPage: number) {
+  fetch(_page: number, _perPage: number) {
     return Promise.resolve({
       rows: [
         {
