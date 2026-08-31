@@ -48,7 +48,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   constructor(owner: unknown, args: HyperTableV2FilteringRenderersDateArgs) {
     super(owner, args);
 
-    let filter = this.args.column.filters.find((f) => f.key === this.movingOptionKey);
+    const filter = this.args.column.filters.find((f) => f.key === this.movingOptionKey);
     this._currentMovingDateOption = filter ? filter.value : null;
     this.filterOption = this._currentMovingDateOption ? this.movingOptionKey : 'fixed';
     args.handler.on('reset-columns', (columns) => {
@@ -60,8 +60,8 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
   }
 
   private _initBounderingFilters(): void {
-    let lowerBoundFilter = this.args.column.filters.find((filter) => filter.key === 'lower_bound');
-    let upperBoundFilter = this.args.column.filters.find((filter) => filter.key === 'upper_bound');
+    const lowerBoundFilter = this.args.column.filters.find((filter) => filter.key === 'lower_bound');
+    const upperBoundFilter = this.args.column.filters.find((filter) => filter.key === 'upper_bound');
     if (lowerBoundFilter && upperBoundFilter) {
       this._currentDateValue = [
         moment.unix(parseInt(lowerBoundFilter.value)).toDate(),
@@ -104,7 +104,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
 
   @action
   selectFixedDate(value: any): void {
-    let [fromDate, toDate] = value;
+    const [fromDate, toDate] = value;
 
     if (fromDate && toDate) {
       this.sendEndOfTheDayOnDate(toDate);

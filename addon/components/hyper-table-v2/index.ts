@@ -106,7 +106,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     return !!this.initialLoadAnimation?.includeSelectionColumnInExtraEffect;
   }
 
-  @computed('args.handler.columns.@each.{filters,order}')
+  @computed('args.handler.columns.@each.{filters,order}', 'features.global_filters_reset')
   get displayResetButton(): boolean {
     const filtersApplied: boolean = this.args.handler.columns.some((col) => col.filters?.length || col.order);
     return filtersApplied && this.features.global_filters_reset;

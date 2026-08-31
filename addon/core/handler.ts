@@ -477,7 +477,7 @@ export default class TableHandler {
   private _reinitColumnsAndRows(columns: Column[]): Promise<void> {
     let shouldRedraw = false;
     columns.forEach((column) => {
-      let existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
+      const existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
 
       if (!existingColumn) {
         this.columns.splice(columns.indexOf(column), 0, column);

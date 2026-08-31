@@ -101,7 +101,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await click(
         'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .oss-toggle-buttons-btn:nth-child(1)'
       );
-      let filterOptions = findAll('.filters__option');
+      const filterOptions = findAll('.filters__option');
       assert.equal(filterOptions.length, 6);
       assert.dom(filterOptions[0]).hasText('Today');
       assert.dom(filterOptions[1]).hasText('Yesterday');
@@ -112,7 +112,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
     });
 
     test('when the filter is set to Moving, when clicking on a filter option, applyFilter is triggered with the proper timezone in the filter extras', async function (this: TestContext, assert: Assert) {
-      let intlTimezoneStub = sinon.stub(Intl, 'DateTimeFormat').returns({
+      const intlTimezoneStub = sinon.stub(Intl, 'DateTimeFormat').returns({
         // @ts-ignore
         resolvedOptions: () => {
           return { timeZone: 'Africa/Atlantis' };
@@ -156,9 +156,9 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
         (filter: any) => filter.key === 'upper_bound'
       )?.value;
       const dateSetInFilters = new Date(timestampSetInFilters * 1000);
-      assert.true(dateSetInFilters.getHours() === 23);
-      assert.true(dateSetInFilters.getMinutes() === 59);
-      assert.true(dateSetInFilters.getSeconds() === 59);
+      assert.strictEqual(dateSetInFilters.getHours(), 23);
+      assert.strictEqual(dateSetInFilters.getMinutes(), 59);
+      assert.strictEqual(dateSetInFilters.getSeconds(), 59);
     });
 
     test('clicking in the flatpickr input should open flatpickr', async function (assert: Assert) {

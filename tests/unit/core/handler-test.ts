@@ -522,7 +522,7 @@ module('Unit | core/handler', function (hooks) {
 
       assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
       await handler.toggleRowLoadingState(12);
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, true);
+      assert.true(handler.rows.find((r) => r.record_id === 12)!._isLoading);
     });
   });
 
