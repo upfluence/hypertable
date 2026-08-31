@@ -250,7 +250,7 @@ importers:
         specifier: ^3.8.1
         version: 3.8.4
       qunit:
-        specifier: ^2.17.2
+        specifier: ^2.20.0
         version: 2.23.1
       qunit-dom:
         specifier: ^1.6.0
