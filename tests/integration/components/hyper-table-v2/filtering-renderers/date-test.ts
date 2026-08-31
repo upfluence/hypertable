@@ -113,7 +113,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
 
     test('when the filter is set to Moving, when clicking on a filter option, applyFilter is triggered with the proper timezone in the filter extras', async function (this: TestContext, assert: Assert) {
       const intlTimezoneStub = sinon.stub(Intl, 'DateTimeFormat').returns({
-        // @ts-ignore
+        // @ts-expect-error - incorrect type
         resolvedOptions: () => {
           return { timeZone: 'Africa/Atlantis' };
         }

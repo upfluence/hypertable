@@ -168,7 +168,7 @@ export default class TableHandler {
    * @returns {TableHandler}
    */
   on(event: string, handler: (...args: any[]) => any): TableHandler {
-    // @ts-ignore Works but the declaration from @types/ember__object does not match the documentation/actual code.
+    // @ts-expect-error - declaration from @types/ember__object does not match the documentation/actual code.
     addListener(this, event, handler);
 
     return this;
@@ -462,7 +462,7 @@ export default class TableHandler {
    */
   destroyTetherInstance(): void {
     if (this.tetherInstance) {
-      //@ts-ignore
+      //@ts-expect-error - element does not exist on Tether
       this.tetherInstance.element.remove();
       this.tetherInstance.destroy();
       this.tetherInstance = undefined;

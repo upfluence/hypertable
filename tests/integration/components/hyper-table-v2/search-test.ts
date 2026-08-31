@@ -50,12 +50,11 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
         '.oss-input-container input',
         'keyup',
         'Enter',
-        //@ts-ignore
+        //@ts-expect-error - code does not exist on triggerKeyEvent
         { code: 'Enter' }
       );
-      // @ts-ignore
       assert.ok(
-        //@ts-ignore
+        //@ts-expect-error - applyFilters is not typed on handlerSpy
         handlerSpy.applyFilters.calledWith(this.column, [
           {
             key: 'value',
@@ -78,7 +77,7 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
       await fillIn('.oss-input-container input', 'test');
       await click('.oss-input-container .suffix .fa-times');
       assert.ok(
-        //@ts-ignore
+        //@ts-expect-error - applyFilters is not typed on handlerSpy
         handlerSpy.applyFilters.calledWith(this.column, [
           {
             key: 'value',

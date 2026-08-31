@@ -180,7 +180,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         '[data-control-name="hypertable__column_filtering_for_total_range_from"]',
         'keydown',
         'Enter',
-        //@ts-ignore
+        //@ts-expect-error - code does not exist on triggerKeyEvent
         { code: 'Enter' }
       );
       assert.ok(
@@ -195,7 +195,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         '[data-control-name="hypertable__column_filtering_for_total_range_to"]',
         'keydown',
         'Enter',
-        //@ts-ignore
+        //@ts-expect-error - code does not exist on triggerKeyEvent
         { code: 'Enter' }
       );
 

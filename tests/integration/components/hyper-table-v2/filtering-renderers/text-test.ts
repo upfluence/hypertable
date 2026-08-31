@@ -64,7 +64,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
         'div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
 
-      //@ts-ignore
+      //@ts-expect-error - applyOrder is not typed on handlerSpy
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
       assert.deepEqual(this.column.order, {
         direction: 'asc',
@@ -75,7 +75,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
         'div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .oss-toggle-buttons-btn:nth-child(2)'
       );
 
-      //@ts-ignore
+      //@ts-expect-error - applyOrder is not typed on handlerSpy
       assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));
       assert.deepEqual(this.column.order, {
         direction: 'desc',
@@ -109,7 +109,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
       await click('[data-control-name="hypertable__column_filtering_for_foo_clear_filters"]');
 
-      //@ts-ignore
+      //@ts-expect-error - resetColumns is not typed on handlerSpy
       assert.ok(handlerSpy.resetColumns.calledWith([this.column]));
       assert.strictEqual(this.column.order, undefined);
       assert.deepEqual(this.column.filters, []);
@@ -123,7 +123,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
       await click('[data-control-name="hypertable__column_filtering_for_foo_remove_column"]');
 
-      //@ts-ignore
+      //@ts-expect-error - removeColumn is not typed on handlerSpy
       assert.ok(handlerSpy.removeColumn.calledWith(this.column.definition));
     });
   });

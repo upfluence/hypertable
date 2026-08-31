@@ -34,7 +34,7 @@ module('Integration | Component | hyper-table-v2/cell', function (hooks) {
 
     await render(hbs`<HyperTableV2::Cell @handler={{this.handler}} @column={{this.column}} @row={{this.row}} />`);
 
-    // @ts-ignore
+    // @ts-expect-error - renderingResolverSpy not typed
     assert.ok(renderingResolverSpy.lookupCellComponent.calledOnceWithExactly(this.column.definition));
     assert.dom('.hypertable__cell').hasText('ekip');
   });

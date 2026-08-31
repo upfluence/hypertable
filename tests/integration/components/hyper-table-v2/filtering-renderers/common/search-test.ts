@@ -50,12 +50,12 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
       '.oss-input-container input',
       'keyup',
       'Enter',
-      //@ts-ignore
+      //@ts-expect-error - code does not exist on triggerKeyEvent
       { code: 'Enter' }
     );
 
     assert.ok(
-      //@ts-ignore
+      //@ts-expect-error - applyFilters is not typed on handlerSpy
       handlerSpy.applyFilters.calledWith(this.column, [
         {
           key: 'value',
@@ -76,12 +76,12 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
       '.oss-input-container input',
       'keyup',
       'Enter',
-      //@ts-ignore
+      //@ts-expect-error - code does not exist on triggerKeyEvent
       { code: 'Enter' }
     );
 
     assert.ok(
-      //@ts-ignore
+      //@ts-expect-error - applyFilters is not typed on handlerSpy
       handlerSpy.applyFilters.calledWith(this.column, [
         {
           key: 'foobar',
@@ -117,7 +117,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     await fillIn('.oss-input-container input', 'test');
     await click('.oss-input-container .suffix .fa-times');
     assert.ok(
-      //@ts-ignore
+      //@ts-expect-error - applyFilters is not typed on handlerSpy
       handlerSpy.applyFilters.calledWith(this.column, [
         {
           key: 'value',

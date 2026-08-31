@@ -1,11 +1,9 @@
-// @ts-ignore
 import { setApplication } from '@ember/test-helpers';
 
 import registerAssertions from '@upfluence/oss-components/test-support/register-assertions';
-// @ts-ignore
 import Application from 'dummy/app';
 import config from 'dummy/config/environment';
-// @ts-ignore
+// @ts-expect-error - required due to legacy typing missing type definitions
 import { forceModulesToBeLoaded, sendCoverage } from 'ember-cli-code-coverage/test-support';
 import { start } from 'ember-qunit';
 import QUnit from 'qunit';
@@ -19,7 +17,6 @@ QUnit.done(async function () {
   await sendCoverage();
 });
 
-// @ts-ignore
 setApplication(Application.create(config.APP));
 start();
 

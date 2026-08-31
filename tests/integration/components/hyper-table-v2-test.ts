@@ -24,9 +24,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
-    // @ts-ignore
+    // @ts-expect-error - handlerSpy not typed
     assert.ok(handlerSpy.fetchColumns.calledOnce);
-    // @ts-ignore
+    // @ts-expect-error - handlerSpy not typed
     assert.ok(handlerSpy.fetchRows.calledOnce);
   });
 
@@ -568,7 +568,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[0]));
       assert.strictEqual(this.handler.selection.length, 1);
       assert.ok(this.handler.selection.includes(this.handler.rows[0]));
@@ -577,7 +577,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[0]));
       assert.strictEqual(this.handler.selection.length, 0);
       assert
@@ -596,11 +596,11 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.deepEqual(this.handler.selection, []);
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[0]));
       assert.strictEqual(this.handler.selection.length, 1);
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell:last-child .upf-checkbox');
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[1]));
       // await this.pauseTest();
       assert.strictEqual(this.handler.selection, 'all');
@@ -616,7 +616,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateExclusion.calledWithExactly(this.handler.rows[0]));
       assert.strictEqual(this.handler.exclusion.length, 1);
       assert.ok(this.handler.exclusion.includes(this.handler.rows[0]));
@@ -627,7 +627,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateExclusion.calledWithExactly(this.handler.rows[0]));
       assert.strictEqual(this.handler.exclusion.length, 0);
       assert.dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').isChecked();

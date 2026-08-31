@@ -116,7 +116,6 @@ module('Unit | core/handler', function (hooks) {
       assert.strictEqual(handler.columns.length, 1);
       await handler.removeColumn(handler.columns[0].definition);
       assert.strictEqual(handler.columns.length, 0);
-      // @ts-ignore
       assert.ok(handlerTriggerEventSpy.notCalled);
     });
 
@@ -146,7 +145,6 @@ module('Unit | core/handler', function (hooks) {
       assert.strictEqual(handler.columns.length, 1);
       await handler.removeColumn(handler.columns[0].definition);
       assert.strictEqual(handler.columns.length, 0);
-      // @ts-ignore
       assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-column'));
     });
   });
@@ -280,9 +278,9 @@ module('Unit | core/handler', function (hooks) {
     await handler.fetchRows();
     await handler.resetRows();
 
-    // @ts-ignore
+    // @ts-expect-error - fetch is not typed on rowsFetcherSpy
     assert.ok(rowsFetcherSpy.fetch.calledTwice);
-    // @ts-ignore
+    // @ts-expect-error - fetch is not typed on rowsFetcherSpy
     assert.ok(rowsFetcherSpy.fetch.calledWithExactly(1, 30));
     assert.strictEqual(handler.rows.length, 3);
   });
@@ -307,7 +305,6 @@ module('Unit | core/handler', function (hooks) {
     handler.removeRow(12);
     assert.strictEqual(handler.rows.length, 2);
     assert.strictEqual(handler.rows[0].recordId, 13);
-    // @ts-ignore
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
   });
 
@@ -323,13 +320,11 @@ module('Unit | core/handler', function (hooks) {
     });
 
     assert.strictEqual(handler.rows[0].bar, 'woop woop');
-    // @ts-ignore
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
     assert.true(didRefresh);
 
     didRefresh = handler.mutateRow(13, (): boolean => false);
     assert.strictEqual(handler.rows[1].bar, 'second bar');
-    // @ts-ignore
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
     assert.false(didRefresh);
   });
@@ -341,7 +336,7 @@ module('Unit | core/handler', function (hooks) {
     await handler.fetchColumns();
     handler.applyOrder(handler.columns[0], 'asc');
 
-    // @ts-ignore
+    // @ts-expect-error - upsertColumns is not typed on tableManagerSpy
     assert.ok(tableManagerSpy.upsertColumns.calledOnceWithExactly({ columns: handler.columns }));
     assert.strictEqual(handler.currentPage, 1);
   });
@@ -454,7 +449,7 @@ module('Unit | core/handler', function (hooks) {
       const tableManagerSpy = sinon.spy(this.tableManager);
       const resp = await handler.fetchFacets('foo', 'id');
 
-      // @ts-ignore
+      // @ts-expect-error - fetchFacets is not typed on tableManagerSpy
       assert.ok(tableManagerSpy.fetchFacets.calledOnceWithExactly('foo', 'id', undefined));
       assert.deepEqual(resp, {
         facets: [
@@ -487,7 +482,7 @@ module('Unit | core/handler', function (hooks) {
       assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
       await handler.updateRowById(667);
 
-      // @ts-ignore
+      // @ts-expect-error - fetchById is not typed on rowsFetcherSpy
       assert.ok(rowsFetcherSpy.fetchById.notCalled);
       assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
     });
@@ -500,7 +495,7 @@ module('Unit | core/handler', function (hooks) {
       assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
       await handler.updateRowById(12);
 
-      // @ts-ignore
+      // @ts-expect-error - fetchById is not typed on rowsFetcherSpy
       assert.ok(rowsFetcherSpy.fetchById.calledOnceWithExactly(12));
       assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'world');
     });

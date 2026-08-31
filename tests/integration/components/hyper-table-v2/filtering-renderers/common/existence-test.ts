@@ -45,11 +45,11 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     );
 
     await click('.fx-row:first-child .oss-radio-btn');
-    // @ts-ignore
+    // @ts-expect-error - applyFilters is not typed on handlerSpy
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'with' }]));
 
     await click('.fx-row:last-child .oss-radio-btn');
-    // @ts-ignore
+    // @ts-expect-error - applyFilters is not typed on handlerSpy
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
   });
 
@@ -60,11 +60,11 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     );
 
     await click('.fx-row:first-child .oss-radio-btn');
-    // @ts-ignore
+    // @ts-expect-error - applyFilters is not typed on handlerSpy
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'with' }]));
 
     await click('.fx-row:last-child .oss-radio-btn');
-    // @ts-ignore
+    // @ts-expect-error - applyFilters is not typed on handlerSpy
     assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'without' }]));
   });
 

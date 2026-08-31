@@ -115,7 +115,6 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
 
     test('it renders the correct tooltip for the double arrow icon', async function (this: TestContext, assert: Assert) {
       await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
-      // @ts-ignore
       await assert.tooltip('.order-command').hasTitle('Order');
     });
 
@@ -150,7 +149,6 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
 
     test('it renders the correct tooltip', async function (this: TestContext, assert: Assert) {
       await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
-      // @ts-ignore
       await assert.tooltip('.filter-command').hasTitle('Filters');
     });
 

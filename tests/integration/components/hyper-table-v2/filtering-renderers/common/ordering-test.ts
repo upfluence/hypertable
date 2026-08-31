@@ -72,7 +72,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     assert.strictEqual(this.column.order, undefined);
 
     await click('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(1)');
-    //@ts-ignore
+    //@ts-expect-error - applyOrder is not typed on handlerSpy
     assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
     assert.deepEqual(this.column.order, {
       direction: 'asc',
@@ -80,7 +80,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     });
 
     await click('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(2)');
-    //@ts-ignore
+    //@ts-expect-error - applyOrder is not typed on handlerSpy
     assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));
     assert.deepEqual(this.column.order, {
       direction: 'desc',

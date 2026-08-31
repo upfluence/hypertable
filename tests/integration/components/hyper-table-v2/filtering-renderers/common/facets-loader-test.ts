@@ -82,7 +82,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isNotChecked();
       await click('.hypertable__facetting .item');
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
-      //@ts-ignore
+      //@ts-expect-error - applyFilters is not typed on handlerSpy
       assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: 'band:1' }]));
     });
 
@@ -95,7 +95,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       );
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
       await click('.hypertable__facetting .item');
-      //@ts-ignore
+      //@ts-expect-error - applyFilters is not typed on handlerSpy
       assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: '' }]));
     });
 
@@ -159,11 +159,11 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
         '.oss-input-container input',
         'keyup',
         'Enter',
-        //@ts-ignore
+        //@ts-expect-error - code does not exist on triggerKeyEvent
         { code: 'Enter' }
       );
 
-      //@ts-ignore
+      //@ts-expect-error - fetchFacets is not typed on handlerSpy
       assert.ok(handlerSpy.fetchFacets.calledWithExactly(this.column.definition.key, 'value', 'test'));
     });
   });
