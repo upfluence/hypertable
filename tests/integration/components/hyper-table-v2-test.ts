@@ -602,7 +602,6 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell:last-child .upf-checkbox');
       // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[1]));
-      // await this.pauseTest();
       assert.strictEqual(this.handler.selection, 'all');
     });
 

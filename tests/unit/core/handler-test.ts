@@ -537,13 +537,12 @@ module('Unit | core/handler', function (hooks) {
   module('Events', function () {
     test('callbacks are called properly when an event is subscribed to', function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-
+      assert.expect(1);
       handler.on('row-click', (row: Row) => {
         assert.strictEqual(row, handler.rows[0]);
       });
 
       handler.triggerEvent('row-click', handler.rows[0]);
-      assert.expect(1);
     });
   });
 

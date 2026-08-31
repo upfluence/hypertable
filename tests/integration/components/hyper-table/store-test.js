@@ -18,6 +18,7 @@ module('Integration | Component | hyper-table/localstorage', function (hooks) {
 
   module('feature is enabled', function () {
     test('it throws an error if the feature is enable but no options.name is passed', async function (assert) {
+      assert.expect(1);
       try {
         this.table = this.owner.lookup('service:hypertable-manager').createTable({ features: { localStorage: true } });
       } catch (err) {

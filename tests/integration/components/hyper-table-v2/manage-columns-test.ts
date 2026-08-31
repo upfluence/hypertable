@@ -101,8 +101,9 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
       test('it displays all the column definitions for default category', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
+        
+        assert.expect(7);        
         await click('.upf-btn.upf-btn--default');
-        // await this.pauseTest();
 
         document.querySelectorAll('.fields-list .field').forEach((element, index) => {
           // index + 1 because the first column is not visible
@@ -117,7 +118,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         assert.strictEqual(clusterNames[0].textContent?.trim(), 'instagram');
         assert.strictEqual(clusterNames[1].textContent?.trim(), 'x');
         assert.strictEqual(clusterNames[2].textContent?.trim(), 'youtube');
-        assert.expect(7);
+        
       });
 
       test('it sets the category. as active when user select a category', async function (assert) {
@@ -191,7 +192,9 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     });
 
     test('it removes the column in the table', async function (this: TestContext, assert) {
-      const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
+      assert.expect(1);
+      const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake((args: any) => {
+        const { columns } = args;
         assert.deepEqual(columns, [
           {
             definition: {
@@ -224,7 +227,9 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     });
 
     test('it adds the column in the table', async function (this: TestContext, assert) {
-      const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake(({ columns }) => {
+      assert.expect(1);
+      const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake((args: any) => {
+        const { columns } = args;
         const updatedColumns = [
           {
             definition: {
