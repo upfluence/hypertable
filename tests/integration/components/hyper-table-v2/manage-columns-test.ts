@@ -192,7 +192,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     });
 
     test('it removes the column in the table', async function (this: TestContext, assert) {
-      assert.expect(1);
+      assert.expect(2);
       const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake((args: any) => {
         const { columns } = args;
         assert.deepEqual(columns, [
@@ -227,7 +227,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     });
 
     test('it adds the column in the table', async function (this: TestContext, assert) {
-      assert.expect(1);
+      assert.expect(4);
       const upsertColumnsMock = sinon.stub(this.tableManager, 'upsertColumns').callsFake((args: any) => {
         const { columns } = args;
         const updatedColumns = [

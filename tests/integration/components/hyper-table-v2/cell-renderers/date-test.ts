@@ -30,7 +30,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/date', function 
     );
 
     assert.strictEqual(this.column.definition.key, 'date');
-    assert.strictEqual(this.row[this.column.definition.key], '1643386394');
+    assert.strictEqual(this.row[this.column.definition.key], 1643386394);
     assert.dom().hasText(moment.unix(this.row[this.column.definition.key]).format(DEFAULT_DATE_FORMAT));
   });
 
@@ -43,7 +43,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/date', function 
     );
 
     assert.strictEqual(this.column.definition.key, 'date');
-    assert.strictEqual(this.row[this.column.definition.key], '0');
+    assert.strictEqual(this.row[this.column.definition.key], 0);
     assert.dom().hasText('—');
   });
 

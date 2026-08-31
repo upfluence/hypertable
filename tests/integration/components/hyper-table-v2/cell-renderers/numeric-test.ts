@@ -28,7 +28,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/numeric', functi
     );
 
     assert.strictEqual(this.column.definition.key, 'total');
-    assert.strictEqual(this.row[this.column.definition.key], '123');
+    assert.strictEqual(this.row[this.column.definition.key], 123);
     assert.dom().hasText('123');
   });
 
@@ -41,7 +41,7 @@ module('Integration | Component | hyper-table-v2/cell-renderers/numeric', functi
     );
 
     assert.strictEqual(this.column.definition.key, 'total');
-    assert.strictEqual(this.row[this.column.definition.key], '123123');
+    assert.strictEqual(this.row[this.column.definition.key], 123123);
     assert.dom().hasText('123k');
   });
 
