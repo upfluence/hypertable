@@ -23,7 +23,7 @@ module('Integration | Component | hyper-table-v2/header-renderers/base', functio
 
     await render(hbs`<HyperTableV2::HeaderRenderers::Base @handler={{this.handler}} @column={{this.column}} />`);
 
-    assert.equal(this.column.definition.key, 'foo');
+    assert.strictEqual(this.column.definition.key, 'foo');
     assert.dom().hasText('Name: foo');
   });
 });

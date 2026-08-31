@@ -61,7 +61,7 @@ module('Integration | Component | hyper-table-v2/selection', function (hooks) {
         <HyperTableV2::Selection @selected={{this.selected}} @total={{this.total}} @onClear={{this.onClear}}
                                  @onSelectAll={{this.onSelectAll}} />
       `);
-      assert.equal(
+      assert.strictEqual(
         document.querySelector('.count-container span')?.innerHTML,
         this.intlService.t('hypertable.selection.all_records_selected', { count: 5 })
       );

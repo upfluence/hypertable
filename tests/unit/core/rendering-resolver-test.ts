@@ -23,7 +23,7 @@ module('Unit | core/rendering-resolver', function (hooks) {
     const renderingResolver = new BaseRenderingResolver(getContext());
     const resolved = await renderingResolver.lookupHeaderComponent(buildColumnDefinition('foo'));
     assert.deepEqual(resolved.component, ensureSafeComponent(BaseHeaderRenderer, getContext()));
-    assert.equal(resolved.args, undefined);
+    assert.strictEqual(resolved.args, undefined);
   });
 
   test('it returns the amount cell rendering component for a money column', async function (assert: Assert) {

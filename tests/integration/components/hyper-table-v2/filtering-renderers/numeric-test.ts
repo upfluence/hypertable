@@ -65,7 +65,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
 
-      assert.equal(this.column.order, undefined);
+      assert.strictEqual(this.column.order, undefined);
       await click(
         'div[data-control-name="hypertable__column_filtering_for_total_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
@@ -269,7 +269,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/numeric', f
       await click('[data-control-name="hypertable__column_filtering_for_total_clear_filters"]');
 
       assert.ok(handlerSpy.resetColumns.calledWith([this.column]));
-      assert.equal(this.column.order, undefined);
+      assert.strictEqual(this.column.order, undefined);
       assert.deepEqual(this.column.filters, []);
     });
   });

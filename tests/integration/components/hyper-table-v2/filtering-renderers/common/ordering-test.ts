@@ -69,7 +69,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
       hbs`<HyperTableV2::FilteringRenderers::Common::Ordering @handler={{this.handler}} @column={{this.column}} />`
     );
 
-    assert.equal(this.column.order, undefined);
+    assert.strictEqual(this.column.order, undefined);
 
     await click('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(1)');
     //@ts-ignore

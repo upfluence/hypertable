@@ -106,7 +106,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
         document.querySelectorAll('.fields-list .field').forEach((element, index) => {
           // index + 1 because the first column is not visible
-          assert.equal(
+          assert.strictEqual(
             element.firstElementChild?.getAttribute('data-control-name'),
             `column_definition_toggle_checkbox_${COLUMN_DEFINITIONS[index + 1].key}`
           );
@@ -114,9 +114,9 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
         const clusterNames = document.querySelectorAll('.fields-list .cluster-name');
 
-        assert.equal(clusterNames[0].textContent?.trim(), 'instagram');
-        assert.equal(clusterNames[1].textContent?.trim(), 'x');
-        assert.equal(clusterNames[2].textContent?.trim(), 'youtube');
+        assert.strictEqual(clusterNames[0].textContent?.trim(), 'instagram');
+        assert.strictEqual(clusterNames[1].textContent?.trim(), 'x');
+        assert.strictEqual(clusterNames[2].textContent?.trim(), 'youtube');
         assert.expect(7);
       });
 
@@ -136,18 +136,18 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
         const columnDefinitionsVisible = document.querySelector('.fields-list')?.children || [];
 
-        assert.equal(columnDefinitionsVisible[0].textContent?.trim(), 'instagram');
-        assert.equal(
+        assert.strictEqual(columnDefinitionsVisible[0].textContent?.trim(), 'instagram');
+        assert.strictEqual(
           columnDefinitionsVisible[1].firstElementChild?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_foo'
         );
-        assert.equal(columnDefinitionsVisible[2].textContent?.trim(), 'x');
-        assert.equal(
+        assert.strictEqual(columnDefinitionsVisible[2].textContent?.trim(), 'x');
+        assert.strictEqual(
           columnDefinitionsVisible[3].firstElementChild?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_doe'
         );
-        assert.equal(columnDefinitionsVisible[4].textContent?.trim(), 'youtube');
-        assert.equal(
+        assert.strictEqual(columnDefinitionsVisible[4].textContent?.trim(), 'youtube');
+        assert.strictEqual(
           columnDefinitionsVisible[5].firstElementChild?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_bar'
         );
@@ -160,7 +160,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
         const columnDefinitionsVisible = document.querySelector('.fields-list')?.children || [];
 
-        assert.equal(
+        assert.strictEqual(
           columnDefinitionsVisible[0].firstElementChild?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_code'
         );
@@ -174,7 +174,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
         const columnDefinitionsChecked = document.querySelectorAll('.fields-list .field input:checked');
         assert.strictEqual(columnDefinitionsChecked.length, 1);
-        assert.equal(
+        assert.strictEqual(
           columnDefinitionsChecked[0].parentElement?.getAttribute('data-control-name'),
           'column_definition_toggle_checkbox_code'
         );

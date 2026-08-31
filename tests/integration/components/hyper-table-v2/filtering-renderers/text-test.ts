@@ -59,7 +59,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
       const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
 
-      assert.equal(this.column.order, undefined);
+      assert.strictEqual(this.column.order, undefined);
       await click(
         'div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
@@ -111,7 +111,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
 
       //@ts-ignore
       assert.ok(handlerSpy.resetColumns.calledWith([this.column]));
-      assert.equal(this.column.order, undefined);
+      assert.strictEqual(this.column.order, undefined);
       assert.deepEqual(this.column.filters, []);
     });
   });
