@@ -168,7 +168,6 @@ export default class TableHandler {
    * @returns {TableHandler}
    */
   on(event: string, handler: (...args: any[]) => any): TableHandler {
-    // @ts-expect-error - declaration from @types/ember__object does not match the documentation/actual code.
     addListener(this, event, handler);
 
     return this;
