@@ -530,7 +530,7 @@ module('Unit | core/handler', function (hooks) {
   });
 
   module('Events', function () {
-    test('callbacks are called properly when an event is subscribed to', function (this: TestContext, assert: Assert) {
+    test('Handler#on - callbacks are called properly when an event is subscribed to', function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       assert.expect(1);
       handler.on('row-click', (row: Row) => {
@@ -538,6 +538,31 @@ module('Unit | core/handler', function (hooks) {
       });
 
       handler.triggerEvent('row-click', handler.rows[0]);
+    });
+
+    test('Handler#off - unsubscribes the callback so it is no longer called', function (this: TestContext, assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const callback = sinon.spy();
+
+      handler.on('row-click', callback);
+      handler.off('row-click', callback);
+      handler.triggerEvent('row-click', handler.rows[0]);
+
+      assert.ok(callback.notCalled);
+    });
+
+    test('Handler#off - only removes the targeted callback and leaves other listeners intact', function (this: TestContext, assert: Assert) {
+      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      const removedCallback = sinon.spy();
+      const remainingCallback = sinon.spy();
+
+      handler.on('row-click', removedCallback);
+      handler.on('row-click', remainingCallback);
+      handler.off('row-click', removedCallback);
+      handler.triggerEvent('row-click', handler.rows[0]);
+
+      assert.ok(removedCallback.notCalled);
+      assert.ok(remainingCallback.calledOnce);
     });
   });
 

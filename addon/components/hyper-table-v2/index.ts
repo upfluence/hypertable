@@ -6,6 +6,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
+import type { HandlerEvent } from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
 export type FeatureSet = {
@@ -37,6 +38,7 @@ type InitialLoadAnimationConfig = {
   maxAnimationDurationMs: number;
   extraColumnEffect?: InitialLoadAnimationExtraColumnEffect;
   includeSelectionColumnInExtraEffect?: boolean;
+  replayOn?: Array<Extract<HandlerEvent, 'reset-rows'>>;
 };
 
 interface HyperTableV2Args {
@@ -78,6 +80,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   private initialLoadAnimationPlayed: boolean = false;
   private initialLoadAnimationTimeout?: number;
+  private animationReplayHandler!: () => void;
 
   declare private hypertableInstanceID: string;
 
@@ -94,6 +97,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     });
 
     this.hypertableInstanceID = crypto.randomUUID();
+    this.registerAnimationReplayListeners(args.handler);
   }
 
   get features(): FeatureSet {
@@ -130,6 +134,10 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     } else {
       return this.args.handler.selection.length;
     }
+  }
+
+  get columnsCountStyle(): ReturnType<typeof htmlSafe> {
+    return htmlSafe(`--hypertable-responsive-columns-number: ${this.args.handler.columns.length - 1}`);
   }
 
   get initialLoadAnimationContext(): InitialLoadAnimationContext | null {
@@ -245,11 +253,23 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       this.initialLoadAnimationTimeout = undefined;
     }
 
+    this.unregisterAnimationReplayListeners();
     this.args.handler.teardown();
   }
 
-  get columnsCountStyle(): ReturnType<typeof htmlSafe> {
-    return htmlSafe(`--hypertable-responsive-columns-number: ${this.args.handler.columns.length - 1}`);
+  private registerAnimationReplayListeners(handler: TableHandler): void {
+    if (!this.initialLoadAnimation?.replayOn?.length) return;
+
+    this.animationReplayHandler = this.onAnimationReplay.bind(this);
+    for (const event of this.initialLoadAnimation.replayOn) {
+      handler.on(event, this.animationReplayHandler);
+    }
+  }
+
+  private unregisterAnimationReplayListeners(): void {
+    for (const event of this.initialLoadAnimation?.replayOn ?? []) {
+      this.args.handler.off(event, this.animationReplayHandler);
+    }
   }
 
   private _resetFilters(): void {
@@ -274,6 +294,17 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     });
 
     this.computeScrollableTable();
+  }
+
+  private onAnimationReplay(): void {
+    if (this.initialLoadAnimationTimeout) {
+      window.clearTimeout(this.initialLoadAnimationTimeout);
+      this.initialLoadAnimationTimeout = undefined;
+    }
+
+    this.initialLoadAnimationPlayed = false;
+    this.activateInitialLoadAnimationIfNeeded();
+    this.finalizeInitialLoadAnimation();
   }
 
   private activateInitialLoadAnimationIfNeeded(): void {

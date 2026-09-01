@@ -1,5 +1,5 @@
 import { set } from '@ember/object';
-import { addListener, sendEvent } from '@ember/object/events';
+import { addListener, removeListener, sendEvent } from '@ember/object/events';
 import { scheduleOnce } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
@@ -21,6 +21,17 @@ import {
 import BaseRenderingResolver from './rendering-resolver';
 
 export type RowMutator = (row: Row) => boolean;
+
+export type HandlerEvent =
+  | 'columns-loaded'
+  | 'row-click'
+  | 'apply-filters'
+  | 'apply-order'
+  | 'reset-columns'
+  | 'remove-column'
+  | 'remove-row'
+  | 'mutate-rows'
+  | 'reset-rows';
 
 const ROWS_PER_PAGE = 30;
 
@@ -169,6 +180,13 @@ export default class TableHandler {
    */
   on(event: string, handler: (...args: any[]) => any): TableHandler {
     addListener(this, event, handler);
+
+    return this;
+  }
+
+  off(event: HandlerEvent, handler: (...args: any[]) => any): TableHandler {
+    // @ts-ignore Works but the declaration from @types/ember__object does not match the documentation/actual code.
+    removeListener(this, event, handler);
 
     return this;
   }
