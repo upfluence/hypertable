@@ -64,7 +64,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
   });
 
   test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
+    const applyOrderSpy = sinon.spy(this.handler, 'applyOrder');
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Ordering @handler={{this.handler}} @column={{this.column}} />`
     );
@@ -72,16 +72,14 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/orde
     assert.strictEqual(this.column.order, undefined);
 
     await click('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(1)');
-    //@ts-expect-error - applyOrder is not typed on handlerSpy
-    assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
+  assert.ok(applyOrderSpy.calledWith(this.column, 'asc'));
     assert.deepEqual(this.column.order, {
       direction: 'asc',
       key: 'date'
     });
 
     await click('.oss-toggle-buttons-container .oss-toggle-buttons-btn:nth-child(2)');
-    //@ts-expect-error - applyOrder is not typed on handlerSpy
-    assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));
+  assert.ok(applyOrderSpy.calledWith(this.column, 'desc'));
     assert.deepEqual(this.column.order, {
       direction: 'desc',
       key: 'date'

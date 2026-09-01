@@ -28,6 +28,7 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
 
     await this.handler.fetchColumns();
     this.column = this.handler.columns[0];
+    this.applyFiltersSpy = sinon.spy(this.handler, 'applyFilters');
   });
 
   test('It renders', async function (assert) {
@@ -42,8 +43,6 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
 
   module('When text is inserted in the input', () => {
     test('The handler.applyFilters is called', async function (this: TestContext, assert) {
-      const handlerSpy = sinon.spy(this.handler);
-
       await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
       await fillIn('.oss-input-container input', 'test');
       await triggerKeyEvent(
@@ -54,8 +53,7 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
         { code: 'Enter' }
       );
       assert.ok(
-        //@ts-expect-error - applyFilters is not typed on handlerSpy
-        handlerSpy.applyFilters.calledWith(this.column, [
+        this.applyFiltersSpy.calledWith(this.column, [
           {
             key: 'value',
             value: 'test'
@@ -71,14 +69,12 @@ module('Integration | Component | hyper-table-v2/search', function (hooks) {
     });
 
     test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
       await render(hbs`<HyperTableV2::Search @handler={{this.handler}} />`);
       assert.dom('.oss-input-container').exists();
       await fillIn('.oss-input-container input', 'test');
       await click('.oss-input-container .suffix .fa-times');
       assert.ok(
-        //@ts-expect-error - applyFilters is not typed on handlerSpy
-        handlerSpy.applyFilters.calledWith(this.column, [
+        this.applyFiltersSpy.calledWith(this.column, [
           {
             key: 'value',
             value: ''

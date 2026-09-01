@@ -73,7 +73,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
 
   module('facet toggling', function () {
     test('the selected facet is added to the filters if not already present', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const applyFiltersSpy = sinon.spy(this.handler, 'applyFilters');
 
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}/>`
@@ -82,21 +82,19 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isNotChecked();
       await click('.hypertable__facetting .item');
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
-      //@ts-expect-error - applyFilters is not typed on handlerSpy
-      assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: 'band:1' }]));
+      assert.ok(applyFiltersSpy.calledWithExactly(this.column, [{ key: 'value', value: 'band:1' }]));
     });
 
     test('the facet is deleted from the filters if already present', async function (this: TestContext, assert: Assert) {
       this.column.filters = [{ key: 'value', value: 'band:1' }];
-      const handlerSpy = sinon.spy(this.handler);
+      const applyFiltersSpy = sinon.spy(this.handler, 'applyFilters');
 
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{false}}/>`
       );
       assert.dom('.hypertable__facetting .item .upf-checkbox input').isChecked();
       await click('.hypertable__facetting .item');
-      //@ts-expect-error - applyFilters is not typed on handlerSpy
-      assert.ok(handlerSpy.applyFilters.calledWithExactly(this.column, [{ key: 'value', value: '' }]));
+      assert.ok(applyFiltersSpy.calledWithExactly(this.column, [{ key: 'value', value: '' }]));
     });
 
     test('facet identifiers that are already in the column are checked by default when rendering', async function (this: TestContext, assert: Assert) {
@@ -148,7 +146,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
     });
 
     test('facets are fetched with the typed keyword when searching', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const fetchFacetsSpy = sinon.spy(this.handler, 'fetchFacets');
 
       await render(
         hbs`<HyperTableV2::FilteringRenderers::Common::FacetsLoader @handler={{this.handler}} @column={{this.column}} @searchEnabled={{true}}/>`
@@ -163,8 +161,7 @@ module('Integration | Component | hyper-table-v2/facets-loader', function (hooks
         { code: 'Enter' }
       );
 
-      //@ts-expect-error - fetchFacets is not typed on handlerSpy
-      assert.ok(handlerSpy.fetchFacets.calledWithExactly(this.column.definition.key, 'value', 'test'));
+      assert.ok(fetchFacetsSpy.calledWithExactly(this.column.definition.key, 'value', 'test'));
     });
   });
 

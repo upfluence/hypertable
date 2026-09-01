@@ -29,6 +29,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
     await this.handler.fetchColumns();
 
     this.column = this.handler.columns[0];
+    this.applyFiltersSpy = sinon.spy(this.handler, 'applyFilters');
   });
 
   test('it renders', async function (assert: Assert) {
@@ -39,33 +40,27 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/exis
   });
 
   test('clicking on the buttons should trigger the applyFilters method', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @handler={{this.handler}} @column={{this.column}} />`
     );
 
     await click('.fx-row:first-child .oss-radio-btn');
-    // @ts-expect-error - applyFilters is not typed on handlerSpy
-    assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'with' }]));
+    assert.ok(this.applyFiltersSpy.calledWith(this.column, [{ key: 'existence', value: 'with' }]));
 
     await click('.fx-row:last-child .oss-radio-btn');
-    // @ts-expect-error - applyFilters is not typed on handlerSpy
-    assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
+    assert.ok(this.applyFiltersSpy.calledWith(this.column, [{ key: 'existence', value: 'without' }]));
   });
 
   test('cliking on the buttons should trigger the applyFilters method with a custom filtering key', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Existence @filteringKey="bozo" @handler={{this.handler}} @column={{this.column}} />`
     );
 
     await click('.fx-row:first-child .oss-radio-btn');
-    // @ts-expect-error - applyFilters is not typed on handlerSpy
-    assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'with' }]));
+    assert.ok(this.applyFiltersSpy.calledWith(this.column, [{ key: 'bozo', value: 'with' }]));
 
     await click('.fx-row:last-child .oss-radio-btn');
-    // @ts-expect-error - applyFilters is not typed on handlerSpy
-    assert.ok(handlerSpy.applyFilters.calledWith(this.column, [{ key: 'bozo', value: 'without' }]));
+    assert.ok(this.applyFiltersSpy.calledWith(this.column, [{ key: 'bozo', value: 'without' }]));
   });
 
   test('The component should select the proper radiobutton when rendered with a pre-applied filter', async function (this: TestContext, assert: Assert) {

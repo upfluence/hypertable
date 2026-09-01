@@ -219,7 +219,7 @@ export default class Application extends Controller {
   rowsFetcher = new RowsFetcher();
   handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
 
-  constructor(...args: object[]) {
+  constructor(...args: ConstructorParameters<typeof Controller>) {
     super(...args);
 
     this.handler.on('row-click', (row) => {

@@ -30,6 +30,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     await this.handler.fetchColumns();
 
     this.column = this.handler.columns[0];
+    this.applyFiltersSpy = sinon.spy(this.handler, 'applyFilters');
   });
 
   test('it has the right data-control-name', async function (assert: Assert) {
@@ -40,7 +41,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
   });
 
   test('When text is inputted, the applyFilters is called', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
@@ -55,8 +55,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     );
 
     assert.ok(
-      //@ts-expect-error - applyFilters is not typed on handlerSpy
-      handlerSpy.applyFilters.calledWith(this.column, [
+      this.applyFiltersSpy.calledWith(this.column, [
         {
           key: 'value',
           value: 'test'
@@ -66,7 +65,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
   });
 
   test('the provided filter key is used when apply filters', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} @filterKey="foobar" />`
     );
@@ -81,8 +79,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     );
 
     assert.ok(
-      //@ts-expect-error - applyFilters is not typed on handlerSpy
-      handlerSpy.applyFilters.calledWith(this.column, [
+      this.applyFiltersSpy.calledWith(this.column, [
         {
           key: 'foobar',
           value: 'test'
@@ -109,7 +106,6 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
   });
 
   test('When the remove icon is clicked, the text input is cleared, #handler.applyFilters is triggered', async function (this: TestContext, assert: Assert) {
-    const handlerSpy = sinon.spy(this.handler);
     await render(
       hbs`<HyperTableV2::FilteringRenderers::Common::Search @handler={{this.handler}} @column={{this.column}} />`
     );
@@ -117,8 +113,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/common/sear
     await fillIn('.oss-input-container input', 'test');
     await click('.oss-input-container .suffix .fa-times');
     assert.ok(
-      //@ts-expect-error - applyFilters is not typed on handlerSpy
-      handlerSpy.applyFilters.calledWith(this.column, [
+      this.applyFiltersSpy.calledWith(this.column, [
         {
           key: 'value',
           value: ''
