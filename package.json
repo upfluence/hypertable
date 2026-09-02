@@ -127,7 +127,7 @@
     "@babel/helper-compilation-targets": "7.9.6"
   },
   "engines": {
-    "node": "12.* || 14.* || >= 16"
+    "node": ">= 20"
   },
   "ember": {
     "edition": "octane"
