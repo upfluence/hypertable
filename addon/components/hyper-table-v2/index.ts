@@ -38,7 +38,7 @@ type InitialLoadAnimationConfig = {
   maxAnimationDurationMs: number;
   extraColumnEffect?: InitialLoadAnimationExtraColumnEffect;
   includeSelectionColumnInExtraEffect?: boolean;
-  replayOn?: Array<Extract<HandlerEvent, 'reset-rows'>>;
+  replayOn?: Extract<HandlerEvent, 'reset-rows'>[];
 };
 
 interface HyperTableV2Args {
@@ -80,7 +80,6 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   private initialLoadAnimationPlayed: boolean = false;
   private initialLoadAnimationTimeout?: number;
-  private animationReplayHandler!: () => void;
 
   declare private hypertableInstanceID: string;
 
@@ -260,15 +259,14 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   private registerAnimationReplayListeners(handler: TableHandler): void {
     if (!this.initialLoadAnimation?.replayOn?.length) return;
 
-    this.animationReplayHandler = this.onAnimationReplay.bind(this);
     for (const event of this.initialLoadAnimation.replayOn) {
-      handler.on(event, this.animationReplayHandler);
+      handler.on(event, this.onAnimationReplay);
     }
   }
 
   private unregisterAnimationReplayListeners(): void {
     for (const event of this.initialLoadAnimation?.replayOn ?? []) {
-      this.args.handler.off(event, this.animationReplayHandler);
+      this.args.handler.off(event, this.onAnimationReplay);
     }
   }
 
@@ -296,7 +294,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     this.computeScrollableTable();
   }
 
-  private onAnimationReplay(): void {
+  private onAnimationReplay = (): void => {
     if (this.initialLoadAnimationTimeout) {
       window.clearTimeout(this.initialLoadAnimationTimeout);
       this.initialLoadAnimationTimeout = undefined;
@@ -305,7 +303,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     this.initialLoadAnimationPlayed = false;
     this.activateInitialLoadAnimationIfNeeded();
     this.finalizeInitialLoadAnimation();
-  }
+  };
 
   private activateInitialLoadAnimationIfNeeded(): void {
     if (this.initialLoadAnimationPlayed || !this.initialLoadAnimation) {

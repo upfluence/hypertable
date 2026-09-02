@@ -22,16 +22,20 @@ import BaseRenderingResolver from './rendering-resolver';
 
 export type RowMutator = (row: Row) => boolean;
 
-export type HandlerEvent =
-  | 'columns-loaded'
-  | 'row-click'
-  | 'apply-filters'
-  | 'apply-order'
-  | 'reset-columns'
-  | 'remove-column'
-  | 'remove-row'
-  | 'mutate-rows'
-  | 'reset-rows';
+export const HANDLER_EVENTS = [
+  'columns-loaded',
+  'row-click',
+  'apply-filters',
+  'apply-order',
+  'reset-columns',
+  'remove-column',
+  'remove-row',
+  'mutate-rows',
+  'reset-rows'
+] as const;
+
+export type HandlerEvent = (typeof HANDLER_EVENTS)[number];
+export type LooseAutocomplete<T extends string> = T | (string & Record<never, never>);
 
 export const ROWS_PER_PAGE = 30;
 
@@ -178,15 +182,22 @@ export default class TableHandler {
    * @param {Function} handler - A callback function to be called when the subscribed event is triggered.
    * @returns {TableHandler}
    */
-  on(event: string, handler: (...args: any[]) => any): TableHandler {
+  on(event: LooseAutocomplete<HandlerEvent>, handler: (...args: any[]) => any): TableHandler {
     addListener(this, event, handler);
 
     return this;
   }
 
-  off(event: HandlerEvent, handler: (...args: any[]) => any): TableHandler {
-    // @ts-ignore Works but the declaration from @types/ember__object does not match the documentation/actual code.
-    removeListener(this, event, handler);
+  off(event: LooseAutocomplete<HandlerEvent>, handler: (...args: any[]) => any): TableHandler {
+    try {
+      removeListener(this, event, handler);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+
+      if (!message.includes('did not exist on the instance')) {
+        throw error;
+      }
+    }
 
     return this;
   }
