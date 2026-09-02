@@ -35,7 +35,7 @@ export const HANDLER_EVENTS = [
 ] as const;
 
 export type HandlerEvent = (typeof HANDLER_EVENTS)[number];
-export type LooseAutocomplete<T extends string> = T | (string & Record<never, never>);
+export type LooseAutocomplete<T extends string> = T | (string & {});
 
 export const ROWS_PER_PAGE = 30;
 
