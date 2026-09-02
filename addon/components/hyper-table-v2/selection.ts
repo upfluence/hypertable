@@ -15,7 +15,7 @@ export default class HyperTableV2Selection extends Component<HyperTableV2Selecti
   }
 
   get classes(): string {
-    let classes = ['selection-container'];
+    const classes = ['selection-container'];
 
     if (this.args.selected > 0) {
       classes.push('selection-container--visible');

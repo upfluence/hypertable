@@ -56,16 +56,15 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
     });
 
     test('it calls the Handler#applyOrder method correctly via the radio buttons', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const applyOrderSpy = sinon.spy(this.handler, 'applyOrder');
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
 
-      assert.equal(this.column.order, undefined);
+      assert.strictEqual(this.column.order, undefined);
       await click(
         'div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
 
-      //@ts-ignore
-      assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'asc'));
+      assert.ok(applyOrderSpy.calledWith(this.column, 'asc'));
       assert.deepEqual(this.column.order, {
         direction: 'asc',
         key: 'foo'
@@ -75,8 +74,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
         'div[data-control-name="hypertable__column_filtering_for_foo_ordering"] .oss-toggle-buttons-btn:nth-child(2)'
       );
 
-      //@ts-ignore
-      assert.ok(handlerSpy.applyOrder.calledWith(this.column, 'desc'));
+      assert.ok(applyOrderSpy.calledWith(this.column, 'desc'));
       assert.deepEqual(this.column.order, {
         direction: 'desc',
         key: 'foo'
@@ -100,31 +98,29 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/text', func
     });
   });
 
-  module('clear column', async function () {
+  module('clear column', function () {
     test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const resetColumnsSpy = sinon.spy(this.handler, 'resetColumns');
       this.handler.applyFilters(this.column, [{ key: 'foo', value: 'bar' }]);
       this.handler.applyOrder(this.column, 'asc');
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
       await click('[data-control-name="hypertable__column_filtering_for_foo_clear_filters"]');
 
-      //@ts-ignore
-      assert.ok(handlerSpy.resetColumns.calledWith([this.column]));
-      assert.equal(this.column.order, undefined);
+      assert.ok(resetColumnsSpy.calledWith([this.column]));
+      assert.strictEqual(this.column.order, undefined);
       assert.deepEqual(this.column.filters, []);
     });
   });
 
   module('remove column', function () {
     test('it calls the Handler#removeColumn with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler);
+      const removeColumnSpy = sinon.spy(this.handler, 'removeColumn');
 
       await render(hbs`<HyperTableV2::FilteringRenderers::Text @handler={{this.handler}} @column={{this.column}} />`);
       await click('[data-control-name="hypertable__column_filtering_for_foo_remove_column"]');
 
-      //@ts-ignore
-      assert.ok(handlerSpy.removeColumn.calledWith(this.column.definition));
+      assert.ok(removeColumnSpy.calledWith(this.column.definition));
     });
   });
 });

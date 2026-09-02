@@ -34,12 +34,12 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
   test('it has the right size class', async function (this: TestContext, assert: Assert) {
     await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
 
-    assert.equal(this.column.definition.size, 'M');
+    assert.strictEqual(this.column.definition.size, 'M');
     assert.dom('.hypertable__column').hasClass('hypertable__column--size-M');
 
     this.set('column', this.handler.columns[1]);
 
-    assert.equal(this.column.definition.size, 'L');
+    assert.strictEqual(this.column.definition.size, 'L');
     assert.dom('.hypertable__column').hasClass('hypertable__column--size-L');
   });
 
@@ -115,7 +115,6 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
 
     test('it renders the correct tooltip for the double arrow icon', async function (this: TestContext, assert: Assert) {
       await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
-      // @ts-ignore
       await assert.tooltip('.order-command').hasTitle('Order');
     });
 
@@ -150,7 +149,6 @@ module('Integration | Component | hyper-table-v2/column', function (hooks) {
 
     test('it renders the correct tooltip', async function (this: TestContext, assert: Assert) {
       await render(hbs`<HyperTableV2::Column @handler={{this.handler}} @column={{this.column}} />`);
-      // @ts-ignore
       await assert.tooltip('.filter-command').hasTitle('Filters');
     });
 

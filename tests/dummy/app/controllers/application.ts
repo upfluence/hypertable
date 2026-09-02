@@ -43,7 +43,7 @@ const columns = [
 ];
 
 const buildColumnDefinition = (key: string, extra: { [key: string]: any }): ColumnDefinition => {
-  let defaultColumnDefinition = {
+  const defaultColumnDefinition = {
     key: key,
     type: 'text',
     name: `Name: ${key}`,
@@ -97,8 +97,7 @@ class Manager implements TableManager {
 }
 
 class RowsFetcher {
-  // @ts-ignore
-  fetch(page: number, perPage: number) {
+  fetch(_page: number, _perPage: number) {
     return Promise.resolve({
       rows: [
         {
@@ -220,8 +219,8 @@ export default class Application extends Controller {
   rowsFetcher = new RowsFetcher();
   handler = new TableHandler(this, this.tableManager, this.rowsFetcher);
 
-  init() {
-    super.init();
+  constructor(...args: ConstructorParameters<typeof Controller>) {
+    super(...args);
 
     this.handler.on('row-click', (row) => {
       console.log(row);

@@ -12,16 +12,17 @@ module('Integration | Component | hyper-table/localstorage', function (hooks) {
       this.table = this.owner.lookup('service:hypertable-manager').createTable({});
       this.table.updateData([]);
 
-      assert.equal(this.table.store, null);
+      assert.strictEqual(this.table.store, null);
     });
   });
 
   module('feature is enabled', function () {
     test('it throws an error if the feature is enable but no options.name is passed', async function (assert) {
+      assert.expect(1);
       try {
         this.table = this.owner.lookup('service:hypertable-manager').createTable({ features: { localStorage: true } });
       } catch (err) {
-        assert.equal(
+        assert.strictEqual(
           err.message,
           '[Hypertable] Trying to use localStorage store without a store name. Please set "options.name".'
         );
@@ -33,8 +34,8 @@ module('Integration | Component | hyper-table/localstorage', function (hooks) {
         .lookup('service:hypertable-manager')
         .createTable({ name: 'foo', features: { localStorage: true } });
 
-      assert.equal(this.table.store.constructor, LocalStorageStore);
-      assert.equal(this.table.store.key, 'foo');
+      assert.strictEqual(this.table.store.constructor, LocalStorageStore);
+      assert.strictEqual(this.table.store.key, 'foo');
     });
 
     test('it correctly updates the localStorage', async function (assert) {

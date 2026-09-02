@@ -37,7 +37,7 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   }
 
   get orderedFilteredClusters(): Map<string, ManagedColumn[]> {
-    let fields = A(
+    const fields = A(
       (this.args.handler.columnDefinitions || []).filter((columnDefinition) => {
         const search = (this.searchColumnDefinitionKeyword || '').toLowerCase();
         const hasSearched =

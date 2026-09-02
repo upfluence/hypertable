@@ -55,7 +55,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
         hbs`<HyperTableV2::FilteringRenderers::Numeric @handler={{this.handler}} @column={{this.column}} />`
       );
 
-      assert.equal(this.column.order, undefined);
+      assert.strictEqual(this.column.order, undefined);
       await click(
         '[data-control-name="hypertable__column_filtering_for_date_ordering"] .oss-toggle-buttons-btn:nth-child(1)'
       );
@@ -101,8 +101,8 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await click(
         'div[data-control-name="hypertable__column_filtering_for_date_filter_by_radiogroup"] .oss-toggle-buttons-btn:nth-child(1)'
       );
-      let filterOptions = findAll('.filters__option');
-      assert.equal(filterOptions.length, 6);
+      const filterOptions = findAll('.filters__option');
+      assert.strictEqual(filterOptions.length, 6);
       assert.dom(filterOptions[0]).hasText('Today');
       assert.dom(filterOptions[1]).hasText('Yesterday');
       assert.dom(filterOptions[2]).hasText('This Week');
@@ -112,8 +112,8 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
     });
 
     test('when the filter is set to Moving, when clicking on a filter option, applyFilter is triggered with the proper timezone in the filter extras', async function (this: TestContext, assert: Assert) {
-      let intlTimezoneStub = sinon.stub(Intl, 'DateTimeFormat').returns({
-        // @ts-ignore
+      const intlTimezoneStub = sinon.stub(Intl, 'DateTimeFormat').returns({
+        // @ts-expect-error - incorrect type
         resolvedOptions: () => {
           return { timeZone: 'Africa/Atlantis' };
         }
@@ -156,9 +156,9 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
         (filter: any) => filter.key === 'upper_bound'
       )?.value;
       const dateSetInFilters = new Date(timestampSetInFilters * 1000);
-      assert.true(dateSetInFilters.getHours() === 23);
-      assert.true(dateSetInFilters.getMinutes() === 59);
-      assert.true(dateSetInFilters.getSeconds() === 59);
+      assert.strictEqual(dateSetInFilters.getHours(), 23);
+      assert.strictEqual(dateSetInFilters.getMinutes(), 59);
+      assert.strictEqual(dateSetInFilters.getSeconds(), 59);
     });
 
     test('clicking in the flatpickr input should open flatpickr', async function (assert: Assert) {
@@ -173,7 +173,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
     });
   });
 
-  module('clear column', async function () {
+  module('clear column', function () {
     test('it calls the Handler#resetColumns with the column when the dedicated button is clicked', async function (this: TestContext, assert: Assert) {
       this.handler.applyFilters(this.column, [{ key: 'moving', value: 'today' }]);
       this.handler.applyOrder(this.column, 'asc');
@@ -182,7 +182,7 @@ module('Integration | Component | hyper-table-v2/filtering-renderers/date', func
       await click('[data-control-name="hypertable__column_filtering_for_date_clear_filters"]');
 
       assert.ok(this.handlerSpy.resetColumns.calledWith([this.column]));
-      assert.equal(this.column.order, undefined);
+      assert.strictEqual(this.column.order, undefined);
       assert.deepEqual(this.column.filters, []);
     });
   });

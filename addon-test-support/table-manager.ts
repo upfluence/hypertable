@@ -12,7 +12,7 @@ import {
 } from '@upfluence/hypertable/core/interfaces';
 
 export const buildColumnDefinition = (key: string, extra?: { [key: string]: any }): ColumnDefinition => {
-  let defaultColumnDefinition = {
+  const defaultColumnDefinition = {
     key: key,
     type: 'text',
     name: `Name: ${key}`,

@@ -49,7 +49,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     this.elementId = guidFor(args.column.definition.key);
   }
 
-  @computed('args.column.filters.[]', 'args.column.order.direction', 'sizeClass')
+  @computed('args.column.{filters.[],order.direction}', 'sizeClass', 'stickyColumnClass')
   get computedClasses(): string {
     const classes = ['hypertable__column'];
 
@@ -80,7 +80,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
     return `hypertable__column--size-${size}`;
   }
 
-  @computed('args.column.order.direction')
+  @computed('args.column.{definition.orderable,order.direction}')
   get isOrderingIndicatorVisible(): boolean {
     return this.args.column.definition.orderable && !this.args.column.order?.direction;
   }

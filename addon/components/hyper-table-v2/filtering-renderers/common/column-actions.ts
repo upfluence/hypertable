@@ -14,7 +14,7 @@ export default class HyperTableV2FilteringRenderersCommonColumnActions extends C
     return !this.args.column.definition.position?.sticky;
   }
 
-  @computed('args.column.filters.[]', 'args.column.order')
+  @computed('args.column.{filters.[],order}')
   get displayClearButton(): boolean {
     return (this.args.column.filters?.length ?? 0) > 0 || this.args.column.order !== undefined;
   }

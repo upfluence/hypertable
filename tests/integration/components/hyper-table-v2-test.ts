@@ -24,9 +24,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
     await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
-    // @ts-ignore
+    // @ts-expect-error - handlerSpy not typed
     assert.ok(handlerSpy.fetchColumns.calledOnce);
-    // @ts-ignore
+    // @ts-expect-error - handlerSpy not typed
     assert.ok(handlerSpy.fetchRows.calledOnce);
   });
 
@@ -350,7 +350,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.dom('.upf-checkbox').exists({ count: 4 });
     });
 
-    test('the selection column is present when the feature is enabled', async function (assert: Assert) {
+    test('the selection column selected count is present when the feature is enabled', async function (assert: Assert) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
 
       assert.dom('.selected-count').exists();
@@ -436,7 +436,7 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         await click('.hypertable__column.hypertable__column--selection header .upf-checkbox');
 
         const countText = document.querySelector('.selection-container .count-container span')?.innerHTML;
-        assert.equal(
+        assert.strictEqual(
           this.intlService.t('hypertable.selection.all_records_selected', { count: this.handler.rowsMeta.total }),
           countText
         );
@@ -568,18 +568,18 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[0]));
-      assert.equal(this.handler.selection.length, 1);
+      assert.strictEqual(this.handler.selection.length, 1);
       assert.ok(this.handler.selection.includes(this.handler.rows[0]));
       assert.dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').isChecked();
       assert.dom('.selected-count').hasText('1');
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[0]));
-      assert.equal(this.handler.selection.length, 0);
+      assert.strictEqual(this.handler.selection.length, 0);
       assert
         .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input')
         .isNotChecked();
@@ -596,14 +596,13 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       assert.deepEqual(this.handler.selection, []);
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[0]));
-      assert.equal(this.handler.selection.length, 1);
+      assert.strictEqual(this.handler.selection.length, 1);
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell:last-child .upf-checkbox');
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateSelection.calledWithExactly(this.handler.rows[1]));
-      // await this.pauseTest();
-      assert.equal(this.handler.selection, 'all');
+      assert.strictEqual(this.handler.selection, 'all');
     });
 
     test('clicking on one multiline checkbox toggles its exclusion status', async function (this: TestContext, assert: Assert) {
@@ -616,9 +615,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateExclusion.calledWithExactly(this.handler.rows[0]));
-      assert.equal(this.handler.exclusion.length, 1);
+      assert.strictEqual(this.handler.exclusion.length, 1);
       assert.ok(this.handler.exclusion.includes(this.handler.rows[0]));
       assert
         .dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input')
@@ -627,9 +626,9 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
       await click('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox');
 
-      // @ts-ignore
+      // @ts-expect-error - handlerSpy not typed
       assert.ok(handlerSpy.updateExclusion.calledWithExactly(this.handler.rows[0]));
-      assert.equal(this.handler.exclusion.length, 0);
+      assert.strictEqual(this.handler.exclusion.length, 0);
       assert.dom('.hypertable__column.hypertable__column--selection .hypertable__cell .upf-checkbox input').isChecked();
       assert.dom('.selected-count').hasText('12');
     });

@@ -29,26 +29,26 @@ module('Unit | core/handler', function (hooks) {
 
   test('Handler#fetchColumns', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    assert.equal(handler.columns.length, 0);
+    assert.strictEqual(handler.columns.length, 0);
     await handler.fetchColumns();
-    assert.equal(handler.columns.length, 4);
+    assert.strictEqual(handler.columns.length, 4);
   });
 
   test('Handler#fetchColumns triggers the columns-loaded event', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    const handlerSpy = sinon.spy(handler, 'triggerEvent');
+    const triggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
     await handler.fetchColumns();
 
-    assert.ok(handlerSpy.calledOnceWithExactly('columns-loaded'));
+    assert.ok(triggerEventSpy.calledOnceWithExactly('columns-loaded'));
   });
 
   module('Handler#fetchRows', () => {
     test('it adds the correct number of rows', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-      assert.equal(handler.rows.length, 0);
+      assert.strictEqual(handler.rows.length, 0);
       await handler.fetchRows();
-      assert.equal(handler.rows.length, 3);
+      assert.strictEqual(handler.rows.length, 3);
     });
 
     test('it removes duplicated row by record_id', async function (this: TestContext, assert: Assert) {
@@ -57,19 +57,19 @@ module('Unit | core/handler', function (hooks) {
       await handler.fetchRows();
       await handler.fetchRows();
 
-      assert.equal(handler.rows.length, 3);
-      assert.equal(handler.rows[0].record_id, 12);
-      assert.equal(handler.rows[0].foo, 'ekip');
-      assert.equal(handler.rows[1].record_id, 13);
-      assert.equal(handler.rows[1].foo, 'second');
-      assert.equal(handler.rows[2].record_id, 14);
-      assert.equal(handler.rows[2].foo, 'third');
+      assert.strictEqual(handler.rows.length, 3);
+      assert.strictEqual(handler.rows[0].record_id, 12);
+      assert.strictEqual(handler.rows[0].foo, 'ekip');
+      assert.strictEqual(handler.rows[1].record_id, 13);
+      assert.strictEqual(handler.rows[1].foo, 'second');
+      assert.strictEqual(handler.rows[2].record_id, 14);
+      assert.strictEqual(handler.rows[2].foo, 'third');
     });
   });
 
   test('Handler#addColumn', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    assert.equal(handler.columns.length, 0);
+    assert.strictEqual(handler.columns.length, 0);
     await handler.addColumn({
       key: 'foo',
       type: 'text',
@@ -85,8 +85,8 @@ module('Unit | core/handler', function (hooks) {
       facetable_by: ['value']
     });
 
-    assert.equal(handler.columns.length, 1);
-    assert.equal(handler.columns[0].definition.key, 'foo');
+    assert.strictEqual(handler.columns.length, 1);
+    assert.strictEqual(handler.columns[0].definition.key, 'foo');
   });
 
   module('Handler#removeColumn', function () {
@@ -113,10 +113,9 @@ module('Unit | core/handler', function (hooks) {
         }
       ];
 
-      assert.equal(handler.columns.length, 1);
+      assert.strictEqual(handler.columns.length, 1);
       await handler.removeColumn(handler.columns[0].definition);
-      assert.equal(handler.columns.length, 0);
-      // @ts-ignore
+      assert.strictEqual(handler.columns.length, 0);
       assert.ok(handlerTriggerEventSpy.notCalled);
     });
 
@@ -143,10 +142,9 @@ module('Unit | core/handler', function (hooks) {
         }
       ];
 
-      assert.equal(handler.columns.length, 1);
+      assert.strictEqual(handler.columns.length, 1);
       await handler.removeColumn(handler.columns[0].definition);
-      assert.equal(handler.columns.length, 0);
-      // @ts-ignore
+      assert.strictEqual(handler.columns.length, 0);
       assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-column'));
     });
   });
@@ -162,7 +160,7 @@ module('Unit | core/handler', function (hooks) {
 
       this.handler.applyFilters(this.handler.columns[0], [{ key: 'foo', value: 'bar' }]);
 
-      assert.equal(this.handler.columns[0].filters.length, 2);
+      assert.strictEqual(this.handler.columns[0].filters.length, 2);
       assert.deepEqual(this.handler.columns[0].filters, [
         {
           key: 'fizz',
@@ -176,11 +174,11 @@ module('Unit | core/handler', function (hooks) {
     });
 
     test('new filters trigger event with the apply-filters event', async function (this: TestContext, assert: Assert) {
-      const handlerSpy = sinon.spy(this.handler, 'triggerEvent');
+      const triggerEventSpy = sinon.spy(this.handler, 'triggerEvent');
       await this.handler.applyFilters(this.handler.columns[0], [{ key: 'foo', value: 'bar' }]);
 
       assert.ok(
-        handlerSpy.calledOnceWithExactly('apply-filters', this.handler.columns[0], [{ key: 'foo', value: 'bar' }])
+        triggerEventSpy.calledOnceWithExactly('apply-filters', this.handler.columns[0], [{ key: 'foo', value: 'bar' }])
       );
     });
 
@@ -192,7 +190,7 @@ module('Unit | core/handler', function (hooks) {
         { key: 'fizz', value: 'buzz' }
       ]);
 
-      assert.equal(this.handler.columns[0].filters.length, 2);
+      assert.strictEqual(this.handler.columns[0].filters.length, 2);
       assert.deepEqual(this.handler.columns[0].filters, [
         { key: 'foo', value: 'batman' },
         { key: 'fizz', value: 'buzz' }
@@ -210,7 +208,7 @@ module('Unit | core/handler', function (hooks) {
         { key: 'fizz', value: 'buzz' }
       ]);
 
-      assert.equal(this.handler.columns[0].filters.length, 1);
+      assert.strictEqual(this.handler.columns[0].filters.length, 1);
       assert.deepEqual(this.handler.columns[0].filters, [{ key: 'fizz', value: 'buzz' }]);
     });
   });
@@ -225,19 +223,19 @@ module('Unit | core/handler', function (hooks) {
 
       handler.resetColumns(handler.columns);
 
-      assert.equal(handler.columns.filter((column) => column.filters.length > 0 || column.order).length, 0);
-      assert.equal(handler.columns[0].filters.length, 0);
-      assert.equal(handler.columns[1].order, undefined);
+      assert.strictEqual(handler.columns.filter((column) => column.filters.length > 0 || column.order).length, 0);
+      assert.strictEqual(handler.columns[0].filters.length, 0);
+      assert.strictEqual(handler.columns[1].order, undefined);
     });
 
     test('it triggers the reset-columns event', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-      const handlerSpy = sinon.spy(handler, 'triggerEvent');
+      const triggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
       await handler.fetchColumns();
       await handler.resetColumns(handler.columns);
 
-      assert.ok(handlerSpy.calledWithExactly('reset-columns', handler.columns));
+      assert.ok(triggerEventSpy.calledWithExactly('reset-columns', handler.columns));
     });
 
     test('if all items where globally selected, the selection is properly reset', async function (this: TestContext, assert: Assert) {
@@ -249,7 +247,7 @@ module('Unit | core/handler', function (hooks) {
       handler.applyOrder(handler.columns[1], 'asc');
       handler.selectAllGlobal();
 
-      assert.equal(handler.selection, 'all');
+      assert.strictEqual(handler.selection, 'all');
 
       await handler.resetColumns(handler.columns);
 
@@ -265,36 +263,34 @@ module('Unit | core/handler', function (hooks) {
       handler.applyOrder(handler.columns[1], 'asc');
       handler.toggleSelectAll(true);
 
-      assert.equal(handler.selection.length, 3);
+      assert.strictEqual(handler.selection.length, 3);
 
       handler.resetColumns(handler.columns);
 
-      assert.equal(handler.selection.length, 0);
+      assert.strictEqual(handler.selection.length, 0);
     });
   });
 
   test('Handler#resetRows', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
+    const fetchSpy = sinon.spy(this.rowsFetcher, 'fetch');
 
     await handler.fetchRows();
     await handler.resetRows();
 
-    // @ts-ignore
-    assert.ok(rowsFetcherSpy.fetch.calledTwice);
-    // @ts-ignore
-    assert.ok(rowsFetcherSpy.fetch.calledWithExactly(1, 30));
-    assert.equal(handler.rows.length, 3);
+    assert.ok(fetchSpy.calledTwice);
+    assert.ok(fetchSpy.calledWithExactly(1, 30));
+    assert.strictEqual(handler.rows.length, 3);
   });
 
   test('Handler#resetRows triggers the reset-rows event', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    const handlerSpy = sinon.spy(handler, 'triggerEvent');
+    const triggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
     await handler.fetchRows();
     await handler.resetRows();
 
-    assert.ok(handlerSpy.calledOnceWithExactly('reset-rows'));
+    assert.ok(triggerEventSpy.calledOnceWithExactly('reset-rows'));
   });
 
   test('Handler#removeRow', async function (this: TestContext, assert: Assert) {
@@ -302,12 +298,11 @@ module('Unit | core/handler', function (hooks) {
     const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
     await handler.fetchRows();
-    assert.equal(handler.rows.length, 3);
+    assert.strictEqual(handler.rows.length, 3);
 
     handler.removeRow(12);
-    assert.equal(handler.rows.length, 2);
-    assert.equal(handler.rows[0].recordId, 13);
-    // @ts-ignore
+    assert.strictEqual(handler.rows.length, 2);
+    assert.strictEqual(handler.rows[0].recordId, 13);
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
   });
 
@@ -322,38 +317,35 @@ module('Unit | core/handler', function (hooks) {
       return true;
     });
 
-    assert.equal(handler.rows[0].bar, 'woop woop');
-    // @ts-ignore
+    assert.strictEqual(handler.rows[0].bar, 'woop woop');
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
     assert.true(didRefresh);
 
     didRefresh = handler.mutateRow(13, (): boolean => false);
-    assert.equal(handler.rows[1].bar, 'second bar');
-    // @ts-ignore
+    assert.strictEqual(handler.rows[1].bar, 'second bar');
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('mutate-rows'));
     assert.false(didRefresh);
   });
 
   test('Handler#applyOrder', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    const tableManagerSpy = sinon.spy(this.tableManager);
+    const upsertColumnsSpy = sinon.spy(this.tableManager, 'upsertColumns');
 
     await handler.fetchColumns();
     handler.applyOrder(handler.columns[0], 'asc');
 
-    // @ts-ignore
-    assert.ok(tableManagerSpy.upsertColumns.calledOnceWithExactly({ columns: handler.columns }));
-    assert.equal(handler.currentPage, 1);
+    assert.ok(upsertColumnsSpy.calledOnceWithExactly({ columns: handler.columns }));
+    assert.strictEqual(handler.currentPage, 1);
   });
 
   test('Handler#applyOrder triggers the apply-order event', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    const handlerSpy = sinon.spy(handler, 'triggerEvent');
+    const triggerEventSpy = sinon.spy(handler, 'triggerEvent');
 
     await handler.fetchColumns();
     await handler.applyOrder(handler.columns[0], 'asc');
 
-    assert.ok(handlerSpy.calledWithExactly('apply-order', handler.columns[0], 'asc'));
+    assert.ok(triggerEventSpy.calledWithExactly('apply-order', handler.columns[0], 'asc'));
   });
 
   module('Handler#toggleSelectAll', () => {
@@ -363,7 +355,7 @@ module('Unit | core/handler', function (hooks) {
 
       await handler.fetchRows();
       handler.toggleSelectAll(true);
-      assert.equal(handler.selection.length, 3);
+      assert.strictEqual(handler.selection.length, 3);
     });
 
     test('it selects all the rows', async function (this: TestContext, assert: Assert) {
@@ -373,7 +365,7 @@ module('Unit | core/handler', function (hooks) {
 
       await handler.fetchRows();
       handler.toggleSelectAll(true);
-      assert.equal(handler.selection, 'all');
+      assert.strictEqual(handler.selection, 'all');
     });
 
     test('it clears the selected rows', async function (this: TestContext, assert: Assert) {
@@ -391,19 +383,19 @@ module('Unit | core/handler', function (hooks) {
   test('Handler#selectAllGlobal', async function (this: TestContext, assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     populateSelectionAndExclusionHandler(handler);
-    assert.equal(handler.selection.length, 1);
-    assert.equal(handler.exclusion.length, 1);
+    assert.strictEqual(handler.selection.length, 1);
+    assert.strictEqual(handler.exclusion.length, 1);
 
     handler.selectAllGlobal();
-    assert.equal(handler.selection, 'all');
+    assert.strictEqual(handler.selection, 'all');
     assert.deepEqual(handler.exclusion, []);
   });
 
-  test('Handler#selectAllGlobal', async function (this: TestContext, assert) {
+  test('Handler#clearSelection', async function (this: TestContext, assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     populateSelectionAndExclusionHandler(handler);
-    assert.equal(handler.selection.length, 1);
-    assert.equal(handler.exclusion.length, 1);
+    assert.strictEqual(handler.selection.length, 1);
+    assert.strictEqual(handler.exclusion.length, 1);
 
     handler.clearSelection();
     assert.deepEqual(handler.selection, []);
@@ -423,39 +415,39 @@ module('Unit | core/handler', function (hooks) {
     assert.deepEqual(handler.selection, []);
   });
 
-  module('Handler#onBottomReached', function () {
+  module('Handler#onBottomReached', function (hooks) {
+    hooks.beforeEach(function (this: TestContext) {
+      this.handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      this.fetchRowsSpy = sinon.spy(this.handler, 'fetchRows');
+    });
+
     test('it does nothing if the maximum rows have been loaded already', async function (this: TestContext, assert: Assert) {
       sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {
         return Promise.resolve({ rows: [], meta: { total: 0 } });
       });
 
-      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-      const handlerSpy = sinon.spy(handler);
-      await handler.fetchRows();
+      await this.handler.fetchRows();
 
-      handler.onBottomReached();
+      this.handler.onBottomReached();
 
-      assert.ok(handlerSpy.fetchRows.calledOnce);
+      assert.ok(this.fetchRowsSpy.calledOnce);
     });
 
     test('it calls the Handler#fetchRows method if there are more rows to be fetched', async function (this: TestContext, assert: Assert) {
-      const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-      const handlerSpy = sinon.spy(handler);
-      await handler.fetchRows();
-      handler.onBottomReached();
+      await this.handler.fetchRows();
+      this.handler.onBottomReached();
 
-      assert.ok(handlerSpy.fetchRows.calledTwice);
+      assert.ok(this.fetchRowsSpy.calledTwice);
     });
   });
 
   module('Handler#fetchFacets', function () {
     test('it calls the fetchFacets method of the manager correctly', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-      const tableManagerSpy = sinon.spy(this.tableManager);
+      const fetchFacetsSpy = sinon.spy(this.tableManager, 'fetchFacets');
       const resp = await handler.fetchFacets('foo', 'id');
 
-      // @ts-ignore
-      assert.ok(tableManagerSpy.fetchFacets.calledOnceWithExactly('foo', 'id', undefined));
+      assert.ok(fetchFacetsSpy.calledOnceWithExactly('foo', 'id', undefined));
       assert.deepEqual(resp, {
         facets: [
           {
@@ -481,28 +473,26 @@ module('Unit | core/handler', function (hooks) {
   module('Handler#updateRowById', function () {
     test('it skips the row refresh if the record_id is not loaded yet', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-      const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
+      const fetchByIdSpy = sinon.spy(this.rowsFetcher, 'fetchById');
       await handler.fetchRows();
 
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
+      assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
       await handler.updateRowById(667);
 
-      // @ts-ignore
-      assert.ok(rowsFetcherSpy.fetchById.notCalled);
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
+      assert.ok(fetchByIdSpy.notCalled);
+      assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
     });
 
     test('it calls the updateRowById method of the manager correctly', async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-      const rowsFetcherSpy = sinon.spy(this.rowsFetcher);
+      const fetchByIdSpy = sinon.spy(this.rowsFetcher, 'fetchById');
       await handler.fetchRows();
 
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
+      assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'hello');
       await handler.updateRowById(12);
 
-      // @ts-ignore
-      assert.ok(rowsFetcherSpy.fetchById.calledOnceWithExactly(12));
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!.bar, 'world');
+      assert.ok(fetchByIdSpy.calledOnceWithExactly(12));
+      assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!.bar, 'world');
     });
   });
 
@@ -511,18 +501,18 @@ module('Unit | core/handler', function (hooks) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       await handler.fetchRows();
 
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
+      assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
       await handler.toggleRowLoadingState(667);
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
+      assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
     });
 
     test("calling the method properly updates the row's loading state", async function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
       await handler.fetchRows();
 
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
+      assert.strictEqual(handler.rows.find((r) => r.record_id === 12)!._isLoading, undefined);
       await handler.toggleRowLoadingState(12);
-      assert.equal(handler.rows.find((r) => r.record_id === 12)!._isLoading, true);
+      assert.true(handler.rows.find((r) => r.record_id === 12)!._isLoading);
     });
   });
 
@@ -531,24 +521,23 @@ module('Unit | core/handler', function (hooks) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
 
       handler.currentPage = 2;
-      assert.equal(handler.currentPage, 2);
+      assert.strictEqual(handler.currentPage, 2);
 
       handler.teardown();
 
-      assert.equal(handler.currentPage, 1);
+      assert.strictEqual(handler.currentPage, 1);
     });
   });
 
   module('Events', function () {
     test('callbacks are called properly when an event is subscribed to', function (this: TestContext, assert: Assert) {
       const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-
+      assert.expect(1);
       handler.on('row-click', (row: Row) => {
-        assert.equal(row, handler.rows[0]);
+        assert.strictEqual(row, handler.rows[0]);
       });
 
       handler.triggerEvent('row-click', handler.rows[0]);
-      assert.expect(1);
     });
   });
 

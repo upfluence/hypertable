@@ -168,7 +168,6 @@ export default class TableHandler {
    * @returns {TableHandler}
    */
   on(event: string, handler: (...args: any[]) => any): TableHandler {
-    // @ts-ignore Works but the declaration from @types/ember__object does not match the documentation/actual code.
     addListener(this, event, handler);
 
     return this;
@@ -184,7 +183,7 @@ export default class TableHandler {
     return this.tableManager
       .upsertColumns({ columns: [...this.columns, ...[{ definition: definition, filters: [] }]] })
       .then(({ columns }) => {
-        this._reinitColumnsAndRows(columns);
+        this.reinitColumnsAndRows(columns);
       });
   }
 
@@ -203,7 +202,7 @@ export default class TableHandler {
       .then(({ columns }) => {
         this.columns = columns;
         if (columnToRemove.length > 0 && columnToRemove[0].filters.length > 0) {
-          this._reinitColumnsAndRows(columns);
+          this.reinitColumnsAndRows(columns);
           this.triggerEvent('remove-column');
         }
       });
@@ -235,7 +234,7 @@ export default class TableHandler {
 
     // Triggers the redraw of the table.
     if (shouldRefresh) {
-      this.rows = this.rows;
+      this.rows = [...this.rows];
       this.triggerEvent('mutate-rows');
     }
 
@@ -282,7 +281,7 @@ export default class TableHandler {
     set(column, 'filters', newFilters);
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
-      return this._reinitColumnsAndRows(columns).then(() => {
+      return this.reinitColumnsAndRows(columns).then(() => {
         this.triggerEvent('apply-filters', column, filters);
       });
     });
@@ -304,7 +303,7 @@ export default class TableHandler {
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
       this._lastOrderedColumn = column;
-      this._reinitColumnsAndRows(columns);
+      this.reinitColumnsAndRows(columns);
       this.triggerEvent('apply-order', column, direction);
     });
   }
@@ -326,7 +325,7 @@ export default class TableHandler {
     }
 
     return this.tableManager.upsertColumns({ columns: this.columns }).then(({ columns }) => {
-      this._reinitColumnsAndRows(columns);
+      this.reinitColumnsAndRows(columns);
       this.triggerEvent('reset-columns', columnsToReset);
     });
   }
@@ -432,18 +431,7 @@ export default class TableHandler {
   triggerTetherContainer(on: string, options: Tether.ITetherOptions): void {
     if (this.tetherOn !== on) {
       this.tetherOn = on;
-
-      scheduleOnce('afterRender', this, () => {
-        if (this.tetherInstance) {
-          this.tetherInstance.setOptions(options);
-        } else {
-          this.tetherInstance = new Tether(options);
-        }
-
-        scheduleOnce('afterRender', this, () => {
-          (<any>this.tetherInstance).element.classList.add(`js--visible`);
-        });
-      });
+      scheduleOnce('afterRender', this, this.upsertTetherInstance, options);
     } else {
       this.tetherOn = '';
       this.destroyTetherInstance();
@@ -462,7 +450,7 @@ export default class TableHandler {
    */
   destroyTetherInstance(): void {
     if (this.tetherInstance) {
-      //@ts-ignore
+      //@ts-expect-error - element does not exist on Tether
       this.tetherInstance.element.remove();
       this.tetherInstance.destroy();
       this.tetherInstance = undefined;
@@ -474,10 +462,26 @@ export default class TableHandler {
     this.currentPage = 1;
   }
 
-  private _reinitColumnsAndRows(columns: Column[]): Promise<void> {
+  private upsertTetherInstance(options: Tether.ITetherOptions): void {
+    if (this.tetherInstance) {
+      this.tetherInstance.setOptions(options);
+    } else {
+      this.tetherInstance = new Tether(options);
+    }
+
+    scheduleOnce('afterRender', this, this.showTetherInstance);
+  }
+
+  private showTetherInstance(): void {
+    if (!this.tetherInstance) return;
+
+    (<any>this.tetherInstance).element.classList.add('js--visible');
+  }
+
+  private reinitColumnsAndRows(columns: Column[]): Promise<void> {
     let shouldRedraw = false;
     columns.forEach((column) => {
-      let existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
+      const existingColumn = this.columns.find((c) => c.definition.key === column.definition.key);
 
       if (!existingColumn) {
         this.columns.splice(columns.indexOf(column), 0, column);
@@ -485,7 +489,7 @@ export default class TableHandler {
       }
     });
     if (shouldRedraw) {
-      this.columns = this.columns;
+      this.columns = [...this.columns];
     }
 
     this.rows = [];

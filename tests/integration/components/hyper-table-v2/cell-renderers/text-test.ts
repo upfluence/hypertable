@@ -27,8 +27,8 @@ module('Integration | Component | hyper-table-v2/cell-renderers/text', function 
       hbs`<HyperTableV2::CellRenderers::Text @handler={{this.handler}} @row={{this.row}} @column={{this.column}} />`
     );
 
-    assert.equal(this.column.definition.key, 'foo');
-    assert.equal(this.row[this.column.definition.key], 'ekip');
+    assert.strictEqual(this.column.definition.key, 'foo');
+    assert.strictEqual(this.row[this.column.definition.key], 'ekip');
     assert.dom('span').hasText('ekip');
   });
 

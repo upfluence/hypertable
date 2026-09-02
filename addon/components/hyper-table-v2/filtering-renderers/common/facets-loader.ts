@@ -79,7 +79,11 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
     if (this.ongoingFacetApply) return;
 
     this.ongoingFacetApply = true;
-    this.appliedFacets.includes(facet.identifier) ? this.removeFacet(facet) : this.addFacet(facet);
+    if (this.appliedFacets.includes(facet.identifier)) {
+      this.removeFacet(facet);
+    } else {
+      this.addFacet(facet);
+    }
   }
 
   private addFacet(facet: Facet): void {

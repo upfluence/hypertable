@@ -194,7 +194,7 @@ export default EmberObject.extend({
   toggleColumnVisibility(field, column) {
     return new Promise((resolve) => {
       let _c = this.columns.findBy('key', field.key);
-      let _action = null;
+      let _action;
 
       if (_c) {
         field.set('visible', false);
