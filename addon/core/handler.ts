@@ -33,7 +33,7 @@ export type HandlerEvent =
   | 'mutate-rows'
   | 'reset-rows';
 
-const ROWS_PER_PAGE = 30;
+export const ROWS_PER_PAGE = 30;
 
 export default class TableHandler {
   private _context: unknown;

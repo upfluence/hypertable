@@ -270,17 +270,19 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
           initialLoadAnimation: {
             delayMs: 0,
             staggerMs: 0,
-            maxAnimationDurationMs: 10000,
+            maxAnimationDurationMs: 50,
             replayOn: ['reset-rows']
           }
         };
 
         await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
-
         assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
 
-        await this.handler.resetRows();
+        await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
 
+        await this.handler.resetRows();
+        await waitUntil(() => document.querySelectorAll('.hypertable__cell--initial-load-sequence').length === 12);
         assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
       });
 

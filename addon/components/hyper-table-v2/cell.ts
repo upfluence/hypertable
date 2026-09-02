@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import type { InitialLoadAnimationContext } from '@upfluence/hypertable/components/hyper-table-v2';
-import TableHandler from '@upfluence/hypertable/core/handler';
+import TableHandler, { ROWS_PER_PAGE } from '@upfluence/hypertable/core/handler';
 import { Column, ResolvedRenderingComponent, Row } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2CellArgs {
@@ -112,7 +112,9 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
   }
 
   private get shouldApplyInitialLoadAnimationSequence(): boolean {
-    return this.isInitialLoadAnimationEnabled && !this.loading;
+    const rowIndex = this.args.rowIndex ?? 0;
+
+    return this.isInitialLoadAnimationEnabled && !this.loading && rowIndex < ROWS_PER_PAGE;
   }
 
   private get shouldApplyInitialLoadAnimationCustomEffect(): boolean {
