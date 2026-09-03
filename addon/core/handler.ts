@@ -1,5 +1,5 @@
 import { set } from '@ember/object';
-import { addListener, sendEvent } from '@ember/object/events';
+import { addListener, removeListener, sendEvent } from '@ember/object/events';
 import { scheduleOnce } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { tracked } from '@glimmer/tracking';
@@ -22,7 +22,22 @@ import BaseRenderingResolver from './rendering-resolver';
 
 export type RowMutator = (row: Row) => boolean;
 
-const ROWS_PER_PAGE = 30;
+export const HANDLER_EVENTS = [
+  'columns-loaded',
+  'row-click',
+  'apply-filters',
+  'apply-order',
+  'reset-columns',
+  'remove-column',
+  'remove-row',
+  'mutate-rows',
+  'reset-rows'
+] as const;
+
+export type HandlerEvent = (typeof HANDLER_EVENTS)[number];
+export type LooseAutocomplete<T extends string> = T | (string & {});
+
+export const ROWS_PER_PAGE = 30;
 
 export default class TableHandler {
   private _context: unknown;
@@ -167,8 +182,22 @@ export default class TableHandler {
    * @param {Function} handler - A callback function to be called when the subscribed event is triggered.
    * @returns {TableHandler}
    */
-  on(event: string, handler: (...args: any[]) => any): TableHandler {
+  on(event: LooseAutocomplete<HandlerEvent>, handler: (...args: any[]) => any): TableHandler {
     addListener(this, event, handler);
+
+    return this;
+  }
+
+  off(event: LooseAutocomplete<HandlerEvent>, handler: (...args: any[]) => any): TableHandler {
+    try {
+      removeListener(this, event, handler);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+
+      if (!message.includes('did not exist on the instance')) {
+        throw error;
+      }
+    }
 
     return this;
   }

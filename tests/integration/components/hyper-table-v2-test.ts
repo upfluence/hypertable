@@ -1,4 +1,4 @@
-import { click, render, findAll, type TestContext } from '@ember/test-helpers';
+import { click, render, findAll, waitUntil, type TestContext } from '@ember/test-helpers';
 
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
@@ -262,6 +262,57 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
 
       assert.dom('.hypertable__cell.smart-rotating-gradient').exists({ count: 12 });
+    });
+
+    module('resetRows', function () {
+      test('it replays the animation when resetRows is called', async function (this: TestContext, assert: Assert) {
+        this.options = {
+          initialLoadAnimation: {
+            delayMs: 0,
+            staggerMs: 0,
+            maxAnimationDurationMs: 50,
+            replayOn: ['reset-rows']
+          }
+        };
+
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+        assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+
+        await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+
+        await this.handler.resetRows();
+        await waitUntil(() => document.querySelectorAll('.hypertable__cell--initial-load-sequence').length === 12);
+        assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+      });
+
+      test('it does not apply the animation when resetRows is called without replayOn', async function (this: TestContext, assert: Assert) {
+        this.options = {
+          initialLoadAnimation: {
+            delayMs: 0,
+            staggerMs: 0,
+            maxAnimationDurationMs: 0
+          }
+        };
+
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+        await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+
+        await this.handler.resetRows();
+
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      });
+
+      test('it does not apply the animation when resetRows is called without the proper config', async function (this: TestContext, assert: Assert) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
+
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+
+        await this.handler.resetRows();
+
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      });
     });
   });
 

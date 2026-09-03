@@ -258,6 +258,7 @@ options = {
     delayMs: 300,
     staggerMs: 40,
     maxAnimationDurationMs: 1500,
+    replayOn: ['reset-rows'],
     extraColumnEffect: {
       class: 'smart-rotating-gradient',
       delayMs: 120,
@@ -273,6 +274,7 @@ Fields:
 - `delayMs` (number): Delay before the sequence starts. Default: `300`.
 - `staggerMs` (number): Extra delay applied per row (`rowIndex * staggerMs`). Default: `40`.
 - `maxAnimationDurationMs` (number): Extra duration added after stagger starts to keep the animation state active. Default: `5000`.
+- `replayOn` (string[]): List of handler event names that trigger the animation again after the initial play. Default: `[]`. Currently only the `reset-rows` event is supported..
 - `extraColumnEffect` (object): Optional extra effect options.
 - `extraColumnEffect.class` (string): Optional extra CSS class added to targeted cells while animation is active.
 - `extraColumnEffect.delayMs` (number): Extra delay applied before the `extraColumnEffect.class` effect starts. Default: `0`.
@@ -281,7 +283,7 @@ Fields:
 
 Notes:
 
-- The sequence runs once per component lifecycle.
+- The sequence plays once on first load, and replays whenever one of the `replayOn` events fires.
 
 ## Core Concepts
 
