@@ -80,6 +80,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   private initialLoadAnimationPlayed: boolean = false;
   private initialLoadAnimationTimeout?: number;
+  private registeredAnimationReplayEvents: Set<Extract<HandlerEvent, 'reset-rows'>> = new Set();
 
   declare private hypertableInstanceID: string;
 
@@ -96,7 +97,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     });
 
     this.hypertableInstanceID = crypto.randomUUID();
-    this.registerAnimationReplayListeners(args.handler);
+    this.updateAnimationReplayListeners();
   }
 
   get features(): FeatureSet {
@@ -140,6 +141,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   get initialLoadAnimationContext(): InitialLoadAnimationContext | null {
+    this.updateAnimationReplayListeners();
     return this.initialLoadAnimation ? { active: this.initialLoadAnimationActive, ...this.initialLoadAnimation } : null;
   }
 
@@ -252,22 +254,34 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       this.initialLoadAnimationTimeout = undefined;
     }
 
-    this.unregisterAnimationReplayListeners();
+    this.unregisterAllAnimationReplayListeners();
     this.args.handler.teardown();
   }
 
-  private registerAnimationReplayListeners(handler: TableHandler): void {
-    if (!this.initialLoadAnimation?.replayOn?.length) return;
+  private updateAnimationReplayListeners(): void {
+    const desiredEvents = this.initialLoadAnimation?.replayOn ?? [];
+    const desiredEventsSet = new Set(desiredEvents);
 
-    for (const event of this.initialLoadAnimation.replayOn) {
-      handler.on(event, this.onAnimationReplay);
+    for (const event of this.registeredAnimationReplayEvents) {
+      if (!desiredEventsSet.has(event)) {
+        this.args.handler.off(event, this.onAnimationReplay);
+        this.registeredAnimationReplayEvents.delete(event);
+      }
+    }
+
+    for (const event of desiredEvents) {
+      if (!this.registeredAnimationReplayEvents.has(event)) {
+        this.args.handler.on(event, this.onAnimationReplay);
+        this.registeredAnimationReplayEvents.add(event);
+      }
     }
   }
 
-  private unregisterAnimationReplayListeners(): void {
-    for (const event of this.initialLoadAnimation?.replayOn ?? []) {
+  private unregisterAllAnimationReplayListeners(): void {
+    for (const event of this.registeredAnimationReplayEvents) {
       this.args.handler.off(event, this.onAnimationReplay);
     }
+    this.registeredAnimationReplayEvents.clear();
   }
 
   private _resetFilters(): void {
