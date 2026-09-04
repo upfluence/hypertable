@@ -141,7 +141,6 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   get initialLoadAnimationContext(): InitialLoadAnimationContext | null {
-    this.updateAnimationReplayListeners();
     return this.initialLoadAnimation ? { active: this.initialLoadAnimationActive, ...this.initialLoadAnimation } : null;
   }
 
@@ -258,7 +257,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     this.args.handler.teardown();
   }
 
-  private updateAnimationReplayListeners(): void {
+  @action
+  updateAnimationReplayListeners(): void {
     const desiredEvents = this.initialLoadAnimation?.replayOn ?? [];
     const desiredEventsSet = new Set(desiredEvents);
 
