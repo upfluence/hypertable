@@ -313,12 +313,79 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
         assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
       });
+
+      test('it registers replay listener when the config is enabled dynamically and replays when resetRows is called', async function (this: TestContext, assert: Assert) {
+        this.options = {};
+
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+
+        this.set('options', {
+          initialLoadAnimation: {
+            delayMs: 0,
+            staggerMs: 0,
+            maxAnimationDurationMs: 50,
+            replayOn: ['reset-rows']
+          }
+        });
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+
+        await this.handler.resetRows();
+        await waitUntil(() => document.querySelectorAll('.hypertable__cell--initial-load-sequence').length === 12);
+        assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+
+        await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      });
+
+      test('it registers listener even when table transitions from empty to non-empty and replays on resetRows', async function (this: TestContext, assert: Assert) {
+        const rowsFetcher = this.rowsFetcher;
+        let fetchCallCount = 0;
+        let defaultRows: unknown[] = [];
+
+        sinon.stub(rowsFetcher, 'fetch').callsFake(async () => {
+          fetchCallCount++;
+          if (fetchCallCount === 1) {
+            return { rows: [], meta: { total: 0 } };
+          } else {
+            if (defaultRows.length === 0) {
+              const result = await new RowsFetcher().fetch(0, 50);
+              defaultRows = result.rows;
+            }
+            return { rows: defaultRows, meta: { total: defaultRows.length } };
+          }
+        });
+
+        this.options = {
+          initialLoadAnimation: {
+            delayMs: 0,
+            staggerMs: 0,
+            maxAnimationDurationMs: 50,
+            replayOn: ['reset-rows']
+          }
+        };
+
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+        await waitUntil(() => !this.handler.loadingRows);
+
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+
+        await this.handler.fetchRows();
+        await waitUntil(() => !this.handler.loadingRows);
+
+        await this.handler.resetRows();
+        await waitUntil(() => document.querySelectorAll('.hypertable__cell--initial-load-sequence').length === 12);
+        assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+
+        await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      });
     });
   });
 
   module('empty state', function (hooks) {
     hooks.beforeEach(function (this: TestContext) {
-      sinon.stub(this.rowsFetcher, 'fetch').callsFake((_: number, _1: number) => {
+      sinon.stub(this.rowsFetcher, 'fetch').callsFake(() => {
         return Promise.resolve({ rows: [], meta: { total: 0 } });
       });
     });

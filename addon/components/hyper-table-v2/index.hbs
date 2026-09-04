@@ -1,4 +1,9 @@
-<div class="hypertable-container" {{will-destroy this.teardown}} ...attributes>
+<div
+  class="hypertable-container"
+  {{will-destroy this.teardown}}
+  {{did-update this.updateAnimationReplayListeners @options}}
+  ...attributes
+>
   {{#if (or (has-block "search") (has-block "contextual-actions") (has-block "table-actions") this.displayHeader)}}
     <div class="hypertable__upper-header">
       <div class="fx-row">
