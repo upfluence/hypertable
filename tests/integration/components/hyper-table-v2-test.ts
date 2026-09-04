@@ -313,6 +313,30 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
 
         assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
       });
+
+      test('it registers replay listener when the config is enabled dynamically and replays when resetRows is called', async function (this: TestContext, assert: Assert) {
+        this.options = {};
+
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+
+        this.set('options', {
+          initialLoadAnimation: {
+            delayMs: 0,
+            staggerMs: 0,
+            maxAnimationDurationMs: 50,
+            replayOn: ['reset-rows']
+          }
+        });
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+
+        await this.handler.resetRows();
+        await waitUntil(() => document.querySelectorAll('.hypertable__cell--initial-load-sequence').length === 12);
+        assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 12 });
+
+        await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+        assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
+      });
     });
   });
 
