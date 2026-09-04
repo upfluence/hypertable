@@ -41,6 +41,8 @@ type InitialLoadAnimationConfig = {
   replayOn?: Extract<HandlerEvent, 'reset-rows'>[];
 };
 
+type AnimationReplayEvent = Extract<HandlerEvent, 'reset-rows'>;
+
 interface HyperTableV2Args {
   handler: TableHandler;
   features: FeatureSet;
@@ -80,7 +82,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   private initialLoadAnimationPlayed: boolean = false;
   private initialLoadAnimationTimeout?: number;
-  private registeredAnimationReplayEvents: Set<Extract<HandlerEvent, 'reset-rows'>> = new Set();
+  private registeredAnimationReplayEvents: Set<AnimationReplayEvent> = new Set();
 
   declare private hypertableInstanceID: string;
 
