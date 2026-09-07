@@ -2,6 +2,7 @@
   <OSS::Button
     @icon="fas fa-columns"
     @label={{t "hypertable.features.manage_fields.title"}}
+    data-control-name="manage-fields-button"
     {{on "click" this.toggleAvailableFields}}
   />
   {{#if this.displayAvailableFields}}
