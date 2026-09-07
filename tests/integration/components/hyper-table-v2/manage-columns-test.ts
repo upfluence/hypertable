@@ -32,7 +32,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     columnOptions: Array<{ key: string; extra: { [key: string]: any } }>,
     buildMethod: (key: string, extra: { [key: string]: string }) => ColumnDefinition | Column
   ): (ColumnDefinition | Column)[] {
-  return columnOptions.map((column) => buildMethod(column.key, column.extra));
+    return columnOptions.map((column) => buildMethod(column.key, column.extra));
   }
 
   hooks.beforeEach(async function (this: TestContext) {
