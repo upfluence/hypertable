@@ -32,7 +32,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     columnOptions: Array<{ key: string; extra: { [key: string]: any } }>,
     buildMethod: (key: string, extra: { [key: string]: string }) => ColumnDefinition | Column
   ): (ColumnDefinition | Column)[] {
-    return columnOptions.reduce((columns, column) => [...columns, ...[buildMethod(column.key, column.extra)]], []);
+    return columnOptions.map((column) => buildMethod(column.key, column.extra));
   }
 
   hooks.beforeEach(async function (this: TestContext) {
@@ -65,7 +65,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
   module('when a user clicks on manage column button, it is rendered', function () {
     test('it should open the available columns', async function (assert) {
       await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-      await click('.upf-btn.upf-btn--default');
+      await click('[data-control-name="manage-fields-button"]');
       await waitFor('.available-fields-wrapper.visible');
 
       assert.dom('.available-fields-wrapper.visible').exists({ count: 1 });
@@ -74,7 +74,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     test('The sticky columns of the table are not visible in the component', async function (assert: Assert) {
       await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
 
-      await click('.upf-btn.upf-btn--default');
+      await click('[data-control-name="manage-fields-button"]');
       assert.dom('[data-control-name="column_definition_toggle_checkbox_code"]').exists();
       assert.dom('[data-control-name="column_definition_toggle_checkbox_foo"]').exists();
       assert.dom('[data-control-name="column_definition_toggle_checkbox_bar"]').exists();
@@ -84,7 +84,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     module('when user manages categories', function () {
       test('it displays all categories', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--default');
+        await click('[data-control-name="manage-fields-button"]');
 
         assert.dom('.available-fields-wrapper__categories').exists({ count: 1 });
         assert.dom('[data-control-name="field_category_toggle_all_fields"]').exists({ count: 1 });
@@ -94,16 +94,16 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
       test('it displays the default category as active', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--default');
+        await click('[data-control-name="manage-fields-button"]');
 
         assert.dom('[data-control-name="field_category_toggle_all_fields"]').hasClass('field-category--active');
       });
 
       test('it displays all the column definitions for default category', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        
-        assert.expect(7);        
-        await click('.upf-btn.upf-btn--default');
+
+        assert.expect(7);
+        await click('[data-control-name="manage-fields-button"]');
 
         document.querySelectorAll('.fields-list .field').forEach((element, index) => {
           // index + 1 because the first column is not visible
@@ -118,12 +118,12 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         assert.strictEqual(clusterNames[0].textContent?.trim(), 'instagram');
         assert.strictEqual(clusterNames[1].textContent?.trim(), 'x');
         assert.strictEqual(clusterNames[2].textContent?.trim(), 'youtube');
-        
+
       });
 
-      test('it sets the category. as active when user select a category', async function (assert) {
+      test('it sets the category as active when user select a category', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--default');
+        await click('[data-control-name="manage-fields-button"]');
         await click('[data-control-name="field_category_toggle_affiliation"]');
 
         assert.dom('[data-control-name="field_category_toggle_affiliation"]').hasClass('field-category--active');
@@ -132,7 +132,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
       test('it displays the column definitions of active category with clustering key', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--default');
+        await click('[data-control-name="manage-fields-button"]');
         await click('[data-control-name="field_category_toggle_influencer"]');
 
         const columnDefinitionsVisible = document.querySelector('.fields-list')?.children || [];
@@ -156,7 +156,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
       test('it display column definitions of active category without clustering key', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--default');
+        await click('[data-control-name="manage-fields-button"]');
         await click('[data-control-name="field_category_toggle_affiliation"]');
 
         const columnDefinitionsVisible = document.querySelector('.fields-list')?.children || [];
@@ -171,7 +171,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
     module('when user manages column definition', function () {
       test('it displays the column in the table', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--default');
+        await click('[data-control-name="manage-fields-button"]');
 
         const columnDefinitionsChecked = document.querySelectorAll('.fields-list .field input:checked');
         assert.strictEqual(columnDefinitionsChecked.length, 1);
@@ -183,7 +183,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
 
       test('it searches in column definitions', async function (assert) {
         await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-        await click('.upf-btn.upf-btn--default');
+        await click('[data-control-name="manage-fields-button"]');
         await fillIn('.search input', 'foo');
 
         assert.dom('.field').exists({ count: 1 });
@@ -221,7 +221,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
       });
 
       await render(hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} />`);
-      await click('.upf-btn.upf-btn--default');
+      await click('[data-control-name="manage-fields-button"]');
       await click('[data-control-name="column_definition_toggle_checkbox_code"] input');
       assert.ok(upsertColumnsMock.calledOnce);
     });
@@ -308,7 +308,7 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         hbs`<HyperTableV2::ManageColumns @handler={{this.handler}} @didInsertColumn={{this.didInsertColumn}} />`
       );
 
-      await click('.upf-btn.upf-btn--default');
+      await click('[data-control-name="manage-fields-button"]');
       await click('[data-control-name="column_definition_toggle_checkbox_bar"] input');
 
       assert.ok(upsertColumnsMock.calledOnce);
