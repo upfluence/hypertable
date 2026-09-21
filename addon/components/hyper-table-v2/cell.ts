@@ -113,8 +113,10 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
 
   private get shouldApplyInitialLoadAnimationSequence(): boolean {
     const rowIndex = this.args.rowIndex ?? 0;
+    const targetRecordIds = this.args.initialLoadAnimation?.targetRecordIds;
+    const isTargetedRow = !targetRecordIds || targetRecordIds.has(this.args.row.record_id);
 
-    return this.isInitialLoadAnimationEnabled && !this.loading && rowIndex < ROWS_PER_PAGE;
+    return this.isInitialLoadAnimationEnabled && isTargetedRow && !this.loading && rowIndex < ROWS_PER_PAGE;
   }
 
   private get shouldApplyInitialLoadAnimationCustomEffect(): boolean {
