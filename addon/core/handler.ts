@@ -30,6 +30,7 @@ export const HANDLER_EVENTS = [
   'reset-columns',
   'remove-column',
   'remove-row',
+  'prepend-rows',
   'mutate-rows',
   'reset-rows'
 ] as const;
@@ -258,6 +259,7 @@ export default class TableHandler {
     if (rows.length === 0) return;
 
     this.rows = [...rows, ...this.rows];
+    this.triggerEvent('prepend-rows', rows);
   }
 
   /**

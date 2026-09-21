@@ -306,19 +306,37 @@ module('Unit | core/handler', function (hooks) {
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
   });
 
-  test('Handler#prependRows adds new rows at the beginning', async function (this: TestContext, assert: Assert) {
-    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
-    await handler.fetchRows();
+  module('Handler#prependRows', function (hooks) {
+    hooks.beforeEach(async function (this: TestContext) {
+      this.handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      this.rowsToPrepend = [
+        { influencerId: 45, recordId: 15, record_id: 15, holderId: 57, holderType: 'list' },
+        { influencerId: 46, recordId: 16, record_id: 16, holderId: 57, holderType: 'list' }
+      ];
 
-    handler.prependRows([
-      { influencerId: 45, recordId: 15, record_id: 15, holderId: 57, holderType: 'list' },
-      { influencerId: 46, recordId: 16, record_id: 16, holderId: 57, holderType: 'list' }
-    ]);
+      await this.handler.fetchRows();
+    });
 
-    assert.deepEqual(
-      handler.rows.map((row) => row.record_id),
-      [15, 16, 12, 13, 14]
-    );
+    test('adds new rows at the beginning', async function (this: TestContext, assert: Assert) {
+      this.handler.prependRows([
+        { influencerId: 45, recordId: 15, record_id: 15, holderId: 57, holderType: 'list' },
+        { influencerId: 46, recordId: 16, record_id: 16, holderId: 57, holderType: 'list' }
+      ]);
+
+      assert.deepEqual(
+        this.handler.rows.map((row: Row) => row.record_id),
+        [15, 16, 12, 13, 14]
+      );
+    });
+
+    test('triggers the prepend-rows event', function (this: TestContext, assert: Assert) {
+      const triggerEventSpy = sinon.spy(this.handler, 'triggerEvent');
+      const rows = [{ influencerId: 45, recordId: 15, record_id: 15, holderId: 57, holderType: 'list' }];
+
+      this.handler.prependRows(rows);
+
+      assert.ok(triggerEventSpy.calledOnceWithExactly('prepend-rows', rows));
+    });
   });
 
   test('Handler#mutateRows', async function (this: TestContext, assert: Assert) {
