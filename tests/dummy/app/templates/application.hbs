@@ -2,7 +2,10 @@
   <div class="fx-row fx-gap-px-6 fx-xalign-center">
     <span>Change selected creator:</span>
     <OSS::NumberInput @value={{this.selectedValue}} @min={{0}} @max={{5}} @onChange={{this.updateSelected}} />
+    <span>Loading animations:</span>
+    <OSS::ToggleSwitch @value={{this.animationsEnabled}} @onChange={{this.toggleAnimations}} />
     <OSS::Button @label="Prepend rows" @icon="fa-plus" {{on "click" this.prependRows}} />
+    <OSS::Button @label="Reset rows" @icon="fa-refresh" {{on "click" this.resetRows}} />
   </div>
   <div class="hypertable-container">
     <HyperTableV2::Selection
