@@ -306,6 +306,21 @@ module('Unit | core/handler', function (hooks) {
     assert.ok(handlerTriggerEventSpy.calledOnceWithExactly('remove-row'));
   });
 
+  test('Handler#prependRows adds new rows at the beginning', async function (this: TestContext, assert: Assert) {
+    const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+    await handler.fetchRows();
+
+    handler.prependRows([
+      { influencerId: 45, recordId: 15, record_id: 15, holderId: 57, holderType: 'list' },
+      { influencerId: 46, recordId: 16, record_id: 16, holderId: 57, holderType: 'list' }
+    ]);
+
+    assert.deepEqual(
+      handler.rows.map((row) => row.record_id),
+      [15, 16, 12, 13, 14]
+    );
+  });
+
   test('Handler#mutateRows', async function (this: TestContext, assert: Assert) {
     const handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
     const handlerTriggerEventSpy = sinon.spy(handler, 'triggerEvent');

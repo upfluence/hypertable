@@ -214,6 +214,7 @@ class RowsFetcher {
 export default class Application extends Controller {
   @tracked searchQuery: string = '';
   @tracked selectedValue: number = 0;
+  private prependedRowsCount: number = 0;
 
   tableManager = new Manager();
   rowsFetcher = new RowsFetcher();
@@ -255,6 +256,31 @@ export default class Application extends Controller {
   @action
   updateSelected(value: number): void {
     this.selectedValue = value;
+  }
+
+  @action
+  prependRows(): void {
+    const firstRecordId = 100 + this.prependedRowsCount;
+    this.prependedRowsCount += 2;
+
+    this.handler.prependRows([
+      {
+        influencerId: firstRecordId,
+        recordId: firstRecordId,
+        holderId: 57,
+        holderType: 'list',
+        foo: `Prepended ${firstRecordId}`,
+        bar: 'New row'
+      },
+      {
+        influencerId: firstRecordId + 1,
+        recordId: firstRecordId + 1,
+        holderId: 57,
+        holderType: 'list',
+        foo: `Prepended ${firstRecordId + 1}`,
+        bar: 'New row'
+      }
+    ]);
   }
 
   @action

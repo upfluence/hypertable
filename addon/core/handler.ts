@@ -249,6 +249,18 @@ export default class TableHandler {
   }
 
   /**
+   * Prepend rows to the table.
+   *
+   * @param {Row[]} rows - The rows to prepend
+   * @returns {void}
+   */
+  prependRows(rows: Row[]): void {
+    if (rows.length === 0) return;
+
+    this.rows = [...rows, ...this.rows];
+  }
+
+  /**
    * Updates a row by its record id.
    *
    * @param {number} recordId - The record id of the row
