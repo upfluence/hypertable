@@ -318,15 +318,39 @@ module('Unit | core/handler', function (hooks) {
     });
 
     test('adds new rows at the beginning', async function (this: TestContext, assert: Assert) {
-      this.handler.prependRows([
-        { influencerId: 45, recordId: 15, record_id: 15, holderId: 57, holderType: 'list' },
-        { influencerId: 46, recordId: 16, record_id: 16, holderId: 57, holderType: 'list' }
-      ]);
+      const initialTotal = this.handler.rowsMeta.total;
+
+      this.handler.prependRows(this.rowsToPrepend);
 
       assert.deepEqual(
         this.handler.rows.map((row: Row) => row.record_id),
         [15, 16, 12, 13, 14]
       );
+      assert.strictEqual(this.handler.rowsMeta.total, initialTotal + 2);
+    });
+
+    test('does not prepend duplicate rows', function (this: TestContext, assert: Assert) {
+      const triggerEventSpy = sinon.spy(this.handler, 'triggerEvent');
+      const initialTotal = this.handler.rowsMeta.total;
+
+      this.handler.prependRows([this.handler.rows[0], this.rowsToPrepend[0], this.rowsToPrepend[0]]);
+
+      assert.deepEqual(
+        this.handler.rows.map((row: Row) => row.record_id),
+        [15, 12, 13, 14]
+      );
+      assert.strictEqual(this.handler.rowsMeta.total, initialTotal + 1);
+      assert.ok(triggerEventSpy.calledOnceWithExactly('prepend-rows', [this.rowsToPrepend[0]]));
+    });
+
+    test('prepends rows without a record id', function (this: TestContext, assert: Assert) {
+      const rows = [{ name: 'First row' }, { name: 'Second row' }];
+      const initialTotal = this.handler.rowsMeta.total;
+
+      this.handler.prependRows(rows);
+
+      assert.deepEqual(this.handler.rows.slice(0, 2), rows);
+      assert.strictEqual(this.handler.rowsMeta.total, initialTotal + 2);
     });
 
     test('triggers the prepend-rows event', function (this: TestContext, assert: Assert) {

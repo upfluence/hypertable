@@ -258,8 +258,25 @@ export default class TableHandler {
   prependRows(rows: Row[]): void {
     if (rows.length === 0) return;
 
-    this.rows = [...rows, ...this.rows];
-    this.triggerEvent('prepend-rows', rows);
+    const recordIds = new Set(
+      this.rows.filter((row) => row.record_id !== undefined).map((row) => row.record_id)
+    );
+    const rowsToPrepend: Row[] = [];
+
+    for (const row of rows) {
+      if (row.record_id !== undefined && recordIds.has(row.record_id)) continue;
+
+      if (row.record_id !== undefined) recordIds.add(row.record_id);
+      rowsToPrepend.push(row);
+    }
+
+    if (rowsToPrepend.length === 0) return;
+
+    this.rows = [...rowsToPrepend, ...this.rows];
+    if (this.rowsMeta) {
+      this.rowsMeta = { ...this.rowsMeta, total: this.rowsMeta.total + rowsToPrepend.length };
+    }
+    this.triggerEvent('prepend-rows', rowsToPrepend);
   }
 
   /**

@@ -149,9 +149,9 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   get initialLoadAnimationContext(): InitialLoadAnimationContext | null {
     return this.initialLoadAnimation
       ? {
+          ...this.initialLoadAnimation,
           active: this.initialLoadAnimationActive,
-          targetRows: this.animationTargetRows,
-          ...this.initialLoadAnimation
+          targetRows: this.animationTargetRows
         }
       : null;
   }
