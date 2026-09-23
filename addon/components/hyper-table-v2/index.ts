@@ -24,7 +24,7 @@ export type OptionSet = {
 
 export type InitialLoadAnimationContext = InitialLoadAnimationConfig & {
   active: boolean;
-  targetRecordIds?: Set<number>;
+  targetRows?: Set<Row>;
 };
 
 export type InitialLoadAnimationOption = Partial<InitialLoadAnimationConfig>;
@@ -82,7 +82,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
   @tracked initialLoadAnimationActive: boolean = false;
-  @tracked animationTargetRecordIds?: Set<number>;
+  @tracked animationTargetRows?: Set<Row>;
 
   private initialLoadAnimationPlayed: boolean = false;
   private initialLoadAnimationTimeout?: number;
@@ -150,7 +150,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     return this.initialLoadAnimation
       ? {
           active: this.initialLoadAnimationActive,
-          targetRecordIds: this.animationTargetRecordIds,
+          targetRows: this.animationTargetRows,
           ...this.initialLoadAnimation
         }
       : null;
@@ -326,7 +326,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       this.initialLoadAnimationTimeout = undefined;
     }
 
-    this.animationTargetRecordIds = rows ? new Set(rows.map((row) => row.record_id)) : undefined;
+    this.animationTargetRows = rows ? new Set(rows) : undefined;
     this.initialLoadAnimationPlayed = false;
     this.activateInitialLoadAnimationIfNeeded();
     this.finalizeInitialLoadAnimation();
@@ -351,7 +351,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       return;
     }
 
-    const animatedRowsCount = this.animationTargetRecordIds?.size ?? this.args.handler.rows.length;
+    const animatedRowsCount = this.animationTargetRows?.size ?? this.args.handler.rows.length;
     const rowsAnimationWindowMs = Math.max(animatedRowsCount - 1, 0) * this.initialLoadAnimation.staggerMs;
     const activeDurationMs =
       this.initialLoadAnimation.delayMs + rowsAnimationWindowMs + this.initialLoadAnimation.maxAnimationDurationMs;
