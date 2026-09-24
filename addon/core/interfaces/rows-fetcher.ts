@@ -16,6 +16,6 @@ export type RowsFetcherResponse = {
 };
 
 export interface RowsFetcher {
-  fetch(page: number, perPage: number): Promise<RowsFetcherResponse>;
+  fetch(page: number, perPage: number, extraParams?: Record<string, unknown>): Promise<RowsFetcherResponse>;
   fetchById?(recordId: number): Promise<Row>;
 }

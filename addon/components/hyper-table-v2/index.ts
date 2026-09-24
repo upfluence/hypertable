@@ -22,7 +22,10 @@ export type OptionSet = {
   initialLoadAnimation?: boolean | InitialLoadAnimationOption;
 };
 
-export type InitialLoadAnimationContext = InitialLoadAnimationConfig & { active: boolean };
+export type InitialLoadAnimationContext = InitialLoadAnimationConfig & {
+  active: boolean;
+  targetRows?: Set<Row>;
+};
 
 export type InitialLoadAnimationOption = Partial<InitialLoadAnimationConfig>;
 
@@ -38,10 +41,10 @@ type InitialLoadAnimationConfig = {
   maxAnimationDurationMs: number;
   extraColumnEffect?: InitialLoadAnimationExtraColumnEffect;
   includeSelectionColumnInExtraEffect?: boolean;
-  replayOn?: Extract<HandlerEvent, 'reset-rows'>[];
+  replayOn?: Extract<HandlerEvent, 'reset-rows' | 'prepend-rows'>[];
 };
 
-type AnimationReplayEvent = Extract<HandlerEvent, 'reset-rows'>;
+type AnimationReplayEvent = Extract<HandlerEvent, 'reset-rows' | 'prepend-rows'>;
 
 interface HyperTableV2Args {
   handler: TableHandler;
@@ -79,6 +82,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   @tracked scrollableTable: boolean = false;
   @tracked initialFetchColumnsDone: boolean = false;
   @tracked initialLoadAnimationActive: boolean = false;
+  @tracked animationTargetRows?: Set<Row>;
 
   private initialLoadAnimationPlayed: boolean = false;
   private initialLoadAnimationTimeout?: number;
@@ -143,7 +147,13 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   get initialLoadAnimationContext(): InitialLoadAnimationContext | null {
-    return this.initialLoadAnimation ? { active: this.initialLoadAnimationActive, ...this.initialLoadAnimation } : null;
+    return this.initialLoadAnimation
+      ? {
+          ...this.initialLoadAnimation,
+          active: this.initialLoadAnimationActive,
+          targetRows: this.animationTargetRows
+        }
+      : null;
   }
 
   private get initialLoadAnimation(): InitialLoadAnimationConfig | null {
@@ -310,12 +320,13 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
     this.computeScrollableTable();
   }
 
-  private onAnimationReplay = (): void => {
+  private onAnimationReplay = (rows?: Row[]): void => {
     if (this.initialLoadAnimationTimeout) {
       window.clearTimeout(this.initialLoadAnimationTimeout);
       this.initialLoadAnimationTimeout = undefined;
     }
 
+    this.animationTargetRows = rows ? new Set(rows) : undefined;
     this.initialLoadAnimationPlayed = false;
     this.activateInitialLoadAnimationIfNeeded();
     this.finalizeInitialLoadAnimation();
@@ -340,7 +351,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
       return;
     }
 
-    const rowsAnimationWindowMs = Math.max(this.args.handler.rows.length - 1, 0) * this.initialLoadAnimation.staggerMs;
+    const animatedRowsCount = this.animationTargetRows?.size ?? this.args.handler.rows.length;
+    const rowsAnimationWindowMs = Math.max(animatedRowsCount - 1, 0) * this.initialLoadAnimation.staggerMs;
     const activeDurationMs =
       this.initialLoadAnimation.delayMs + rowsAnimationWindowMs + this.initialLoadAnimation.maxAnimationDurationMs;
 

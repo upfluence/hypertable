@@ -11,7 +11,8 @@ import {
   TableColumnUpsertResponse,
   FieldSize,
   TableManager,
-  TableColumnsResponse
+  TableColumnsResponse,
+  RowsFetcherResponse
 } from '@upfluence/hypertable/core/interfaces';
 
 const columnDefinitions = [
@@ -97,9 +98,10 @@ class Manager implements TableManager {
 }
 
 class RowsFetcher {
-  fetch(_page: number, _perPage: number) {
-    return Promise.resolve({
-      rows: [
+  fetch(_page: number, _perPage: number): Promise<RowsFetcherResponse> {
+    return new Promise<RowsFetcherResponse>((resolve) => {
+      window.setTimeout(() => resolve({
+        rows: [
         {
           influencerId: Math.random(),
           recordId: 12,
@@ -205,8 +207,9 @@ class RowsFetcher {
           foo: 'second',
           bar: 'second bar'
         }
-      ],
-      meta: { total: 12 }
+        ],
+        meta: { total: 12 }
+      }), 500);
     });
   }
 }
@@ -214,6 +217,8 @@ class RowsFetcher {
 export default class Application extends Controller {
   @tracked searchQuery: string = '';
   @tracked selectedValue: number = 0;
+  @tracked animationsEnabled: boolean = true;
+  private prependedRowsCount: number = 0;
 
   tableManager = new Manager();
   rowsFetcher = new RowsFetcher();
@@ -229,16 +234,16 @@ export default class Application extends Controller {
 
   get tableOptions() {
     return {
-      initialLoadAnimation: {
-        delayMs: 50,
-        staggerMs: 150,
-        maxAnimationDurationMs: 5000,
-        extraColumnEffect: {
-          class: 'smart-rotating-gradient',
-          delayMs: 250,
-          columns: ['foo']
-        }
-      }
+      initialLoadAnimation: this.animationsEnabled
+        ? {
+            staggerMs: 150,
+            replayOn: ['prepend-rows', 'reset-rows'],
+            extraColumnEffect: {
+              class: 'smart-rotating-gradient',
+              columns: ['foo']
+            }
+          }
+        : false
     };
   }
 
@@ -255,6 +260,43 @@ export default class Application extends Controller {
   @action
   updateSelected(value: number): void {
     this.selectedValue = value;
+  }
+
+  @action
+  toggleAnimations(value: boolean): void {
+    this.animationsEnabled = value;
+  }
+
+  @action
+  prependRows(): void {
+    const firstRecordId = 100 + this.prependedRowsCount;
+    this.prependedRowsCount += 2;
+
+    this.handler.prependRows([
+      {
+        influencerId: firstRecordId,
+        recordId: firstRecordId,
+        record_id: firstRecordId,
+        holderId: 57,
+        holderType: 'list',
+        foo: `Prepended ${firstRecordId}`,
+        bar: 'New row'
+      },
+      {
+        influencerId: firstRecordId + 1,
+        recordId: firstRecordId + 1,
+        record_id: firstRecordId + 1,
+        holderId: 57,
+        holderType: 'list',
+        foo: `Prepended ${firstRecordId + 1}`,
+        bar: 'New row'
+      }
+    ]);
+  }
+
+  @action
+  resetRows(): Promise<void> {
+    return this.handler.resetRows();
   }
 
   @action

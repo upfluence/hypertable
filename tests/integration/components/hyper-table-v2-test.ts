@@ -381,6 +381,30 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert.dom('.hypertable__cell--initial-load-sequence').doesNotExist();
       });
     });
+
+    module('prependRows', function () {
+      test('it replays the animation only on prepended rows', async function (this: TestContext, assert: Assert) {
+        this.options = {
+          initialLoadAnimation: {
+            delayMs: 0,
+            staggerMs: 0,
+            maxAnimationDurationMs: 50,
+            replayOn: ['prepend-rows']
+          }
+        };
+
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+        await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+
+        this.handler.prependRows([
+          { influencerId: 45, recordId: 15, record_id: 15, holderId: 57, holderType: 'list' },
+          { influencerId: 46, recordId: 16, record_id: 16, holderId: 57, holderType: 'list' }
+        ]);
+
+        await waitUntil(() => document.querySelectorAll('.hypertable__cell--initial-load-sequence').length === 8);
+        assert.dom('.hypertable__cell--initial-load-sequence').exists({ count: 8 });
+      });
+    });
   });
 
   module('empty state', function (hooks) {
