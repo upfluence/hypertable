@@ -250,6 +250,8 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   @action
   onRowHover(row: Row, hovered: boolean): void {
+    if (this.initialLoadAnimationActive) return;
+
     set(this.args.handler.rows[this.args.handler.rows.indexOf(row)], 'hovered', hovered);
   }
 

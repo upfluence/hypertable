@@ -1,4 +1,4 @@
-import { click, render, findAll, waitUntil, type TestContext } from '@ember/test-helpers';
+import { click, render, findAll, triggerEvent, waitUntil, type TestContext } from '@ember/test-helpers';
 
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
@@ -91,6 +91,21 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
   });
 
   module('initialLoadAnimation', function () {
+    test('it disables row hover while the animation is active', async function (this: TestContext, assert: Assert) {
+      this.options = {
+        initialLoadAnimation: { delayMs: 0, staggerMs: 0, maxAnimationDurationMs: 50 }
+      };
+
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @options={{this.options}} />`);
+
+      await triggerEvent('.hypertable__cell', 'mouseenter');
+      assert.notOk(this.handler.rows[0].hovered);
+
+      await waitUntil(() => !document.querySelector('.hypertable__cell--initial-load-sequence'));
+      await triggerEvent('.hypertable__cell', 'mouseenter');
+      assert.true(this.handler.rows[0].hovered);
+    });
+
     test('it does not apply animation classes when the option is not provided', async function (this: TestContext, assert: Assert) {
       await render(hbs`<HyperTableV2 @handler={{this.handler}} />`);
 
