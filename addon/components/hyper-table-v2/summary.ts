@@ -11,6 +11,7 @@ interface HyperTableV2SummaryArgs {
   loading: boolean;
   fields: SummaryField[];
   title?: string;
+  titleTooltip?: string;
 }
 
 const DEFAULT_SKELETONS_COUNT = 4;

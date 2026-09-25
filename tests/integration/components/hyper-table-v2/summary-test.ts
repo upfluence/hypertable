@@ -1,4 +1,4 @@
-import { render, triggerEvent, waitFor, type TestContext } from '@ember/test-helpers';
+import { render, type TestContext } from '@ember/test-helpers';
 
 import { hbs } from 'ember-cli-htmlbars';
 import { setupIntl } from 'ember-intl/test-support';
@@ -18,7 +18,7 @@ module('Integration | Component | hyper-table-v2/summary', function (hooks) {
     ];
   });
 
-  module('title', function () {
+  module('title', () => {
     test('it renders the default title when @title is not provided', async function (this: TestContext, assert) {
       await render(hbs`<HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}} />`);
 
@@ -32,9 +32,27 @@ module('Integration | Component | hyper-table-v2/summary', function (hooks) {
 
       assert.dom('[data-control-name="hypertable_summary_title"]').hasText('Conversions summary');
     });
+
+    test('it does not render a title tooltip icon when @titleTooltip is not provided', async function (this: TestContext, assert) {
+      await render(hbs`<HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}} />`);
+
+      assert.dom('[data-control-name="hypertable_summary_title_tooltip"]').doesNotExist();
+    });
+
+    test('it renders a title tooltip icon displaying @titleTooltip on hover', async function (this: TestContext, assert) {
+      await render(
+        hbs`<HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}} @titleTooltip="Stats of the filtered records" />`
+      );
+
+      assert.dom('[data-control-name="hypertable_summary_title_tooltip"]').hasClass('fa-info-circle');
+
+      await assert
+        .tooltip('[data-control-name="hypertable_summary_title_tooltip"]')
+        .hasTitle('Stats of the filtered records');
+    });
   });
 
-  module('when @loading is true', function (hooks) {
+  module('when @loading is true', (hooks) => {
     hooks.beforeEach(function (this: TestContext) {
       this.loading = true;
     });
@@ -52,9 +70,20 @@ module('Integration | Component | hyper-table-v2/summary', function (hooks) {
 
       assert.dom('[data-control-name="hypertable_summary_skeleton"]').exists({ count: 4 });
     });
+
+    test('it does not render the custom block nor the separator', async function (this: TestContext, assert) {
+      await render(hbs`
+        <HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}}>
+          <:custom><span data-control-name="custom_stat">Community</span></:custom>
+        </HyperTableV2::Summary>
+      `);
+
+      assert.dom('[data-control-name="custom_stat"]').doesNotExist();
+      assert.dom('[data-control-name="hypertable_summary_separator"]').doesNotExist();
+    });
   });
 
-  module('when @loading is false', function () {
+  module('when @loading is false', () => {
     test('it renders one stat per field', async function (this: TestContext, assert) {
       await render(hbs`<HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}} />`);
 
@@ -99,10 +128,7 @@ module('Integration | Component | hyper-table-v2/summary', function (hooks) {
         '[data-control-name="hypertable_summary_stat"]:nth-child(2) [data-control-name="hypertable_summary_stat_tooltip"]';
       assert.dom(tooltipSelector).hasClass('fa-info-circle');
 
-      await triggerEvent(tooltipSelector, 'mouseover');
-      await waitFor('.upf-tooltip .title');
-
-      assert.dom('.upf-tooltip .title').hasText('Profit earned for every $1 spent on commissions.');
+      await assert.tooltip(tooltipSelector).hasTitle('Profit earned for every $1 spent on commissions.');
     });
 
     test('it renders no stat when @fields is empty', async function (this: TestContext, assert) {
@@ -111,6 +137,29 @@ module('Integration | Component | hyper-table-v2/summary', function (hooks) {
 
       assert.dom('[data-control-name="hypertable_summary_stat"]').doesNotExist();
       assert.dom('[data-control-name="hypertable_summary_skeleton"]').doesNotExist();
+    });
+
+    test('it does not render the separator when the custom block is not provided', async function (this: TestContext, assert) {
+      await render(hbs`<HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}} />`);
+
+      assert.dom('[data-control-name="hypertable_summary_separator"]').doesNotExist();
+    });
+
+    test('it renders the custom block followed by a separator before the fields', async function (this: TestContext, assert) {
+      await render(hbs`
+        <HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}}>
+          <:custom><span data-control-name="custom_stat">Community</span></:custom>
+        </HyperTableV2::Summary>
+      `);
+
+      assert.dom('.hypertable-summary-v2__fields > :nth-child(1)').hasAttribute('data-control-name', 'custom_stat');
+      assert.dom('[data-control-name="custom_stat"]').hasText('Community');
+      assert
+        .dom('.hypertable-summary-v2__fields > :nth-child(2)')
+        .hasAttribute('data-control-name', 'hypertable_summary_separator');
+      assert
+        .dom('.hypertable-summary-v2__fields > :nth-child(3)')
+        .hasAttribute('data-control-name', 'hypertable_summary_stat');
     });
   });
 });
