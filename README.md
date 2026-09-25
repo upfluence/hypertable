@@ -528,6 +528,8 @@ These components are automatically included and handle their own state:
 - **HyperTableV2::Column** - Column wrapper with header rendering
 - **HyperTableV2::Cell** - Individual cell component
 
+A standalone [HyperTableV2::Summary](#hypertablev2summary) stats footer component is also available (not controlled by `@features`).
+
 Users interact with these components through:
 
 - **Search**: Typing in the search input (when searchable is enabled)
@@ -536,6 +538,51 @@ Users interact with these components through:
 - **Reset Filters**: Clicking the reset button to clear all filters (when global_filters_reset is enabled)
 
 The components handle their own internal state and communicate with the TableHandler automatically.
+
+### Standalone Components
+
+#### HyperTableV2::Summary
+
+A purely presentational stats footer, usually rendered below the table. It only owns the layout and the loading skeletons: fetching the stats and building the fields (e.g. `—` for unavailable metrics) is the consumer's responsibility.
+
+The `SummaryField` type can be imported from `@upfluence/hypertable/components/hyper-table-v2/summary`:
+
+```ts
+type SummaryField = {
+  label: string;
+  value: string;
+  tooltip?: string; // already translated
+};
+```
+
+**Arguments:**
+
+- `@loading` (boolean, required) - Displays skeletons instead of the fields
+- `@fields` (SummaryField[], required) - The stats to display, in order
+- `@title` (string, optional) - Title of the summary. Default: `hypertable.summary.title` translation ("Summary")
+- `@titleTooltip` (string, optional) - Displays an info icon next to the title with this tooltip
+
+**Named blocks:**
+
+- **`:prefix`** - For a stat that doesn't fit the `label` / `value` shape. It is rendered before the fields, followed by a vertical separator.
+
+```hbs
+<HyperTableV2::Summary
+  @loading={{this.loadingStats}}
+  @fields={{this.summaryFields}}
+  @titleTooltip={{t 'my_app.summary.tooltip'}}
+>
+  <:prefix>
+    <MyPrefixStat />
+  </:prefix>
+</HyperTableV2::Summary>
+```
+
+Behavior:
+
+- While `@loading` is true, one skeleton is displayed per field (4 when `@fields` is empty), and the `:prefix` block is hidden.
+- The separator is only rendered when the `:prefix` block is provided.
+- A field `tooltip` displays an info icon between its label and its value.
 
 ## Events
 
