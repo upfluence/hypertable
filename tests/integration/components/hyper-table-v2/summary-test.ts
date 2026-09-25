@@ -1,4 +1,4 @@
-import { render, type TestContext } from '@ember/test-helpers';
+import { render, setupOnerror, type TestContext } from '@ember/test-helpers';
 
 import { hbs } from 'ember-cli-htmlbars';
 import { setupIntl } from 'ember-intl/test-support';
@@ -71,14 +71,14 @@ module('Integration | Component | hyper-table-v2/summary', function (hooks) {
       assert.dom('[data-control-name="hypertable_summary_skeleton"]').exists({ count: 4 });
     });
 
-    test('it does not render the custom block nor the separator', async function (this: TestContext, assert) {
+    test('it does not render the prefix block nor the separator', async function (this: TestContext, assert) {
       await render(hbs`
         <HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}}>
-          <:custom><span data-control-name="custom_stat">Community</span></:custom>
+          <:prefix><span data-control-name="prefix_stat">Community</span></:prefix>
         </HyperTableV2::Summary>
       `);
 
-      assert.dom('[data-control-name="custom_stat"]').doesNotExist();
+      assert.dom('[data-control-name="prefix_stat"]').doesNotExist();
       assert.dom('[data-control-name="hypertable_summary_separator"]').doesNotExist();
     });
   });
@@ -139,27 +139,53 @@ module('Integration | Component | hyper-table-v2/summary', function (hooks) {
       assert.dom('[data-control-name="hypertable_summary_skeleton"]').doesNotExist();
     });
 
-    test('it does not render the separator when the custom block is not provided', async function (this: TestContext, assert) {
+    test('it does not render the separator when the prefix block is not provided', async function (this: TestContext, assert) {
       await render(hbs`<HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}} />`);
 
       assert.dom('[data-control-name="hypertable_summary_separator"]').doesNotExist();
     });
 
-    test('it renders the custom block followed by a separator before the fields', async function (this: TestContext, assert) {
+    test('it renders the prefix block followed by a separator before the fields', async function (this: TestContext, assert) {
       await render(hbs`
         <HyperTableV2::Summary @loading={{this.loading}} @fields={{this.fields}}>
-          <:custom><span data-control-name="custom_stat">Community</span></:custom>
+          <:prefix><span data-control-name="prefix_stat">Community</span></:prefix>
         </HyperTableV2::Summary>
       `);
 
-      assert.dom('.hypertable-summary-v2__fields > :nth-child(1)').hasAttribute('data-control-name', 'custom_stat');
-      assert.dom('[data-control-name="custom_stat"]').hasText('Community');
+      assert.dom('.hypertable-summary-v2__fields > :nth-child(1)').hasAttribute('data-control-name', 'prefix_stat');
+      assert.dom('[data-control-name="prefix_stat"]').hasText('Community');
       assert
         .dom('.hypertable-summary-v2__fields > :nth-child(2)')
         .hasAttribute('data-control-name', 'hypertable_summary_separator');
       assert
         .dom('.hypertable-summary-v2__fields > :nth-child(3)')
         .hasAttribute('data-control-name', 'hypertable_summary_stat');
+    });
+  });
+
+  module('Error management', () => {
+    test('it throws an error when @loading is not provided', async function (this: TestContext, assert) {
+      assert.expect(1);
+      setupOnerror((err: Error) => {
+        assert.strictEqual(
+          err.message,
+          'Assertion Failed: [component][HyperTableV2::Summary] Boolean @loading argument is mandatory.'
+        );
+      });
+
+      await render(hbs`<HyperTableV2::Summary @fields={{this.fields}} />`);
+    });
+
+    test('it throws an error when @fields is not provided', async function (this: TestContext, assert) {
+      assert.expect(1);
+      setupOnerror((err: Error) => {
+        assert.strictEqual(
+          err.message,
+          'Assertion Failed: [component][HyperTableV2::Summary] Array @fields argument is mandatory.'
+        );
+      });
+
+      await render(hbs`<HyperTableV2::Summary @loading={{this.loading}} />`);
     });
   });
 });

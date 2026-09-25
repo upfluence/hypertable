@@ -564,7 +564,7 @@ type SummaryField = {
 
 **Named blocks:**
 
-- **`:custom`** - For a stat that doesn't fit the `label` / `value` shape. It is rendered before the fields, followed by a vertical separator.
+- **`:prefix`** - For a stat that doesn't fit the `label` / `value` shape. It is rendered before the fields, followed by a vertical separator.
 
 ```hbs
 <HyperTableV2::Summary
@@ -572,16 +572,16 @@ type SummaryField = {
   @fields={{this.summaryFields}}
   @titleTooltip={{t 'my_app.summary.tooltip'}}
 >
-  <:custom>
-    <MyCustomStat />
-  </:custom>
+  <:prefix>
+    <MyPrefixStat />
+  </:prefix>
 </HyperTableV2::Summary>
 ```
 
 Behavior:
 
-- While `@loading` is true, one skeleton is displayed per field (4 when `@fields` is empty), and the `:custom` block is hidden.
-- The separator is only rendered when the `:custom` block is provided.
+- While `@loading` is true, one skeleton is displayed per field (4 when `@fields` is empty), and the `:prefix` block is hidden.
+- The separator is only rendered when the `:prefix` block is provided.
 - A field `tooltip` displays an info icon between its label and its value.
 
 ## Events

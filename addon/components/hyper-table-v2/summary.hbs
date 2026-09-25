@@ -19,8 +19,8 @@
         </div>
       {{/each}}
     {{else}}
-      {{#if (has-block "custom")}}
-        {{yield to="custom"}}
+      {{#if (has-block "prefix")}}
+        {{yield to="prefix"}}
         <div class="hypertable-summary-v2__separator" data-control-name="hypertable_summary_separator"></div>
       {{/if}}
       {{#each @fields as |field|}}
