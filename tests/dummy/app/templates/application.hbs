@@ -30,3 +30,11 @@
     </:contextual-actions>
   </HyperTableV2>
 </div>
+
+<div class="padding-px-12 fx-col fx-gap-px-6">
+  <div class="fx-row fx-gap-px-6 fx-xalign-center">
+    <span>Summary loading:</span>
+    <OSS::ToggleSwitch @value={{this.summaryLoading}} @onChange={{this.toggleSummaryLoading}} />
+  </div>
+  <HyperTableV2::Summary @loading={{this.summaryLoading}} @fields={{this.summaryFields}} />
+</div>
