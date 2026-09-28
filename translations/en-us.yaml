@@ -83,6 +83,8 @@ hypertable:
         success:
           title: Ownership update
           message: View successfully shared
+  summary:
+    title: Summary
   selection:
     records_selected: '{count, plural, =0 {{count} record is selected} =1 {{count} record is selected} other {{count} records are selected}}'
     all_records_selected: All records (<b>{count}</b>) are selected

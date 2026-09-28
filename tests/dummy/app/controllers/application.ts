@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
+import { type SummaryField } from '@upfluence/hypertable/components/hyper-table-v2/summary';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import {
   Column,
@@ -218,6 +219,7 @@ export default class Application extends Controller {
   @tracked searchQuery: string = '';
   @tracked selectedValue: number = 0;
   @tracked animationsEnabled: boolean = true;
+  @tracked summaryLoading: boolean = false;
   private prependedRowsCount: number = 0;
 
   tableManager = new Manager();
@@ -292,6 +294,25 @@ export default class Application extends Controller {
         bar: 'New row'
       }
     ]);
+  }
+
+  get summaryFields(): SummaryField[] {
+    return [
+      { label: 'Affiliates', value: '128' },
+      { label: 'Total Orders', value: '1,234' },
+      { label: 'Total Sales', value: '$45,678.90' },
+      { label: 'Average Order Value', value: '$37.02' },
+      {
+        label: 'ROI',
+        value: '—',
+        tooltip: 'Profit earned for every $1 spent on commissions. (Sales − Commissions) / Commissions.'
+      }
+    ];
+  }
+
+  @action
+  toggleSummaryLoading(value: boolean): void {
+    this.summaryLoading = value;
   }
 
   @action

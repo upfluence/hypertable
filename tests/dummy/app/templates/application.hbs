@@ -30,3 +30,26 @@
     </:contextual-actions>
   </HyperTableV2>
 </div>
+
+<div class="padding-px-12 fx-col fx-gap-px-6">
+  <div class="fx-row fx-gap-px-6 fx-xalign-center">
+    <span>Summary loading:</span>
+    <OSS::ToggleSwitch @value={{this.summaryLoading}} @onChange={{this.toggleSummaryLoading}} />
+  </div>
+  <HyperTableV2::Summary @loading={{this.summaryLoading}} @fields={{this.summaryFields}} />
+  <HyperTableV2::Summary
+    @loading={{this.summaryLoading}}
+    @fields={{this.summaryFields}}
+    @titleTooltip="Stats of the currently filtered records"
+  >
+    <:prefix>
+      <div class="fx-row fx-gap-px-6 fx-xalign-center">
+        <OSS::Badge @icon="far fa-users" />
+        <div class="fx-col">
+          <span class="font-color-gray-500">Community</span>
+          <span class="font-color-gray-900 text-style-bold">238,190 / ∞</span>
+        </div>
+      </div>
+    </:prefix>
+  </HyperTableV2::Summary>
+</div>

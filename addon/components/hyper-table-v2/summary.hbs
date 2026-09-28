@@ -1,0 +1,46 @@
+<div class="hypertable-summary-v2" ...attributes>
+  <div class="hypertable-summary-v2__title-container">
+    <span class="hypertable-summary-v2__title" data-control-name="hypertable_summary_title">{{this.title}}</span>
+    {{#if @titleTooltip}}
+      <OSS::Icon
+        @icon="fa-info-circle"
+        class="hypertable-summary-v2__title-tooltip"
+        data-control-name="hypertable_summary_title_tooltip"
+        {{enable-tooltip title=@titleTooltip placement="top"}}
+      />
+    {{/if}}
+  </div>
+  <div class="hypertable-summary-v2__fields">
+    {{#if @loading}}
+      {{#each this.skeletons}}
+        <div class="hypertable-summary-v2__skeleton" data-control-name="hypertable_summary_skeleton">
+          <OSS::Skeleton @height={{14}} @width={{70}} />
+          <OSS::Skeleton @height={{14}} @width={{14}} />
+        </div>
+      {{/each}}
+    {{else}}
+      {{#if (has-block "prefix")}}
+        {{yield to="prefix"}}
+        <div class="hypertable-summary-v2__separator" data-control-name="hypertable_summary_separator"></div>
+      {{/if}}
+      {{#each @fields as |field|}}
+        <div class="hypertable-summary-v2__field" data-control-name="hypertable_summary_stat">
+          <span class="hypertable-summary-v2__field-label" data-control-name="hypertable_summary_stat_label">
+            {{field.label}}
+          </span>
+          {{#if field.tooltip}}
+            <OSS::Icon
+              @icon="fa-info-circle"
+              class="hypertable-summary-v2__field-tooltip"
+              data-control-name="hypertable_summary_stat_tooltip"
+              {{enable-tooltip title=field.tooltip placement="top"}}
+            />
+          {{/if}}
+          <span class="hypertable-summary-v2__field-value" data-control-name="hypertable_summary_stat_value">
+            {{field.value}}
+          </span>
+        </div>
+      {{/each}}
+    {{/if}}
+  </div>
+</div>
