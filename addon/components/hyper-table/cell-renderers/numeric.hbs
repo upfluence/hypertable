@@ -10,13 +10,14 @@
   <div class="editing-input">
     {{#if (and this.editStatus.status (not this.isSuccess))}}
       <div class={{if this.isError "is-invalid"}}>
-        {{input
-          type="number"
-          focus-out=(action "toggleEditing" this.editableValue)
-          insert-newline=(action "toggleEditing" this.editableValue)
-          value=this.value
+        <Input
+          @type="number"
+          @insert-newline={{action "toggleEditing" this.editableValue}}
+          @value={{this.value}}
+          aria-label={{or this.column.field.name "Value"}}
           class="editing-input__field form-control"
-        }}
+          {{on "focusout" (action "toggleEditing" this.editableValue)}}
+        />
       </div>
     {{else}}
       <div class="text-value" {{enable-tooltip title=(format-numeric this.value) placement="bottom"}}>
