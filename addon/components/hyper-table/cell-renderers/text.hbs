@@ -14,9 +14,9 @@
       <Input
         @type="text"
         @value={{this.editableValue}}
+        @insert-newline={{action "toggleEditing" this.editableValue}}
         aria-label={{or this.column.field.name "Value"}}
         class="editing-input__field form-control upf-input"
-        @insert-newline={{action "toggleEditing" this.editableValue}}
         {{on "focusout" (action "toggleEditing" this.editableValue)}}
       />
     </div>
