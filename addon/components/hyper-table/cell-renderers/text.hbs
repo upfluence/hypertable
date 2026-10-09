@@ -11,13 +11,14 @@
 {{#if this.isUpsertable}}
   <div class="editing-input">
     <div class={{if this.isError "is-invalid"}}>
-      {{input
-        type="text"
-        value=this.editableValue
+      <Input
+        @type="text"
+        @value={{this.editableValue}}
+        @insert-newline={{action "toggleEditing" this.editableValue}}
+        aria-label={{or this.column.field.name "Value"}}
         class="editing-input__field form-control upf-input"
-        focus-out=(action "toggleEditing" this.editableValue)
-        insert-newline=(action "toggleEditing" this.editableValue)
-      }}
+        {{on "focusout" (action "toggleEditing" this.editableValue)}}
+      />
     </div>
     <div class="text-value" {{enable-tooltip title=this.editableValue placement="bottom"}}>
       {{this.editableValue}}
