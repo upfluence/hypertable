@@ -76,7 +76,7 @@ const DEFAULT_INITIAL_LOAD_ANIMATION_CONFIG = {
 
 export default class HyperTableV2 extends Component<HyperTableV2Args> {
   loadingSkeletons = new Array(3);
-  innerTableElement?: Element;
+  innerTableElement?: HTMLElement;
 
   @tracked loadingResetFilters = false;
   @tracked scrollableTable: boolean = false;
@@ -186,7 +186,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
-  setupInnerTableElement(element: Element): void {
+  setupInnerTableElement(element: HTMLElement): void {
     this.innerTableElement = element;
 
     if (element) {
