@@ -85,7 +85,7 @@
     "@types/rsvp": "^4.0.4",
     "@types/sinon": "^10.0.6",
     "@types/tether": "^1.4.6",
-    "@upfluence/oss-components": "^3.98.16",
+    "@upfluence/oss-components": "github:upfluence/oss-components#pn/asset-map-service-adapter",
     "@upfluence/w-conf": "^0.4.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~4.12.3",
