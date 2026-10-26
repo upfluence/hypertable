@@ -151,8 +151,8 @@ importers:
         specifier: ^1.4.6
         version: 1.4.9
       '@upfluence/oss-components':
-        specifier: ^3.98.16
-        version: 3.98.16(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
+        specifier: github:upfluence/oss-components#pn/asset-map-service-adapter
+        version: https://codeload.github.com/upfluence/oss-components/tar.gz/9dcd77cf7b5a876e8ac12862aa16064e6175d037(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
       '@upfluence/w-conf':
         specifier: ^0.4.0
         version: 0.4.0(@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.4))(@typescript-eslint/parser@8.68.0(eslint@10.9.1)(typescript@4.9.5))(eslint@10.9.1)(prettier@3.8.4)(typescript@4.9.5)
@@ -1678,9 +1678,10 @@ packages:
     resolution: {integrity: sha512-YR65gGdGvTUAWLldC3xLOvOzamdGzB4A5/N8rehEaHs3Zvoe39BhgY+u0SPch1OvrVTfLcc55wsSgK2NcnTS/A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@upfluence/oss-components@3.98.16':
-    resolution: {integrity: sha512-RRpmwe7+srdUk9yGumxRdg5k8Q5UTdu1NBIubU6ZAanXma4pcc+YmgjLCugUUT9zy9rklxh11InVSplzJHkpUw==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.98.16/24c3852e34400180598a1749d6835867552ce6e6}
-    engines: {node: 12.* || 14.* || >= 16}
+  '@upfluence/oss-components@https://codeload.github.com/upfluence/oss-components/tar.gz/9dcd77cf7b5a876e8ac12862aa16064e6175d037':
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/upfluence/oss-components/tar.gz/9dcd77cf7b5a876e8ac12862aa16064e6175d037}
+    version: 3.99.9
+    engines: {node: 20.* || 22.* || 24.*}
     peerDependencies:
       qunit: "^2.x ||\_^3.x"
 
@@ -3402,10 +3403,6 @@ packages:
   ember-cli-htmlbars@6.3.0:
     resolution: {integrity: sha512-N9Y80oZfcfWLsqickMfRd9YByVcTGyhYRnYQ2XVPVrp6jyUyOeRWmEAPh7ERSXpp8Ws4hr/JB9QVQrn/yZa+Ag==}
     engines: {node: 12.* || 14.* || >= 16}
-
-  ember-cli-ifa@0.10.0:
-    resolution: {integrity: sha512-qtX7WqX15sldqwDWfa2+o68yNtV1UhTyQtCddDh2WLioENer696ZkZlKh8QNSYUvY/DADWbmCphl9n8S9beQDw==}
-    engines: {node: 10.* || >= 12}
 
   ember-cli-inject-live-reload@2.1.0:
     resolution: {integrity: sha512-YV5wYRD5PJHmxaxaJt18u6LE6Y+wo455BnmcpN+hGNlChy2piM9/GMvYgTAz/8Vin8RJ5KekqP/w/NEaRndc/A==}
@@ -9153,7 +9150,7 @@ snapshots:
       '@typescript-eslint/types': 8.68.0
       eslint-visitor-keys: 5.0.1
 
-  '@upfluence/oss-components@3.98.16(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
+  '@upfluence/oss-components@https://codeload.github.com/upfluence/oss-components/tar.gz/9dcd77cf7b5a876e8ac12862aa16064e6175d037(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
     dependencies:
       '@ember/render-modifiers': 2.1.0(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@embroider/macros': 1.16.10(@glint/template@1.5.1)
@@ -9164,12 +9161,12 @@ snapshots:
       bootstrap: 3.4.1
       broccoli-funnel: 3.0.8
       broccoli-merge-trees: 4.2.0
+      broccoli-plugin: 4.0.7
       calculate-cache-key-for-tree: 2.0.0
       dompurify: 3.4.11
       ember-auto-import: 2.10.0(@glint/template@1.5.1)(webpack@5.97.1)
       ember-cli-babel: 7.26.11
       ember-cli-htmlbars: 6.3.0
-      ember-cli-ifa: 0.10.0
       ember-cli-less: 2.0.6
       ember-cli-typescript: 5.3.0
       ember-intl: 6.5.6(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(typescript@4.9.5)(webpack@5.97.1)
@@ -11673,12 +11670,6 @@ snapshots:
       semver: 7.8.5
       silent-error: 1.1.1
       walk-sync: 2.2.0
-    transitivePeerDependencies:
-      - supports-color
-
-  ember-cli-ifa@0.10.0:
-    dependencies:
-      ember-cli-babel: 7.26.11
     transitivePeerDependencies:
       - supports-color
 
