@@ -6,7 +6,12 @@ module.exports = async function () {
     command: 'ember test --silent -r dot',
     scenarios: [
       {
-        name: 'ember-lts-3.28'
+        name: 'ember-lts-3.28',
+        npm: {
+          devDependencies: {
+            'ember-source': '~3.28.8'
+          }
+        }
       },
       {
         name: 'ember-4.12',
