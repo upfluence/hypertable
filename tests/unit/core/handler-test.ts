@@ -5,7 +5,7 @@ import { module, test } from 'qunit';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { FieldSize, Row } from '@upfluence/hypertable/core/interfaces';
+import { FieldSize, type Row } from '@upfluence/hypertable/core/interfaces';
 import BaseRenderingResolver from '@upfluence/hypertable/core/rendering-resolver';
 import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 
@@ -472,6 +472,216 @@ module('Unit | core/handler', function (hooks) {
     assert.deepEqual(handler.selection, []);
   });
 
+  module('Handler#updateSelectionRange', (hooks) => {
+    hooks.beforeEach(function (this: TestContext) {
+      this.handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
+      this.handler.rows = buildRows([1, 2, 3, 4, 5, 6]);
+      this.handler.rowsMeta = { total: 12 };
+    });
+
+    module('in array mode', () => {
+      test('it selects the rows between the anchor and a row below it', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[1]);
+
+        assert.true(this.handler.updateSelectionRange(this.handler.rows[4]));
+        assert.deepEqual(this.handler.selection, this.handler.rows.slice(1, 5));
+      });
+
+      test('it selects the rows between the anchor and a row above it', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[4]);
+
+        assert.true(this.handler.updateSelectionRange(this.handler.rows[1]));
+        assert.deepEqual(this.handler.selection, this.handler.rows.slice(1, 5));
+      });
+
+      test('it keeps the rows selected outside of the range', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[5]);
+        this.handler.updateSelection(this.handler.rows[0]);
+
+        this.handler.updateSelectionRange(this.handler.rows[2]);
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[5], ...this.handler.rows.slice(0, 3)]);
+      });
+
+      test('it unselects the range when the anchor has just been unselected', function (this: TestContext, assert: Assert) {
+        this.handler.selection = [...this.handler.rows];
+        this.handler.updateSelection(this.handler.rows[1]);
+
+        this.handler.updateSelectionRange(this.handler.rows[4]);
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[0], this.handler.rows[5]]);
+      });
+
+      test('it applies the state of the anchor, whatever the state of the clicked row', function (this: TestContext, assert: Assert) {
+        this.handler.selection = [...this.handler.rows];
+        this.handler.updateSelection(this.handler.rows[4]);
+        this.handler.updateSelection(this.handler.rows[2]);
+
+        this.handler.updateSelectionRange(this.handler.rows[4]);
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[0], this.handler.rows[1], this.handler.rows[5]]);
+      });
+
+      test('it uses the clicked row as the next anchor', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[0]);
+        this.handler.updateSelectionRange(this.handler.rows[1]);
+
+        this.handler.updateSelectionRange(this.handler.rows[3]);
+
+        assert.deepEqual(this.handler.selection, this.handler.rows.slice(0, 4));
+      });
+
+      test('it skips the rows being loaded', function (this: TestContext, assert: Assert) {
+        this.handler.rows[2]._isLoading = true;
+        this.handler.updateSelection(this.handler.rows[1]);
+
+        this.handler.updateSelectionRange(this.handler.rows[3]);
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[1], this.handler.rows[3]]);
+      });
+
+      test('it switches to the global mode when the range completes the selection', function (this: TestContext, assert: Assert) {
+        this.handler.rowsMeta = { total: 6 };
+        this.handler.updateSelection(this.handler.rows[0]);
+
+        this.handler.updateSelectionRange(this.handler.rows[5]);
+
+        assert.strictEqual(this.handler.selection, 'all');
+      });
+
+      test('it stays in array mode when an unselected range leaves as many rows as the total', function (this: TestContext, assert: Assert) {
+        const rowsFromPreviousFilters = buildRows([20, 21]);
+        this.handler.rowsMeta = { total: 6 };
+        this.handler.selection = [...rowsFromPreviousFilters, ...this.handler.rows];
+        this.handler.updateSelection(this.handler.rows[0]);
+
+        this.handler.updateSelectionRange(this.handler.rows[1]);
+
+        assert.deepEqual(this.handler.selection, [...rowsFromPreviousFilters, ...this.handler.rows.slice(2)]);
+      });
+    });
+
+    module('in global mode', (hooks) => {
+      hooks.beforeEach(function (this: TestContext) {
+        this.handler.selectAllGlobal();
+      });
+
+      test('it excludes the range when the anchor has just been excluded', function (this: TestContext, assert: Assert) {
+        this.handler.updateExclusion(this.handler.rows[1]);
+
+        assert.true(this.handler.updateSelectionRange(this.handler.rows[4]));
+        assert.strictEqual(this.handler.selection, 'all');
+        assert.deepEqual(this.handler.exclusion, this.handler.rows.slice(1, 5));
+      });
+
+      test('it restores the range when the anchor has just been restored', function (this: TestContext, assert: Assert) {
+        this.handler.exclusion = this.handler.rows.slice(1, 5);
+        this.handler.updateExclusion(this.handler.rows[2]);
+
+        this.handler.updateSelectionRange(this.handler.rows[3]);
+
+        assert.deepEqual(this.handler.exclusion, [this.handler.rows[1], this.handler.rows[4]]);
+      });
+
+      test('it clears the selection when the range excludes every row', function (this: TestContext, assert: Assert) {
+        this.handler.rowsMeta = { total: 6 };
+        this.handler.updateExclusion(this.handler.rows[0]);
+
+        this.handler.updateSelectionRange(this.handler.rows[5]);
+
+        assert.deepEqual(this.handler.selection, []);
+        assert.deepEqual(this.handler.exclusion, []);
+      });
+    });
+
+    module('when no range can be applied', () => {
+      test('it returns false without any anchor', function (this: TestContext, assert: Assert) {
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[3]));
+        assert.deepEqual(this.handler.selection, []);
+      });
+
+      test('it returns false when the clicked row is the anchor', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[3]);
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[3]));
+        assert.deepEqual(this.handler.selection, [this.handler.rows[3]]);
+      });
+
+      test('it returns false when the anchor is unselected and nothing is selected in the range', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[1]);
+        this.handler.updateSelection(this.handler.rows[1]);
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[4]));
+        assert.deepEqual(this.handler.selection, []);
+      });
+
+      test('it returns false when the anchor is selected and the whole range is selected', function (this: TestContext, assert: Assert) {
+        this.handler.selection = this.handler.rows.slice(0, 4);
+        this.handler.updateSelection(this.handler.rows[4]);
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[1]));
+        assert.deepEqual(this.handler.selection, this.handler.rows.slice(0, 5));
+      });
+
+      test('it returns false in global mode when no row of the range is excluded', function (this: TestContext, assert: Assert) {
+        this.handler.selectAllGlobal();
+        this.handler.updateExclusion(this.handler.rows[1]);
+        this.handler.updateExclusion(this.handler.rows[1]);
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[4]));
+        assert.deepEqual(this.handler.exclusion, []);
+      });
+
+      test('it returns false once the rows have been replaced', async function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[1]);
+
+        await this.handler.resetRows();
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[2]));
+      });
+
+      test('it returns false when the anchor has been removed from the table', function (this: TestContext, assert: Assert) {
+        const anchor = this.handler.rows[1];
+        this.handler.updateSelection(anchor);
+        this.handler.removeRow(anchor.record_id);
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[3]));
+        assert.deepEqual(this.handler.selection, [anchor]);
+      });
+
+      test('it returns false after Handler#clearSelection', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[1]);
+        this.handler.clearSelection();
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[3]));
+      });
+
+      test('it returns false after Handler#selectAllGlobal', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[1]);
+        this.handler.selectAllGlobal();
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[3]));
+      });
+
+      test('it returns false after Handler#toggleSelectAll on the loaded rows', function (this: TestContext, assert: Assert) {
+        this.handler.updateSelection(this.handler.rows[1]);
+        this.handler.toggleSelectAll(true);
+
+        assert.false(this.handler.updateSelectionRange(this.handler.rows[3]));
+      });
+    });
+
+    test('the anchor still applies after rows have been prepended', function (this: TestContext, assert: Assert) {
+      const [, anchor, thirdRow, fourthRow] = this.handler.rows;
+      this.handler.updateSelection(anchor);
+      this.handler.prependRows(buildRows([7]));
+
+      this.handler.updateSelectionRange(fourthRow);
+
+      assert.deepEqual(this.handler.selection, [anchor, thirdRow, fourthRow]);
+    });
+  });
+
   module('Handler#onBottomReached', function (hooks) {
     hooks.beforeEach(function (this: TestContext) {
       this.handler = new TableHandler(getContext(), this.tableManager, this.rowsFetcher);
@@ -622,6 +832,16 @@ module('Unit | core/handler', function (hooks) {
       assert.ok(remainingCallback.calledOnce);
     });
   });
+
+  function buildRows(recordIds: number[]): Row[] {
+    return recordIds.map((recordId) => ({
+      influencerId: recordId,
+      recordId,
+      record_id: recordId,
+      holderId: 57,
+      holderType: 'list'
+    }));
+  }
 
   function populateSelectionAndExclusionHandler(handler: TableHandler): void {
     const row = {

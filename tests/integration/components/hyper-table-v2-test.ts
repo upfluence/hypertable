@@ -1,4 +1,4 @@
-import { click, render, findAll, triggerEvent, waitUntil, type TestContext } from '@ember/test-helpers';
+import { click, render, findAll, settled, triggerEvent, waitUntil, type TestContext } from '@ember/test-helpers';
 
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
@@ -8,6 +8,19 @@ import sinon from 'sinon';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
+
+const ROW_CELL = '.hypertable__sticky-columns .hypertable__column:last-child .hypertable__cell';
+const ROW_SELECTION_CELL = '.hypertable__column--selection .hypertable__cell';
+const ROW_SELECTION_CHECKBOX = '.upf-checkbox';
+const SELECTED_COUNT = '.selected-count';
+
+function rowSelectionCell(rowPosition: number): string {
+  return `${ROW_SELECTION_CELL}:nth-of-type(${rowPosition})`;
+}
+
+function rowSelectionCheckbox(rowPosition: number): string {
+  return `${rowSelectionCell(rowPosition)} ${ROW_SELECTION_CHECKBOX}`;
+}
 
 module('Integration | Component | hyper-table-v2', function (hooks) {
   setupRenderingTest(hooks);
@@ -715,6 +728,153 @@ module('Integration | Component | hyper-table-v2', function (hooks) {
         assert.deepEqual(this.handler.selection, []);
         assert.deepEqual(this.handler.exclusion, []);
       });
+    });
+
+    module('when holding Shift while clicking on a row', (hooks) => {
+      hooks.beforeEach(async function (this: TestContext) {
+        await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+      });
+
+      test('it selects the rows between the anchor and a row below it', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(1));
+        await click(rowSelectionCheckbox(3), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, this.handler.rows);
+        assert.dom(`${rowSelectionCheckbox(2)} input`).isChecked();
+        assert.dom(SELECTED_COUNT).hasText('3');
+      });
+
+      test('it selects the rows between the anchor and a row above it', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(3));
+        await click(rowSelectionCheckbox(1), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, this.handler.rows);
+        assert.dom(`${rowSelectionCheckbox(2)} input`).isChecked();
+      });
+
+      test('it unselects the range when the anchor has just been unselected', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(1));
+        await click(rowSelectionCheckbox(3), { shiftKey: true });
+        await click(rowSelectionCheckbox(3));
+        await click(rowSelectionCheckbox(2), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[0]]);
+        assert.dom(`${rowSelectionCheckbox(2)} input`).isNotChecked();
+        assert.dom(SELECTED_COUNT).hasText('1');
+      });
+
+      test('it also works when clicking next to the checkbox', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCell(1));
+        await click(rowSelectionCell(3), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, this.handler.rows);
+      });
+
+      test('it toggles the row alone when there is no anchor', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(2), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[1]]);
+      });
+
+      test('it toggles the row alone when nothing is selected in the range of an unselected anchor', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(1));
+        await click(rowSelectionCheckbox(1));
+        await click(rowSelectionCheckbox(3), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[2]]);
+      });
+
+      test('it toggles the row alone when the whole range is already selected', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(1));
+        await click(rowSelectionCheckbox(3), { shiftKey: true });
+        await click(rowSelectionCheckbox(2), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[0], this.handler.rows[2]]);
+      });
+
+      test('it ignores a row being loaded', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(1));
+        await this.handler.toggleRowLoadingState(this.handler.rows[2].record_id);
+        await settled();
+        await click(rowSelectionCell(3), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[0]]);
+      });
+
+      test('it toggles the row alone after the selection has been cleared', async function (this: TestContext, assert: Assert) {
+        await click(rowSelectionCheckbox(1));
+        this.handler.clearSelection();
+        await settled();
+        await click(rowSelectionCheckbox(3), { shiftKey: true });
+
+        assert.deepEqual(this.handler.selection, [this.handler.rows[2]]);
+      });
+
+      test('it does not trigger the row-click event', async function (this: TestContext, assert: Assert) {
+        const onRowClick = sinon.stub();
+        this.handler.on('row-click', onRowClick);
+
+        await click(rowSelectionCheckbox(1));
+        await click(rowSelectionCheckbox(3), { shiftKey: true });
+
+        assert.true(onRowClick.notCalled);
+      });
+
+      test('it leaves the data cells untouched', async function (this: TestContext, assert: Assert) {
+        const onRowClick = sinon.stub();
+        this.handler.on('row-click', onRowClick);
+
+        await click(ROW_CELL, { shiftKey: true });
+
+        assert.true(onRowClick.calledOnceWithExactly(this.handler.rows[0]));
+        assert.deepEqual(this.handler.selection, []);
+      });
+
+      module('when all the rows are globally selected', (hooks) => {
+        hooks.beforeEach(async function (this: TestContext) {
+          this.handler.selectAllGlobal();
+          await settled();
+        });
+
+        test('it excludes the range', async function (this: TestContext, assert: Assert) {
+          await click(rowSelectionCheckbox(1));
+          await click(rowSelectionCheckbox(3), { shiftKey: true });
+
+          assert.strictEqual(this.handler.selection, 'all');
+          assert.deepEqual(this.handler.exclusion, this.handler.rows);
+          assert.dom(`${rowSelectionCheckbox(2)} input`).isNotChecked();
+          assert.dom(SELECTED_COUNT).hasText('9');
+        });
+
+        test('it restores the range', async function (this: TestContext, assert: Assert) {
+          await click(rowSelectionCheckbox(1));
+          await click(rowSelectionCheckbox(3), { shiftKey: true });
+          await click(rowSelectionCheckbox(3));
+          await click(rowSelectionCheckbox(2), { shiftKey: true });
+
+          assert.deepEqual(this.handler.exclusion, [this.handler.rows[0]]);
+          assert.dom(SELECTED_COUNT).hasText('11');
+        });
+
+        test('it clears the selection when the range excludes every row', async function (this: TestContext, assert: Assert) {
+          this.handler.rowsMeta = { total: 3 };
+
+          await click(rowSelectionCheckbox(1));
+          await click(rowSelectionCheckbox(3), { shiftKey: true });
+
+          assert.deepEqual(this.handler.selection, []);
+          assert.deepEqual(this.handler.exclusion, []);
+        });
+      });
+    });
+
+    test('clicking on two rows without holding Shift toggles them alone', async function (this: TestContext, assert: Assert) {
+      await render(hbs`<HyperTableV2 @handler={{this.handler}} @features={{hash selection=true}} />`);
+
+      await click(rowSelectionCheckbox(1));
+      await click(rowSelectionCheckbox(3));
+
+      assert.deepEqual(this.handler.selection, [this.handler.rows[0], this.handler.rows[2]]);
     });
 
     test('clicking a one multiline checkbox toggles its selection status', async function (this: TestContext, assert: Assert) {

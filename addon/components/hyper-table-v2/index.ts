@@ -235,6 +235,18 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
   }
 
   @action
+  onSelectionCellClick(row: Row, event: MouseEvent): void {
+    if (!event.shiftKey || row._isLoading) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!this.args.handler.updateSelectionRange(row)) {
+      this.toggleRowSelection(row);
+    }
+  }
+
+  @action
   scrollToEnd(): void {
     const table = this.innerTableElement;
 
