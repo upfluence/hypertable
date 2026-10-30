@@ -124,6 +124,7 @@
                       @onClick={{fn this.toggleRowSelection row}}
                       @onHover={{this.onRowHover}}
                       @loading={{row._isLoading}}
+                      {{on "click" (fn this.onSelectionCellClick row) capture=true}}
                     >
                       <OSS::Checkbox
                         @checked={{if

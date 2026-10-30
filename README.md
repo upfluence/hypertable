@@ -356,10 +356,16 @@ this.tableHandler.clearSelection();
 // Update individual row selection
 this.tableHandler.updateSelection(row);
 
+// Apply the state of the last clicked row up to this one
+// Returns false when no range applies (no anchor, removed anchor, or nothing to change)
+this.tableHandler.updateSelectionRange(row);
+
 // Access current selection state
 const selection = this.handler.selection; // Row[] | 'all'
 const exclusions = this.handler.exclusion; // Row[] (when selection is 'all')
 ```
+
+Holding Shift while clicking on a row of the selection column applies the state of the last clicked row to every loaded row in between, in both directions. In global mode, the range updates `exclusion` instead of `selection`. When the range has nothing to change, only the clicked row is toggled. The anchor is reset by `clearSelection`, `selectAllGlobal` and `toggleSelectAll`.
 
 ### Filtering and Ordering
 
