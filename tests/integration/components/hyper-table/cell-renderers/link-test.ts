@@ -10,9 +10,9 @@ module('Integration | Component | hyper-table/cell-renderers/link', function (ho
   setupRenderingTest(hooks);
 
   test('it renders a link value', async function (this: TestContext, assert) {
-    this.item = EmberObject.create({ website: 'https://example.com' });
-    this.column = EmberObject.create({ key: 'website', field: EmberObject.create({}) });
-    this.manager = EmberObject.create({ editStatus: A([]) });
+    this.item = EmberObject.create({ website: 'https://example.com' } as object);
+    this.column = EmberObject.create({ key: 'website', field: EmberObject.create({}) } as object);
+    this.manager = EmberObject.create({ editStatus: A([]) } as object);
 
     await render(
       hbs`<HyperTable::CellRenderers::Link
@@ -27,9 +27,9 @@ module('Integration | Component | hyper-table/cell-renderers/link', function (ho
   });
 
   test('it renders a default when the value is empty', async function (this: TestContext, assert) {
-    this.item = EmberObject.create({ website: null });
-    this.column = EmberObject.create({ key: 'website', field: EmberObject.create({}) });
-    this.manager = EmberObject.create({ editStatus: A([]) });
+    this.item = EmberObject.create({ website: null } as object);
+    this.column = EmberObject.create({ key: 'website', field: EmberObject.create({}) } as object);
+    this.manager = EmberObject.create({ editStatus: A([]) } as object);
 
     await render(
       hbs`<HyperTable::CellRenderers::Link

@@ -3,7 +3,7 @@
     "skipLibCheck": true,
     "target": "es2020",
     "allowJs": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
@@ -28,8 +28,6 @@
       "@upfluence/hypertable/*": ["addon/*"],
       "@upfluence/hypertable/test-support": ["addon-test-support"],
       "@upfluence/hypertable/test-support/*": ["addon-test-support/*"],
-      "@upfluence/oss-components": ["node_modules/@upfluence/oss-components/addon"],
-      "@upfluence/oss-components/*": ["node_modules/@upfluence/oss-components/addon/*"],
       "@upfluence/oss-components/test-support": ["./node_modules/@upfluence/oss-components/addon-test-support"],
       "@upfluence/oss-components/test-support/*": ["./node_modules/@upfluence/oss-components/addon-test-support/*"],
       "*": ["types/*"]
