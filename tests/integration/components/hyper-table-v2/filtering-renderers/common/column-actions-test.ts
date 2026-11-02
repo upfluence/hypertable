@@ -1,5 +1,4 @@
-import { render, type TestContext } from '@ember/test-helpers';
-import click from '@ember/test-helpers/dom/click';
+import { render, click, type TestContext } from '@ember/test-helpers';
 
 import { setupIntl } from 'ember-intl/test-support';
 import { setupRenderingTest } from 'ember-qunit';

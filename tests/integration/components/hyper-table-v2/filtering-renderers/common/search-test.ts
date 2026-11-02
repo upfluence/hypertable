@@ -1,5 +1,4 @@
-import { click, fillIn, render, triggerKeyEvent, type TestContext } from '@ember/test-helpers';
-import settled from '@ember/test-helpers/settled';
+import { click, fillIn, render, settled, triggerKeyEvent, type TestContext } from '@ember/test-helpers';
 
 import { setupIntl } from 'ember-intl/test-support';
 import { setupRenderingTest } from 'ember-qunit';
