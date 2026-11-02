@@ -510,4 +510,140 @@ module('Integration | Component | hyper-table', function (hooks) {
       assert.dom('.hypertable__state--empty').exists();
     });
   });
+  module('arrays', function () {
+    test('the field categories are sorted by label', async function (assert) {
+      this.table = buildTable(this.owner);
+      this.table.updateFieldCategories([
+        { key: 'z', label: 'Zeta' },
+        { key: 'a', label: 'Alpha' },
+        { key: 'm', label: 'Mu' }
+      ]);
+
+      await render(hbs`<HyperTable @manager={{this.table}} @meta={{this.table.meta}} />`);
+
+      assert.deepEqual(
+        [...this.element.querySelectorAll('.field-category')].map((c) => c.textContent.trim()),
+        ['All Fields', 'Alpha', 'Mu', 'Zeta']
+      );
+    });
+
+    test('the first column filters feed the search input and clear with the search', async function (assert) {
+      this.table = buildTable(this.owner, { hooks: { onColumnsChange() {}, onSearchQueryChange() {} } });
+      this.table.columns[0].set('filters', [{ key: 'value', value: 'foo' }]);
+
+      await render(hbs`<HyperTable @manager={{this.table}} @meta={{this.table.meta}} />`);
+
+      assert.dom('.hypertable__upper-header [data-control-name="table_search_input"] input').hasValue('foo');
+
+      this.table.columns[0].set('filters', [{ key: 'value', value: 'bar' }]);
+      await settled();
+
+      assert.dom('.hypertable__upper-header [data-control-name="table_search_input"] input').hasValue('bar');
+    });
+
+    test('reordering the columns keeps the first one and notifies the hook', async function (assert) {
+      const onColumnsChange = sinon.spy();
+      this.table = buildTable(this.owner, { hooks: { onColumnsChange } });
+      this.table.fields.find((f) => f.key === 'extra').set('visible', true);
+      this.table.updateColumns([
+        ...this.table.columns,
+        { key: 'extra', type: 'text', orderable: true, filterable: true }
+      ]);
+
+      await render(hbs`<HyperTable @manager={{this.table}} @meta={{this.table.meta}} />`);
+      const component =
+        this.owner.lookup('-view-registry:main')[this.element.querySelector('.hypertable-container').id];
+      const [first, score, extra] = this.table.columns;
+
+      component.reorderColumns([score, extra]);
+      assert.false(onColumnsChange.called);
+
+      component.reorderColumns([extra, score]);
+      assert.true(onColumnsChange.calledWith('columns:reorder'));
+      assert.deepEqual(
+        this.table.columns.map((c) => c.key),
+        [first.key, 'extra', 'score']
+      );
+    });
+
+    test('removing then adding a column updates the rendered columns', async function (assert) {
+      this.table = buildTable(this.owner, { hooks: { onColumnsChange() {} } });
+
+      await render(hbs`<HyperTable @manager={{this.table}} @meta={{this.table.meta}} />`);
+      assert.dom('.hypertable > .hypertable__column').exists({ count: 1 });
+
+      await this.table.toggleColumnVisibility(this.table.fields.find((f) => f.key === 'score'));
+      await settled();
+      assert.dom('.hypertable > .hypertable__column').doesNotExist();
+
+      await this.table.toggleColumnVisibility(this.table.fields.find((f) => f.key === 'score'));
+      await settled();
+      assert.dom('.hypertable > .hypertable__column').exists({ count: 1 });
+    });
+
+    test('a predefined view disappears from the list once added', async function (assert) {
+      this.view = { name: 'predef', table: {} };
+      this.noop = () => {};
+      this.manager = EmberObject.create({
+        availableTableViews: true,
+        views: [],
+        predefinedViews: [this.view],
+        hooks: { onAddView() {}, onSelectView() {} }
+      });
+
+      await render(hbs`<HyperTable::Views @manager={{this.manager}} @closeAvailableViews={{this.noop}} />`);
+      assert.dom('.views-container hr').exists();
+
+      await click('.views-container > div');
+
+      assert.dom('.views-container hr').doesNotExist();
+    });
+
+    test('the editing status of a cell is rendered once the edition starts', async function (assert) {
+      this.table = buildTable(this.owner, { hooks: { onLiveEdit() {} } });
+      this.item = this.table.data[0];
+      this.column = this.table.columns[0];
+      this.column.set('upsertable', true);
+      this.item.set('name', null);
+
+      await render(
+        hbs`<HyperTable::CellRenderers::Text @item={{this.item}} @column={{this.column}} @manager={{this.table}} />`
+      );
+      await click('span');
+
+      assert.dom('.cell-container').hasClass('editing');
+      assert.strictEqual(this.table.editStatus.length, 1);
+    });
+
+    test('list: it renders the first element of a list of strings', async function (assert) {
+      this.table = buildTable(this.owner);
+      this.item = this.table.data[0];
+      this.column = this.table.columns[0];
+      this.item.set('name', ['alpha', 'beta', 'gamma']);
+
+      await render(
+        hbs`<HyperTable::CellRenderers::List @item={{this.item}} @column={{this.column}} @manager={{this.table}} />`
+      );
+
+      assert.dom('.list-container > div').hasText('alpha');
+      assert.dom('.list-elements').includesText('+2 more');
+    });
+
+    test('list: it renders the first name of a list of objects', async function (assert) {
+      this.table = buildTable(this.owner);
+      this.item = this.table.data[0];
+      this.column = this.table.columns[0];
+      this.item.set('name', [
+        { id: 1, name: 'one' },
+        { id: 2, name: 'two' }
+      ]);
+
+      await render(
+        hbs`<HyperTable::CellRenderers::List @item={{this.item}} @column={{this.column}} @manager={{this.table}} />`
+      );
+
+      assert.dom('.list-container > div').hasText('one');
+      assert.dom('.list-elements').includesText('+1 more');
+    });
+  });
 });

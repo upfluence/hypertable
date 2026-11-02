@@ -118,7 +118,6 @@ module('Integration | Component | hyper-table-v2/manage-columns', function (hook
         assert.strictEqual(clusterNames[0].textContent?.trim(), 'instagram');
         assert.strictEqual(clusterNames[1].textContent?.trim(), 'x');
         assert.strictEqual(clusterNames[2].textContent?.trim(), 'youtube');
-
       });
 
       test('it sets the category as active when user select a category', async function (assert) {
