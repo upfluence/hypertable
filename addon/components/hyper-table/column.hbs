@@ -1,5 +1,5 @@
 <header {{sortable-handle}}>
-  <div class="cell-header" {{action "orderColumn" bubbles=false}}>
+  <div class="cell-header" {{on "click" this.orderColumn}}>
     <div class="header-title-container">
       <span class="field-title" {{enable-tooltip title=this.column.field.name}}>
         {{#if this.column.field.title}}
@@ -37,14 +37,14 @@
 
   <div class="icon-commands" data-control-name={{concat "table_column_filter_sort_toggle_" this.column.key}}>
     {{#if this._supportsOrderingOrFiltering}}
-      <OSS::Icon @icon="fa-filter" {{enable-tooltip title="Filters"}} {{action "toggleFiltersPanel" bubbles=false}} />
+      <OSS::Icon @icon="fa-filter" {{enable-tooltip title="Filters"}} {{on "click" this.openFiltersPanel}} />
     {{/if}}
 
     <OSS::Icon @icon="fa-bars fa-rotate-90" />
   </div>
 
   {{#if (and this._supportsOrderingOrFiltering (eq this.manager.tetherOn this.column.key))}}
-    <div class="available-filters" {{on-click-outside (action "toggleFiltersPanel" bubbles=false)}}>
+    <div class="available-filters" {{on-click-outside this.toggleFiltersPanel}}>
       {{component this._filtersRenderingComponent column=this.column manager=this.manager}}
     </div>
   {{/if}}

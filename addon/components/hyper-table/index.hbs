@@ -23,7 +23,7 @@
             <:prefix><OSS::Icon @icon="fa-search" class="font-color-gray-500" /></:prefix>
             <:suffix>
               {{#if (gt this._searchQuery.length 0)}}
-                <OSS::Icon @icon="fa-times" class="font-color-gray-500" role="button" {{action "clearSearch"}} />
+                <OSS::Icon @icon="fa-times" class="font-color-gray-500" role="button" {{on "click" this.clearSearch}} />
               {{/if}}
             </:suffix>
           </OSS::InputContainer>
@@ -51,7 +51,7 @@
           @label={{t "hypertable.features.filtering.reset_all"}}
           class="margin-right-px-12"
           data-control-name="table_reset_filters"
-          {{action "resetAllFilters"}}
+          {{on "click" this.resetAllFilters}}
         />
       {{/if}}
 
@@ -61,7 +61,7 @@
           @label={{t "hypertable.features.table_views.title"}}
           class="margin-right-px-12 views-manager-toggle icon-responsive"
           data-control-name="table_toggle_views"
-          {{action "openAvailableViews" bubbles=false}}
+          {{on "click" this.openAvailableViews}}
         />
       {{/if}}
 
@@ -70,19 +70,19 @@
         @label={{t "hypertable.features.manage_fields.title"}}
         class="fields-manager-toggle icon-responsive"
         data-control-name="table_toggle_fields"
-        {{action "openAvailableFields" bubbles=false}}
+        {{on "click" this.openAvailableFields}}
       />
 
-      <HyperTable::Views @manager={{this.manager}} @closeAvailableViews={{action "closeAvailableViews"}} />
+      <HyperTable::Views @manager={{this.manager}} @closeAvailableViews={{this.closeAvailableViews}} />
 
       <div
         class="available-fields-wrapper {{if this.manager.availableFieldsPanel 'visible' 'invisible'}}"
-        {{on-click-outside (action "closeAvailableFields")}}
+        {{on-click-outside this.closeAvailableFields}}
       >
         <div class="available-fields-wrapper__categories">
           <div
             class="field-category {{unless this._activeFieldCategory 'field-category--active'}}"
-            {{action "setFieldCategory"}}
+            {{on "click" (fn this.setFieldCategory undefined)}}
           >
             <div>{{t "hypertable.features.manage_fields.all_fields"}}</div>
             <div><OSS::Icon @icon="fa-caret-right" /></div>
@@ -91,7 +91,7 @@
             <div
               class="field-category {{if (eq this._activeFieldCategory category.key) 'field-category--active'}}"
               data-control-name={{concat "field_category_toggle_" (normalize-category-name category.key)}}
-              {{action "setFieldCategory" category.key}}
+              {{on "click" (fn this.setFieldCategory category.key)}}
             >
               <div>{{category.label}}</div>
               <div><OSS::Icon @icon="fa-caret-right" /></div>
@@ -104,8 +104,8 @@
             <OSS::SearchField
               @value={{this._availableFieldsKeyword}}
               @placeholder={{t "hypertable.features.manage_fields.search_placeholder"}}
-              @onChange={{action "setSearchValue"}}
-              {{on "click" (stop-propagation (action "noop"))}}
+              @onChange={{this.setSearchValue}}
+              {{on "click" (stop-propagation this.noop)}}
               data-control-name="field_search_input"
             />
           </div>
@@ -118,11 +118,11 @@
                 </p>
               {{/if}}
               {{#each fields as |field|}}
-                <div class="field {{if field.visible 'field--visible'}}" {{action "fieldVisibilityUpdated" field}}>
+                <div class="field {{if field.visible 'field--visible'}}" {{on "click" (fn this.fieldVisibilityUpdated field)}}>
                   <OSS::Checkbox
                     @checked={{field.visible}}
                     @size="sm"
-                    @onChange={{action "fieldVisibilityUpdated" field bubbes=false}}
+                    @onChange={{fn this.fieldVisibilityUpdated field}}
                     data-control-name={{concat "field_toggle_checkbox_" field.key}}
                   />
                   <div class="margin-left-px-6">
@@ -149,8 +149,8 @@
     @selected={{this._selectedCount}}
     @total={{this.manager.meta.total}}
     @intlKeyPath={{this.manager.options.selectionIntlKeyPath}}
-    @onSelectAll={{action "selectAllGlobal"}}
-    @onClear={{action "clearSelection"}}
+    @onSelectAll={{this.selectAllGlobal}}
+    @onClear={{this.clearSelection}}
   />
 </div>
 
@@ -159,11 +159,11 @@
   {{on-bottom-reached this.manager.hooks.onBottomReached}}
 >
   {{#if (and this.manager.tetherInstance this.manager.tetherBackdrop)}}
-    <div class="hypertable__backdrop" {{action "onBackdropClick"}}></div>
+    <div class="hypertable__backdrop" {{on "click" this.onBackdropClick}}></div>
   {{/if}}
 
   {{#if (and (eq this._collection.length 0) (not this.loadingData))}}
-    <div class="hypertable__state hypertable__state--empty" {{did-insert (action "scrollToEmptyState")}}>
+    <div class="hypertable__state hypertable__state--empty" {{did-insert this.scrollToEmptyState}}>
       {{#if (has-block "inverse")}}
         {{yield to="inverse"}}
       {{else}}
@@ -174,7 +174,7 @@
 
   <div
     class="hypertable"
-    {{sortable-group direction="x" onChange=(action "reorderColumns") groupName=this._hypertableInstanceID}}
+    {{sortable-group direction="x" onChange=this.reorderColumns groupName=this._hypertableInstanceID}}
   >
     {{#each this._columns as |column index|}}
       {{#if (eq index 0)}}
@@ -189,7 +189,7 @@
                   @checked={{this.manager._selectAllChecked}}
                   @partial={{lt this._selectedCount this.manager.meta.total}}
                   @size="sm"
-                  @onChange={{action "toggleSelectAll"}}
+                  @onChange={{this.toggleSelectAll}}
                   data-control-name="row_select_all_toggle_checkbox"
                 />
               </header>
@@ -209,7 +209,7 @@
                     <OSS::Checkbox
                       @checked={{item.selected}}
                       @size="sm"
-                      @onChange={{action "toggleItem" item}}
+                      @onChange={{fn this.toggleItem item}}
                       @loading={{item.loading}}
                       data-control-name="row_select_toggle_checkbox"
                     />
@@ -238,7 +238,7 @@
               {{/each}}
             {{else}}
               {{#each this._collection as |item|}}
-                <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
+                <div onmouseover={{fn this.toggleHover item true}} onmouseout={{fn this.toggleHover item false}}>
                   <HyperTable::Cell
                     @item={{item}}
                     @column={{column}}
@@ -270,7 +270,7 @@
             model=column
             spacing=5
             distance=10
-            onDragStart=(action "dragStarted")
+            onDragStart=this.dragStarted
           }}
         >
           {{#if this.loadingData}}
@@ -279,7 +279,7 @@
             {{/each}}
           {{else}}
             {{#each this._collection as |item|}}
-              <div onmouseover={{action "toggleHover" item true}} onmouseout={{action "toggleHover" item false}}>
+              <div onmouseover={{fn this.toggleHover item true}} onmouseout={{fn this.toggleHover item false}}>
                 <HyperTable::Cell
                   @item={{item}}
                   @column={{column}}

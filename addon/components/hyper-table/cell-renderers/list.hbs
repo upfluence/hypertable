@@ -1,7 +1,7 @@
 {{#if this.emptyValue}}
   —
 {{else}}
-  <div class="list-container" {{action "toggleList" bubbles=false}}>
+  <div class="list-container" {{on "click" this.toggleList}}>
     {{#if this.value.firstObject.name}}
       <div>
         {{this.value.firstObject.name}}
@@ -12,7 +12,7 @@
             <div
               class="expandable-list__item
                 {{if item.locked 'expandable-list__item-disabled '}}fx-row fx-xalign-center fx-gap-px-6"
-              {{on "click" (action "goToUrl" (concat this.url item.id) item.locked bubbles=false)}}
+              {{on "click" (fn this.goToUrl (concat this.url item.id) item.locked)}}
             >
               {{item.name}}
               {{#if item.locked}}

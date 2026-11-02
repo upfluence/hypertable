@@ -1,6 +1,6 @@
 {{#if (and this.emptyValue (or (not this.editStatus.status) this.isSuccess))}}
   {{#if this.isUpsertable}}
-    <span {{action "toggleEditing"}}>
+    <span {{on "click" this.startEditing}}>
       {{or this.column.field.emptyPlaceholder "Add value"}}
     </span>
   {{else}}
@@ -12,11 +12,11 @@
       <div class={{if this.isError "is-invalid"}}>
         <Input
           @type="number"
-          @insert-newline={{action "toggleEditing" this.editableValue}}
+          @insert-newline={{fn this.toggleEditing this.editableValue}}
           @value={{this.value}}
           aria-label={{or this.column.field.name "Value"}}
           class="editing-input__field form-control"
-          {{on "focusout" (action "toggleEditing" this.editableValue)}}
+          {{on "focusout" (fn this.toggleEditing this.editableValue)}}
         />
       </div>
     {{else}}
@@ -33,10 +33,10 @@
     {{#if this.isSaving}}
       <LoadingState />
     {{else if this.isSuccess}}
-      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
+      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{on "click" this.startEditing}} />
       <OSS::Icon @icon="fa-check" class="font-size-lg font-color-success-500" />
     {{else if (not this.editStatus.status)}}
-      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
+      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{on "click" this.startEditing}} />
     {{/if}}
   </div>
 {{/if}}

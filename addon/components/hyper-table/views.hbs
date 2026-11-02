@@ -19,12 +19,12 @@
       {{#each @manager.predefinedViews as |view|}}
         <HyperTable::Views::View
           @view={{view}}
-          @deleteView={{action "deleteView"}}
-          @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
+          @deleteView={{this.deleteView}}
+          @toggleUpdateViewModal={{this.toggleUpdateViewModal}}
           @selectedView={{this.selectedView}}
           @predefined={{true}}
-          @addPredefinedView={{action "addPredefinedView"}}
-          @onSelectView={{action "addPredefinedView"}}
+          @addPredefinedView={{this.addPredefinedView}}
+          @onSelectView={{this.addPredefinedView}}
         />
       {{/each}}
       <hr />
@@ -32,10 +32,10 @@
     {{#each (if this.filteredViews.length this.filteredViews @manager.views) as |view|}}
       <HyperTable::Views::View
         @view={{view}}
-        @deleteView={{action "toggleDeleteViewModal"}}
-        @toggleUpdateViewModal={{action "toggleUpdateViewModal"}}
+        @deleteView={{this.toggleDeleteViewModal}}
+        @toggleUpdateViewModal={{this.toggleUpdateViewModal}}
         @selectedView={{this.selectedView}}
-        @onSelectView={{action "selectView"}}
+        @onSelectView={{this.selectView}}
       />
     {{/each}}
   </div>
@@ -44,12 +44,12 @@
     @skin="primary"
     @icon="fas fa-plus"
     @label={{t "hypertable.view.add"}}
-    {{on "click" (action "toggleAddViewModal" bubbles=false)}}
+    {{on "click" this.toggleAddViewModal}}
   />
 </div>
 
 {{#unless this.isHiddenAddViewModal}}
-  <OSS::ModalDialog @title={{t "hypertable.view.new.title"}} @close={{action "toggleAddViewModal"}}>
+  <OSS::ModalDialog @title={{t "hypertable.view.new.title"}} @close={{this.toggleAddViewModal}}>
     <:content>
       <div class="fx-col">
         <span>{{t "hypertable.view.new.description" htmlSafe=true}}</span>
@@ -68,12 +68,12 @@
         <OSS::Button
           @skin="default"
           @label={{t "hypertable.view.new.cancel"}}
-          {{on "click" (action "toggleAddViewModal")}}
+          {{on "click" this.toggleAddViewModal}}
         />
         <OSS::Button
           @skin="primary"
           @label={{t "hypertable.view.new.cta"}}
-          {{on "click" (action "addView")}}
+          {{on "click" this.addView}}
           data-control-name="modal_confirm_create_view_button"
         />
       </div>
@@ -82,7 +82,7 @@
 {{/unless}}
 
 {{#unless this.isHiddenUpdateViewModal}}
-  <OSS::ModalDialog @title={{t "hypertable.view.update.title"}} @close={{action "toggleUpdateViewModal"}}>
+  <OSS::ModalDialog @title={{t "hypertable.view.update.title"}} @close={{this.toggleUpdateViewModal}}>
     <:content>
       <div class="fx-col">
         <span>{{t "hypertable.view.update.description" name=this.selectedView.name htmlSafe=true}}</span>
@@ -94,12 +94,12 @@
         <OSS::Button
           @skin="default"
           @label={{t "hypertable.view.update.cancel"}}
-          {{on "click" (action "toggleUpdateViewModal")}}
+          {{on "click" this.toggleUpdateViewModal}}
         />
         <OSS::Button
           @skin="primary"
           @label={{t "hypertable.view.update.cta"}}
-          {{on "click" (action "updateView")}}
+          {{on "click" this.updateView}}
           data-control-name="modal_confirm_update_view_button"
         />
       </div>
@@ -108,7 +108,7 @@
 {{/unless}}
 
 {{#unless this.isHiddenDeleteViewModal}}
-  <OSS::ModalDialog @title={{t "hypertable.view.delete.title"}} @close={{action "toggleDeleteViewModal"}}>
+  <OSS::ModalDialog @title={{t "hypertable.view.delete.title"}} @close={{this.toggleDeleteViewModal}}>
     <:content>
       <span>{{t "hypertable.view.delete.description"}}</span>
     </:content>
@@ -117,12 +117,12 @@
         <OSS::Button
           @skin="default"
           @label={{t "hypertable.view.delete.cancel"}}
-          {{on "click" (action "toggleDeleteViewModal")}}
+          {{on "click" this.toggleDeleteViewModal}}
         />
         <OSS::Button
           @skin="destructive"
           @label={{t "hypertable.view.delete.cta"}}
-          {{on "click" (action "deleteView")}}
+          {{on "click" this.deleteView}}
           data-control-name="modal_confirm_delete_view_button"
         />
       </div>

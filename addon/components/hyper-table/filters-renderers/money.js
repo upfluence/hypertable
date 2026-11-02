@@ -1,3 +1,4 @@
+import { action } from '@ember/object';
 import { isBlank } from '@ember/utils';
 
 import NumericFilterRenderer from '@upfluence/hypertable/components/hyper-table/filters-renderers/numeric';
@@ -31,15 +32,13 @@ export default NumericFilterRenderer.extend({
     }
   },
 
-  actions: {
-    orderingOptionChanged(value) {
-      this.manager.updateOrdering(this.column, value);
-    },
+  orderingOptionChanged: action(function (value) {
+    this.manager.updateOrdering(this.column, value);
+  }),
 
-    reset() {
-      this._super();
-      this.manager.updateOrdering(this.column, null);
-      this.setProperties({ lowerBoundFilter: null, upperBoundFilter: null });
-    }
+  _resetFilters() {
+    this._super();
+    this.manager.updateOrdering(this.column, null);
+    this.setProperties({ lowerBoundFilter: null, upperBoundFilter: null });
   }
 });
