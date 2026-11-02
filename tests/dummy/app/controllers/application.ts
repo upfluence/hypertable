@@ -101,116 +101,120 @@ class Manager implements TableManager {
 class RowsFetcher {
   fetch(_page: number, _perPage: number): Promise<RowsFetcherResponse> {
     return new Promise<RowsFetcherResponse>((resolve) => {
-      window.setTimeout(() => resolve({
-        rows: [
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'ekip',
-          bar: 'hello',
-          toto: 'toto',
-          code: 'code',
-          test: 'test',
-          total: 123,
-          time: 1344549600 // should be 2012.08.10
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'second',
-          bar: 'second bar',
-          total: 123.393,
-          time: 1643289899
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'ekip',
-          bar: 'hello',
-          total: 123
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'second',
-          bar: 'second bar',
-          total: 123000
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'ekip',
-          bar: 'hello'
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'second',
-          bar: 'second bar'
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'ekip',
-          bar: 'hello'
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'second',
-          bar: 'second bar'
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'ekip',
-          bar: 'hello'
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'second',
-          bar: 'second bar'
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'ekip',
-          bar: 'hello'
-        },
-        {
-          influencerId: Math.random(),
-          recordId: 12,
-          holderId: 57,
-          holderType: 'list',
-          foo: 'second',
-          bar: 'second bar'
-        }
-        ],
-        meta: { total: 12 }
-      }), 500);
+      window.setTimeout(
+        () =>
+          resolve({
+            rows: [
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'ekip',
+                bar: 'hello',
+                toto: 'toto',
+                code: 'code',
+                test: 'test',
+                total: 123,
+                time: 1344549600 // should be 2012.08.10
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'second',
+                bar: 'second bar',
+                total: 123.393,
+                time: 1643289899
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'ekip',
+                bar: 'hello',
+                total: 123
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'second',
+                bar: 'second bar',
+                total: 123000
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'ekip',
+                bar: 'hello'
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'second',
+                bar: 'second bar'
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'ekip',
+                bar: 'hello'
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'second',
+                bar: 'second bar'
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'ekip',
+                bar: 'hello'
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'second',
+                bar: 'second bar'
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'ekip',
+                bar: 'hello'
+              },
+              {
+                influencerId: Math.random(),
+                recordId: 12,
+                holderId: 57,
+                holderType: 'list',
+                foo: 'second',
+                bar: 'second bar'
+              }
+            ],
+            meta: { total: 12 }
+          }),
+        500
+      );
     });
   }
 }

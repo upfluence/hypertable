@@ -21,7 +21,7 @@ export default Component.extend(FiltersRendererMixin, {
   },
 
   currentExistenceFilter: computed('column.filters.[]', '_searchQuery', function () {
-    let _existenceFilter = this.column.filters.findBy('key', 'existence');
+    let _existenceFilter = this.column.filters.find((filter) => filter.key === 'existence');
 
     if (_existenceFilter) {
       return _existenceFilter.value;
@@ -47,7 +47,7 @@ export default Component.extend(FiltersRendererMixin, {
   init() {
     this._super();
 
-    const searchTerm = this.column.filters.findBy('key', this.searchKey || 'value');
+    const searchTerm = this.column.filters.find((filter) => filter.key === (this.searchKey || 'value'));
     this.set('_searchQuery', searchTerm?.value);
   },
 

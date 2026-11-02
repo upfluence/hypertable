@@ -10,9 +10,13 @@ export default Component.extend(CellRendererMixin, {
 
   isEditing: false,
 
-  formattedList: computed('value', 'value.firstObject.name', function () {
-    if (this.value.firstObject.name) {
-      return this.value.mapBy('name').join('<br>');
+  firstItem: computed('value.[]', function () {
+    return this.value.slice()[0];
+  }),
+
+  formattedList: computed('value.[]', 'firstItem.name', function () {
+    if (this.firstItem.name) {
+      return this.value.map((item) => item.name).join('<br>');
     }
     return this.value.slice().join('<br>');
   }),
