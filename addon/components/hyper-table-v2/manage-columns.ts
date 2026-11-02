@@ -1,7 +1,6 @@
-import { A } from '@ember/array';
 import { set, action } from '@ember/object';
 import { later, next } from '@ember/runloop';
-import { isEmpty } from '@ember/utils';
+import { compare, isEmpty } from '@ember/utils';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
@@ -37,15 +36,15 @@ export default class HyperTableV2ManageColumns extends Component<HyperTableV2Man
   }
 
   get orderedFilteredClusters(): Map<string, ManagedColumn[]> {
-    const fields = A(
-      (this.args.handler.columnDefinitions || []).filter((columnDefinition) => {
+    const fields = (this.args.handler.columnDefinitions || [])
+      .filter((columnDefinition) => {
         const search = (this.searchColumnDefinitionKeyword || '').toLowerCase();
         const hasSearched =
           !this.searchColumnDefinitionKeyword || columnDefinition.name.toLowerCase().indexOf(search) >= 0;
         const hasActiveGroup = !this.activeColumnCategory || columnDefinition.category === this.activeColumnCategory;
         return hasActiveGroup && hasSearched;
       })
-    ).sortBy('name');
+      .sort((a, b) => compare(a.name, b.name));
 
     return this.groupByClusteringKey(fields);
   }

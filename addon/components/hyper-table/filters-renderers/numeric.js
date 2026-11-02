@@ -22,7 +22,7 @@ export default Component.extend(FiltersRendererMixin, {
   }),
 
   currentExistenceFilter: computed('column.filters.[]', 'lowerBoundFilter', 'upperBoundFilter', function () {
-    let _existenceFilter = this.column.filters.findBy('key', 'existence');
+    let _existenceFilter = this.column.filters.find((filter) => filter.key === 'existence');
 
     if (_existenceFilter) {
       return _existenceFilter.value;
@@ -58,8 +58,8 @@ export default Component.extend(FiltersRendererMixin, {
   didReceiveAttrs() {
     this._super();
     if (this.column) {
-      let lowerBound = this.column.filters.findBy('key', 'lower_bound');
-      let upperBound = this.column.filters.findBy('key', 'upper_bound');
+      let lowerBound = this.column.filters.find((filter) => filter.key === 'lower_bound');
+      let upperBound = this.column.filters.find((filter) => filter.key === 'upper_bound');
 
       this.setProperties({
         lowerBoundFilter: lowerBound?.value,

@@ -2,7 +2,6 @@ import { A } from '@ember/array';
 import EmberObject from '@ember/object';
 import { click, fillIn, render, settled, triggerEvent } from '@ember/test-helpers';
 
-import { extendArrayPrototype } from 'dummy/tests/helpers/array-prototype-extensions';
 import { hbs } from 'ember-cli-htmlbars';
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
@@ -63,7 +62,6 @@ const buildTable = (owner, { type = 'text', hooks = {}, features = FEATURES } = 
 
 module('Integration | Component | hyper-table', function (hooks) {
   setupRenderingTest(hooks);
-  extendArrayPrototype(hooks);
 
   hooks.beforeEach(function () {
     this.documentClick = sinon.spy();

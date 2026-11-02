@@ -118,7 +118,10 @@
                 </p>
               {{/if}}
               {{#each fields as |field|}}
-                <div class="field {{if field.visible 'field--visible'}}" {{on "click" (fn this.fieldVisibilityUpdated field)}}>
+                <div
+                  class="field {{if field.visible 'field--visible'}}"
+                  {{on "click" (fn this.fieldVisibilityUpdated field)}}
+                >
                   <OSS::Checkbox
                     @checked={{field.visible}}
                     @size="sm"
