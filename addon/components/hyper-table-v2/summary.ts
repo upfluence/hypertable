@@ -1,5 +1,5 @@
 import { assert } from '@ember/debug';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import type { IntlService } from 'ember-intl';
