@@ -490,32 +490,21 @@ export default class TableHandler {
   }
 
   updateSelectionRange(row: Row): boolean {
-    const anchorIndex = this._selectionAnchor ? this.rows.indexOf(this._selectionAnchor) : -1;
-    const rowIndex = this.rows.indexOf(row);
+    const anchor = this._selectionAnchor;
 
-    if (anchorIndex === -1 || rowIndex === -1) return false;
+    if (!anchor) return false;
 
-    const selected = this.isRowSelected(this.rows[anchorIndex]);
-    const range = this.rows
-      .slice(Math.min(anchorIndex, rowIndex), Math.max(anchorIndex, rowIndex) + 1)
-      .filter((rangeRow) => !rangeRow._isLoading);
+    const range = this.getRowsBetween(anchor, row);
+    const selected = this.isRowSelected(anchor);
 
-    if (range.every((rangeRow) => this.isRowSelected(rangeRow) === selected)) return false;
+    if (!range.length || range.every((rangeRow) => this.isRowSelected(rangeRow) === selected)) return false;
 
     this._selectionAnchor = row;
 
     if (this.selection === 'all') {
-      this.exclusion = this.mergeRange(this.exclusion, range, !selected);
-
-      if (this.exclusion.length === this.rowsMeta?.total) {
-        this.clearSelection();
-      }
+      this.applyRangeToExclusion(range, !selected);
     } else {
-      this.selection = this.mergeRange(this.selection, range, selected);
-
-      if (selected && this.selection.length === this.rowsMeta?.total) {
-        this.selection = 'all';
-      }
+      this.applyRangeToSelection(this.selection, range, selected);
     }
 
     return true;
@@ -563,6 +552,31 @@ export default class TableHandler {
 
   private isRowSelected(row: Row): boolean {
     return this.selection === 'all' ? !this.exclusion.includes(row) : this.selection.includes(row);
+  }
+
+  private getRowsBetween(from: Row, to: Row): Row[] {
+    const fromIndex = this.rows.indexOf(from);
+    const toIndex = this.rows.indexOf(to);
+
+    if (fromIndex === -1 || toIndex === -1) return [];
+
+    return this.rows.slice(Math.min(fromIndex, toIndex), Math.max(fromIndex, toIndex) + 1);
+  }
+
+  private applyRangeToExclusion(range: Row[], excluded: boolean): void {
+    this.exclusion = this.mergeRange(this.exclusion, range, excluded);
+
+    if (this.exclusion.length === this.rowsMeta?.total) {
+      this.clearSelection();
+    }
+  }
+
+  private applyRangeToSelection(selection: Row[], range: Row[], selected: boolean): void {
+    this.selection = this.mergeRange(selection, range, selected);
+
+    if (selected && this.selection.length === this.rowsMeta?.total) {
+      this.selection = 'all';
+    }
   }
 
   private mergeRange(rows: Row[], range: Row[], included: boolean): Row[] {

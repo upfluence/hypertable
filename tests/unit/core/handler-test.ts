@@ -531,13 +531,13 @@ module('Unit | core/handler', function (hooks) {
         assert.deepEqual(this.handler.selection, this.handler.rows.slice(0, 4));
       });
 
-      test('it skips the rows being loaded', function (this: TestContext, assert: Assert) {
+      test('it includes the rows being loaded', function (this: TestContext, assert: Assert) {
         this.handler.rows[2]._isLoading = true;
         this.handler.updateSelection(this.handler.rows[1]);
 
         this.handler.updateSelectionRange(this.handler.rows[3]);
 
-        assert.deepEqual(this.handler.selection, [this.handler.rows[1], this.handler.rows[3]]);
+        assert.deepEqual(this.handler.selection, this.handler.rows.slice(1, 4));
       });
 
       test('it switches to the global mode when the range completes the selection', function (this: TestContext, assert: Assert) {
