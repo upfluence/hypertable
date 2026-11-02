@@ -1,6 +1,6 @@
 import { A } from '@ember/array';
 import Component from '@ember/component';
-import { computed, observer, set } from '@ember/object';
+import { action, computed, observer, set } from '@ember/object';
 import { alias, and, filterBy } from '@ember/object/computed';
 import { debounce, later, once, scheduleOnce } from '@ember/runloop';
 import { compare, isEmpty, typeOf } from '@ember/utils';
@@ -213,164 +213,166 @@ export default Component.extend({
     table.removeEventListener('scroll', this._scrollListener);
   },
 
-  actions: {
-    clearSearch() {
-      this._searchQuery = '';
-      this._doSearch();
-    },
+  clearSearch: action(function () {
+    this._searchQuery = '';
+    this._doSearch();
+  }),
 
-    scrollToEmptyState(element) {
-      element?.scrollIntoView({ inline: 'center' });
-    },
+  scrollToEmptyState: action(function (element) {
+    element?.scrollIntoView({ inline: 'center' });
+  }),
 
-    reorderColumns(itemModels) {
-      let _cs = [this._columns[0]].concat(itemModels);
-      let hasSameOrder = compare(_cs.mapBy('key'), this.manager.columns.mapBy('key')) === 0;
+  reorderColumns: action(function (itemModels) {
+    let _cs = [this._columns[0]].concat(itemModels);
+    let hasSameOrder = compare(_cs.mapBy('key'), this.manager.columns.mapBy('key')) === 0;
 
-      if (!hasSameOrder) {
-        this.manager.updateColumns(_cs);
-
-        if (this.manager.hooks.onColumnsChange) {
-          this.manager.hooks.onColumnsChange('columns:reorder');
-        }
-      }
-    },
-
-    openAvailableFields() {
-      if (this.manager.tetherOn) {
-        this.manager.destroyTetherInstance();
-      }
-      this.manager.toggleProperty('availableFieldsPanel');
-      this.manager.set('availableTableViews', false);
-
-      later(
-        this,
-        () => {
-          const searchInput = document.querySelector('.available-fields-wrapper input');
-          if (searchInput !== null) searchInput.focus();
-        },
-        150
-      );
-    },
-
-    closeAvailableFields() {
-      this.manager.set('availableFieldsPanel', false);
-      this.set('_availableFieldsKeyword', '');
-      this.notifyPropertyChange('_orderedFilteredClusters');
-    },
-
-    openAvailableViews() {
-      if (this.manager.tetherOn) {
-        this.manager.destroyTetherInstance();
-      }
-      this.manager.toggleProperty('availableTableViews');
-      this.manager.set('availableFieldsPanel', false);
-    },
-
-    closeAvailableViews() {
-      this.manager.set('availableTableViews', false);
-    },
-
-    scrollToEnd() {
-      this._innerTable.scrollLeft = this._innerTable.scrollWidth;
-    },
-
-    toggleHover(item, value) {
-      item.set('hovered', value);
-    },
-
-    setFieldCategory(category) {
-      this.set('_activeFieldCategory', category);
-    },
-
-    updateFieldVisibility(field) {
-      field.set('visible', !field.visible);
-    },
-
-    fieldVisibilityUpdated(field) {
-      if (this.manager.updatingTableView) {
-        return;
-      }
-
-      this.manager.toggleColumnVisibility(field).then((action) => {
-        if (this.manager.hooks.onColumnsChange) {
-          this.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
-        }
-
-        if (action === 'addition') {
-          this._innerTable.firstElementChild.scrollLeft = this._innerTable.firstElementChild.scrollWidth;
-        }
-        this.manager.refreshScrollableStatus();
-      });
-    },
-
-    onBackdropClick() {
-      this.manager.destroyTetherInstance();
-    },
-
-    dragStarted() {
-      if (this.manager.tetherOn) {
-        this.manager.destroyTetherInstance();
-      }
-    },
-
-    resetAllFilters() {
-      this._columns.setEach('filters', []);
-      this.manager.resetSelection();
-      this._collection.setEach('selected', false);
+    if (!hasSameOrder) {
+      this.manager.updateColumns(_cs);
 
       if (this.manager.hooks.onColumnsChange) {
-        this.manager.hooks.onColumnsChange('columns:change');
+        this.manager.hooks.onColumnsChange('columns:reorder');
       }
-    },
-
-    selectAllGlobal() {
-      this._allRowSelectedManager(true);
-      this.manager.set('_selectAllChecked', true);
-    },
-
-    clearSelection() {
-      this._allRowSelectedManager(false);
-      this.manager.set('_selectAllChecked', false);
-    },
-
-    toggleSelectAll(value) {
-      this.manager.set('_selectAllChecked', value);
-      if (this.manager._selectAllChecked) {
-        this._collection.setEach('selected', true);
-        if (this._selectedCount === this.manager.meta.total) {
-          this._allRowSelectedManager(true);
-        }
-      } else {
-        this.send('clearSelection');
-      }
-    },
-
-    toggleItem(item, value) {
-      item.set('selected', value);
-
-      if (this.manager._allRowsSelected) {
-        if (this.manager.excludedItems.includes(item)) {
-          this.manager.set(
-            'excludedItems',
-            this.manager.excludedItems.filter((_excludedItem) => _excludedItem !== item)
-          );
-        } else {
-          this.manager.set('excludedItems', [...this.manager.excludedItems, item]);
-        }
-      }
-
-      this.manager.set('_selectAllChecked', this._selectedCount > 0);
-
-      if (this._selectedCount === this.manager.meta.total) {
-        this._setAllRowSelected(true);
-      }
-    },
-
-    noop() {},
-
-    setSearchValue(value) {
-      set(this, '_availableFieldsKeyword', value);
     }
-  }
+  }),
+
+  openAvailableFields: action(function (event) {
+    event.stopPropagation();
+
+    if (this.manager.tetherOn) {
+      this.manager.destroyTetherInstance();
+    }
+    this.manager.toggleProperty('availableFieldsPanel');
+    this.manager.set('availableTableViews', false);
+
+    later(
+      this,
+      () => {
+        const searchInput = document.querySelector('.available-fields-wrapper input');
+        if (searchInput !== null) searchInput.focus();
+      },
+      150
+    );
+  }),
+
+  closeAvailableFields: action(function () {
+    this.manager.set('availableFieldsPanel', false);
+    this.set('_availableFieldsKeyword', '');
+    this.notifyPropertyChange('_orderedFilteredClusters');
+  }),
+
+  openAvailableViews: action(function (event) {
+    event.stopPropagation();
+
+    if (this.manager.tetherOn) {
+      this.manager.destroyTetherInstance();
+    }
+    this.manager.toggleProperty('availableTableViews');
+    this.manager.set('availableFieldsPanel', false);
+  }),
+
+  closeAvailableViews: action(function () {
+    this.manager.set('availableTableViews', false);
+  }),
+
+  scrollToEnd: action(function () {
+    this._innerTable.scrollLeft = this._innerTable.scrollWidth;
+  }),
+
+  toggleHover: action(function (item, value) {
+    item.set('hovered', value);
+  }),
+
+  setFieldCategory: action(function (category) {
+    this.set('_activeFieldCategory', category);
+  }),
+
+  updateFieldVisibility: action(function (field) {
+    field.set('visible', !field.visible);
+  }),
+
+  fieldVisibilityUpdated: action(function (field) {
+    if (this.manager.updatingTableView) {
+      return;
+    }
+
+    this.manager.toggleColumnVisibility(field).then((result) => {
+      if (this.manager.hooks.onColumnsChange) {
+        this.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
+      }
+
+      if (result === 'addition') {
+        this._innerTable.firstElementChild.scrollLeft = this._innerTable.firstElementChild.scrollWidth;
+      }
+      this.manager.refreshScrollableStatus();
+    });
+  }),
+
+  onBackdropClick: action(function () {
+    this.manager.destroyTetherInstance();
+  }),
+
+  dragStarted: action(function () {
+    if (this.manager.tetherOn) {
+      this.manager.destroyTetherInstance();
+    }
+  }),
+
+  resetAllFilters: action(function () {
+    this._columns.setEach('filters', []);
+    this.manager.resetSelection();
+    this._collection.setEach('selected', false);
+
+    if (this.manager.hooks.onColumnsChange) {
+      this.manager.hooks.onColumnsChange('columns:change');
+    }
+  }),
+
+  selectAllGlobal: action(function () {
+    this._allRowSelectedManager(true);
+    this.manager.set('_selectAllChecked', true);
+  }),
+
+  clearSelection: action(function () {
+    this._allRowSelectedManager(false);
+    this.manager.set('_selectAllChecked', false);
+  }),
+
+  toggleSelectAll: action(function (value) {
+    this.manager.set('_selectAllChecked', value);
+    if (this.manager._selectAllChecked) {
+      this._collection.setEach('selected', true);
+      if (this._selectedCount === this.manager.meta.total) {
+        this._allRowSelectedManager(true);
+      }
+    } else {
+      this.clearSelection();
+    }
+  }),
+
+  toggleItem: action(function (item, value) {
+    item.set('selected', value);
+
+    if (this.manager._allRowsSelected) {
+      if (this.manager.excludedItems.includes(item)) {
+        this.manager.set(
+          'excludedItems',
+          this.manager.excludedItems.filter((_excludedItem) => _excludedItem !== item)
+        );
+      } else {
+        this.manager.set('excludedItems', [...this.manager.excludedItems, item]);
+      }
+    }
+
+    this.manager.set('_selectAllChecked', this._selectedCount > 0);
+
+    if (this._selectedCount === this.manager.meta.total) {
+      this._setAllRowSelected(true);
+    }
+  }),
+
+  noop: action(function () {}),
+
+  setSearchValue: action(function (value) {
+    set(this, '_availableFieldsKeyword', value);
+  })
 });

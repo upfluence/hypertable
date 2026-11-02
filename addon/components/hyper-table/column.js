@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed, defineProperty } from '@ember/object';
+import { action, computed, defineProperty } from '@ember/object';
 import { and, notEmpty, or } from '@ember/object/computed';
 import { capitalize } from '@ember/string';
 
@@ -71,32 +71,38 @@ export default Component.extend({
     }
   },
 
-  actions: {
-    toggleFiltersPanel() {
-      if (this.manager.tetherOn !== this.column.key) {
-        this.manager.destroyTetherInstance();
-      }
-
-      this.manager.triggerTetherContainer(
-        this.column.key,
-        'available-filters',
-        {
-          element: `#${this.elementId} .available-filters`,
-          target: `#${this.elementId} header`,
-          attachment: 'top right',
-          targetAttachment: 'bottom right',
-          offset: '0 0'
-        },
-        true
-      );
-    },
-
-    orderColumn() {
-      if (this.manager.options.features.ordering && this.column.orderable) {
-        let nextDirection = this.column.orderDirection === 'desc' ? 'asc' : 'desc';
-
-        this.manager.updateOrdering(this.column, `${this.column.orderKey}:${nextDirection}`);
-      }
+  toggleFiltersPanel: action(function () {
+    if (this.manager.tetherOn !== this.column.key) {
+      this.manager.destroyTetherInstance();
     }
-  }
+
+    this.manager.triggerTetherContainer(
+      this.column.key,
+      'available-filters',
+      {
+        element: `#${this.elementId} .available-filters`,
+        target: `#${this.elementId} header`,
+        attachment: 'top right',
+        targetAttachment: 'bottom right',
+        offset: '0 0'
+      },
+      true
+    );
+  }),
+
+  openFiltersPanel: action(function (event) {
+    event.stopPropagation();
+
+    this.toggleFiltersPanel();
+  }),
+
+  orderColumn: action(function (event) {
+    event.stopPropagation();
+
+    if (this.manager.options.features.ordering && this.column.orderable) {
+      let nextDirection = this.column.orderDirection === 'desc' ? 'asc' : 'desc';
+
+      this.manager.updateOrdering(this.column, `${this.column.orderKey}:${nextDirection}`);
+    }
+  })
 });

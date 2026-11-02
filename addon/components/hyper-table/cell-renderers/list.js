@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 
 import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
 
@@ -17,39 +17,39 @@ export default Component.extend(CellRendererMixin, {
     return this.value.slice().join('<br>');
   }),
 
-  actions: {
-    goToUrl(url, locked, event) {
-      if (!this.url || locked) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-      }
-
-      window.open(url, '_blank');
-    },
-
-    toggleList() {
-      if (this.manager.tetherOn !== this.elementId) {
-        this.manager.destroyTetherInstance();
-      }
-
-      this.manager.triggerTetherContainer(
-        this.elementId,
-        'expandable-list',
-        {
-          element: `#${this.elementId} .expandable-list`,
-          target: `#${this.elementId} .list-container`,
-          attachment: 'top center',
-          targetAttachment: 'bottom center',
-          constraints: [
-            {
-              to: 'scrollParent'
-            }
-          ]
-        },
-        false,
-        document.querySelector(`#${this.elementId} .list-container`).offsetWidth
-      );
+  goToUrl: action(function (url, locked, event) {
+    if (!this.url || locked) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
     }
-  }
+
+    window.open(url, '_blank');
+  }),
+
+  toggleList: action(function (event) {
+    event.stopPropagation();
+
+    if (this.manager.tetherOn !== this.elementId) {
+      this.manager.destroyTetherInstance();
+    }
+
+    this.manager.triggerTetherContainer(
+      this.elementId,
+      'expandable-list',
+      {
+        element: `#${this.elementId} .expandable-list`,
+        target: `#${this.elementId} .list-container`,
+        attachment: 'top center',
+        targetAttachment: 'bottom center',
+        constraints: [
+          {
+            to: 'scrollParent'
+          }
+        ]
+      },
+      false,
+      document.querySelector(`#${this.elementId} .list-container`).offsetWidth
+    );
+  })
 });
