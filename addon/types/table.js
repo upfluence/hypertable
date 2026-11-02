@@ -1,4 +1,4 @@
-import EmberObject from '@ember/object';
+import EmberObject, { get, set } from '@ember/object';
 import { or } from '@ember/object/computed';
 import { scheduleOnce } from '@ember/runloop';
 import { dasherize } from '@ember/string';
@@ -86,13 +86,13 @@ export default EmberObject.extend({
     this.set(
       'columns',
       columns
-        .filter((column) => this.fields.findBy('key', column.key))
+        .filter((column) => this.fields.find((field) => field.key === column.key))
         .map((column, index) => {
           if (typeOf(column) !== 'instance') {
             column = Column.create(column);
           }
 
-          let field = this.fields.findBy('key', column.key);
+          let field = this.fields.find((field) => field.key === column.key);
 
           column.setProperties({
             manager: this,
@@ -120,15 +120,15 @@ export default EmberObject.extend({
 
   updateData(data) {
     if (data.length > 0) {
-      let undefinedSelectedData = data.filterBy('selected', undefined);
+      let undefinedSelectedData = data.filter((row) => get(row, 'selected') === undefined);
       undefinedSelectedData.forEach((undefinedSelectedRow) => {
         let existingRow = this.data.find((row) => row.id === undefinedSelectedRow.id);
         if (!existingRow) return;
         undefinedSelectedRow.selected = existingRow.selected;
       });
 
-      let newData = data.filterBy('selected', undefined);
-      this._allRowsSelected ? newData.setEach('selected', true) : newData.setEach('selected', false);
+      let newData = data.filter((row) => get(row, 'selected') === undefined);
+      newData.forEach((row) => set(row, 'selected', this._allRowsSelected));
     }
 
     this.set('data', data);
@@ -159,7 +159,7 @@ export default EmberObject.extend({
 
     if (predefinedViews) {
       predefinedViews = predefinedViews.filter((view) => {
-        return views.filterBy('name', view.name).length === 0;
+        return !views.some((v) => get(v, 'name') === view.name);
       });
       this.set('predefinedViews', predefinedViews);
     }
@@ -193,12 +193,15 @@ export default EmberObject.extend({
 
   toggleColumnVisibility(field, column) {
     return new Promise((resolve) => {
-      let _c = this.columns.findBy('key', field.key);
+      let _c = this.columns.find((column) => column.key === field.key);
       let _action;
 
       if (_c) {
         field.set('visible', false);
-        this.columns.removeObject(_c);
+        this.set(
+          'columns',
+          this.columns.filter((column) => column !== _c)
+        );
         _action = 'removal';
       } else {
         this.formatField(field);
@@ -225,7 +228,7 @@ export default EmberObject.extend({
           newColumn.filters = column.filters;
         }
 
-        this.columns.pushObject(newColumn);
+        this.set('columns', [...this.columns, newColumn]);
 
         _action = 'addition';
       }

@@ -1,6 +1,5 @@
 import EmberObject from '@ember/object';
 
-import { extendArrayPrototype } from 'dummy/tests/helpers/array-prototype-extensions';
 import { setupTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 
@@ -10,7 +9,6 @@ const field = (key, props = {}) => EmberObject.create({ key, type: 'text', ...pr
 
 module('Unit | Type | table', function (hooks) {
   setupTest(hooks);
-  extendArrayPrototype(hooks);
 
   hooks.beforeEach(function () {
     this.table = this.owner.lookup('service:hypertable-manager').createTable({}, { onColumnsChange() {} });

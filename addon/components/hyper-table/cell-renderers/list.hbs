@@ -2,9 +2,9 @@
   —
 {{else}}
   <div class="list-container" {{on "click" this.toggleList}}>
-    {{#if this.value.firstObject.name}}
+    {{#if this.firstItem.name}}
       <div>
-        {{this.value.firstObject.name}}
+        {{this.firstItem.name}}
       </div>
       {{#if (eq this.manager.tetherOn this.elementId)}}
         <div class="expandable-list">

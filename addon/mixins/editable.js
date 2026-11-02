@@ -7,7 +7,7 @@ export default Mixin.create({
   classNameBindings: ['editStatus.status', 'isUpsertable'],
 
   editStatus: computed('manager.{editStatus.[],editStatus.@each.status}', 'element.id', function () {
-    return this.manager.get('editStatus').findBy('id', this.element.id);
+    return this.manager.get('editStatus').find((status) => status.id === this.element.id);
   }),
 
   isSuccess: equal('editStatus.status', 'success'),
@@ -26,19 +26,20 @@ export default Mixin.create({
     }
 
     let editStatus = this.manager.get('editStatus');
-    let elementEditStatus = editStatus.findBy('id', this.element.id);
+    let elementEditStatus = editStatus.find((status) => status.id === this.element.id);
 
     // check if autosave is set to true
     // will initialize the item's edit status
     if (autosave) {
-      this.manager.editStatus.pushObject(
+      this.manager.set('editStatus', [
+        ...this.manager.editStatus,
         EmberObject.create({
           key: this.column.key,
           status: 'editing',
           item: this.item,
           id: this.element.id
         })
-      );
+      ]);
     }
 
     // no editing status -> user hasn't started modification
@@ -62,14 +63,15 @@ export default Mixin.create({
 
     // sets the global editing status to let the table know of any on going editing
     if (!elementEditStatus) {
-      this.manager.editStatus.pushObject(
+      this.manager.set('editStatus', [
+        ...this.manager.editStatus,
         EmberObject.create({
           key: this.column.key,
           status: 'editing',
           item: this.item,
           id: this.element.id
         })
-      );
+      ]);
     } else {
       elementEditStatus.set('status', 'editing');
     }

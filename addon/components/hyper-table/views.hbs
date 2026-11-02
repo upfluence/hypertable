@@ -65,11 +65,7 @@
     </:content>
     <:footer>
       <div class="fx-row fx-1 fx-malign-end fx-gap-px-10">
-        <OSS::Button
-          @skin="default"
-          @label={{t "hypertable.view.new.cancel"}}
-          {{on "click" this.toggleAddViewModal}}
-        />
+        <OSS::Button @skin="default" @label={{t "hypertable.view.new.cancel"}} {{on "click" this.toggleAddViewModal}} />
         <OSS::Button
           @skin="primary"
           @label={{t "hypertable.view.new.cta"}}

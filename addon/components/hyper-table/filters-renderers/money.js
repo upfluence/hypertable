@@ -20,8 +20,8 @@ export default NumericFilterRenderer.extend({
   didReceiveAttrs() {
     this._super();
     if (this.column) {
-      let lowerBound = this.column.filters.findBy('key', 'lower_bound');
-      let upperBound = this.column.filters.findBy('key', 'upper_bound');
+      let lowerBound = this.column.filters.find((filter) => filter.key === 'lower_bound');
+      let upperBound = this.column.filters.find((filter) => filter.key === 'upper_bound');
 
       if (!isBlank(lowerBound)) {
         this.setProperties({ lowerBoundFilter: lowerBound.value / 100 });

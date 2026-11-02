@@ -1,4 +1,3 @@
-import { A } from '@ember/array';
 import Component from '@ember/component';
 import { action, computed, observer, set } from '@ember/object';
 import { alias, and, filterBy } from '@ember/object/computed';
@@ -31,16 +30,20 @@ export default Component.extend({
   _resizeListener: null,
   _scrollListener: null,
 
-  _searchQuery: computed('_columns.firstObject.filters.{[],@each.value}', {
+  _firstColumn: computed('_columns.[]', function () {
+    return this._columns?.[0];
+  }),
+
+  _searchQuery: computed('_firstColumn.filters.{[],@each.value}', {
     get: function () {
       if (isEmpty(this._columns)) return;
 
-      let searchTerm = this._columns.firstObject.filters.findBy('key', 'value');
+      let searchTerm = this._firstColumn.filters.find((filter) => filter.key === 'value');
 
       return searchTerm ? searchTerm.value : null;
     },
     set: function (k, v) {
-      this._columns.firstObject.set('filters', isEmpty(v) ? [] : [{ key: 'value', value: v }]);
+      this._firstColumn.set('filters', isEmpty(v) ? [] : [{ key: 'value', value: v }]);
       debounce(this, this._doSearch, 1000);
       return v;
     }
@@ -56,7 +59,7 @@ export default Component.extend({
   _collection: alias('manager.data'),
   _columns: alias('manager.columns'),
   _fieldCategories: computed('manager.fieldCategories', function () {
-    return this.manager.fieldCategories.sortBy('label');
+    return [...this.manager.fieldCategories].sort((a, b) => compare(a.label, b.label));
   }),
 
   metaObserver: observer('meta.total', function () {
@@ -91,20 +94,17 @@ export default Component.extend({
   _orderedFilteredClusters: computed('manager.fields', '_availableFieldsKeyword', '_activeFieldCategory', function () {
     let _keyword = this._availableFieldsKeyword.toLowerCase();
 
-    let fields = A(
-      this.manager.fields.filter((x) => {
-        const hasKeyword =
-          !this._availableFieldsKeyword ||
-          (x.name || '').toLowerCase().indexOf(_keyword) >= 0 ||
-          (x.title || '').toLowerCase().indexOf(_keyword) >= 0;
-        const hasActiveGroup = !this._activeFieldCategory || x.categories.indexOf(this._activeFieldCategory) >= 0;
-        const isToggleable = x.toggleable === true;
+    let fields = this.manager.fields.filter((x) => {
+      const hasKeyword =
+        !this._availableFieldsKeyword ||
+        (x.name || '').toLowerCase().indexOf(_keyword) >= 0 ||
+        (x.title || '').toLowerCase().indexOf(_keyword) >= 0;
+      const hasActiveGroup = !this._activeFieldCategory || x.categories.indexOf(this._activeFieldCategory) >= 0;
+      const isToggleable = x.toggleable === true;
 
-        return hasKeyword && hasActiveGroup && isToggleable;
-      })
-    );
+      return hasKeyword && hasActiveGroup && isToggleable;
+    });
 
-    fields.sortBy('name');
     return this.groupByClusteringKey(fields);
   }),
 
@@ -117,7 +117,7 @@ export default Component.extend({
   _allRowSelectedManager(value) {
     this._setAllRowSelected(value);
 
-    this._collection.setEach('selected', value);
+    this._collection.forEach((item) => set(item, 'selected', value));
 
     this.manager.set('excludedItems', []);
   },
@@ -224,7 +224,11 @@ export default Component.extend({
 
   reorderColumns: action(function (itemModels) {
     let _cs = [this._columns[0]].concat(itemModels);
-    let hasSameOrder = compare(_cs.mapBy('key'), this.manager.columns.mapBy('key')) === 0;
+    let hasSameOrder =
+      compare(
+        _cs.map((column) => column.key),
+        this.manager.columns.map((column) => column.key)
+      ) === 0;
 
     if (!hasSameOrder) {
       this.manager.updateColumns(_cs);
@@ -318,9 +322,9 @@ export default Component.extend({
   }),
 
   resetAllFilters: action(function () {
-    this._columns.setEach('filters', []);
+    this._columns.forEach((column) => set(column, 'filters', []));
     this.manager.resetSelection();
-    this._collection.setEach('selected', false);
+    this._collection.forEach((item) => set(item, 'selected', false));
 
     if (this.manager.hooks.onColumnsChange) {
       this.manager.hooks.onColumnsChange('columns:change');
@@ -340,7 +344,7 @@ export default Component.extend({
   toggleSelectAll: action(function (value) {
     this.manager.set('_selectAllChecked', value);
     if (this.manager._selectAllChecked) {
-      this._collection.setEach('selected', true);
+      this._collection.forEach((item) => set(item, 'selected', true));
       if (this._selectedCount === this.manager.meta.total) {
         this._allRowSelectedManager(true);
       }
