@@ -1,2 +1,5 @@
 onlyBuiltDependencies:
 - '@upfluence/oss-components'
+
+overrides:
+  '@ember/test-waiters': ^4.1.2

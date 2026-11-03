@@ -1,5 +1,6 @@
 {
   "jquery-integration": false,
   "application-template-wrapper": false,
-  "template-only-glimmer-components": true
+  "template-only-glimmer-components": true,
+  "use-ember-modules": true
 }
