@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import type { InitialLoadAnimationContext } from '@upfluence/hypertable/components/hyper-table-v2';
 import TableHandler, { ROWS_PER_PAGE } from '@upfluence/hypertable/core/handler';
 import { Column, ResolvedRenderingComponent, Row } from '@upfluence/hypertable/core/interfaces';
+import type Owner from '@ember/owner';
 
 interface HyperTableV2CellArgs {
   handler: TableHandler;
@@ -26,7 +27,7 @@ export default class HyperTableV2Cell extends Component<HyperTableV2CellArgs> {
 
   private extraEffectTimeout?: number;
 
-  constructor(owner: unknown, args: HyperTableV2CellArgs) {
+  constructor(owner: Owner, args: HyperTableV2CellArgs) {
     super(owner, args);
 
     if (!args.loading) {

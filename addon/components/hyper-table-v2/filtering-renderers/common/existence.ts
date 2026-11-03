@@ -7,6 +7,7 @@ import { IntlService } from 'ember-intl';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
+import type Owner from '@ember/owner';
 
 interface HyperTableV2FilteringRenderersExistenceArgs {
   handler: TableHandler;
@@ -29,7 +30,7 @@ export default class HyperTableV2FilteringRenderersExistence extends Component<H
   @tracked private currentSelection: string | undefined;
   @service declare intl: IntlService;
 
-  constructor(owner: unknown, args: HyperTableV2FilteringRenderersExistenceArgs) {
+  constructor(owner: Owner, args: HyperTableV2FilteringRenderersExistenceArgs) {
     super(owner, args);
 
     args.handler.on('reset-columns', (columns) => {

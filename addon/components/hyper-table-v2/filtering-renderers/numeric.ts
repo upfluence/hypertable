@@ -7,6 +7,7 @@ import { tracked } from '@glimmer/tracking';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
 import { onlyNumeric } from '@upfluence/hypertable/utils';
+import type Owner from '@ember/owner';
 
 interface HyperTableV2FilteringRenderersNumericArgs {
   handler: TableHandler;
@@ -27,7 +28,7 @@ export default class HyperTableV2FilteringRenderersNumeric extends Component<Hyp
     '9 — 0': 'desc'
   });
 
-  constructor(owner: unknown, args: HyperTableV2FilteringRenderersNumericArgs) {
+  constructor(owner: Owner, args: HyperTableV2FilteringRenderersNumericArgs) {
     super(owner, args);
 
     args.handler.on('reset-columns', (columns) => {

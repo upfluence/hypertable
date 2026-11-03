@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, FieldSize, ResolvedRenderingComponent } from '@upfluence/hypertable/core/interfaces';
+import type Owner from '@ember/owner';
 
 interface HyperTableV2ColumnArgs {
   handler: TableHandler;
@@ -23,7 +24,7 @@ export default class HyperTableV2Column extends Component<HyperTableV2ColumnArgs
 
   private resizeHandler?: () => void;
 
-  constructor(owner: unknown, args: HyperTableV2ColumnArgs) {
+  constructor(owner: Owner, args: HyperTableV2ColumnArgs) {
     super(owner, args);
 
     args.handler.renderingResolver

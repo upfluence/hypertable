@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
+import type Owner from '@ember/owner';
 
 interface HyperTableV2FilteringRenderersOrderingArgs {
   handler: TableHandler;
@@ -22,7 +23,7 @@ const THROTTLE_TIME = 300;
 export default class HyperTableV2FilteringRenderersOrdering extends Component<HyperTableV2FilteringRenderersOrderingArgs> {
   @tracked _selectedDirection?: OrderDirection | null;
 
-  constructor(owner: unknown, args: HyperTableV2FilteringRenderersOrderingArgs) {
+  constructor(owner: Owner, args: HyperTableV2FilteringRenderersOrderingArgs) {
     super(owner, args);
 
     args.handler.on('reset-columns', (columns) => {

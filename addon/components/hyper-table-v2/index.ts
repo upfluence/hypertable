@@ -8,6 +8,7 @@ import { tracked } from '@glimmer/tracking';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import type { HandlerEvent } from '@upfluence/hypertable/core/handler';
 import { Column, Row } from '@upfluence/hypertable/core/interfaces';
+import type Owner from '@ember/owner';
 
 export type FeatureSet = {
   selection: boolean;
@@ -90,7 +91,7 @@ export default class HyperTableV2 extends Component<HyperTableV2Args> {
 
   declare private hypertableInstanceID: string;
 
-  constructor(owner: unknown, args: HyperTableV2Args) {
+  constructor(owner: Owner, args: HyperTableV2Args) {
     super(owner, args);
     args.handler.fetchColumnDefinitions();
     this.activateInitialLoadAnimationIfNeeded();

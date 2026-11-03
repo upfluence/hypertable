@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';
 import { onlyNumeric } from '@upfluence/hypertable/utils';
+import type Owner from '@ember/owner';
 
 interface HyperTableV2FilteringRenderersSearchArgs {
   handler: TableHandler;
@@ -20,7 +21,7 @@ const DEFAULT_FILTER_KEY: string = 'value';
 export default class HyperTableV2FilteringRenderersSearch extends Component<HyperTableV2FilteringRenderersSearchArgs> {
   @tracked searchQuery: string = '';
 
-  constructor(owner: unknown, args: HyperTableV2FilteringRenderersSearchArgs) {
+  constructor(owner: Owner, args: HyperTableV2FilteringRenderersSearchArgs) {
     super(owner, args);
 
     const searchTerm = this.args.column.filters.find((filter) => filter.key === 'value');

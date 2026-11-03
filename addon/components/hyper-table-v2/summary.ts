@@ -3,6 +3,7 @@ import { service } from '@ember/service';
 import Component from '@glimmer/component';
 
 import type { IntlService } from 'ember-intl';
+import type Owner from '@ember/owner';
 
 export type SummaryField = {
   label: string;
@@ -22,7 +23,7 @@ const DEFAULT_SKELETONS_COUNT = 4;
 export default class HyperTableV2Summary extends Component<HyperTableV2SummaryArgs> {
   @service declare intl: IntlService;
 
-  constructor(owner: unknown, args: HyperTableV2SummaryArgs) {
+  constructor(owner: Owner, args: HyperTableV2SummaryArgs) {
     super(owner, args);
 
     assert(

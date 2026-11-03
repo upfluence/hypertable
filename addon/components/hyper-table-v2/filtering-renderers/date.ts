@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column } from '@upfluence/hypertable/core/interfaces';
+import type Owner from '@ember/owner';
 
 interface HyperTableV2FilteringRenderersDateArgs {
   handler: TableHandler;
@@ -45,7 +46,7 @@ export default class HyperTableV2FilteringRenderersDate extends Component<HyperT
     'Newest — Oldest': 'desc'
   };
 
-  constructor(owner: unknown, args: HyperTableV2FilteringRenderersDateArgs) {
+  constructor(owner: Owner, args: HyperTableV2FilteringRenderersDateArgs) {
     super(owner, args);
 
     const filter = this.args.column.filters.find((f) => f.key === this.movingOptionKey);

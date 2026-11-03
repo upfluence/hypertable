@@ -9,6 +9,7 @@ import { IntlService } from 'ember-intl';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { Column, Facet, FacetsResponse, Filter } from '@upfluence/hypertable/core/interfaces';
+import type Owner from '@ember/owner';
 
 interface FacetsLoaderArgs {
   handler: TableHandler;
@@ -36,7 +37,7 @@ export default class HyperTableV2FacetsLoader extends Component<FacetsLoaderArgs
 
   loadingFacetsRange = new Array(8);
 
-  constructor(owner: unknown, args: FacetsLoaderArgs) {
+  constructor(owner: Owner, args: FacetsLoaderArgs) {
     super(owner, args);
     this.fetchFacets();
 
