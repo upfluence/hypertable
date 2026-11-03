@@ -4,9 +4,11 @@ import { hbs } from 'ember-cli-htmlbars';
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
+import { setupIntl } from 'ember-intl/test-support';
 
 module('Integration | Component | hyper-table-v2/selection', function (hooks) {
   setupRenderingTest(hooks);
+  setupIntl(hooks, 'en-us');
 
   hooks.beforeEach(function (this: TestContext) {
     this.selected = 1;

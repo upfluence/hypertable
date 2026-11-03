@@ -7,7 +7,7 @@ import { module, test } from 'qunit';
 
 module('Integration | Component | hyper-table-v2/summary', function (hooks) {
   setupRenderingTest(hooks);
-  setupIntl(hooks);
+  setupIntl(hooks, 'en-us');
 
   hooks.beforeEach(function (this: TestContext) {
     this.intl = this.owner.lookup('service:intl');

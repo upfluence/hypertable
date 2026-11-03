@@ -1,6 +1,6 @@
-import { render, click } from '@ember/test-helpers';
+import { render, click, type TestContext } from '@ember/test-helpers';
 
-import { setupIntl, type TestContext } from 'ember-intl/test-support';
+import { setupIntl } from 'ember-intl/test-support';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { module, test } from 'qunit';
@@ -13,7 +13,7 @@ import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
 
 module('Integration | Component | hyper-table-v2/column', function (hooks) {
   setupRenderingTest(hooks);
-  setupIntl(hooks);
+  setupIntl(hooks, 'en-us');
 
   hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();

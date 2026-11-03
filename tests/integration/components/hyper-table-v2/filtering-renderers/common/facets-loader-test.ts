@@ -11,7 +11,11 @@ import { TableManager, RowsFetcher } from '@upfluence/hypertable/test-support';
 
 module('Integration | Component | hyper-table-v2/facets-loader', function (hooks) {
   setupRenderingTest(hooks);
-  setupIntl(hooks);
+  setupIntl(hooks, 'en-us');
+
+  hooks.beforeEach(function () {
+    this.intl = this.owner.lookup('service:intl');
+  });
 
   hooks.beforeEach(async function (this: TestContext) {
     this.tableManager = new TableManager();

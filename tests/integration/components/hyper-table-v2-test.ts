@@ -8,9 +8,11 @@ import sinon from 'sinon';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import { TableManager, RowsFetcher, AllRowsFetcher } from '@upfluence/hypertable/test-support';
 import { buildColumn } from '@upfluence/hypertable/test-support/table-manager';
+import { setupIntl } from 'ember-intl/test-support';
 
 module('Integration | Component | hyper-table-v2', function (hooks) {
   setupRenderingTest(hooks);
+  setupIntl(hooks, 'en-us');
 
   hooks.beforeEach(function (this: TestContext) {
     this.tableManager = new TableManager();

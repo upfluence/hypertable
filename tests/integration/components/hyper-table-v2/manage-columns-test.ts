@@ -1,6 +1,6 @@
-import { click, fillIn, render, waitFor } from '@ember/test-helpers';
+import { click, fillIn, render, waitFor, type TestContext } from '@ember/test-helpers';
 
-import { setupIntl, type TestContext } from 'ember-intl/test-support';
+import { setupIntl } from 'ember-intl/test-support';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { module, test } from 'qunit';
@@ -26,7 +26,7 @@ const COLUMNS = [
 
 module('Integration | Component | hyper-table-v2/manage-columns', function (hooks) {
   setupRenderingTest(hooks);
-  setupIntl(hooks);
+  setupIntl(hooks, 'en-us');
 
   function builderHelper(
     columnOptions: Array<{ key: string; extra: { [key: string]: any } }>,
