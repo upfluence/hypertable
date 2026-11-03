@@ -6,6 +6,7 @@ import { hbs } from 'ember-cli-htmlbars';
 import { setupRenderingTest } from 'ember-qunit';
 import { module, test } from 'qunit';
 import sinon from 'sinon';
+import { setupIntl } from 'ember-intl/test-support';
 
 const FEATURES = { selection: true, search: true, ordering: true, filtering: true, tableViews: true };
 
@@ -62,6 +63,7 @@ const buildTable = (owner, { type = 'text', hooks = {}, features = FEATURES } = 
 
 module('Integration | Component | hyper-table', function (hooks) {
   setupRenderingTest(hooks);
+  setupIntl(hooks, 'en-us');
 
   hooks.beforeEach(function () {
     this.documentClick = sinon.spy();
