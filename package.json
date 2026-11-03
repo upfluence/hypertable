@@ -51,6 +51,9 @@
     "moment": "^2.29.4",
     "tether": "^1.4.7"
   },
+  "peerDependencies": {
+    "@upfluence/oss-components": "^3.x"
+  },
   "devDependencies": {
     "@ember/jquery": "^2.0.0",
     "@ember/optional-features": "^3.0.0",
