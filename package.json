@@ -69,7 +69,7 @@
     "@upfluence/w-conf": "^0.4.0",
     "babel-plugin-ember-template-compilation": "^3.1.0",
     "broccoli-asset-rev": "^3.0.0",
-    "ember-cli": "~6.12.0",
+    "ember-cli": "~7.3.0",
     "ember-cli-code-coverage": "^3.0.0",
     "ember-cli-dependency-checker": "^3.3.2",
     "ember-cli-inject-live-reload": "^2.1.0",
@@ -85,7 +85,7 @@
     "ember-qunit": "^9.0.4",
     "ember-resolver": "^13.2.0",
     "ember-sinon-qunit": "^6.0.0",
-    "ember-source": "~6.12.1",
+    "ember-source": "~7.3.1",
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^3.15.0",
     "ember-try": "^4.0.0",
@@ -107,7 +107,7 @@
     "@babel/helper-compilation-targets": "7.9.6"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 20.19"
   },
   "ember": {
     "edition": "octane"
