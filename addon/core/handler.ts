@@ -44,6 +44,7 @@ export default class TableHandler {
   private _context: unknown;
   private _renderingResolver?: RendererResolver;
   private _lastOrderedColumn?: Column;
+  private _selectionAnchor?: Row;
 
   tableManager: TableManager;
   rowsFetcher: RowsFetcher;
@@ -425,6 +426,7 @@ export default class TableHandler {
         this.selectAllGlobal();
       } else {
         this.selection = this.rows;
+        this._selectionAnchor = undefined;
       }
     } else {
       this.clearSelection();
@@ -439,6 +441,7 @@ export default class TableHandler {
   selectAllGlobal(): void {
     this.selection = 'all';
     this.exclusion = [];
+    this._selectionAnchor = undefined;
   }
 
   /**
@@ -449,6 +452,7 @@ export default class TableHandler {
   clearSelection(): void {
     this.selection = [];
     this.exclusion = [];
+    this._selectionAnchor = undefined;
   }
 
   /**
@@ -458,6 +462,7 @@ export default class TableHandler {
    */
   updateSelection(row: Row): void {
     this.selection = this.selection instanceof Array ? this.selection : [];
+    this._selectionAnchor = row;
 
     if (this.selection.includes(row)) {
       this.selection = this.selection.filter((selectedRow: Row) => selectedRow !== row);
@@ -475,11 +480,34 @@ export default class TableHandler {
    * @param {Row} row
    */
   updateExclusion(row: Row): void {
+    this._selectionAnchor = row;
+
     if (this.exclusion.includes(row)) {
       this.exclusion = this.exclusion.filter((excludedRow: Row) => excludedRow !== row);
     } else {
       this.exclusion = [...this.exclusion, row];
     }
+  }
+
+  updateSelectionRange(row: Row): boolean {
+    const anchor = this._selectionAnchor;
+
+    if (!anchor) return false;
+
+    const range = this.getRowsBetween(anchor, row);
+    const selected = this.isRowSelected(anchor);
+
+    if (!range.length || range.every((rangeRow) => this.isRowSelected(rangeRow) === selected)) return false;
+
+    this._selectionAnchor = row;
+
+    if (this.selection === 'all') {
+      this.applyRangeToExclusion(range, !selected);
+    } else {
+      this.applyRangeToSelection(this.selection, range, selected);
+    }
+
+    return true;
   }
 
   /**
@@ -520,6 +548,42 @@ export default class TableHandler {
 
   teardown(): void {
     this.currentPage = 1;
+  }
+
+  private isRowSelected(row: Row): boolean {
+    return this.selection === 'all' ? !this.exclusion.includes(row) : this.selection.includes(row);
+  }
+
+  private getRowsBetween(from: Row, to: Row): Row[] {
+    const fromIndex = this.rows.indexOf(from);
+    const toIndex = this.rows.indexOf(to);
+
+    if (fromIndex === -1 || toIndex === -1) return [];
+
+    return this.rows.slice(Math.min(fromIndex, toIndex), Math.max(fromIndex, toIndex) + 1);
+  }
+
+  private applyRangeToExclusion(range: Row[], excluded: boolean): void {
+    this.exclusion = this.mergeRange(this.exclusion, range, excluded);
+
+    if (this.exclusion.length === this.rowsMeta?.total) {
+      this.clearSelection();
+    }
+  }
+
+  private applyRangeToSelection(selection: Row[], range: Row[], selected: boolean): void {
+    this.selection = this.mergeRange(selection, range, selected);
+
+    if (selected && this.selection.length === this.rowsMeta?.total) {
+      this.selection = 'all';
+    }
+  }
+
+  private mergeRange(rows: Row[], range: Row[], included: boolean): Row[] {
+    const rangeRows = new Set(range);
+    const rowsOutsideRange = rows.filter((row) => !rangeRows.has(row));
+
+    return included ? [...rowsOutsideRange, ...range] : rowsOutsideRange;
   }
 
   private upsertTetherInstance(options: Tether.ITetherOptions): void {
