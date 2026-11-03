@@ -103,9 +103,6 @@
     "typescript": "^5.9.3",
     "webpack": "^5.95.0"
   },
-  "resolutions": {
-    "@babel/helper-compilation-targets": "7.9.6"
-  },
   "engines": {
     "node": ">= 20.19"
   },

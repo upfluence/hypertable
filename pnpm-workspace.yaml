@@ -2,4 +2,6 @@ onlyBuiltDependencies:
 - '@upfluence/oss-components'
 
 overrides:
+  '@babel/helper-compilation-targets': 7.9.6
+  'ember-flatpickr>ember-cli-htmlbars': ^7.0.1
   '@ember/test-waiters': ^4.1.2
