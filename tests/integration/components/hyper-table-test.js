@@ -405,6 +405,8 @@ module('Integration | Component | hyper-table', function (hooks) {
     });
 
     test('link: the copy button copies the value without bubbling', async function (assert) {
+      assert.expect(2);
+
       const writeText = sinon.stub(navigator.clipboard, 'writeText').resolves();
       this.table = buildTable(this.owner);
       this.table.columns[0].set('type', 'link');
@@ -459,6 +461,8 @@ module('Integration | Component | hyper-table', function (hooks) {
     });
 
     test('list: the container toggles the list without bubbling and items open their url', async function (assert) {
+      assert.expect(7);
+
       this.table = buildTable(this.owner);
       Object.assign(this, cell(this.table));
       this.column.set('type', 'list');
