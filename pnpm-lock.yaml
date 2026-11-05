@@ -151,8 +151,8 @@ importers:
         specifier: ^1.4.6
         version: 1.4.9
       '@upfluence/oss-components':
-        specifier: github:upfluence/oss-components#pn/asset-map-service-adapter
-        version: https://codeload.github.com/upfluence/oss-components/tar.gz/156cdbbe2691a17f3cd73bfa4607456766414a8c(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
+        specifier: ^3.100.0
+        version: 3.100.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)
       '@upfluence/w-conf':
         specifier: ^0.4.0
         version: 0.4.0(@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.4))(@typescript-eslint/parser@8.68.0(eslint@10.9.1)(typescript@4.9.5))(eslint@10.9.1)(prettier@3.8.4)(typescript@4.9.5)
@@ -1678,9 +1678,8 @@ packages:
     resolution: {integrity: sha512-YR65gGdGvTUAWLldC3xLOvOzamdGzB4A5/N8rehEaHs3Zvoe39BhgY+u0SPch1OvrVTfLcc55wsSgK2NcnTS/A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@upfluence/oss-components@https://codeload.github.com/upfluence/oss-components/tar.gz/156cdbbe2691a17f3cd73bfa4607456766414a8c':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/upfluence/oss-components/tar.gz/156cdbbe2691a17f3cd73bfa4607456766414a8c}
-    version: 3.99.9
+  '@upfluence/oss-components@3.100.0':
+    resolution: {integrity: sha512-TVGXswyYzq5Ivi/5eZSGSvDpamFDRsFexbuROPW4IPzKmOUeWnjyJaPbQ82l1P4K7ydLfIiK8FGPXURwQM086w==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/3.100.0/bb6408984e12f5ab1d510cb4982c0e6ae1ac9216}
     engines: {node: 20.* || 22.* || 24.*}
     peerDependencies:
       qunit: "^2.x ||\_^3.x"
@@ -9150,7 +9149,7 @@ snapshots:
       '@typescript-eslint/types': 8.68.0
       eslint-visitor-keys: 5.0.1
 
-  '@upfluence/oss-components@https://codeload.github.com/upfluence/oss-components/tar.gz/156cdbbe2691a17f3cd73bfa4607456766414a8c(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
+  '@upfluence/oss-components@3.100.0(@babel/core@7.26.0)(@ember/test-helpers@2.9.4(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0)))(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))(qunit@2.23.1)(typescript@4.9.5)(webpack@5.97.1)':
     dependencies:
       '@ember/render-modifiers': 2.1.0(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@3.28.12(@babel/core@7.26.0))
       '@embroider/macros': 1.16.10(@glint/template@1.5.1)
