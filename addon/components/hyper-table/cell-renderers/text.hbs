@@ -1,5 +1,5 @@
 {{#if this.isUpsertable}}
-  <span {{action "toggleEditing"}}>
+  <span {{on "click" this.startEditing}}>
     {{or this.column.field.emptyPlaceholder "Add value"}}
   </span>
 {{else}}
@@ -14,10 +14,10 @@
       <Input
         @type="text"
         @value={{this.editableValue}}
-        @insert-newline={{action "toggleEditing" this.editableValue}}
+        @insert-newline={{fn this.toggleEditing this.editableValue}}
         aria-label={{or this.column.field.name "Value"}}
         class="editing-input__field form-control upf-input"
-        {{on "focusout" (action "toggleEditing" this.editableValue)}}
+        {{on "focusout" (fn this.toggleEditing this.editableValue)}}
       />
     </div>
     <div class="text-value" {{enable-tooltip title=this.editableValue placement="bottom"}}>
@@ -31,10 +31,10 @@
     {{#if this.isSaving}}
       <LoadingState />
     {{else if this.isSuccess}}
-      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
+      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{on "click" this.startEditing}} />
       <OSS::Icon @icon="fa-check" class="font-size-lg font-color-success-500" />
     {{else if (not this.editStatus.status)}}
-      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{action "toggleEditing"}} />
+      <OSS::Icon @icon="fa-pencil" class="cell-edition delayed" {{on "click" this.startEditing}} />
     {{/if}}
   </div>
 {{/if}}

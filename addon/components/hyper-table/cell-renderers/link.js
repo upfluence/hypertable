@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { action } from '@ember/object';
 import { debounce } from '@ember/runloop';
 
 import CellRendererMixin from '@upfluence/hypertable/mixins/cell-renderer';
@@ -10,13 +11,13 @@ export default Component.extend(CellRendererMixin, {
     this.set('isCopied', false);
   },
 
-  actions: {
-    copy() {
-      this.set('isCopied', true);
+  copy: action(function (event) {
+    event.stopPropagation();
 
-      navigator.clipboard.writeText(this.value);
+    this.set('isCopied', true);
 
-      debounce(this, this.endCopy, 2500);
-    }
-  }
+    navigator.clipboard.writeText(this.value);
+
+    debounce(this, this.endCopy, 2500);
+  })
 });

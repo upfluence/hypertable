@@ -10,9 +10,9 @@ module('Integration | Component | hyper-table/cell-renderers/text', function (ho
   setupRenderingTest(hooks);
 
   test('it renders a value', async function (this: TestContext, assert) {
-    this.item = EmberObject.create({ name: 'FooBar' });
-    this.column = EmberObject.create({ key: 'name', field: EmberObject.create({}), upsertable: false });
-    this.manager = EmberObject.create({ editStatus: A([]) });
+    this.item = EmberObject.create({ name: 'FooBar' } as object);
+    this.column = EmberObject.create({ key: 'name', field: EmberObject.create({}), upsertable: false } as object);
+    this.manager = EmberObject.create({ editStatus: A([]) } as object);
 
     await render(
       hbs`<HyperTable::CellRenderers::Text
@@ -26,9 +26,9 @@ module('Integration | Component | hyper-table/cell-renderers/text', function (ho
   });
 
   test('it renders a default when the value is empty', async function (this: TestContext, assert) {
-    this.item = EmberObject.create({ name: null });
-    this.column = EmberObject.create({ key: 'name', field: EmberObject.create({}), upsertable: false });
-    this.manager = EmberObject.create({ editStatus: A([]) });
+    this.item = EmberObject.create({ name: null } as object);
+    this.column = EmberObject.create({ key: 'name', field: EmberObject.create({}), upsertable: false } as object);
+    this.manager = EmberObject.create({ editStatus: A([]) } as object);
 
     await render(
       hbs`<HyperTable::CellRenderers::Text

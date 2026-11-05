@@ -48,8 +48,6 @@ jobs:
         include:
           - name: current
             command: pnpm test:ember
-          - name: next
-            command: pnpm ember try:one ember-4.12
     steps:
       - uses: webfactory/ssh-agent@v0.5.0
         with:

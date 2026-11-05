@@ -19,8 +19,8 @@ export default class DateFiltersRenderer extends FiltersRenderer {
     this._currentMovingDateOption = filter ? filter.value : null;
     this.filterOption = this._currentMovingDateOption ? 'moving' : 'fixed';
 
-    let lowerBoundFilter = this.args.column.filters.findBy('key', 'lower_bound');
-    let upperBoundFilter = this.args.column.filters.findBy('key', 'upper_bound');
+    let lowerBoundFilter = this.args.column.filters.find((filter) => filter.key === 'lower_bound');
+    let upperBoundFilter = this.args.column.filters.find((filter) => filter.key === 'upper_bound');
     if (lowerBoundFilter && upperBoundFilter) {
       this._currentDateValue = [
         moment.unix(lowerBoundFilter.value).toDate(),
