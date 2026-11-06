@@ -68,7 +68,7 @@
     "@types/rsvp": "^4.0.4",
     "@types/sinon": "^10.0.6",
     "@types/tether": "^1.4.6",
-    "@upfluence/oss-components": "github:upfluence/oss-components#feature/ember-upgrade-4-to-7",
+    "@upfluence/oss-components": "4.0.0-beta.2",
     "@upfluence/w-conf": "^0.4.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~6.12.0",
