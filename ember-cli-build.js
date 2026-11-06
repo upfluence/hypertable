@@ -1,9 +1,15 @@
 'use strict';
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+const { injectAssetMap } = require('@upfluence/oss-components/build/classic-asset-map.cjs');
 
 module.exports = function (defaults) {
   let app = new EmberAddon(defaults, {
+    fingerprint: {
+      generateAssetMap: true,
+      assetMapPath: 'assets/upfluence-asset-map.json',
+      extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot']
+    }
     // Add options here
   });
 
@@ -15,11 +21,15 @@ module.exports = function (defaults) {
   */
 
   const { maybeEmbroider } = require('@embroider/test-setup');
-  return maybeEmbroider(app, {
+  const tree = maybeEmbroider(app, {
     skipBabel: [
       {
         package: 'qunit'
       }
     ]
+  });
+  return injectAssetMap(tree, {
+    fingerprint: app.options.fingerprint,
+    rootURL: app.project.config(app.env).rootURL
   });
 };
