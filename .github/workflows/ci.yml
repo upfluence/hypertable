@@ -93,6 +93,7 @@ jobs:
         id: pkg_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
       - name: Trigger upfluence-web/deploy
+        if: ${{ !contains(github.ref, '-') }}
         uses: benc-uk/workflow-dispatch@v1
         with:
           repo: upfluence/upfluence-web
