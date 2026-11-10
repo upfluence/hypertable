@@ -13,15 +13,6 @@ Related to : #<!-- enter issue number here -->
 <!-- Bug: a given issue trail on sentry should stop happening -->
 <!-- Feature: Implements X thrift service / Z HTTP REST API added, provide instructions on how leverage your feature from staging or your workstation -->
 
-### 🧑‍💻 Developer Heads Up
-
-⚡ Since we are using [Ember Octane](https://blog.emberjs.com/octane-is-here/) now:
-
-- Feel free to migrate existing components to Glimmer Components.
-- Write new ones exclusively in it.
-
-Useful Resource : [Ember Octane vs Classic Cheat Sheet](https://ember-learn.github.io/ember-octane-vs-classic-cheat-sheet/)
-
 ### Good PR checklist
 
 - [ ] Title makes sense
