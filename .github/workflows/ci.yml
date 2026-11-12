@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  NODE_VERSION: 24
+  NODE_VERSION: ${{ vars.NODE_VERSION }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
 
