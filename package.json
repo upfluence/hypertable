@@ -1,13 +1,14 @@
 {
   "name": "@upfluence/hypertable",
-  "version": "3.17.3",
+  "version": "4.0.0-beta.0",
   "description": "Datatable under steroïds.",
   "keywords": [
     "ember-addon"
   ],
   "repository": "https://github.com/upfluence/hypertable",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "tag": "beta"
   },
   "license": "MIT",
   "author": "",
@@ -51,7 +52,7 @@
     "tether": "^1.4.7"
   },
   "peerDependencies": {
-    "@upfluence/oss-components": "^3.x"
+    "@upfluence/oss-components": "^4.0.0-beta.0"
   },
   "devDependencies": {
     "@ember/jquery": "^2.0.0",
@@ -68,7 +69,7 @@
     "@types/rsvp": "^4.0.4",
     "@types/sinon": "^10.0.6",
     "@types/tether": "^1.4.6",
-    "@upfluence/oss-components": "4.0.0-beta.2",
+    "@upfluence/oss-components": "4.0.0-beta.3",
     "@upfluence/w-conf": "^0.4.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~6.12.0",
@@ -109,7 +110,7 @@
     "@babel/helper-compilation-targets": "7.9.6"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 24"
   },
   "ember": {
     "edition": "octane"
