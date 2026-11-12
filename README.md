@@ -1,4 +1,15 @@
-# Hypertable
+<div align="center">
+  <img src=".github/assets/logo.svg" width="96" height="96" alt="">
+  <h1>@upfluence/hypertable</h1>
+  <p>Ember.js library to simplify the creation and management of complex data tables.</p>
+
+[![ci](https://github.com/upfluence/hypertable/actions/workflows/ci.yml/badge.svg)](https://github.com/upfluence/hypertable/actions/workflows/ci.yml)
+[![Coverage](https://sonarqube.upfluence.co/api/project_badges/measure?project=hypertable&metric=coverage&token=sqb_670d7e3c30119fb218ef8811f41648ba81213618)](https://sonarqube.upfluence.co/dashboard?id=hypertable)
+[![Maintainability Rating](https://sonarqube.upfluence.co/api/project_badges/measure?project=hypertable&metric=sqale_rating&token=sqb_670d7e3c30119fb218ef8811f41648ba81213618)](https://sonarqube.upfluence.co/dashboard?id=hypertable)
+[![Quality Gate Status](https://sonarqube.upfluence.co/api/project_badges/measure?project=hypertable&metric=alert_status&token=sqb_670d7e3c30119fb218ef8811f41648ba81213618)](https://sonarqube.upfluence.co/dashboard?id=hypertable)
+[![Code Smells](https://sonarqube.upfluence.co/api/project_badges/measure?project=hypertable&metric=code_smells&token=sqb_670d7e3c30119fb218ef8811f41648ba81213618)](https://sonarqube.upfluence.co/dashboard?id=hypertable)
+
+</div>
 
 To follow the early life of this project, see
 [oss-components#pn-flexbox-tables](https://github.com/upfluence/oss-components/pull/54/files)
@@ -23,14 +34,16 @@ The goal is to provide a consistent and maintainable way to build tables across 
 
 ## Compatibility
 
-- Ember.js v3.24 or above
-- Ember CLI v3.24 or above
-- Node.js v12 or above
+- Ember.js v6.12 or above
+- Node.js v24 or above
+- pnpm 10
+
+Apps on Ember.js below 6.12 should stay on `3.x`.
 
 ## Installation
 
 ```
-pnpm install @upfluence/hypertable
+pnpm add @upfluence/hypertable
 ```
 
 Additionally, the following registry should be added to the `.npmrc` file:
@@ -627,7 +640,7 @@ this.handler.on('columns-loaded', () => {
 
 - `git clone <repository-url>`
 - `cd hypertable`
-- `pnpm install`
+- `make install`
 
 ### Linting
 
@@ -637,13 +650,13 @@ this.handler.on('columns-loaded', () => {
 
 ### Running tests
 
-- `ember test` – Runs the test suite on the current Ember version
-- `ember test --server` – Runs the test suite in "watch mode"
-- `ember try:each` – Runs the test suite against multiple Ember versions
+- `pnpm test:ember` – Runs the test suite on the current Ember version
+- `make testserver` – Runs the test suite in "watch mode"
+- `pnpm test:ember-compatibility` – Runs the test suite against multiple Ember versions
 
 ### Running the dummy application
 
-- `ember serve`
+- `pnpm start`
 - Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
