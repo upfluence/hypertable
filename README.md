@@ -659,8 +659,6 @@ this.handler.on('columns-loaded', () => {
 - `pnpm start`
 - Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
-See the [Contributing](CONTRIBUTING.md) guide for details.
-
 ### License
 
 This project is licensed under the [MIT License](LICENSE.md).
