@@ -15,7 +15,7 @@
         <OSS::Checkbox
           @checked={{facet.applied}}
           @size="sm"
-          @onChange={{action "toggleAppliedFacet" facet}}
+          @onChange={{fn this.toggleAppliedFacet facet}}
           class="margin-right-px-12"
         />
 

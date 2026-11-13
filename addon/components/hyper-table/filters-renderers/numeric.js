@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
+import { action, computed, observer } from '@ember/object';
 import { debounce } from '@ember/runloop';
 
 import FiltersRendererMixin from '@upfluence/hypertable/mixins/filters-renderer';
@@ -22,7 +22,7 @@ export default Component.extend(FiltersRendererMixin, {
   }),
 
   currentExistenceFilter: computed('column.filters.[]', 'lowerBoundFilter', 'upperBoundFilter', function () {
-    let _existenceFilter = this.column.filters.findBy('key', 'existence');
+    let _existenceFilter = this.column.filters.find((filter) => filter.key === 'existence');
 
     if (_existenceFilter) {
       return _existenceFilter.value;
@@ -58,8 +58,8 @@ export default Component.extend(FiltersRendererMixin, {
   didReceiveAttrs() {
     this._super();
     if (this.column) {
-      let lowerBound = this.column.filters.findBy('key', 'lower_bound');
-      let upperBound = this.column.filters.findBy('key', 'upper_bound');
+      let lowerBound = this.column.filters.find((filter) => filter.key === 'lower_bound');
+      let upperBound = this.column.filters.find((filter) => filter.key === 'upper_bound');
 
       this.setProperties({
         lowerBoundFilter: lowerBound?.value,
@@ -68,22 +68,20 @@ export default Component.extend(FiltersRendererMixin, {
     }
   },
 
-  actions: {
-    orderingOptionChanged(value) {
-      this.manager.updateOrdering(this.column, value);
-    },
+  orderingOptionChanged: action(function (value) {
+    this.manager.updateOrdering(this.column, value);
+  }),
 
-    existenceFilterChanged(value) {
-      this.set('currentExistenceFilter', value);
+  existenceFilterChanged: action(function (value) {
+    this.set('currentExistenceFilter', value);
 
-      this.column.set('filters', [{ key: 'existence', value }]);
-      this.manager.hooks.onColumnsChange('columns:change');
-    },
+    this.column.set('filters', [{ key: 'existence', value }]);
+    this.manager.hooks.onColumnsChange('columns:change');
+  }),
 
-    reset() {
-      this._super();
-      this.manager.updateOrdering(this.column, null);
-      this.setProperties({ lowerBoundFilter: null, upperBoundFilter: null });
-    }
+  _resetFilters() {
+    this._super();
+    this.manager.updateOrdering(this.column, null);
+    this.setProperties({ lowerBoundFilter: null, upperBoundFilter: null });
   }
 });

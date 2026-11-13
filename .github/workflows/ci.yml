@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: ${{ vars.NODE_VERSION }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
 
@@ -48,8 +48,6 @@ jobs:
         include:
           - name: current
             command: pnpm test:ember
-          - name: next
-            command: pnpm ember try:one ember-4.12
     steps:
       - uses: webfactory/ssh-agent@v0.5.0
         with:
@@ -95,6 +93,7 @@ jobs:
         id: pkg_version
         run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
       - name: Trigger upfluence-web/deploy
+        if: ${{ !contains(github.ref, '-') }}
         uses: benc-uk/workflow-dispatch@v1
         with:
           repo: upfluence/upfluence-web

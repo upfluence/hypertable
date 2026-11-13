@@ -259,9 +259,7 @@ export default class TableHandler {
   prependRows(rows: Row[]): void {
     if (rows.length === 0) return;
 
-    const recordIds = new Set(
-      this.rows.filter((row) => row.record_id !== undefined).map((row) => row.record_id)
-    );
+    const recordIds = new Set(this.rows.filter((row) => row.record_id !== undefined).map((row) => row.record_id));
     const rowsToPrepend: Row[] = [];
 
     for (const row of rows) {

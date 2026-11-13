@@ -1,4 +1,4 @@
-import { computed } from '@ember/object';
+import { action, computed } from '@ember/object';
 import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
@@ -6,21 +6,23 @@ export default Mixin.create({
     return `table_column_filter_sort_${this.column.key}`;
   }),
 
-  actions: {
-    reset() {
-      this.column.reset();
-    },
+  _resetFilters() {
+    this.column.reset();
+  },
 
-    removeColumn() {
-      if (this.manager.tetherInstance) {
-        this.manager.destroyTetherInstance();
-      }
+  reset: action(function () {
+    this._resetFilters();
+  }),
 
-      this.manager.toggleColumnVisibility(this.column.field, this.column).then(() => {
-        if (this.manager.hooks.onColumnsChange) {
-          this.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
-        }
-      });
+  removeColumn: action(function () {
+    if (this.manager.tetherInstance) {
+      this.manager.destroyTetherInstance();
     }
-  }
+
+    this.manager.toggleColumnVisibility(this.column.field, this.column).then(() => {
+      if (this.manager.hooks.onColumnsChange) {
+        this.manager.hooks.onColumnsChange('columns:change', { visibilityChanged: true });
+      }
+    });
+  })
 });

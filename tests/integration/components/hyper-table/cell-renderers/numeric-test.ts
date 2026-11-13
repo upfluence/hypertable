@@ -10,9 +10,9 @@ module('Integration | Component | hyper-table/cell-renderers/numeric', function 
   setupRenderingTest(hooks);
 
   test('it renders a value', async function (this: TestContext, assert) {
-    this.item = EmberObject.create({ total: 123 });
-    this.column = EmberObject.create({ key: 'total', field: EmberObject.create({}), upsertable: false });
-    this.manager = EmberObject.create({ editStatus: A([]) });
+    this.item = EmberObject.create({ total: 123 } as object);
+    this.column = EmberObject.create({ key: 'total', field: EmberObject.create({}), upsertable: false } as object);
+    this.manager = EmberObject.create({ editStatus: A([]) } as object);
 
     await render(
       hbs`<HyperTable::CellRenderers::Numeric
@@ -26,9 +26,9 @@ module('Integration | Component | hyper-table/cell-renderers/numeric', function 
   });
 
   test('it renders a default when the value is empty', async function (this: TestContext, assert) {
-    this.item = EmberObject.create({ total: null });
-    this.column = EmberObject.create({ key: 'total', field: EmberObject.create({}), upsertable: false });
-    this.manager = EmberObject.create({ editStatus: A([]) });
+    this.item = EmberObject.create({ total: null } as object);
+    this.column = EmberObject.create({ key: 'total', field: EmberObject.create({}), upsertable: false } as object);
+    this.manager = EmberObject.create({ editStatus: A([]) } as object);
 
     await render(
       hbs`<HyperTable::CellRenderers::Numeric

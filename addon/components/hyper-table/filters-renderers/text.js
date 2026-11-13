@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { observer, computed } from '@ember/object';
+import { action, observer, computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 
@@ -21,7 +21,7 @@ export default Component.extend(FiltersRendererMixin, {
   },
 
   currentExistenceFilter: computed('column.filters.[]', '_searchQuery', function () {
-    let _existenceFilter = this.column.filters.findBy('key', 'existence');
+    let _existenceFilter = this.column.filters.find((filter) => filter.key === 'existence');
 
     if (_existenceFilter) {
       return _existenceFilter.value;
@@ -47,26 +47,24 @@ export default Component.extend(FiltersRendererMixin, {
   init() {
     this._super();
 
-    const searchTerm = this.column.filters.findBy('key', this.searchKey || 'value');
+    const searchTerm = this.column.filters.find((filter) => filter.key === (this.searchKey || 'value'));
     this.set('_searchQuery', searchTerm?.value);
   },
 
-  actions: {
-    orderingOptionChanged(value) {
-      this.manager.updateOrdering(this.column, value);
-    },
+  orderingOptionChanged: action(function (value) {
+    this.manager.updateOrdering(this.column, value);
+  }),
 
-    existenceFilterChanged(value) {
-      this.set('currentExistenceFilter', value);
+  existenceFilterChanged: action(function (value) {
+    this.set('currentExistenceFilter', value);
 
-      this.column.set('filters', [{ key: 'existence', value }]);
-      this.manager.hooks.onColumnsChange('columns:change');
-    },
+    this.column.set('filters', [{ key: 'existence', value }]);
+    this.manager.hooks.onColumnsChange('columns:change');
+  }),
 
-    reset() {
-      this._super();
-      this.manager.updateOrdering(this.column, null);
-      this.set('_searchQuery', null);
-    }
+  _resetFilters() {
+    this._super();
+    this.manager.updateOrdering(this.column, null);
+    this.set('_searchQuery', null);
   }
 });

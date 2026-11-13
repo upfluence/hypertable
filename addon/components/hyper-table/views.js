@@ -1,4 +1,4 @@
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import { isPresent } from '@ember/utils';
 import Component from '@glimmer/component';
@@ -32,7 +32,11 @@ export default class ViewsComponent extends Component {
   addPredefinedView(view) {
     if (this.args.manager.hooks.onAddView) {
       this.args.manager.hooks.onAddView(view.name, view.table);
-      this.args.manager.predefinedViews.removeObject(view);
+      set(
+        this.args.manager,
+        'predefinedViews',
+        this.args.manager.predefinedViews.filter((predefinedView) => predefinedView !== view)
+      );
       this.selectView(view);
     }
   }

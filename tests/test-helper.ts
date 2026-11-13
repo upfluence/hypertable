@@ -5,12 +5,15 @@ import Application from 'dummy/app';
 import config from 'dummy/config/environment';
 // @ts-expect-error - required due to legacy typing missing type definitions
 import { forceModulesToBeLoaded, sendCoverage } from 'ember-cli-code-coverage/test-support';
-import { start } from 'ember-qunit';
+import { setupEmberOnerrorValidation, start } from 'ember-qunit';
+import { loadTests } from 'ember-qunit/test-loader';
 import QUnit from 'qunit';
 import { setup } from 'qunit-dom';
 
 setup(QUnit.assert);
 registerAssertions(QUnit.assert);
+setupEmberOnerrorValidation();
+loadTests();
 
 QUnit.done(async function () {
   forceModulesToBeLoaded();
