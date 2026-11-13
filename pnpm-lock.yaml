@@ -97,8 +97,8 @@ importers:
         specifier: ^1.4.6
         version: 1.4.9
       '@upfluence/oss-components':
-        specifier: 4.0.0-beta.3
-        version: 4.0.0-beta.3(@ember/test-helpers@5.8.0(@babel/core@7.26.0))(@glint/template@1.5.1)(ember-source@6.12.1(@glimmer/component@1.1.2(@babel/core@7.26.0))(rsvp@4.8.5))(qunit@2.23.1)(typescript@5.9.3)(webpack@5.97.1)
+        specifier: 4.0.0
+        version: 4.0.0(@ember/test-helpers@5.8.0(@babel/core@7.26.0))(@glint/template@1.5.1)(ember-source@6.12.1(@glimmer/component@1.1.2(@babel/core@7.26.0))(rsvp@4.8.5))(qunit@2.23.1)(typescript@5.9.3)(webpack@5.97.1)
       '@upfluence/w-conf':
         specifier: ^0.4.0
         version: 0.4.0(@trivago/prettier-plugin-sort-imports@6.0.2(prettier@3.8.4))(@typescript-eslint/parser@8.68.0(eslint@10.9.1)(typescript@5.9.3))(eslint@10.9.1)(prettier@3.8.4)(typescript@5.9.3)
@@ -2162,10 +2162,11 @@ packages:
     resolution: {integrity: sha512-YR65gGdGvTUAWLldC3xLOvOzamdGzB4A5/N8rehEaHs3Zvoe39BhgY+u0SPch1OvrVTfLcc55wsSgK2NcnTS/A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@upfluence/oss-components@4.0.0-beta.3':
-    resolution: {integrity: sha512-g5IZudlrvex+c0gJvKmmKPpumOeXYptjnF92GLnW2Z0g40M5mEDXaCFVqRN2odFufp/son3D1CURs3CMuZp5wg==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/4.0.0-beta.3/e7511a24550cdd52035bb32a019110cfae64a96f}
-    engines: {node: 20.* || 22.* || 24.*}
+  '@upfluence/oss-components@4.0.0':
+    resolution: {integrity: sha512-VAvguGzbF+qFNGyirgnrDbiRHpa7dHtY1qv2tI/bHUsYNIhgm8QK3bE9WBTZv+O2Qs/ySDbe09nI4i/WpU20+A==, tarball: https://npm.pkg.github.com/download/@upfluence/oss-components/4.0.0/fde075884483c5d7f12870026bfec2e36a77ad50}
+    engines: {node: '>= 24'}
     peerDependencies:
+      ember-source: ^6.12.0
       qunit: "^2.x ||\_^3.x"
 
   '@upfluence/w-conf@0.4.0':
@@ -9596,7 +9597,7 @@ snapshots:
       '@typescript-eslint/types': 8.68.0
       eslint-visitor-keys: 5.0.1
 
-  '@upfluence/oss-components@4.0.0-beta.3(@ember/test-helpers@5.8.0(@babel/core@7.26.0))(@glint/template@1.5.1)(ember-source@6.12.1(@glimmer/component@1.1.2(@babel/core@7.26.0))(rsvp@4.8.5))(qunit@2.23.1)(typescript@5.9.3)(webpack@5.97.1)':
+  '@upfluence/oss-components@4.0.0(@ember/test-helpers@5.8.0(@babel/core@7.26.0))(@glint/template@1.5.1)(ember-source@6.12.1(@glimmer/component@1.1.2(@babel/core@7.26.0))(rsvp@4.8.5))(qunit@2.23.1)(typescript@5.9.3)(webpack@5.97.1)':
     dependencies:
       '@babel/core': 7.26.0
       '@ember/render-modifiers': 2.1.0(@babel/core@7.26.0)(@glint/template@1.5.1)(ember-source@6.12.1(@glimmer/component@1.1.2(@babel/core@7.26.0))(rsvp@4.8.5))
@@ -9618,6 +9619,7 @@ snapshots:
       ember-cli-typescript: 5.3.0
       ember-intl: 6.5.6(@ember/test-helpers@5.8.0(@babel/core@7.26.0))(@glint/template@1.5.1)(typescript@5.9.3)(webpack@5.97.1)
       ember-modifier: 3.2.7(@babel/core@7.26.0)
+      ember-source: 6.12.1(@glimmer/component@1.1.2(@babel/core@7.26.0))(rsvp@4.8.5)
       ember-truth-helpers: 3.1.1
       qunit: 2.23.1
       resolve: 1.22.14
@@ -9625,7 +9627,6 @@ snapshots:
       - '@ember/test-helpers'
       - '@glint/environment-ember-loose'
       - '@glint/template'
-      - ember-source
       - supports-color
       - typescript
       - webpack
