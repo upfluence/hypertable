@@ -1,6 +1,6 @@
 import GlimmerComponent from '@glimmer/component';
 
-import { ColumnDefinition } from './column';
+import type { ColumnDefinition } from './column';
 
 // Args can be useful to:
 // Pass extra information display in a header

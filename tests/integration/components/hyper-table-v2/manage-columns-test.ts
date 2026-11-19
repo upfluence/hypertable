@@ -7,7 +7,7 @@ import { module, test } from 'qunit';
 import sinon from 'sinon';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { Column, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
+import type { Column, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 import { RowsFetcher, TableManager } from '@upfluence/hypertable/test-support';
 import { buildColumn, buildColumnDefinition } from '@upfluence/hypertable/test-support/table-manager';
 

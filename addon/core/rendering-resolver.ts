@@ -9,7 +9,11 @@ import DateFilteringRenderer from '@upfluence/hypertable/components/hyper-table-
 import NumericFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/numeric';
 import TextFilteringRenderer from '@upfluence/hypertable/components/hyper-table-v2/filtering-renderers/text';
 import BaseHeaderRenderer from '@upfluence/hypertable/components/hyper-table-v2/header-renderers/base';
-import { RendererResolver, ResolvedRenderingComponent, ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
+import type {
+  RendererResolver,
+  ResolvedRenderingComponent,
+  ColumnDefinition
+} from '@upfluence/hypertable/core/interfaces';
 
 type RendererDictionaryItem = { cell: any; header?: any; filter: any };
 const rendererMatchers: { [key: string]: RendererDictionaryItem } = {

@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 
 import type { InitialLoadAnimationContext } from '@upfluence/hypertable/components/hyper-table-v2';
 import TableHandler, { ROWS_PER_PAGE } from '@upfluence/hypertable/core/handler';
-import { Column, ResolvedRenderingComponent, Row } from '@upfluence/hypertable/core/interfaces';
+import type { Column, ResolvedRenderingComponent, Row } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2CellArgs {
   handler: TableHandler;

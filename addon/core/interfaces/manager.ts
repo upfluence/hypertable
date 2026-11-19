@@ -1,4 +1,4 @@
-import { ColumnDefinition, Column } from './column';
+import type { ColumnDefinition, Column } from './column';
 
 export type ColumnDefinitionResponse = {
   column_definitions: ColumnDefinition[];

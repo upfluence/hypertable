@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { Column, FieldSize, ResolvedRenderingComponent } from '@upfluence/hypertable/core/interfaces';
+import { type Column, FieldSize, type ResolvedRenderingComponent } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2ColumnArgs {
   handler: TableHandler;

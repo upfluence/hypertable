@@ -5,7 +5,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
+import type { ColumnDefinition } from '@upfluence/hypertable/core/interfaces';
 
 type ManagedColumn = {
   definition: ColumnDefinition;

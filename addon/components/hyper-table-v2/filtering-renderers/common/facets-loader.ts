@@ -5,10 +5,10 @@ import { isEmpty } from '@ember/utils';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
-import { IntlService } from 'ember-intl';
+import type { IntlService } from 'ember-intl';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import { Column, Facet, FacetsResponse, Filter } from '@upfluence/hypertable/core/interfaces';
+import type { Column, Facet, FacetsResponse, Filter } from '@upfluence/hypertable/core/interfaces';
 
 interface FacetsLoaderArgs {
   handler: TableHandler;
