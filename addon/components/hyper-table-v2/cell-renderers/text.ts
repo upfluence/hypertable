@@ -2,7 +2,7 @@ import { get } from '@ember/object';
 import Component from '@glimmer/component';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import type { Column, Row } from '@upfluence/hypertable/core/interfaces';
+import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2CellRenderersTextArgs {
   handler: TableHandler;

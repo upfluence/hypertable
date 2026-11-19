@@ -5,15 +5,15 @@ import { tracked } from '@glimmer/tracking';
 import { type SummaryField } from '@upfluence/hypertable/components/hyper-table-v2/summary';
 import TableHandler from '@upfluence/hypertable/core/handler';
 import {
-  type Column,
-  type ColumnDefinition,
-  type ColumnDefinitionResponse,
-  type TableColumnUpsertRequest,
-  type TableColumnUpsertResponse,
+  Column,
+  ColumnDefinition,
+  ColumnDefinitionResponse,
+  TableColumnUpsertRequest,
+  TableColumnUpsertResponse,
   FieldSize,
-  type TableManager,
-  type TableColumnsResponse,
-  type RowsFetcherResponse
+  TableManager,
+  TableColumnsResponse,
+  RowsFetcherResponse
 } from '@upfluence/hypertable/core/interfaces';
 
 const columnDefinitions = [

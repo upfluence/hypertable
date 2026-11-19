@@ -5,7 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import type { Column } from '@upfluence/hypertable/core/interfaces';
+import { Column } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2FilteringRenderersDateArgs {
   handler: TableHandler;

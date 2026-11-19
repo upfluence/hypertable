@@ -1,14 +1,14 @@
 import {
-  type Column,
-  type ColumnDefinitionResponse,
+  Column,
+  ColumnDefinitionResponse,
   FieldSize,
-  type Filter,
-  type TableColumnsResponse,
-  type FacetsResponse,
-  type TableManager as ITableManager,
-  type TableColumnUpsertRequest,
-  type TableColumnUpsertResponse,
-  type ColumnDefinition
+  Filter,
+  TableColumnsResponse,
+  FacetsResponse,
+  TableManager as ITableManager,
+  TableColumnUpsertRequest,
+  TableColumnUpsertResponse,
+  ColumnDefinition
 } from '@upfluence/hypertable/core/interfaces';
 
 export const buildColumnDefinition = (key: string, extra?: { [key: string]: any }): ColumnDefinition => {

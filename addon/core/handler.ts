@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 
 import Tether from 'tether';
 
-import type {
+import {
   TableManager,
   RowsFetcher,
   Column,

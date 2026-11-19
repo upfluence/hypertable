@@ -5,7 +5,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import type { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
+import { Column, OrderDirection } from '@upfluence/hypertable/core/interfaces';
 import { onlyNumeric } from '@upfluence/hypertable/utils';
 
 interface HyperTableV2FilteringRenderersNumericArgs {

@@ -7,7 +7,7 @@ import { tracked } from '@glimmer/tracking';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
 import type { HandlerEvent } from '@upfluence/hypertable/core/handler';
-import type { Column, Row } from '@upfluence/hypertable/core/interfaces';
+import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
 export type FeatureSet = {
   selection: boolean;

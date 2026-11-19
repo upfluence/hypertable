@@ -4,7 +4,7 @@ import { DEFAULT_DATE_FORMAT } from '@upfluence/oss-components/utils/constants';
 import moment from 'moment';
 
 import TableHandler from '@upfluence/hypertable/core/handler';
-import type { Column, Row } from '@upfluence/hypertable/core/interfaces';
+import { Column, Row } from '@upfluence/hypertable/core/interfaces';
 
 interface HyperTableV2RenderersDateArgs {
   handler: TableHandler;

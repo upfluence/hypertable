@@ -1,5 +1,5 @@
-import { FieldSize, type ColumnDefinition, type Filter, type Order, type OrderDirection, type Column } from './column';
-import type {
+import { FieldSize, ColumnDefinition, Filter, Order, OrderDirection, Column } from './column';
+import {
   ColumnDefinitionResponse,
   TableColumnsResponse,
   TableColumnUpsertRequest,
@@ -8,11 +8,11 @@ import type {
   FacetsResponse,
   TableManager
 } from './manager';
-import type { ResolvedRenderingComponent, RendererResolver } from './rendering-resolver';
-import type { Row, RowsFetcherMetadata, RowsFetcherResponse, RowsFetcher } from './rows-fetcher';
+import { ResolvedRenderingComponent, RendererResolver } from './rendering-resolver';
+import { Row, RowsFetcherMetadata, RowsFetcherResponse, RowsFetcher } from './rows-fetcher';
 
-export { FieldSize };
-export type {
+export {
+  FieldSize,
   ColumnDefinition,
   Filter,
   Order,
