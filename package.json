@@ -71,7 +71,7 @@
     "@types/rsvp": "^4.0.4",
     "@types/sinon": "^22.0.2",
     "@types/tether": "^1.4.6",
-    "@upfluence/oss-components": "5.0.0-beta.0",
+    "@upfluence/oss-components": "5.0.0",
     "@upfluence/w-conf": "^0.4.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~6.12.0",
