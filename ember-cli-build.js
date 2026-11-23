@@ -2,9 +2,13 @@
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 const { injectAssetMap } = require('@upfluence/oss-components/build/classic-asset-map.cjs');
+const { ossLessPaths } = require('@upfluence/oss-components/build/less-paths.cjs');
 
 module.exports = function (defaults) {
   let app = new EmberAddon(defaults, {
+    lessOptions: {
+      paths: [...ossLessPaths(), 'node_modules']
+    },
     fingerprint: {
       generateAssetMap: true,
       assetMapPath: 'assets/upfluence-asset-map.json',

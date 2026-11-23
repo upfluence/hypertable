@@ -1,6 +1,6 @@
 {
   "name": "@upfluence/hypertable",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Datatable under steroïds.",
   "keywords": [
     "ember-addon"
@@ -42,7 +42,7 @@
     "@embroider/util": "^1.9.0",
     "ember-auto-import": "^2.13.1",
     "ember-cli-babel": "^8.2.0",
-    "ember-cli-htmlbars": "^6.3.0",
+    "ember-cli-htmlbars": "^7.0.1",
     "ember-cli-typescript": "^5.3.0",
     "ember-flatpickr": "^3.1.1",
     "ember-named-blocks-polyfill": "^0.2.5",
@@ -52,8 +52,9 @@
     "tether": "^1.4.7"
   },
   "peerDependencies": {
-    "@upfluence/oss-components": "^4.0.0",
-    "ember-source": "^6.12.0"
+    "@upfluence/oss-components": "^4.0.0 || ^5.0.0",
+    "ember-source": "^6.12.0",
+    "sinon": ">=15.2.0"
   },
   "devDependencies": {
     "@ember/jquery": "^2.0.0",
@@ -68,9 +69,9 @@
     "@types/jquery": "^3.5.11",
     "@types/qunit": "^2.19.14",
     "@types/rsvp": "^4.0.4",
-    "@types/sinon": "^10.0.6",
+    "@types/sinon": "^22.0.2",
     "@types/tether": "^1.4.6",
-    "@upfluence/oss-components": "4.0.0",
+    "@upfluence/oss-components": "5.0.0",
     "@upfluence/w-conf": "^0.4.0",
     "broccoli-asset-rev": "^3.0.0",
     "ember-cli": "~6.12.0",
@@ -88,7 +89,7 @@
     "ember-page-title": "^8.0.0",
     "ember-qunit": "^9.0.4",
     "ember-resolver": "^13.2.0",
-    "ember-sinon-qunit": "^6.0.0",
+    "ember-sinon-qunit": "^7.5.0",
     "ember-source": "~6.12.1",
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^3.15.0",
@@ -104,6 +105,7 @@
     "prettier": "^3.8.1",
     "qunit": "^2.22.0",
     "qunit-dom": "^3.2.1",
+    "sinon": "^22.1.0",
     "typescript": "^5.9.3",
     "webpack": "^5.95.0"
   },
@@ -118,5 +120,10 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "peerDependenciesMeta": {
+    "sinon": {
+      "optional": true
+    }
   }
 }
